@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from "../Components/Sidebar/Sidebar";
+import Sidebar from "../../Components/Sidebar/Sidebar";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -9,13 +9,28 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
 import "react-quill/dist/quill.snow.css";
-import { BASE_URL } from "../Utils/apiHelper";
-import { GET, POST } from "../Utils/apiFunctions";
+import { BASE_URL } from "../../Utils/apiHelper";
+import { GET, POST } from "../../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 
-const page = () => {
-  let [count, setCount] = useState(0);
+const page = ({ params }) => {
+  const [productDetails, setProductDetails] = useState({});
+
+  const { id } = params;
+  const fetchProductData = async () => {
+    try {
+      const options = { id: id };
+      const res = await GET(`${BASE_URL}/api/admin/productDetail`, options);
+      if (res?.data?.status == "true") {
+        setProductDetails(res.data?.data[0]);
+        setFile(res.data?.data[0]?.images);
+      }
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchProductData();
+  }, []);
 
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
@@ -23,8 +38,7 @@ const page = () => {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
   }
-  const [value, setValue] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+
   const [categories, setCategories] = useState([]);
   const [chosendCategory, setChosendCategory] = useState();
   const [subCategories, setSubCategories] = useState([]);
@@ -239,7 +253,7 @@ const page = () => {
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
-            <h2>Create product</h2>
+            <h2>Update product</h2>
             <div className='bot-btn'>
               <Link
                 href={"/produkter"}
@@ -248,10 +262,10 @@ const page = () => {
                 Cancel
               </Link>
               <button
-                className='cr-btn'
+                className='cr-btn btn'
                 onClick={submitHandler}
               >
-                Create product
+                Update product
               </button>
             </div>
           </div>
@@ -271,11 +285,11 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     <Form.Label>Productnumber</Form.Label>
                     <Form.Control
-                      value={productForm.ProductNumber}
+                      value={productDetails.product_number}
                       onChange={(e) =>
-                        setForm((prev) => ({
+                        setProductDetails((prev) => ({
                           ...prev,
-                          ProductNumber: e.target.value,
+                          product_number: e.target.value,
                         }))
                       }
                       placeholder='DUG40GULL'

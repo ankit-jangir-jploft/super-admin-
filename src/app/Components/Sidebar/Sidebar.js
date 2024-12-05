@@ -105,7 +105,7 @@ const Sidebar = () => {
         ))}
       </ul>
       <button
-        className='logout-btn'
+        className='logout-btn btn'
         href=''
         onClick={() => {
           Cookies.remove("dugnadstisadmin");

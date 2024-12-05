@@ -1,9 +1,41 @@
-'use client'
-import React from 'react'
-import Sidebar from '../Components/Sidebar/Sidebar'
-import Link from 'next/link'
+"use client";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../Components/Sidebar/Sidebar";
+import Link from "next/link";
+import { GET } from "../Utils/apiFunctions";
+import { BASE_URL } from "../Utils/apiHelper";
+import ReactPaginate from "react-paginate";
 
 const page = () => {
+  const [currentPage, setCurrent] = useState(1);
+  const [pagination, setPagination] = useState();
+  const [products, setProducts] = useState([]);
+  const fetchProductList = async () => {
+    try {
+      const options = {
+        per_page: 10,
+        page: currentPage,
+      };
+
+      const res = await GET(`${BASE_URL}/api/admin/Productlist`, options);
+      console.log(res.data);
+      if (res?.data?.status == "true") {
+        setPagination(res.data?.pagination);
+        setProducts(res.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onPageChange = ({ selected }) => {
+    console.log(selected);
+    setCurrent(selected + 1);
+  };
+  useEffect(() => {
+    fetchProductList();
+  }, [currentPage]);
+
   return (
     <>
       <Sidebar />
@@ -11,9 +43,20 @@ const page = () => {
         <div className='admin-header'>
           <h2>Products</h2>
           <div className='search-frm'>
-            <input type='text' placeholder='Sok i order' />
-            <Link href={'/'}><img src="/images/notifications_none.svg" /></Link> 
-            <Link href={'/'}><img src="/images/avatar-style.png" /></Link>              
+            <Link href={"/createproduct"}>
+              <img src='/images/add-plus.svg' />
+            </Link>
+            <input
+              type='text'
+              placeholder='Sok i order'
+            />
+            {/* <img className='input-right-icon' src="/images/search-interface.svg" /> */}
+            <Link href={"/"}>
+              <img src='/images/notifications_none.svg' />
+            </Link>
+            <Link href={"/"}>
+              <img src='/images/avatar-style.png' />
+            </Link>
           </div>
         </div>
         <div className='shdw-crd'>
@@ -33,241 +76,62 @@ const page = () => {
                   <th>Sub category</th>
                   <th>Created</th>
                   <th>View</th>
-                  <th><Link href="/"><img src="/images/fltres.svg" /></Link></th>
+                  <th>
+                    <Link href='/'>
+                      <img src='/images/fltres.svg' />
+                    </Link>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD8</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Birthday pack #2</td>                  
-                  <td>A2</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status yellow'>Unpublished</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status yellow'>Unpublished</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td><input type='checkbox' /></td>
-                  <td>PKD9</td>
-                  <td>
-                    <div className='produt-tile'>
-                      <img className="product-img img-fluid" src="/images/product.png" />
-                    </div>
-                  </td>
-                  <td>Juiepakke #3 - Til og fra lapper</td>                  
-                  <td>A1</td>
-                  <td>7410 stk</td>
-                  <td>50,-</td>
-                  <td><button className='status green-clr'>Published</button></td>
-                  <td>Cards</td>
-                  <td>Christmas</td>
-                  <td>21.05.2022</td> 
-                  <td>
-                    <Link href={'/orderdetail'}><img src="/images/prdctes.svg" /></Link>
-                  </td>
-                  <td></td>
-                </tr>           
+                {products.length &&
+                  products.map((product) => {
+                    return (
+                      <tr>
+                        <td>
+                          <input type='checkbox' />
+                        </td>
+                        <td>{product?.product_number}</td>
+                        <td>
+                          <div className='produt-tile'>
+                            <img
+                              className='product-img img-fluid'
+                              src={product?.image}
+                              onError={(e) =>
+                                (e.target.src = "/images/product.png")
+                              }
+                            />
+                          </div>
+                        </td>
+                        <td>{product?.name}</td>
+                        <td>{product?.wareHouseLocation || "N/A"}</td>
+                        <td>{product?.quantity || "N/A"} stk</td>
+                        <td>{product?.price || "N/A"}</td>
+                        <td>
+                          <button
+                            className={`status ${
+                              product?.product_status == 1
+                                ? "green-clr"
+                                : "yellow"
+                            }`}
+                          >
+                            {product?.product_status == 1
+                              ? "Published"
+                              : "Unpublished"}
+                          </button>
+                        </td>
+                        <td>{product?.category || "N/A"}</td>
+                        <td>{product?.subCategory || "N/A"}</td>
+                        <td>{product?.createdAt || "N/A"}</td>
+                        <td>
+                          <Link href={"/produkter"}>
+                            <img src='/images/prdctes.svg' />
+                          </Link>
+                        </td>
+                        <td></td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -278,19 +142,46 @@ const page = () => {
             <option>Mass action</option>
           </select>
 
-            <ul className='pgnatne'>
-              <li>Showing 15 of 1154 elements</li>
-              <li><Link href={'/'}><img src="/images/frst-aro.svg" /></Link></li>
-              <li><Link href={'/'}><img src="/images/revrse.svg" /></Link></li>
-              <li>1 of 42</li>
-              <li><Link href={'/'}><img src="/images/nxt-aro.svg" /></Link></li>
-              <li><Link href={'/'}><img src="/images/lstpge-aro.svg" /></Link></li>
-            </ul>
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={pagination?.totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={onPageChange}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+          />
 
+          {/* <ul className='pgnatne'>
+            <li>Showing 15 of 1154 elements</li>
+            <li>
+              <Link href={"/"}>
+                <img src='/images/frst-aro.svg' />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"}>
+                <img src='/images/revrse.svg' />
+              </Link>
+            </li>
+            <li>1 of 42</li>
+            <li>
+              <Link href={"/"}>
+                <img src='/images/nxt-aro.svg' />
+              </Link>
+            </li>
+            <li>
+              <Link href={"/"}>
+                <img src='/images/lstpge-aro.svg' />
+              </Link>
+            </li>
+          </ul> */}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

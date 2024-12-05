@@ -12,8 +12,12 @@ const page = () => {
   const state = {
     series: [
       {
-        name: "High - 2013",
-        data: [10, 29, 25, 36, 32, 25, 33],
+        name: "Sales - 2013",
+        data: [10, 29, 20, 36, 7, 25, 70],
+      },
+      {
+        name: "Profit - 2013",
+        data: [34, 29, 40, 50, 78, 25, 60],
       },
     ],
     options: {
