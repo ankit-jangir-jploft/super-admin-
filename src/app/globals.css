@@ -1799,3 +1799,9 @@ ul.pgnatne li {
   color: white;
   border-color: #007bff;
 }
+
+.btn:hover {
+  color: var(--bs-btn-hover-color);
+  background-color: #fd5a59 !important;
+  border-color: var(--bs-btn-hover-border-color);
+}

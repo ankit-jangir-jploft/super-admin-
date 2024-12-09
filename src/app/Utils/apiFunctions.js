@@ -30,9 +30,7 @@ export const POST = async (Url, data) => {
   };
   try {
     const res = await axios.post(Url, data, config);
-    if (res.status == 200) {
-      return res;
-    }
+    return res;
   } catch (error) {
     toast.dismiss();
     return toast.error(
