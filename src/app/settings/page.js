@@ -10,7 +10,7 @@ const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
 });
 import "react-quill/dist/quill.snow.css";
-import { Badge, Tab, Tabs } from "react-bootstrap";
+import { Badge, Button, Tab, Tabs } from "react-bootstrap";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
@@ -32,7 +32,7 @@ const page = () => {
 
 
   const [value, setValue] = useState("");
-  const { handleSubmit, register, control, reset } = useForm({
+  const { handleSubmit, formState: { errors: errorsGenralSetting }, register, control, reset, } = useForm({
     defaultValues: {
       status: false, // Default value for checkbox
       budget: "",
@@ -110,6 +110,7 @@ const page = () => {
     fetchFaqList();
     fetchSellerList()
     fetchFrontPageSettings();
+
   }, [])
 
 
@@ -162,7 +163,7 @@ const page = () => {
 
       console.log("response", response)
 
-      if (response?.data?.status === 201) {
+      if (response?.data?.status === true) {
         toast.success("Faq Created SuccessFully")
       }
     } catch (error) {
@@ -195,92 +196,136 @@ const page = () => {
 
 
 
-  const [headerLogo, setHeaderLogo] = useState(null);  // Initialize with null or an empty string
+  const [headerLogo, setHeaderLogo] = useState(null);
   const [headerImage, setHeaderImage] = useState(null);
 
 
-  const { register: register3, handleSubmit: handleSubmit3, reset: reset3, formState: { errors } } = useForm();
+  const [headerLogoFile, setHeaderLogoFile] = useState(null);
+  const [headerImageFile, setHeaderImageFile] = useState(null);
 
+  const [headerLogoFileError, setHeaderLogoFileError] = useState(null);
+  const [headerImageFileError, setHeaderImageFileError] = useState(null);
+
+  // Initialize the form using react-hook-form
+  const {
+    register: register3,
+    handleSubmit: handleSubmit3,
+    reset: reset3,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      navbarLanguage: "1", // Default value set to "1" (English)
+    },
+  });
 
   const handleLogoChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
-      setHeaderLogo(URL.createObjectURL(file)); // Preview the selected logo
+      setHeaderLogoFile(file); // Store the binary file for sending in the form
+      setHeaderLogoFileError(null); // Clear any previous error
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setHeaderLogo(reader.result); // Set the preview (base64)
+      };
+      reader.readAsDataURL(file); // Convert file to base64
     }
   };
 
-  // This function is triggered when the user selects a file for the header image
+  // Handle header image file change and set preview
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
-      setHeaderImage(URL.createObjectURL(file)); // Preview the selected header image
+      setHeaderImageFile(file); // Store the binary file for sending in the form
+      setHeaderImageFileError(null); // Clear any previous error
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setHeaderImage(reader.result); // Set the preview (base64)
+      };
+      reader.readAsDataURL(file); // Convert file to base64
     }
   };
 
 
   // Handle form submission
   const onSubmit3 = async (data) => {
-    // Create a new FormData object
+    // Check if files are selected, otherwise set error messages
+    if (!(headerLogoFile || headerLogo)) {
+      setHeaderLogoFileError("Logo is required.");
+    } else {
+      setHeaderLogoFileError(null); // Clear error if logo is selected or exists
+    }
+  
+    if (!(headerImageFile || headerImage)) {
+      setHeaderImageFileError("Header image is required.");
+    } else {
+      setHeaderImageFileError(null); // Clear error if header image is selected or exists
+    }
+  
+    // If there are file errors, do not submit the form
+    if (!(headerLogoFile || headerLogo) || !(headerImageFile || headerImage)) {
+      return;
+    }
+  
     const formData = new FormData();
-
-    // Append form fields to FormData
     formData.append('language_id', data.navbarLanguage);
     formData.append('type', "nav_one");
     formData.append('header_title', data?.headerTitle);
     formData.append('header_description', data?.headerDescription);
     formData.append('header_label', data?.headerButtonLabel || "");
     formData.append('id', data?.id);
-
-
-
-
-
-    // Check if logo and headerImage files exist, then append
-    if (data.logo?.[0]) {
-      formData.append('logo', data.logo[0]);
-
+  
+    // If logo file is selected, append it to FormData
+    if (headerLogoFile) {
+      formData.append('logo_image', headerLogoFile);
     }
-
-    if (data.headerImage?.[0]) {
-      formData.append('headerImage', data.headerImage[0]);
-
+  
+    // If header image file is selected, append it to FormData
+    if (headerImageFile) {
+      formData.append('header_image', headerImageFile);
     }
+  
+    try {
+      const response = await POST(`${BASE_URL}/api/admin/frontPageSettingCreate`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-    // Log form data entries
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+      console.log(response)
+  
+      if (response.status === 201) {
+        toast.success("Form submitted successfully!");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error.message);
+      toast.error("There was an error submitting the form.",error.message);
     }
-    const response = await POST(`${BASE_URL}/api/admin/frontPageSettingCreate`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    toast.success("Form submitted successfully!");
   };
+  
 
-
+  // Fetch and populate front page settings
   const fetchFrontPageSettings = async () => {
     try {
       const response = await GET(`${BASE_URL}/api/admin/frontPageSettingList`);
-      console.log("Res", response);
-  
       if (response?.status === 200) {
         const fetchFrontPageSetting = response?.data?.data[0];
   
-        // Populate the fields
+        // Populate the fields in the form
         reset3({
-          navbarLanguage: fetchFrontPageSetting?.language_id || "",
+          navbarLanguage: fetchFrontPageSetting?.language_id || "1",
           headerTitle: fetchFrontPageSetting?.header_title || "",
           headerDescription: fetchFrontPageSetting?.header_description || "",
           headerButtonLabel: fetchFrontPageSetting?.header_label || "",
           id: fetchFrontPageSetting?.id || "",
         });
   
-        // Set preview for logo and header image
-        if (fetchFrontPageSetting?.logo) {
-          setHeaderLogo(`${BASE_URL}/${fetchFrontPageSetting.logo}`);
+        // Set the preview images if available
+        if (fetchFrontPageSetting?.logo_image) {
+          setHeaderLogo(`${fetchFrontPageSetting.logo_image}`);  // Set preview base64 or URL
+          setHeaderLogoFile(null);  // Make sure file state is cleared since it's just a URL/image path now
         }
+  
         if (fetchFrontPageSetting?.header_image) {
-          setHeaderImage(`${BASE_URL}/${fetchFrontPageSetting.header_image}`);
+          setHeaderImage(`${fetchFrontPageSetting.header_image}`);  // Set preview base64 or URL
+          setHeaderImageFileError(null);  // Clear any errors if the image exists
         }
       }
     } catch (error) {
@@ -288,6 +333,8 @@ const page = () => {
     }
   };
   
+
+
 
 
 
@@ -349,12 +396,13 @@ const page = () => {
                               <Form.Label>Budget</Form.Label>
                               <Form.Control
                                 placeholder="Enter budget"
-                                {...register("budget")}
+                                {...register("budget", { required: "Budget is required" })}
                                 onInput={(e) => {
                                   const value = e.target.value.replace(/\D/g, ""); // Allow only numeric input
                                   e.target.value = value;
                                 }}
                               />
+                              {errorsGenralSetting.budget && <p className="text-danger">{errorsGenralSetting.budget.message}</p>}
                             </Form.Group>
                           </div>
 
@@ -381,7 +429,8 @@ const page = () => {
 
                         <Form.Group className="mb-3">
                           <Form.Label>Terms of Purchase</Form.Label>
-                          <Form.Control placeholder="Terms of purchase" {...register("title")} />
+                          <Form.Control placeholder="Terms of purchase" {...register("title", { required: "Terms is required" })} />
+                          {errorsGenralSetting.title && <p className="text-danger">{errorsGenralSetting.title.message}</p>}
                         </Form.Group>
                       </div>
                     </div>
@@ -483,12 +532,18 @@ const page = () => {
                     <div className="col-md-8 mx-auto">
                       <Form.Label className="ad-prdtse mt-4 mb-3">
                         Navbar
-                        <Form.Select className="ms-3 p-1" {...register3('navbarLanguage', { required: "Navbar language is required" })} >
-                          <option value="1">Select Language</option>
+                        <Form.Select
+                          className="ms-3 p-1"
+                          {...register3('navbarLanguage', { required: "Navbar language is required" })}
+                        >
                           <option value="1">English</option>
+                          <option value="2">Hindi</option>
+                          <option value="3">Spanish</option>
+                          <option value="4">French</option>
                         </Form.Select>
+
+                        {errors.navbarLanguage && <p className="text-danger block">{errors.navbarLanguage.message}</p>}
                       </Form.Label>
-                      {errors.navbarLanguage && <p className="text-danger">{errors.navbarLanguage.message}</p>}
 
                       <ul className="nvbre-txt">
                         <li>Nav One</li>
@@ -498,29 +553,26 @@ const page = () => {
                         <li>Nav Five</li>
                       </ul>
 
-
-                      <input type="hidden" {...register("id")} />
+                      <input type="hidden" {...register3("id")} />
 
                       <div className="row">
                         <div className="col-md-6">
                           <Form.Label className="mt-4">Upload Logo</Form.Label>
                           <div className="crpr-im filr-setng">
-                            {/* Show logo preview */}
-                            {headerLogo && <img src={headerLogo} alt="Logo Preview" />}
+                            {headerLogo && <Image src={headerLogo} alt="Logo Preview" className="rounded-circle m-4" width={100} height={100} />}
                             <div className="cstm-fle">
                               <input
                                 type="file"
                                 onChange={handleLogoChange}
-                                {...register3('logo', { required: "Logo is required" })}
+                                accept="image/*" // Ensure only image files can be selected
                               />
                               <img src="/images/image-upload1.svg" alt="Upload icon" />
                               <p className="m-0">Drag & Drop or <span>choose file</span> to upload</p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
                           </div>
-                          {errors.logo && <p className="text-danger">{errors.logo.message}</p>}
+                          {headerLogoFileError && <p className="text-danger">{headerLogoFileError}</p>}
 
-                          input
 
                           <Form.Group className="mb-3">
                             <Form.Label>Header Title</Form.Label>
@@ -553,37 +605,26 @@ const page = () => {
                         <div className="col-md-6">
                           <Form.Label className="mt-4">Header Image</Form.Label>
                           <div className="crpr-im filr-setng filr-setng1">
-                            {/* Show header image preview */}
-                            {headerImage && <img src={headerImage} alt="Header Image Preview" />}
+                            {headerImage && <Image src={headerImage} alt="Header Image Preview" className="rounded-circle m-4" width={100} height={100} />}
                             <div className="cstm-fle">
                               <input
                                 onChange={handleImageChange}
                                 type="file"
-                                {...register3('headerImage', { required: "Header Image is required" })}
+
                               />
                               <img src="/images/image-upload1.svg" alt="Upload icon" />
                               <p className="m-0">Drag & Drop or <span>choose file</span> to upload</p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
                           </div>
-                          {errors.headerImage && <p className="text-danger">{errors.headerImage.message}</p>}
+                          {headerImageFileError && <p className="text-danger">{headerImageFileError}</p>}
                         </div>
                       </div>
 
-                      <hr className="my-4" />
-
-                      <div className="row">
-                        <div className="col-md-12 text-center">
-                          <div className="bot-btn d-block">
-                            <button
-                              type="submit"
-                              className="btn btn-primary w-25"
-                              onClick={handleSubmit3(onSubmit3)}
-                            >
-                              Save
-                            </button>
-                          </div>
-                        </div>
+                      <div className="d-flex justify-content-center">
+                        <button className="btn btn-primary w-25" type="submit" onClick={handleSubmit3(onSubmit3)}>
+                          Submit
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -612,8 +653,8 @@ const page = () => {
                             <td>
 
                               {row?.profile_image ? (
-                                <Image src="https://v5.checkprojectstatus.com/dugnadstid_api/public/admin/uploads/setting/12424.jpg" alt="Profile Image" width={100}
-                                  height={100} />
+                                <Image src={row?.profile_image} alt="Profile Image" width={100}
+                                  height={100}  className="rounded-circle"/>
                               ) : (
                                 <img src="/images/default-avatar.png" alt="Default Avatar" />
                               )}
