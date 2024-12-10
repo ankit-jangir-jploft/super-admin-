@@ -9,15 +9,20 @@ import { useForm } from "react-hook-form";
 import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation"; // Use useRouter for client-side navigation
+import Loader from "../Components/Loader/Loader";
+
 const Page = () => {
     const [radioValue, setRadioValue] = useState("1"); // Appearance: Light or Dark
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [profileImageFileError, setProfileImageFileError] = useState(null);
+    const [pending, setPending] = useState(false)
+    const router = useRouter(); // Initialize useRouter for redirection
+
     const radios = [
         { name: "Light", value: "1" },
         { name: "Dark", value: "2" },
     ];
-
-    const [selectedImage, setSelectedImage] = useState(null); // Fixed typo here
-
 
     const {
         register,
@@ -26,7 +31,14 @@ const Page = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        console.log(data)
+        // Check for image selection
+        if (!selectedImage) {
+            setProfileImageFileError("Profile image is required.");
+            return; // Prevent form submission if image is not selected
+        } else {
+            setProfileImageFileError(null);
+        }
+
         const formData = new FormData();
         formData.append("language_id", data.language_id || "1"); // Optional
         formData.append("name", data?.name);
@@ -35,24 +47,37 @@ const Page = () => {
         formData.append("status", data?.status);
         formData.append("appearance", radioValue);
         formData.append("profile_image", data?.profile_image[0]);
-        // setSelectedImage(data?.profile_image) // We already updated it below
-        setSelectedImage(URL.createObjectURL(data?.profile_image[0])); // Fixed typo here
 
-        // Log all form data
-        for (const pair of formData.entries()) {
-            console.log(`${pair[0]}: ${pair[1]}`);
+        try {
+            setPending(true)
+            const response = await POST(`${BASE_URL}/api/admin/sellerCreate`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+
+
+
+            if (response?.data?.status === true) {
+                setPending(false)
+                toast.success("Form submitted successfully!");
+                router.push("/settings");
+
+            }else{
+                setPending(false)
+            }
+        } catch (error) {
+            setPending(false)
+            toast.error("Error submitting form.");
+            console.error(error);
+        } finally {
+            setPending(false)
         }
-
-        const response = await POST(`${BASE_URL}/api/admin/sellerCreate`, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
-
-        toast.success("Form submitted successfully!");
     };
 
     return (
         <>
             <Sidebar />
+            <Loader visible={pending} />
             <div className="detail-admin-main stng-pge">
                 <div className="admin-header">
                     <h2>Settings</h2>
@@ -74,7 +99,11 @@ const Page = () => {
                             <div className="row">
                                 <div className="col-md-7 mx-auto">
                                     <div className="d-block text-center">
-                                        <img className="d-inline-block w-25 h-25" style={{borderRadius:"100%"}} src={selectedImage || "/images/usr-edt.png"} />
+                                        <img
+                                            className="d-inline-block w-25 h-25"
+                                            style={{ borderRadius: "100%" }}
+                                            src={selectedImage || "/images/usr-edt.png"}
+                                        />
                                     </div>
 
                                     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -91,6 +120,9 @@ const Page = () => {
                                                         }
                                                     }}
                                                 />
+                                                {profileImageFileError && (
+                                                    <p className="text-danger">{profileImageFileError}</p>
+                                                )}
                                             </Form.Group>
                                         </div>
                                         <div className="row">
@@ -101,7 +133,9 @@ const Page = () => {
                                                         placeholder="Elise Nordmann"
                                                         {...register("name", { required: "Name is required" })}
                                                     />
-                                                    {errors.name && <span className="text-danger">{errors.name.message}</span>}
+                                                    {errors.name && (
+                                                        <span className="text-danger">{errors.name.message}</span>
+                                                    )}
                                                 </Form.Group>
                                             </div>
                                             <div className="col-md-6">
@@ -117,27 +151,37 @@ const Page = () => {
                                                             },
                                                         })}
                                                     />
-                                                    {errors.email && <span className="text-danger">{errors.email.message}</span>}
+                                                    {errors.email && (
+                                                        <span className="text-danger">{errors.email.message}</span>
+                                                    )}
                                                 </Form.Group>
                                             </div>
                                             <div className="col-md-6">
                                                 <Form.Group className="mb-3">
                                                     <Form.Label>User Type</Form.Label>
-                                                    <Form.Select {...register("role_id", { required: "User type is required" })}>
+                                                    <Form.Select
+                                                        {...register("role_id", { required: "User type is required" })}
+                                                    >
                                                         <option value="2">Seller</option>
-                                                        <option value="2">Customer</option>
+                                                        <option value="3">Customer</option>
                                                     </Form.Select>
-                                                    {errors.role_id && <span className="text-danger">{errors.role_id.message}</span>}
+                                                    {errors.role_id && (
+                                                        <span className="text-danger">{errors.role_id.message}</span>
+                                                    )}
                                                 </Form.Group>
                                             </div>
                                             <div className="col-md-6">
                                                 <Form.Group className="mb-3">
                                                     <Form.Label>Status</Form.Label>
-                                                    <Form.Select {...register("status", { required: "Status is required" })}>
+                                                    <Form.Select
+                                                        {...register("status", { required: "Status is required" })}
+                                                    >
                                                         <option value="1">Active</option>
                                                         <option value="2">Inactive</option>
                                                     </Form.Select>
-                                                    {errors.status && <span className="text-danger">{errors.status.message}</span>}
+                                                    {errors.status && (
+                                                        <span className="text-danger">{errors.status.message}</span>
+                                                    )}
                                                 </Form.Group>
                                             </div>
                                             <div className="col-md-6">
@@ -161,7 +205,9 @@ const Page = () => {
                                                                 name="appearance"
                                                                 value={radio.value}
                                                                 checked={radioValue === radio.value}
-                                                                onChange={(e) => setRadioValue(e.currentTarget.value)}
+                                                                onChange={(e) =>
+                                                                    setRadioValue(e.currentTarget.value)
+                                                                }
                                                             >
                                                                 {radio.name}
                                                             </ToggleButton>
@@ -172,7 +218,10 @@ const Page = () => {
                                         </div>
                                         <div className="row mt-3 mb-5">
                                             <div className="col-md-6">
-                                                <button className="cr-btn btn btn-primary w-25" type="submit">
+                                                <button
+                                                    className="cr-btn btn btn-primary w-25"
+                                                    type="submit"
+                                                >
                                                     Save
                                                 </button>
                                             </div>
