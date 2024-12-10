@@ -13,8 +13,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const router = useRouter();
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState([]);
@@ -74,7 +76,9 @@ const page = () => {
     }
   };
   const fetchSubCategory = async () => {
-    const res = await GET(`${BASE_URL}/api/admin/subCategoryList`);
+    const res = await GET(`${BASE_URL}/api/admin/subCategoryList`, {
+      parent_category_id: chosendCategory || "",
+    });
     if (res?.data?.status == "true") {
       setSubCategories(res.data?.data);
     }
@@ -206,10 +210,8 @@ const page = () => {
           selectedReletedProducts.map((pr) => pr.id)
         );
         formData.append("name", productForm.ProductName);
-        formData.append(
-          "visible_in_online_store",
-          productForm.VisibleInStore ? 1 : 0
-        );
+        formData.append("product_number", productForm.ProductNumber);
+        formData.append("product_status", productForm.VisibleInStore ? 1 : 0);
         formData.append(
           "visible_in_productgallery",
           productForm.VisibleInProductGallery ? 1 : 0
@@ -224,11 +226,20 @@ const page = () => {
         formData.append("description", productForm.ProductDescription);
         formData.append("my_page_description", productForm.PageDescription);
         formData.append("meta_description", productForm.MetaDescription);
-        formData.append("sub_category_id", chosendSubCategory);
+        formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("productImages", files);
+        formData.append("language_id", "1");
 
         const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
         console.log(res.data);
+        if (res?.data?.status) {
+          toast.dismiss();
+          toast.success(res.data?.message);
+          router.push("/produkter");
+        } else {
+          toast.dismiss();
+          toast.error(res?.data?.message);
+        }
       }
     } catch (error) {}
   };
@@ -248,7 +259,7 @@ const page = () => {
                 Cancel
               </Link>
               <button
-                className='cr-btn'
+                className='cr-btn btn'
                 onClick={submitHandler}
               >
                 Create product

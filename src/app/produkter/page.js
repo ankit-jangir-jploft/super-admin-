@@ -10,15 +10,17 @@ const page = () => {
   const [currentPage, setCurrent] = useState(1);
   const [pagination, setPagination] = useState();
   const [products, setProducts] = useState([]);
+  const [searchQuery, setQuery] = useState("");
+
   const fetchProductList = async () => {
     try {
       const options = {
         per_page: 10,
         page: currentPage,
+        searchQuery: searchQuery,
       };
 
       const res = await GET(`${BASE_URL}/api/admin/Productlist`, options);
-      console.log(res.data);
       if (res?.data?.status == "true") {
         setPagination(res.data?.pagination);
         setProducts(res.data?.data);
@@ -29,12 +31,11 @@ const page = () => {
   };
 
   const onPageChange = ({ selected }) => {
-    console.log(selected);
     setCurrent(selected + 1);
   };
   useEffect(() => {
     fetchProductList();
-  }, [currentPage]);
+  }, [currentPage, searchQuery]);
 
   return (
     <>
@@ -49,6 +50,10 @@ const page = () => {
             <input
               type='text'
               placeholder='Sok i order'
+              value={searchQuery}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
             />
             {/* <img className='input-right-icon' src="/images/search-interface.svg" /> */}
             <Link href={"/"}>

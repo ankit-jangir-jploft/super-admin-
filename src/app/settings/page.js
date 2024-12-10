@@ -252,16 +252,16 @@ const page = () => {
     if (!(headerLogoFile || headerLogo)) {
       setHeaderLogoFileError("Logo is required.");
     } else {
-      setHeaderLogoFileError(null); // Clear error if logo is selected or exists
+      setHeaderLogoFileError(null); 
     }
   
     if (!(headerImageFile || headerImage)) {
       setHeaderImageFileError("Header image is required.");
     } else {
-      setHeaderImageFileError(null); // Clear error if header image is selected or exists
+      setHeaderImageFileError(null); 
     }
   
-    // If there are file errors, do not submit the form
+    
     if (!(headerLogoFile || headerLogo) || !(headerImageFile || headerImage)) {
       return;
     }
@@ -274,12 +274,12 @@ const page = () => {
     formData.append('header_label', data?.headerButtonLabel || "");
     formData.append('id', data?.id);
   
-    // If logo file is selected, append it to FormData
+
     if (headerLogoFile) {
       formData.append('logo_image', headerLogoFile);
     }
   
-    // If header image file is selected, append it to FormData
+  
     if (headerImageFile) {
       formData.append('header_image', headerImageFile);
     }
