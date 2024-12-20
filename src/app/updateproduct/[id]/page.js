@@ -24,6 +24,7 @@ const page = ({ params }) => {
       const res = await GET(`${BASE_URL}/api/admin/productDetail`, options);
       if (res?.data?.status == "true") {
         setProductDetails(res.data?.data[0]);
+        console.log("res.data?.data[0]?.images", res.data?.data[0]?.images);
         setFile(res.data?.data[0]?.images);
       }
     } catch (error) {}
@@ -305,7 +306,10 @@ const page = ({ params }) => {
                       return (
                         <img
                           key={i}
-                          src={fl}
+                          src={fl.image}
+                          onError={(e) =>
+                            (e.target.src = "/images/product.png")
+                          }
                         />
                       );
                     })}

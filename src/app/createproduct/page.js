@@ -71,25 +71,31 @@ const page = () => {
 
   const fetchCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/categoryList`);
-    if (res?.data?.status == "true") {
+    console.log(res);
+    if (res?.data?.status === true) {
       setCategories(res.data?.data);
     }
   };
+
   const fetchSubCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/subCategoryList`, {
       parent_category_id: chosendCategory || "",
     });
-    if (res?.data?.status == "true") {
+
+    console.log("Sub", res);
+
+    if (res?.data?.status === true) {
       setSubCategories(res.data?.data);
     }
   };
+
   const fetchReleted = async () => {
     const payload = {
       category_id: chosendCategory || "",
       sub_category_id: chosendSubCategory || "",
     };
     const res = await GET(`${BASE_URL}/api/admin/relatedProductlist`, payload);
-    if (res?.data?.status == "true") {
+    if (res?.data?.status === "true") {
       setReleted(res.data?.data);
     }
   };
@@ -113,7 +119,7 @@ const page = () => {
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
-  }, []);
+  }, [chosendCategory]);
 
   useEffect(() => {
     fetchReleted();
@@ -122,6 +128,7 @@ const page = () => {
   const validateForm = () => {
     let isValid = true;
     const tempErrors = {};
+    console.log("files", files);
 
     if (!productForm.ProductNumber) {
       tempErrors.ProductNumber = "Product number is required.";
@@ -227,8 +234,11 @@ const page = () => {
         formData.append("my_page_description", productForm.PageDescription);
         formData.append("meta_description", productForm.MetaDescription);
         formData.append("sub_category_id", chosendSubCategory || "");
-        formData.append("productImages", files);
         formData.append("language_id", "1");
+
+        files?.forEach((fi) => {
+          formData.append("image[]", fi);
+        });
 
         const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
         console.log(res.data);
