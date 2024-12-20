@@ -1,14 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { BASE_URL } from "../Utils/apiHelper";
+import { GET } from "../Utils/apiFunctions";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
 const page = () => {
+
+  const [dashBoardData, setDashBoardData] = useState()
+
+
   const state = {
     series: [
       {
@@ -98,6 +104,27 @@ const page = () => {
     },
   };
 
+
+  const fetchData = async () => {
+    try {
+      const response = await GET(`${BASE_URL}/api/admin/dashbord`);
+
+      console.log(response?.data?.data)
+      setDashBoardData(response?.data?.data)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+
+
   return (
     <>
       <Sidebar />
@@ -122,7 +149,7 @@ const page = () => {
             <div className='dash-crde pinks-cr'>
               <p>Number of groups</p>
               <div className='d-flex justify-content-between align-items-center'>
-                <h2>26</h2>
+                <h2> {dashBoardData?.number_of_group}</h2>
                 <span>
                   +11.02%{" "}
                   <img
@@ -137,7 +164,7 @@ const page = () => {
             <div className='dash-crde'>
               <p>Number of sellers</p>
               <div className='d-flex justify-content-between align-items-center'>
-                <h2>26</h2>
+                <h2>{dashBoardData?.number_of_seller}</h2>
                 <span>
                   +0.03%{" "}
                   <img
@@ -152,7 +179,7 @@ const page = () => {
             <div className='dash-crde blue-cr'>
               <p>Profit</p>
               <div className='d-flex justify-content-between align-items-center'>
-                <h2>275.000</h2>
+                <h2>{dashBoardData?.profit}</h2>
                 <span>
                   +15.03%{" "}
                   <img
@@ -167,7 +194,7 @@ const page = () => {
             <div className='dash-crde rde-cr'>
               <p>No. of packages</p>
               <div className='d-flex justify-content-between align-items-center'>
-                <h2>4950 stk</h2>
+                <h2>{dashBoardData?.no_of_packages} stk</h2>
                 <span>
                   +6.08%{" "}
                   <img
@@ -223,49 +250,39 @@ const page = () => {
                   <th>End Date</th>
                 </tr>
               </thead>
+
+
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Gimletroll G15</td>
-                  <td>15 stk</td>
-                  <td>kr 1125,-</td>
-                  <td>10 okt 24</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Oyestad J11</td>
-                  <td>12 stk</td>
-                  <td>kr 1125,-</td>
-                  <td>15 okt 24</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Saltdalen 7C</td>
-                  <td>11 stk</td>
-                  <td>kr 1125,-</td>
-                  <td>12 okt 24</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>HFK Handball</td>
-                  <td>8 stk</td>
-                  <td>kr 1125,-</td>
-                  <td>Not set</td>
-                </tr>
+                {dashBoardData?.group.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item?.name}</td>
+                    <td>{item?.total_items} stk</td>
+                    <td>kr {item?.total_amount},-</td>
+                    <td>{item?.end_date}</td>
+                  </tr>
+                ))}
+
+                {/* Total row */}
                 <tr>
                   <td></td>
                   <td>
                     <b>Total</b>
                   </td>
                   <td>
-                    <b>168 stk</b>
+                    <b>
+                      {dashBoardData?.group.reduce((sum, item) => sum + (item?.total_items || 0), 0)} stk
+                    </b>
                   </td>
                   <td>
-                    <b>kr 15700,-</b>
+                    <b>
+                      kr {dashBoardData?.group.reduce((sum, item) => sum + (item?.total_amount || 0), 0)},-
+                    </b>
                   </td>
                   <td></td>
                 </tr>
               </tbody>
+
             </table>
           </div>
         </div>

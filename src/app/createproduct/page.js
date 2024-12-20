@@ -71,25 +71,34 @@ const page = () => {
 
   const fetchCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/categoryList`);
-    if (res?.data?.status == "true") {
+    console.log(res)
+    if (res?.data?.status === true) {
       setCategories(res.data?.data);
     }
   };
+
+
   const fetchSubCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/subCategoryList`, {
       parent_category_id: chosendCategory || "",
     });
-    if (res?.data?.status == "true") {
+    
+    console.log("Sub",res)
+
+    if (res?.data?.status === true) {
       setSubCategories(res.data?.data);
     }
   };
+
+
+
   const fetchReleted = async () => {
     const payload = {
       category_id: chosendCategory || "",
       sub_category_id: chosendSubCategory || "",
     };
     const res = await GET(`${BASE_URL}/api/admin/relatedProductlist`, payload);
-    if (res?.data?.status == "true") {
+    if (res?.data?.status === "true") {
       setReleted(res.data?.data);
     }
   };
@@ -113,7 +122,7 @@ const page = () => {
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
-  }, []);
+  }, [chosendCategory]);
 
   useEffect(() => {
     fetchReleted();
@@ -243,6 +252,10 @@ const page = () => {
       }
     } catch (error) {}
   };
+
+
+
+
 
   return (
     <>

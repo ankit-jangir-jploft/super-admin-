@@ -22,7 +22,7 @@ const page = () => {
 
   const [file, setFile] = useState();
   function handleChange1(e) {
-    console.log(e.target.files);
+ 
     setFile(URL.createObjectURL(e.target.files[0]));
   }
 
@@ -52,7 +52,7 @@ const page = () => {
   const fetchHandler = async () => {
     try {
       const res = await GET(`${BASE_URL}/api/admin/generalSettingList`);
-      console.log(res?.data?.data[0])
+     
       if (res?.data?.status && res?.data?.data) {
 
         const settings = res?.data?.data[0];
@@ -161,7 +161,6 @@ const page = () => {
         })),
       });
 
-      console.log("response", response)
 
       if (response?.data?.status === true) {
         toast.success("Faq Created SuccessFully")
@@ -182,7 +181,7 @@ const page = () => {
         question: faq?.question,
         answer: faq?.answer,
       }));
-      console.log("hello", mappedFaqs);
+   
       setFaqList(mappedFaqs);
     }
   };
@@ -214,34 +213,34 @@ const page = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      navbarLanguage: "1", // Default value set to "1" (English)
+      navbarLanguage: "1",
     },
   });
 
   const handleLogoChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setHeaderLogoFile(file); // Store the binary file for sending in the form
-      setHeaderLogoFileError(null); // Clear any previous error
+      setHeaderLogoFile(file);
+      setHeaderLogoFileError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setHeaderLogo(reader.result); // Set the preview (base64)
+        setHeaderLogo(reader.result);
       };
-      reader.readAsDataURL(file); // Convert file to base64
+      reader.readAsDataURL(file);
     }
   };
 
-  // Handle header image file change and set preview
+
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setHeaderImageFile(file); // Store the binary file for sending in the form
-      setHeaderImageFileError(null); // Clear any previous error
+      setHeaderImageFile(file);
+      setHeaderImageFileError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setHeaderImage(reader.result); // Set the preview (base64)
+        setHeaderImage(reader.result);
       };
-      reader.readAsDataURL(file); // Convert file to base64
+      reader.readAsDataURL(file);
     }
   };
 
@@ -252,20 +251,20 @@ const page = () => {
     if (!(headerLogoFile || headerLogo)) {
       setHeaderLogoFileError("Logo is required.");
     } else {
-      setHeaderLogoFileError(null); 
+      setHeaderLogoFileError(null);
     }
-  
+
     if (!(headerImageFile || headerImage)) {
       setHeaderImageFileError("Header image is required.");
     } else {
-      setHeaderImageFileError(null); 
+      setHeaderImageFileError(null);
     }
-  
-    
+
+
     if (!(headerLogoFile || headerLogo) || !(headerImageFile || headerImage)) {
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('language_id', data.navbarLanguage);
     formData.append('type', "nav_one");
@@ -273,33 +272,33 @@ const page = () => {
     formData.append('header_description', data?.headerDescription);
     formData.append('header_label', data?.headerButtonLabel || "");
     formData.append('id', data?.id);
-  
+
 
     if (headerLogoFile) {
       formData.append('logo_image', headerLogoFile);
     }
-  
-  
+
+
     if (headerImageFile) {
       formData.append('header_image', headerImageFile);
     }
-  
+
     try {
       const response = await POST(`${BASE_URL}/api/admin/frontPageSettingCreate`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       console.log(response)
-  
+
       if (response.status === 201) {
         toast.success("Form submitted successfully!");
       }
     } catch (error) {
       console.error("Form submission error:", error.message);
-      toast.error("There was an error submitting the form.",error.message);
+      toast.error("There was an error submitting the form.", error.message);
     }
   };
-  
+
 
   // Fetch and populate front page settings
   const fetchFrontPageSettings = async () => {
@@ -307,7 +306,7 @@ const page = () => {
       const response = await GET(`${BASE_URL}/api/admin/frontPageSettingList`);
       if (response?.status === 200) {
         const fetchFrontPageSetting = response?.data?.data[0];
-  
+
         // Populate the fields in the form
         reset3({
           navbarLanguage: fetchFrontPageSetting?.language_id || "1",
@@ -316,13 +315,13 @@ const page = () => {
           headerButtonLabel: fetchFrontPageSetting?.header_label || "",
           id: fetchFrontPageSetting?.id || "",
         });
-  
+
         // Set the preview images if available
         if (fetchFrontPageSetting?.logo_image) {
           setHeaderLogo(`${fetchFrontPageSetting.logo_image}`);  // Set preview base64 or URL
           setHeaderLogoFile(null);  // Make sure file state is cleared since it's just a URL/image path now
         }
-  
+
         if (fetchFrontPageSetting?.header_image) {
           setHeaderImage(`${fetchFrontPageSetting.header_image}`);  // Set preview base64 or URL
           setHeaderImageFileError(null);  // Clear any errors if the image exists
@@ -332,7 +331,7 @@ const page = () => {
       console.log(error);
     }
   };
-  
+
 
 
 
@@ -652,12 +651,16 @@ const page = () => {
                           <tr key={row?.id}>
                             <td>
 
-                              {row?.profile_image ? (
-                                <Image src={row?.profile_image} alt="Profile Image" width={100}
-                                  height={100}  className="rounded-circle"/>
-                              ) : (
-                                <img src="/images/default-avatar.png" alt="Default Avatar" />
-                              )}
+                              {row?.profile_image && <Image
+                                src={row?.profile_image}
+                                // alt="Profile Image"
+                                width={100}
+                                height={100}
+                                className="rounded-circle"
+
+                              />}
+
+
                             </td>
                             <td>{row?.name}</td>
                             <td>
