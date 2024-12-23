@@ -48,7 +48,7 @@ const Login = () => {
           toast.success(res.data?.message);
 
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
-          router.push("/");
+          window.location.href = "/";
         } else {
           toast.dismiss();
           toast.error(res.data?.message);

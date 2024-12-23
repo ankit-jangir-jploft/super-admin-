@@ -3,10 +3,10 @@ import Sidebar from "../Components/Sidebar/Sidebar";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
-import Image from 'next/image'
-const ReactQuill = dynamic(() => import('react-quill'), {
+import Image from "next/image";
+const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
 import "react-quill/dist/quill.snow.css";
@@ -16,23 +16,23 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 
 const page = () => {
-  const [fetchSeller, setFetchSeller] = useState()
+  const [fetchSeller, setFetchSeller] = useState();
 
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState();
   function handleChange1(e) {
- 
     setFile(URL.createObjectURL(e.target.files[0]));
   }
 
-
-
-
-
-
   const [value, setValue] = useState("");
-  const { handleSubmit, formState: { errors: errorsGenralSetting }, register, control, reset, } = useForm({
+  const {
+    handleSubmit,
+    formState: { errors: errorsGenralSetting },
+    register,
+    control,
+    reset,
+  } = useForm({
     defaultValues: {
       status: false, // Default value for checkbox
       budget: "",
@@ -46,15 +46,11 @@ const page = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [settingId, setSettingId] = useState(null);
 
-
-
-
   const fetchHandler = async () => {
     try {
       const res = await GET(`${BASE_URL}/api/admin/generalSettingList`);
-     
-      if (res?.data?.status && res?.data?.data) {
 
+      if (res?.data?.status && res?.data?.data) {
         const settings = res?.data?.data[0];
 
         // Populate form with fetched settings
@@ -76,8 +72,7 @@ const page = () => {
       console.error("Error fetching settings:", error);
       // toast.error("Failed to load settings.");
     }
-  }
-
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -93,7 +88,10 @@ const page = () => {
         }
       } else {
         // Create new settings
-        const res = await POST(`${BASE_URL}/api/admin/generalSettingCreate`, data);
+        const res = await POST(
+          `${BASE_URL}/api/admin/generalSettingCreate`,
+          data
+        );
 
         if (res?.data?.status) {
           toast.success("Settings created successfully");
@@ -108,21 +106,21 @@ const page = () => {
   useEffect(() => {
     fetchHandler();
     fetchFaqList();
-    fetchSellerList()
+    fetchSellerList();
     fetchFrontPageSettings();
-
-  }, [])
-
-
+  }, []);
 
   const [faqList, setFaqList] = useState([
-    { question: 'How do I share my online store?', answer: 'Lorem ipsum dolor sit amet' },
+    {
+      question: "How do I share my online store?",
+      answer: "Lorem ipsum dolor sit amet",
+    },
   ]);
 
   const [errorMessages, setErrorMessages] = useState([]);
 
   const handleAddQuestion = () => {
-    setFaqList([...faqList, { question: '', answer: '' }]);
+    setFaqList([...faqList, { question: "", answer: "" }]);
   };
 
   const handleChange = (index, field, value) => {
@@ -131,47 +129,41 @@ const page = () => {
     setFaqList(updatedFaqList);
   };
 
-
   const handleSave = async () => {
     let errors = [];
 
     // Validate each FAQ question and answer
     faqList.forEach((faq, index) => {
       if (!faq.question || !faq.answer) {
-        errors[index] = 'Both question and answer are required.';
+        errors[index] = "Both question and answer are required.";
       } else {
-        errors[index] = ''; // Clear the error if valid
+        errors[index] = ""; // Clear the error if valid
       }
     });
 
     // If there are any errors, update the state and stop execution
-    if (errors.some(error => error !== '')) {
+    if (errors.some((error) => error !== "")) {
       setErrorMessages(errors);
       return; // Stop the save operation if there are validation errors
     }
 
     // Proceed with saving the data if no errors
     try {
-
       const response = await POST(`${BASE_URL}/api/admin/faqCreate`, {
         language_id: 1,
-        items: faqList.map(faq => ({
+        items: faqList.map((faq) => ({
           question: faq?.question,
           answer: faq?.answer,
         })),
       });
 
-
       if (response?.data?.status === true) {
-        toast.success("Faq Created SuccessFully")
+        toast.success("Faq Created SuccessFully");
       }
     } catch (error) {
       console.log(error.message);
     }
   };
-
-
-
 
   const fetchFaqList = async () => {
     const response = await GET(`${BASE_URL}/api/admin/faqList`);
@@ -181,23 +173,18 @@ const page = () => {
         question: faq?.question,
         answer: faq?.answer,
       }));
-   
+
       setFaqList(mappedFaqs);
     }
   };
 
-
-
   const fetchSellerList = async () => {
     const response = await GET(`${BASE_URL}/api/admin/sellerList`);
-    setFetchSeller(response?.data)
-  }
-
-
+    setFetchSeller(response?.data);
+  };
 
   const [headerLogo, setHeaderLogo] = useState(null);
   const [headerImage, setHeaderImage] = useState(null);
-
 
   const [headerLogoFile, setHeaderLogoFile] = useState(null);
   const [headerImageFile, setHeaderImageFile] = useState(null);
@@ -210,7 +197,7 @@ const page = () => {
     register: register3,
     handleSubmit: handleSubmit3,
     reset: reset3,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
       navbarLanguage: "1",
@@ -230,7 +217,6 @@ const page = () => {
     }
   };
 
-
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -243,7 +229,6 @@ const page = () => {
       reader.readAsDataURL(file);
     }
   };
-
 
   // Handle form submission
   const onSubmit3 = async (data) => {
@@ -260,35 +245,36 @@ const page = () => {
       setHeaderImageFileError(null);
     }
 
-
     if (!(headerLogoFile || headerLogo) || !(headerImageFile || headerImage)) {
       return;
     }
 
     const formData = new FormData();
-    formData.append('language_id', data.navbarLanguage);
-    formData.append('type', "nav_one");
-    formData.append('header_title', data?.headerTitle);
-    formData.append('header_description', data?.headerDescription);
-    formData.append('header_label', data?.headerButtonLabel || "");
-    formData.append('id', data?.id);
-
+    formData.append("language_id", data.navbarLanguage);
+    formData.append("type", "nav_one");
+    formData.append("header_title", data?.headerTitle);
+    formData.append("header_description", data?.headerDescription);
+    formData.append("header_label", data?.headerButtonLabel || "");
+    formData.append("id", data?.id);
 
     if (headerLogoFile) {
-      formData.append('logo_image', headerLogoFile);
+      formData.append("logo_image", headerLogoFile);
     }
 
-
     if (headerImageFile) {
-      formData.append('header_image', headerImageFile);
+      formData.append("header_image", headerImageFile);
     }
 
     try {
-      const response = await POST(`${BASE_URL}/api/admin/frontPageSettingCreate`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await POST(
+        `${BASE_URL}/api/admin/frontPageSettingCreate`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
-      console.log(response)
+      console.log(response);
 
       if (response.status === 201) {
         toast.success("Form submitted successfully!");
@@ -298,7 +284,6 @@ const page = () => {
       toast.error("There was an error submitting the form.", error.message);
     }
   };
-
 
   // Fetch and populate front page settings
   const fetchFrontPageSettings = async () => {
@@ -318,13 +303,13 @@ const page = () => {
 
         // Set the preview images if available
         if (fetchFrontPageSetting?.logo_image) {
-          setHeaderLogo(`${fetchFrontPageSetting.logo_image}`);  // Set preview base64 or URL
-          setHeaderLogoFile(null);  // Make sure file state is cleared since it's just a URL/image path now
+          setHeaderLogo(`${fetchFrontPageSetting.logo_image}`); // Set preview base64 or URL
+          setHeaderLogoFile(null); // Make sure file state is cleared since it's just a URL/image path now
         }
 
         if (fetchFrontPageSetting?.header_image) {
-          setHeaderImage(`${fetchFrontPageSetting.header_image}`);  // Set preview base64 or URL
-          setHeaderImageFileError(null);  // Clear any errors if the image exists
+          setHeaderImage(`${fetchFrontPageSetting.header_image}`); // Set preview base64 or URL
+          setHeaderImageFileError(null); // Clear any errors if the image exists
         }
       }
     } catch (error) {
@@ -332,117 +317,153 @@ const page = () => {
     }
   };
 
-
-
-
-
-
-
-
   return (
     <>
       <Sidebar />
-      <div className="detail-admin-main stng-pge">
+      <div className='detail-admin-main stng-pge'>
         <div className='admin-header'>
           <h2>Settings</h2>
           <div className='search-frm'>
-            <input type='text' placeholder='Sok i order' />
-            <Link href={'/'}><img src="/images/notifications_none.svg" /></Link>
-            <Link href={'/'}><img src="/images/avatar-style.png" /></Link>
+            <input
+              type='text'
+              placeholder='Sok i order'
+            />
+            <Link href={"/"}>
+              <img src='/images/notifications_none.svg' />
+            </Link>
+            <Link href={"/"}>
+              <img src='/images/avatar-style.png' />
+            </Link>
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-md-12">
-            <div className="shdw-crd crte-ordr">
+        <div className='row'>
+          <div className='col-md-12'>
+            <div className='shdw-crd crte-ordr'>
               <Tabs
-                defaultActiveKey="general"
-                id="uncontrolled-tab-example"
-                className="mb-3"
+                defaultActiveKey='general'
+                id='uncontrolled-tab-example'
+                className='mb-3'
               >
-                <Tab eventKey="general" title="General">
+                <Tab
+                  eventKey='general'
+                  title='General'
+                >
                   <Form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row mt-5">
-                      <div className="col-md-6">
-                        <div className="cstm-chk">
-                          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <div className='row mt-5'>
+                      <div className='col-md-6'>
+                        <div className='cstm-chk'>
+                          <Form.Group
+                            className='mb-3'
+                            controlId='formBasicCheckbox'
+                          >
                             <Form.Check
-                              type="checkbox"
-                              label="Automatically unpublish items in the online store with less than 100 pieces in stock"
+                              type='checkbox'
+                              label='Automatically unpublish items in the online store with less than 100 pieces in stock'
                               {...register("status")}
-                              value="1"
-                              onChange={(e) => setValue("status", e.target.checked ? "1" : "0")}
+                              value='1'
+                              onChange={(e) =>
+                                setValue("status", e.target.checked ? "1" : "0")
+                              }
                             />
                           </Form.Group>
                         </div>
                       </div>
 
                       {/* Hidden field for setting_id */}
-                      <input type="hidden" {...register("setting_id")} />
+                      <input
+                        type='hidden'
+                        {...register("setting_id")}
+                      />
 
-                      <div className="col-md-6">
-                        <div className="bot-btn justify-content-end">
-                          <button type="submit" className="btn btn-primary w-25 p-2">
+                      <div className='col-md-6'>
+                        <div className='bot-btn justify-content-end'>
+                          <button
+                            type='submit'
+                            className='btn btn-primary w-25 p-2'
+                          >
                             {isEditMode ? "Update Settings" : "Create Settings"}
                           </button>
                         </div>
                       </div>
 
-                      <div className="col-md-6 mt-4">
-                        <div className="row">
-                          <div className="col-md-12">
-                            <Form.Group className="mb-3">
+                      <div className='col-md-6 mt-4'>
+                        <div className='row'>
+                          <div className='col-md-12'>
+                            <Form.Group className='mb-3'>
                               <Form.Label>Budget</Form.Label>
                               <Form.Control
-                                placeholder="Enter budget"
-                                {...register("budget", { required: "Budget is required" })}
+                                placeholder='Enter budget'
+                                {...register("budget", {
+                                  required: "Budget is required",
+                                })}
                                 onInput={(e) => {
-                                  const value = e.target.value.replace(/\D/g, ""); // Allow only numeric input
+                                  const value = e.target.value.replace(
+                                    /\D/g,
+                                    ""
+                                  ); // Allow only numeric input
                                   e.target.value = value;
                                 }}
                               />
-                              {errorsGenralSetting.budget && <p className="text-danger">{errorsGenralSetting.budget.message}</p>}
+                              {errorsGenralSetting.budget && (
+                                <p className='text-danger'>
+                                  {errorsGenralSetting.budget.message}
+                                </p>
+                              )}
                             </Form.Group>
                           </div>
 
-                          <div className="col-md-12">
-                            <Form.Group className="mb-3">
+                          <div className='col-md-12'>
+                            <Form.Group className='mb-3'>
                               <Form.Label>Default VAT class</Form.Label>
                               <Form.Select {...register("default_vat_class")}>
-                                <option value="25">25%</option>
-                                <option value="30">30%</option>
-                                <option value="40">40%</option>
-                                <option value="50">50%</option>
+                                <option value='25'>25%</option>
+                                <option value='30'>30%</option>
+                                <option value='40'>40%</option>
+                                <option value='50'>50%</option>
                               </Form.Select>
                             </Form.Group>
                           </div>
                         </div>
 
-                        <Form.Group className="mb-3">
+                        <Form.Group className='mb-3'>
                           <Form.Label>Language</Form.Label>
                           <Form.Select {...register("language_id")}>
-                            <option value="1">English</option>
+                            <option value='1'>English</option>
                             {/* <option value="2">Korea</option> */}
                           </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3">
+                        <Form.Group className='mb-3'>
                           <Form.Label>Terms of Purchase</Form.Label>
-                          <Form.Control placeholder="Terms of purchase" {...register("title", { required: "Terms is required" })} />
-                          {errorsGenralSetting.title && <p className="text-danger">{errorsGenralSetting.title.message}</p>}
+                          <Form.Control
+                            placeholder='Terms of purchase'
+                            {...register("title", {
+                              required: "Terms is required",
+                            })}
+                          />
+                          {errorsGenralSetting.title && (
+                            <p className='text-danger'>
+                              {errorsGenralSetting.title.message}
+                            </p>
+                          )}
                         </Form.Group>
                       </div>
                     </div>
 
-                    <div className="row">
-                      <div className="col-md-12">
-                        <Form.Group className="mb-3">
+                    <div className='row'>
+                      <div className='col-md-12'>
+                        <Form.Group className='mb-3'>
                           <Form.Label>Text</Form.Label>
                           <Controller
-                            name="text"
+                            name='text'
                             control={control}
                             render={({ field }) => (
-                              <ReactQuill theme="snow" value={field.value} onChange={field.onChange} />
+                              <ReactQuill
+                                theme='snow'
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
                             )}
                           />
                         </Form.Group>
@@ -450,54 +471,74 @@ const page = () => {
                     </div>
                   </Form>
                 </Tab>
-                <Tab eventKey="dugnadssettings" title="Dugnadssettings">
-                  <h5 className="ad-prdtse mt-4 mb-3">
+                <Tab
+                  eventKey='dugnadssettings'
+                  title='Dugnadssettings'
+                >
+                  <h5 className='ad-prdtse mt-4 mb-3'>
                     Dugnadssettings
-                    <Form.Select className="ms-3">
+                    <Form.Select className='ms-3'>
                       <option>English</option>
                     </Form.Select>
                   </h5>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <Form.Label className="d-block">Default text when sharing on social media</Form.Label>
-                      <Form.Label className="d-block mt-4">Default image when sharing on social media</Form.Label>
+                  <div className='row'>
+                    <div className='col-md-6'>
+                      <Form.Label className='d-block'>
+                        Default text when sharing on social media
+                      </Form.Label>
+                      <Form.Label className='d-block mt-4'>
+                        Default image when sharing on social media
+                      </Form.Label>
                     </div>
-                    <div className="col-md-6 text-end">
-                      <Form.Group className="mb-3">
-                        <Form.Control placeholder="Thank you for your support!" />
+                    <div className='col-md-6 text-end'>
+                      <Form.Group className='mb-3'>
+                        <Form.Control placeholder='Thank you for your support!' />
                       </Form.Group>
-                      <img className="strimg" src="/images/store-im.png" />
+                      <img
+                        className='strimg'
+                        src='/images/store-im.png'
+                      />
                     </div>
                   </div>
                   <Form.Label>Frequently asked questions</Form.Label>
-                  <div className="row">
+                  <div className='row'>
                     {faqList.map((faq, index) => (
                       <React.Fragment key={index}>
-                        <div className="col-md-6">
-                          <Form.Group className="mb-3">
+                        <div className='col-md-6'>
+                          <Form.Group className='mb-3'>
                             <Form.Label>Question {index + 1}</Form.Label>
                             <Form.Control
                               value={faq.question}
-                              onChange={(e) => handleChange(index, 'question', e.target.value)}
-                              placeholder="How do I share my online store?"
+                              onChange={(e) =>
+                                handleChange(index, "question", e.target.value)
+                              }
+                              placeholder='How do I share my online store?'
                             />
                             {errorMessages[index] && (
-                              <div className="text-danger" style={{ fontSize: '12px' }}>
+                              <div
+                                className='text-danger'
+                                style={{ fontSize: "12px" }}
+                              >
                                 {errorMessages[index]}
                               </div>
                             )}
                           </Form.Group>
                         </div>
-                        <div className="col-md-6">
-                          <Form.Group className="mb-3">
+                        <div className='col-md-6'>
+                          <Form.Group className='mb-3'>
                             <Form.Label>Answer</Form.Label>
                             <Form.Control
                               value={faq.answer}
-                              onChange={(e) => handleChange(index, 'answer', e.target.value)}
-                              placeholder="Lorem ipsum dolor sit amet"
+                              onChange={(e) =>
+                                handleChange(index, "answer", e.target.value)
+                              }
+                              placeholder='Lorem ipsum dolor sit amet'
                             />
                             {errorMessages[index] && (
-                              <div className="text-danger" style={{ fontSize: '12px' }}>
+                              <div
+                                className='text-danger'
+                                style={{ fontSize: "12px" }}
+                              >
                                 {errorMessages[index]}
                               </div>
                             )}
@@ -507,44 +548,57 @@ const page = () => {
                     ))}
                   </div>
 
-                  <div className="row mt-3">
-                    <div className="col-md-6">
-                      <div className="bot-btn add-quet">
+                  <div className='row mt-3'>
+                    <div className='col-md-6'>
+                      <div className='bot-btn add-quet'>
                         <button
-                          type="button"
-                          className="btn btn-primary w-50 p-2"
+                          type='button'
+                          className='btn btn-primary w-50 p-2'
                           onClick={handleAddQuestion}
                         >
                           Add question and answer
                         </button>
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="bot-btn justify-content-end" onClick={handleSave}>
-                        <button className="btn btn-primary w-25 p-2">Save</button>
+                    <div className='col-md-6'>
+                      <div
+                        className='bot-btn justify-content-end'
+                        onClick={handleSave}
+                      >
+                        <button className='btn btn-primary w-25 p-2'>
+                          Save
+                        </button>
                       </div>
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey="Frontpagesettings" title="Frontpage settings">
-                  <div className="row">
-                    <div className="col-md-8 mx-auto">
-                      <Form.Label className="ad-prdtse mt-4 mb-3">
+                <Tab
+                  eventKey='Frontpagesettings'
+                  title='Frontpage settings'
+                >
+                  <div className='row'>
+                    <div className='col-md-8 mx-auto'>
+                      <Form.Label className='ad-prdtse mt-4 mb-3'>
                         Navbar
                         <Form.Select
-                          className="ms-3 p-1"
-                          {...register3('navbarLanguage', { required: "Navbar language is required" })}
+                          className='ms-3 p-1'
+                          {...register3("navbarLanguage", {
+                            required: "Navbar language is required",
+                          })}
                         >
-                          <option value="1">English</option>
-                          <option value="2">Hindi</option>
-                          <option value="3">Spanish</option>
-                          <option value="4">French</option>
+                          <option value='1'>English</option>
+                          <option value='2'>Hindi</option>
+                          <option value='3'>Spanish</option>
+                          <option value='4'>French</option>
                         </Form.Select>
-
-                        {errors.navbarLanguage && <p className="text-danger block">{errors.navbarLanguage.message}</p>}
+                        {errors.navbarLanguage && (
+                          <p className='text-danger block'>
+                            {errors.navbarLanguage.message}
+                          </p>
+                        )}
                       </Form.Label>
 
-                      <ul className="nvbre-txt">
+                      <ul className='nvbre-txt'>
                         <li>Nav One</li>
                         <li>Nav Two</li>
                         <li>Nav Three</li>
@@ -552,86 +606,151 @@ const page = () => {
                         <li>Nav Five</li>
                       </ul>
 
-                      <input type="hidden" {...register3("id")} />
+                      <input
+                        type='hidden'
+                        {...register3("id")}
+                      />
 
-                      <div className="row">
-                        <div className="col-md-6">
-                          <Form.Label className="mt-4">Upload Logo</Form.Label>
-                          <div className="crpr-im filr-setng">
-                            {headerLogo && <Image src={headerLogo} alt="Logo Preview" className="rounded-circle m-4" width={100} height={100} />}
-                            <div className="cstm-fle">
-                              <input
-                                type="file"
-                                onChange={handleLogoChange}
-                                accept="image/*" // Ensure only image files can be selected
+                      <div className='row'>
+                        <div className='col-md-6'>
+                          <Form.Label className='mt-4'>Upload Logo</Form.Label>
+                          <div className='crpr-im filr-setng'>
+                            {headerLogo && (
+                              <Image
+                                src={headerLogo}
+                                alt='Logo Preview'
+                                className='rounded-circle m-4'
+                                width={100}
+                                height={100}
                               />
-                              <img src="/images/image-upload1.svg" alt="Upload icon" />
-                              <p className="m-0">Drag & Drop or <span>choose file</span> to upload</p>
+                            )}
+                            <div className='cstm-fle'>
+                              <input
+                                type='file'
+                                onChange={handleLogoChange}
+                                accept='image/*' // Ensure only image files can be selected
+                              />
+                              <img
+                                src='/images/image-upload1.svg'
+                                alt='Upload icon'
+                              />
+                              <p className='m-0'>
+                                Drag & Drop or <span>choose file</span> to
+                                upload
+                              </p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
                           </div>
-                          {headerLogoFileError && <p className="text-danger">{headerLogoFileError}</p>}
+                          {headerLogoFileError && (
+                            <p className='text-danger'>{headerLogoFileError}</p>
+                          )}
 
-
-                          <Form.Group className="mb-3">
+                          <Form.Group className='mb-3'>
                             <Form.Label>Header Title</Form.Label>
                             <Form.Control
-                              placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting"
-                              {...register3('headerTitle', { required: "Header Title is required" })}
+                              placeholder='Lorem Ipsum is simply dummy text of the printing and typesetting'
+                              {...register3("headerTitle", {
+                                required: "Header Title is required",
+                              })}
                             />
-                            {errors.headerTitle && <p className="text-danger">{errors.headerTitle.message}</p>}
+                            {errors.headerTitle && (
+                              <p className='text-danger'>
+                                {errors.headerTitle.message}
+                              </p>
+                            )}
                           </Form.Group>
 
-                          <Form.Group className="mb-3">
+                          <Form.Group className='mb-3'>
                             <Form.Label>Header Description</Form.Label>
                             <Form.Control
-                              placeholder="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
-                              {...register3('headerDescription', { required: "Header Description is required" })}
+                              placeholder='It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+                              {...register3("headerDescription", {
+                                required: "Header Description is required",
+                              })}
                             />
-                            {errors.headerDescription && <p className="text-danger">{errors.headerDescription.message}</p>}
+                            {errors.headerDescription && (
+                              <p className='text-danger'>
+                                {errors.headerDescription.message}
+                              </p>
+                            )}
                           </Form.Group>
 
-                          <Form.Group className="mb-3">
+                          <Form.Group className='mb-3'>
                             <Form.Label>Header Button Label</Form.Label>
                             <Form.Control
-                              placeholder="Header Button Label"
-                              {...register3('headerButtonLabel', { required: "Button Label is required" })}
+                              placeholder='Header Button Label'
+                              {...register3("headerButtonLabel", {
+                                required: "Button Label is required",
+                              })}
                             />
-                            {errors.headerButtonLabel && <p className="text-danger">{errors.headerButtonLabel.message}</p>}
+                            {errors.headerButtonLabel && (
+                              <p className='text-danger'>
+                                {errors.headerButtonLabel.message}
+                              </p>
+                            )}
                           </Form.Group>
                         </div>
 
-                        <div className="col-md-6">
-                          <Form.Label className="mt-4">Header Image</Form.Label>
-                          <div className="crpr-im filr-setng filr-setng1">
-                            {headerImage && <Image src={headerImage} alt="Header Image Preview" className="rounded-circle m-4" width={100} height={100} />}
-                            <div className="cstm-fle">
+                        <div className='col-md-6'>
+                          <Form.Label className='mt-4'>Header Image</Form.Label>
+                          <div className='crpr-im filr-setng filr-setng1'>
+                            {headerImage && (
+                              <Image
+                                src={headerImage}
+                                alt='Header Image Preview'
+                                className='rounded-circle m-4'
+                                width={100}
+                                height={100}
+                              />
+                            )}
+                            <div className='cstm-fle'>
                               <input
                                 onChange={handleImageChange}
-                                type="file"
-
+                                type='file'
                               />
-                              <img src="/images/image-upload1.svg" alt="Upload icon" />
-                              <p className="m-0">Drag & Drop or <span>choose file</span> to upload</p>
+                              <img
+                                src='/images/image-upload1.svg'
+                                alt='Upload icon'
+                              />
+                              <p className='m-0'>
+                                Drag & Drop or <span>choose file</span> to
+                                upload
+                              </p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
                           </div>
-                          {headerImageFileError && <p className="text-danger">{headerImageFileError}</p>}
+                          {headerImageFileError && (
+                            <p className='text-danger'>
+                              {headerImageFileError}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      <div className="d-flex justify-content-center">
-                        <button className="btn btn-primary w-25" type="submit" onClick={handleSubmit3(onSubmit3)}>
+                      <div className='d-flex justify-content-center'>
+                        <button
+                          className='btn btn-primary w-25'
+                          type='submit'
+                          onClick={handleSubmit3(onSubmit3)}
+                        >
                           Submit
                         </button>
                       </div>
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey="users" title="Users">
-                  <div className="row">
-                    <div className="col-md-12 text-end">
-                      <Link href="/createuser" className="crte-userd">Create User</Link>
+                <Tab
+                  eventKey='users'
+                  title='Users'
+                >
+                  <div className='row'>
+                    <div className='col-md-12 text-end'>
+                      <Link
+                        href='/createuser'
+                        className='crte-userd'
+                      >
+                        Create User
+                      </Link>
                     </div>
                   </div>
                   <div className='table-responsive order-table'>
@@ -650,40 +769,38 @@ const page = () => {
                         {fetchSeller?.data?.map((row, index) => (
                           <tr key={row?.id}>
                             <td>
-
-                              {row?.profile_image && <Image
-                                src={row?.profile_image}
-                                // alt="Profile Image"
-                                width={100}
-                                height={100}
-                                className="rounded-circle"
-
-                              />}
-
-
+                              {row?.profile_image && (
+                                <Image
+                                  src={row?.profile_image}
+                                  // alt="Profile Image"
+                                  width={100}
+                                  height={100}
+                                  className='rounded-circle'
+                                />
+                              )}
                             </td>
                             <td>{row?.name}</td>
                             <td>
-                              <Badge bg="success">{row?.status === 1 ? "Active" : "Inactive"}</Badge>
+                              <Badge bg='success'>
+                                {row?.status === 1 ? "Active" : "Inactive"}
+                              </Badge>
                             </td>
-                            <td>{row?.role_id === 2 ? "Seller" : "Customer"}</td>
-                            <td>{row?.email}</td>
                             <td>
+                              {row?.role_id === 2 ? "Seller" : "Customer"}
+                            </td>
+                            <td>{row?.email}</td>
+                            {/* <td>
                               <Link href={`/useredit?id=${row?.id}`} passHref>
                                 <img src="/images/edit-icn.svg" alt="Edit" />
                               </Link>
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
-
-
                       </tbody>
                     </table>
                   </div>
                 </Tab>
               </Tabs>
-
-
             </div>
           </div>
         </div>
