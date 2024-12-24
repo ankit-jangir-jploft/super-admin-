@@ -11,12 +11,14 @@ import { BASE_URL } from "../../Utils/apiHelper";
 import Image from "next/image";
 import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
-const Page = ({param}) => {
+const Page = ({ param }) => {
   const [radioValue, setRadioValue] = useState("1");
   const [profileImage, setProfileImage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [fetchSellerById, setFetchSellerById] = useState(null);
+  const router = useRouter()
 
   const {
     register,
@@ -74,18 +76,21 @@ const Page = ({param}) => {
       formData.append("profile_image", selectedImage);
 
       const response = await POST(
-        `${BASE_URL}/api/admin/sellerUpdate?id=${sellerId}`,
+        `${BASE_URL}/api/admin/sellerUpdate?id=${params?.id}`,
         formData
       );
 
-      if (response?.status === 200) {
+      console.log({ response })
+
+      if (response?.data?.status === true) {
+
         toast.success("Seller updated successfully!");
         fetchSellerList();
-      } else {
-        toast.error("Failed to update seller.");
+        router.push("/settings")
       }
     } catch (error) {
-      toast.error("An error occurred while updating the seller.");
+      console.log(error);
+      toast.error("An ", error);
     }
   };
 
@@ -115,17 +120,17 @@ const Page = ({param}) => {
                         width={100}
                         height={100}
                         className='d-inline-block rounded-circle'
-                        src={profileImage || "/images/usr-edt.png"}
+                        src={profileImage || "/images/user-edt.png"}
                         alt='Profile'
                       />
-                       <Form.Group className="UploadPhoto_file"> 
-                          <Form.Control
-                           className="UploadPhoto"
-                            type='file'
-                            accept='image/*'
+                      <Form.Group className="UploadPhoto_file">
+                        <Form.Control
+                          className="UploadPhoto"
+                          type='file'
+                          accept='image/*'
                           onChange={handleImageChange}
                         />
-                           </Form.Group>
+                      </Form.Group>
                     </div>
                     <div className='row'>
                       <div className='col-md-6'>
@@ -230,23 +235,23 @@ const Page = ({param}) => {
                       </div>
                     </div>
                     <div className="row mt-3 mb-5">
-                                            <div className="col-md-6">
-                                                <button
-                                                    className="createorder_top_right w-100 btn_bg_delt"
-                                                    type="submit"
-                                                >
-                                                    Delete user
-                                                </button>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <button
-                                                    className="createorder_top_right btn_bg_save w-100"
-                                                    type="submit"
-                                                >
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </div>
+                      <div className="col-md-6">
+                        <button
+                          className="createorder_top_right w-100 btn_bg_delt"
+                          type="submit"
+                        >
+                          Delete user
+                        </button>
+                      </div>
+                      <div className="col-md-6">
+                        <button
+                          className="createorder_top_right btn_bg_save w-100"
+                          type="submit"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
                   </form>
                 </div>
               </div>

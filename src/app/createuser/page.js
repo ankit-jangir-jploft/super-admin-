@@ -102,7 +102,7 @@ const Page = () => {
                                         <img
                                             className="d-inline-block w-25 h-25"
                                             style={{ borderRadius: "100%" }}
-                                            src={selectedImage || "/images/usr-edt.png"}
+                                            src={selectedImage || "/images/user.png"}
                                         />
                                         <h2 className='my-4 color_red'>Edit Photo</h2>
                                         <Form.Group className="UploadPhoto_file"> 
@@ -131,7 +131,7 @@ const Page = () => {
                                                 <Form.Group className="mb-3">
                                                     <Form.Label>Name</Form.Label>
                                                     <Form.Control
-                                                        placeholder="Elise Nordmann"
+                                                        // placeholder="Elise Nordmann"
                                                         {...register("name", { required: "Name is required" })}
                                                     />
                                                     {errors.name && (
@@ -143,7 +143,7 @@ const Page = () => {
                                                 <Form.Group className="mb-3">
                                                     <Form.Label>Email</Form.Label>
                                                     <Form.Control
-                                                        placeholder="elise.nordmann@dugnadstid.no"
+                                                        // placeholder="elise.nordmann@dugnadstid.no"
                                                         {...register("email", {
                                                             required: "Email is required",
                                                             pattern: {
@@ -218,14 +218,14 @@ const Page = () => {
                                             </div>
                                         </div>
                                         <div className="row mt-3 mb-5">
-                                            <div className="col-md-6">
+                                            {/* <div className="col-md-6">
                                                 <button
                                                     className="createorder_top_right w-100 btn_bg_delt"
                                                     type="submit"
                                                 >
                                                     Delete user
                                                 </button>
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-6">
                                                 <button
                                                     className="createorder_top_right btn_bg_save w-100"
