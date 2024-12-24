@@ -4,13 +4,18 @@ import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 import CreateTask from "@/app/Components/CreateTask";
-import { GET } from "@/app/Utils/apiFunctions";
+import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
+import { toast } from "react-toastify";
 
 const page = ({ params }) => {
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
   const [customer, setCustomers] = useState({});
+  const [tags, setTags] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [tagContent, setTagContent] = useState("");
+  const [logsData, setLogsData] = useState([]);
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
@@ -30,8 +35,102 @@ const page = ({ params }) => {
     }
   };
 
+  const fetchTags = async () => {
+    try {
+      const options = {
+        customer_id: id,
+      };
+      const res = await GET(`${BASE_URL}/api/admin/customerTagsList`, options);
+      if (res?.data?.status) {
+        setTags(res?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchLogs = async () => {
+    try {
+      const options = {
+        user_id: id,
+      };
+      const res = await POST(`${BASE_URL}/api/admin/customerLogList`, options);
+      if (res?.data?.status) {
+        setLogs(res?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (tagId) => {
+    try {
+      const options = {
+        customer_id: id,
+        tag_id: tagId,
+      };
+
+      const res = await POST(
+        `${BASE_URL}/api/admin/deleteCustomerTag`,
+        options
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAddTags = async () => {
+    try {
+      const options = {
+        user_id: id,
+        content: tagContent,
+      };
+
+      const res = await POST(
+        `${BASE_URL}/api/admin/customerLogCreate`,
+        options
+      );
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res.data?.message);
+        fetchTags();
+        setTagContent("");
+      } else {
+        toast.dismiss();
+        toast.error(res.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleAddLog = async () => {
+    try {
+      const options = {
+        user_id: id,
+        content: logsData,
+      };
+
+      const res = await POST(
+        `${BASE_URL}/api/admin/customerLogCreate`,
+        options
+      );
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res.data?.message);
+        fetchLogs();
+        setLogsData("");
+      } else {
+        toast.dismiss();
+        toast.error(res.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchCustomerDetails();
+    fetchTags();
+    fetchLogs();
   }, []);
 
   return (
@@ -179,42 +278,30 @@ const page = ({ params }) => {
               <div className='order-dtl-box mt-4'>
                 <h2>Tags</h2>
                 <div className='p-2'>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #1 Til og fra lapper{" "}
-                    <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #2 <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #3 <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #1 Til og fra lapper{" "}
-                    <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #1 Til og fra lapper{" "}
-                    <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #2 <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #3 <img src='/images/close.svg' />
-                  </button>
-                  <button className='tags-btn'>
-                    Produkt: julepakke #1 Til og fra lapper{" "}
-                    <img src='/images/close.svg' />
-                  </button>
+                  {tags.length &&
+                    tags.map((tag) => {
+                      return (
+                        <button
+                          onClick={() => handleDelete(tag?.id)}
+                          className='tags-btn'
+                        >
+                          {tag?.name} <img src='/images/close.svg' />
+                        </button>
+                      );
+                    })}
                 </div>
                 <div className='search-frm justify-content-end px-3'>
                   <input
                     type='text'
                     placeholder='Sok i order'
                     className='rounded w-auto ps-2'
+                    value={tagContent}
+                    onChange={(e) => setTagContent(e.target.value)}
                   />
-                  <button className='add-icon'>
+                  <button
+                    className='add-icon'
+                    onClick={handleAddTags}
+                  >
                     <img src='/images/add.svg' />
                   </button>
                 </div>
@@ -223,85 +310,30 @@ const page = ({ params }) => {
             <Col lg={4}>
               <div className='order-dtl-box'>
                 <h2>Logg </h2>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Kunde opprettet som gjest</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Ordre #10202</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>
-                    Endret status - Folg app provepakke{" "}
-                    <Link href='orderdetail'>
-                      <img
-                        className='img-fluid exclamation-img'
-                        src='/images/exclamation-mark.svg'
-                      />
-                    </Link>
-                  </label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'> Bengt</Link>
-                  </span>
-                  <label>Kunde tilordnet robert</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Robert</Link>
-                  </span>
-                  <label>Robert opprettet en oppgave i Asana</label>
-                </div>
+                {logs?.length &&
+                  logs.map((log) => {
+                    return (
+                      <div className='logg-dtl'>
+                        <span>{log?.updated_at}</span>
+                        <label>{log?.content}</label>
+                      </div>
+                    );
+                  })}
 
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>
-                    Emdert til{" "}
-                    <button className='status red w-auto'>varm</button>
-                  </label>
-                </div>
-
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04 </span>
-                  <label>Order #10310</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>Folger du opp denne ordren Robert ?</label>
-                </div>
-
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Robert</Link>
-                  </span>
-                  <label>Kontaktet pa telefon, ga litt informasjon</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Automatisk SMS og e-post om dugnadsstart sendt.</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Endret status - Pagaende forhandssalg</label>
-                </div>
                 <div className='logg-til-desc'>
                   <div className='form-group'>
                     <textarea
                       rows='4'
                       placeholder='Legg til internt notat...'
+                      value={logsData}
+                      onChange={(e) => setLogsData(e.target.value)}
                     ></textarea>
                   </div>
                   <div className='text-end'>
-                    <button className='btn-primary px-3 py-1'>
+                    <button
+                      className='btn-primary px-3 py-1'
+                      onClick={handleAddLog}
+                    >
                       Legg til notat
                     </button>
                   </div>
@@ -313,6 +345,7 @@ const page = ({ params }) => {
       </div>
       <CreateTask
         show={modalShow}
+        id={id}
         onHide={() => handlePopup()}
       />
     </>

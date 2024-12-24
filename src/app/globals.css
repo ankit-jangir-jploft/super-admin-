@@ -1842,3 +1842,12 @@ ul.pgnatne li {
   display: flex;
   flex-direction: column;
 }
+
+.Confirm_btn {
+  background: #fd5a59;
+  border-radius: 25px;
+  border: none;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -4,13 +4,16 @@ import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 import { useParams } from "next/navigation";
-import { GET } from "@/app/Utils/apiFunctions";
+import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
+import { toast } from "react-toastify";
 
 const page = () => {
   const { id } = useParams();
 
   const [orderDetails, setOrderDetails] = useState({});
+  const [logs, setLogs] = useState([]);
+  const [content, setContent] = useState("");
 
   const fetchOrderDetails = async () => {
     try {
@@ -28,16 +31,57 @@ const page = () => {
     }
   };
 
+  const fetchLogs = async () => {
+    try {
+      const option = {
+        order_id: id,
+      };
+      const res = await GET(`${BASE_URL}/api/admin/orderLogList`, option);
+      if (res?.data?.status) {
+        setLogs(res?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const orders = {
-    0: { name: "Pending", style: "green-clr" },
+    0: { name: "Pending", style: "gray-clr" },
     1: { name: "Confirmed", style: "brown-clr" },
-    2: { name: "Processing", style: "gray-clr" },
+    2: { name: "Processing", style: "green-clr" },
     3: { name: "Shipped", style: "blue-clr" },
     4: { name: "Delivered", style: "purple-clr" },
     5: { name: "Canceled", style: "red-clr" },
   };
+
+  const handleLogSubmit = async () => {
+    try {
+      if (content.trim() === "") {
+        toast.dismiss();
+        toast.error("Please enter log content");
+        return;
+      }
+
+      const payload = {
+        order_id: id,
+        content: content,
+      };
+      const res = await POST(`${BASE_URL}/api/admin/orderLogCreate`, payload);
+
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success("Log created successfully");
+        setContent("");
+        fetchLogs();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchOrderDetails();
+    fetchLogs();
   }, []);
   return (
     <>
@@ -64,7 +108,7 @@ const page = () => {
             <button
               className={`status ${
                 orders[+orderDetails?.order_status]?.style
-              } w-9 me-2`}
+              } w-auto me-2`}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -101,10 +145,7 @@ const page = () => {
               </div> */}
                   <div className='order-dtl-box'>
                     <h2>Note</h2>
-                    <p>
-                      Can you add another sales booklet to the order please, i
-                      didnt find it in the webstore.
-                    </p>
+                    <p>{orderDetails?.comment}</p>
                   </div>
                 </Col>
                 <Col md={3}>
@@ -112,16 +153,16 @@ const page = () => {
                     <h2>
                       Customer <span className=''>See contact</span>
                     </h2>
-                    <p>Kari Nordmann</p>
+                    <p>{orderDetails?.customer?.name}</p>
                     <p>
-                      <Link href='orderdetail'>Kari.Nordmann@firmanavn.no</Link>
+                      <Link href={"#"}>{orderDetails?.customer?.email}</Link>
                     </p>
                     <p>
-                      <Link href='orderdetail'>+47 99 88 77 66</Link>
+                      <Link href='#'>{orderDetails?.customer?.phone}</Link>
                     </p>
-                    <p>Selger: Robert</p>
-                    <p>Ordre: 1</p>
-                    <p>Totalt: kr 12 650</p>
+                    <p>Selger: {orderDetails?.customer?.seller_name}</p>
+                    <p>Ordre: {orderDetails?.customer?.no_orders}</p>
+                    <p>Totalt: kr {orderDetails?.customer?.total_price}</p>
                   </div>
                 </Col>
                 <Col md={3}>
@@ -142,11 +183,14 @@ const page = () => {
                       Shipping{" "}
                       <span className='disssbl'>Packageslip not created</span>
                     </h2>
-                    <p>Kari Nordmann</p>
-                    <p>Snarveien 33</p>
-                    <p>2133 Storbyasen</p>
-                    <p>Kari.Nordmann@firmanavn.no</p>
-                    <p>99887766</p>
+                    <p>{orderDetails?.delivery_address?.name}</p>
+                    {/* <p>Snarveien 33</p> */}
+                    <p>
+                      {orderDetails?.delivery_address?.post_code}{" "}
+                      {orderDetails?.delivery_address?.city}
+                    </p>
+                    <p>{orderDetails?.delivery_address?.email_address}</p>
+                    <p>{orderDetails?.delivery_address?.phone_no}</p>
                   </div>
                 </Col>
               </Row>
@@ -163,126 +207,40 @@ const page = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-                      <tr>
-                        <td>PKD9</td>
-                        <td>
-                          <div className='produt-tile'>
-                            <img
-                              className='product-img img-fluid'
-                              src='/images/product.png'
-                            />
-                            <Link href='orderdetail'>
-                              Lulepakee #1-til og fra lapper - 40stk{" "}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>50</td>
-                        <td>44 stk</td>
-                        <td>kr 2 200</td>
-                      </tr>
-
-                      <tr>
-                        <td colSpan='4'>Gratis frakt</td>
-                        <td>kr 0</td>
-                      </tr>
-                      <tr>
-                        <td colSpan='3'></td>
-                        <td>
-                          <span className='total-prc'>Produkter delsum:</span>
-                          <span className='total-prc'>Frakt:</span>
-                          <span className='total-prc'>Ordretotal:</span>
-                        </td>
-                        <td>
-                          <span className='total-prc'>kr 12 650</span>
-                          <span className='total-prc'>kr 0</span>
-                          <span className='total-prc'>kr 12 650</span>
-                        </td>
-                      </tr>
+                      {(orderDetails?.order_details?.length &&
+                        orderDetails?.order_details?.map((product) => {
+                          return (
+                            <tr key={product?.id}>
+                              <td>{product?.product_number}</td>
+                              <td>
+                                <div className='produt-tile'>
+                                  <img
+                                    className='product-img img-fluid'
+                                    src={product?.image}
+                                    onError={(e) =>
+                                      (e.target.src = "/images/product.png")
+                                    }
+                                  />
+                                  <Link href='orderdetail'>
+                                    {product?.product_name} - {product?.qty}stk{" "}
+                                  </Link>
+                                </div>
+                              </td>
+                              <td>{product?.price}</td>
+                              <td>{product?.qty} stk</td>
+                              <td>kr {product?.total}</td>
+                            </tr>
+                          );
+                        })) || (
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className='text-center'
+                          >
+                            No Products
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -291,46 +249,32 @@ const page = () => {
             <Col lg={3}>
               <div className='order-dtl-box'>
                 <h2>Logg </h2>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Kunde opprettet ordre.</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>
-                    <strong>Kundenotat:</strong> Kan dere legge med et ekstra
-                    salgshefte? Tenkte vise til gruppen til min datter og.
-                  </label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Robert</Link>
-                  </span>
-                  <label>
-                    Robert redigerte ordre.{" "}
-                    <Link href='orderdetail'>
-                      <img
-                        className='img-fluid exclamation-img'
-                        src='/images/exclamation-mark.svg'
-                      />
-                    </Link>
-                  </label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>Endret status - Klar for plukking</label>
-                </div>
+                {(logs?.length &&
+                  logs?.map((log) => {
+                    return (
+                      <div
+                        key={log?.id}
+                        className='logg-dtl'
+                      >
+                        <span>{log?.updated_at}</span>
+                        <label>{log?.content}</label>
+                      </div>
+                    );
+                  })) || <div className='logg-dtl'>No logs</div>}
+
                 <div className='logg-til-desc'>
                   <div className='form-group'>
                     <textarea
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
                       rows='4'
-                      placeholder='Legg til internt notat...'
                     ></textarea>
                   </div>
                   <div className='text-end'>
-                    <button className='btn-primary px-3 py-1'>
+                    <button
+                      className='btn-primary px-3 py-1'
+                      onClick={handleLogSubmit}
+                    >
                       Legg til notat
                     </button>
                   </div>
