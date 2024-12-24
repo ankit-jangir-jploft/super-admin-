@@ -2,26 +2,26 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { BARREL_OPTIMIZATION_PREFIX } from "next/dist/shared/lib/constants";
 
-const Login = () => {
+const page = ({}) => {
   const router = useRouter();
-  const [eyeToggle, setToggle] = useState(false);
+  const { token } = useParams();
+  const [newPasswordToggle, setNewPasswordToggle] = useState(false);
+  const [confirmPasswordToggle, setConfirmPasswordToggle] = useState(false);
 
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Please enter a valid email address.")
-      .required("Email is required."),
-    password: Yup.string()
-      .required("Password is required.")
+    newPassword: Yup.string()
+      .required("New password is required.")
       .min(8, "Password must be at least 8 characters.")
       .matches(/[A-Z]/, "Password must include at least 1 uppercase letter.")
       .matches(/[a-z]/, "Password must include at least 1 lowercase letter.")
@@ -30,29 +30,34 @@ const Login = () => {
         /[@$!%*?&]/,
         "Password must include at least 1 special character (@$!%*?&)."
       ),
+    confirmPassword: Yup.string()
+      .required("Confirm password is required.")
+      .oneOf([Yup.ref("newPassword"), null], "Passwords must match."),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(`${BASE_URL}/api/admin/login`, values);
+        const payload = { password: values.confirmPassword };
+        const res = await axios.post(
+          `${BASE_URL}/api/admin/SuperAdminUpdatePassword?token=${token}`,
+          payload
+        );
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
-
-          Cookies.set("dugnadstisadmin", res.data?.data?.token);
-          window.location.href = "/";
+          router.push("/login"); // Redirect to login page
         } else {
           toast.dismiss();
           toast.error(res.data?.message);
         }
       } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Error during password update:", error);
         toast.error("Something went wrong. Please try again.");
       }
     },
@@ -74,7 +79,7 @@ const Login = () => {
                 />
               </div>
               <div className='title-login text-center'>
-                <h1>Velkommen tilbake!</h1>
+                <h1>Wachtwoord instellen!</h1>
               </div>
               <Form
                 onSubmit={formik.handleSubmit}
@@ -82,50 +87,67 @@ const Login = () => {
               >
                 <Form.Group
                   className='form-group'
-                  controlId='formBasicEmail'
-                >
-                  <Form.Label>Epostadresse</Form.Label>
-                  <Form.Control
-                    type='email'
-                    name='email'
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder=''
-                    isInvalid={!!formik.errors.email && formik.touched.email}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {formik.errors.email}
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group
-                  className='form-group'
                   controlId='formBasicPassword'
                 >
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label>New Password</Form.Label>
                   <Form.Control
                     className='pe-5'
-                    type={!eyeToggle ? "password" : "text"}
-                    name='password'
+                    type={!newPasswordToggle ? "password" : "text"}
+                    name='newPassword'
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder=''
                     isInvalid={
-                      !!formik.errors.password && formik.touched.password
+                      !!formik.errors.newPassword && formik.touched.newPassword
                     }
                   />
                   <img
                     // src={!eyeToggle ? HideEye : ShowEye}
                     src={
-                      !eyeToggle ? "/images/hide.svg" : "/images/showEye.svg"
+                      !newPasswordToggle
+                        ? "/images/hide.svg"
+                        : "/images/showEye.svg"
                     }
                     className='img-fluid input-icon'
-                    onClick={() => setToggle(!eyeToggle)}
+                    onClick={() => setNewPasswordToggle(!newPasswordToggle)}
                   />
                   <Form.Control.Feedback type='invalid'>
-                    {formik.errors.password}
+                    {formik.errors.newPassword}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group
+                  className='form-group'
+                  controlId='formBasicPassword'
+                >
+                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Control
+                    className='pe-5'
+                    type={!confirmPasswordToggle ? "password" : "text"}
+                    name='confirmPassword'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder=''
+                    isInvalid={
+                      !!formik.errors.confirmPassword &&
+                      formik.touched.confirmPassword
+                    }
+                  />
+                  <img
+                    // src={!eyeToggle ? HideEye : ShowEye}
+                    src={
+                      !confirmPasswordToggle
+                        ? "/images/hide.svg"
+                        : "/images/showEye.svg"
+                    }
+                    className='img-fluid input-icon'
+                    onClick={() =>
+                      setConfirmPasswordToggle(!confirmPasswordToggle)
+                    }
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {formik.errors.confirmPassword}
                   </Form.Control.Feedback>
                 </Form.Group>
 
@@ -134,27 +156,8 @@ const Login = () => {
                     className='btn-primary px-5 py-2'
                     type='submit'
                   >
-                    LOGG INN
+                    Submit
                   </Button>
-                </div>
-                <div className='pass-for text-center'>
-                  <Link href='/forgot-password'>Glemt passord?</Link>
-                </div>
-                <p className='other-option'>
-                  <span>eller</span>
-                </p>
-
-                <div className='text-center mt-5'>
-                  <Link
-                    className='login-other'
-                    href='/'
-                  >
-                    <img
-                      src='/images/smile-icon.png'
-                      className='img-fluid'
-                    />{" "}
-                    Fortsett med Vipps
-                  </Link>
                 </div>
               </Form>
             </Col>
@@ -165,4 +168,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default page;

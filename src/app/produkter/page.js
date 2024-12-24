@@ -128,11 +128,14 @@ const page = () => {
                         <td>{product?.category || "N/A"}</td>
                         <td>{product?.subCategory || "N/A"}</td>
                         <td>{product?.createdAt || "N/A"}</td>
-                        <td >
-                          <Link href={"/produkter"} style={{marginRight:"10px"}}>
+                        <td>
+                          <Link
+                            href={"/produkter"}
+                            style={{ marginRight: "10px" }}
+                          >
                             <img src='/images/prdctes.svg' />
                           </Link>
-                        
+
                           <Link href={`/updateproduct/${product?.id}`}>
                             <img src='/images/prdctes.svg' />
                           </Link>
