@@ -2,17 +2,20 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
 import Link from "next/link";
-import { GET } from "../Utils/apiFunctions";
+import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined in your utils
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
 import Pagination from "../Components/PaginationCustom";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
   const [allOrders, setOrders] = useState([]);
+  const [selectedOrders, setSelectedOrders] = useState([]);
   const [currentPage, setCurrent] = useState(1);
   const [searchOuery, setQuery] = useState("");
   const [pagination, setPagination] = useState();
+  const [action, setAction] = useState();
 
   const toggleRow = (id) => {
     setOpenRowId((prev) => (prev === id ? null : id));
@@ -27,7 +30,6 @@ const page = () => {
       };
       const res = await GET(`${BASE_URL}/api/admin/OrderList`, options);
       if (res?.data?.status) {
-        console.log(res.data.data);
         setOrders(res.data?.data);
         setPagination(res.data?.pagination);
       }
@@ -44,6 +46,41 @@ const page = () => {
     fetchOrders();
   }, [currentPage, searchOuery]);
 
+  const handleSelectOrder = (orderId) => {
+    setSelectedOrders((prev) =>
+      prev.includes(orderId)
+        ? prev.filter((id) => id !== orderId)
+        : [...prev, orderId]
+    );
+  };
+
+  const handleMassDelete = async () => {
+    try {
+      if (!selectedOrders.length) {
+        toast.dismiss();
+        toast.error("Please select orders to delete!");
+        return;
+      }
+      const payload = {
+        action: action,
+        id: selectedOrders,
+      };
+      const res = await POST(`${BASE_URL}/api/admin/orderStatus`, payload);
+
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res?.data?.message);
+        setSelectedOrders([]);
+        fetchOrders();
+      } else {
+        toast.dismiss();
+        toast.error("Failed to delete orders!");
+      }
+    } catch (error) {
+      console.log("Error deleting orders:", error);
+    }
+  };
+
   const orders = {
     0: { name: "Pending", style: "green-clr" },
     1: { name: "Confirmed", style: "brown-clr" },
@@ -53,134 +90,6 @@ const page = () => {
     5: { name: "Canceled", style: "red-clr" },
   };
 
-  // const orders = [
-  //   {
-  //     id: "10321",
-  //     time: "6 minutes ago",
-  //     customer: "Kari Nordmann",
-  //     team: "Q Iddrettslag G14",
-  //     status: "Ready to picking",
-  //     statusClass: "green-clr",
-  //     type: "Bestillit o nettbtikk",
-  //     quantity: 3,
-  //     value: "Kr 450",
-  //     handler: "Robert",
-  //     addContactIcon: "/images/add-contc.svg",
-  //     products: [
-  //       {
-  //         productId: "PKD9",
-  //         image: "/images/product1.png",
-  //         productName: "Juletrepakke #3",
-  //         cost: "50",
-  //         quantity: "44 stk",
-  //         total: "Kr 2200",
-  //       },
-  //       {
-  //         productId: "PKD10",
-  //         image: "/images/product2.png",
-
-  //         productName: "Juletrepakke #2",
-  //         quantity: "59 stk",
-  //         cost: "50",
-
-  //         total: "Kr 2950",
-  //       },
-  //       {
-  //         productId: "PKD11",
-  //         image: "/images/product2.png",
-
-  //         productName: "Sales Brochure",
-  //         cost: "0",
-  //         quantity: "14 stk",
-  //         total: "Kr 0",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "10321",
-  //     time: "30 minutes ago",
-  //     customer: "Kari Nordmann",
-  //     team: "Q Iddrettslag J12",
-  //     status: "Canceled",
-  //     statusClass: "",
-  //     type: "Bestillit o nettbtikk",
-  //     quantity: 96,
-  //     value: "Kr 9 600",
-  //     handler: "Robert",
-  //     addContactIcon: "/images/added-us.svg",
-  //     products: [
-  //       {
-  //         productId: "PKD9",
-  //         image: "/images/product1.png",
-  //         productName: "Juletrepakke #3",
-  //         cost: "50",
-  //         quantity: "44 stk",
-  //         total: "Kr 2200",
-  //       },
-  //       {
-  //         productId: "PKD10",
-  //         image: "/images/product2.png",
-
-  //         productName: "Juletrepakke #2",
-  //         quantity: "59 stk",
-  //         cost: "50",
-
-  //         total: "Kr 2950",
-  //       },
-  //       {
-  //         productId: "PKD11",
-  //         image: "/images/product2.png",
-
-  //         productName: "Sales Brochure",
-  //         cost: "0",
-  //         quantity: "14 stk",
-  //         total: "Kr 0",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: "10321",
-  //     time: "1 hour ago",
-  //     customer: "Kari Nordmann",
-  //     team: "A Iddrettslag G16",
-  //     status: "Currently picking",
-  //     statusClass: "brown-btn",
-  //     type: "Bestillit o nettbtikk",
-  //     quantity: 14,
-  //     value: "Kr 1 450",
-  //     handler: "Robert",
-  //     addContactIcon: "/images/added-us.svg",
-  //     products: [
-  //       {
-  //         productId: "PKD9",
-  //         image: "/images/product1.png",
-  //         productName: "Juletrepakke #3",
-  //         cost: "50",
-  //         quantity: "44 stk",
-  //         total: "Kr 2200",
-  //       },
-  //       {
-  //         productId: "PKD10",
-  //         image: "/images/product2.png",
-
-  //         productName: "Juletrepakke #2",
-  //         quantity: "59 stk",
-  //         cost: "50",
-
-  //         total: "Kr 2950",
-  //       },
-  //       {
-  //         productId: "PKD11",
-  //         image: "/images/product2.png",
-
-  //         productName: "Sales Brochure",
-  //         cost: "0",
-  //         quantity: "14 stk",
-  //         total: "Kr 0",
-  //       },
-  //     ],
-  //   },
-  // ];
   return (
     <>
       <Sidebar />
@@ -197,7 +106,6 @@ const page = () => {
               onChange={(e) => setQuery(e.target.value)}
               placeholder='Sok i order'
             />
-            {/* <img className='input-right-icon' src="/images/search-interface.svg" /> */}
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
@@ -230,7 +138,11 @@ const page = () => {
                     <React.Fragment key={index}>
                       <tr>
                         <td>
-                          <input type='checkbox' />
+                          <input
+                            type='checkbox'
+                            checked={selectedOrders.includes(order.id)}
+                            onChange={() => handleSelectOrder(order.id)}
+                          />
                         </td>
                         <td
                           onClick={() =>
@@ -271,7 +183,6 @@ const page = () => {
                             <Link href='/salesoverview'>
                               <img src='/images/disable-print.svg' />
                             </Link>
-                            {/* <Link href='/shipping'> */}
                             <Link href={`/shipping/${order.id}`}>
                               <img src='/images/checklist.svg' />
                             </Link>
@@ -280,7 +191,6 @@ const page = () => {
                             </Link>
                           </div>
                         </td>
-                        {/* <td>{order.handler}</td> */}
                         <td>
                           <Link href='/'>
                             <img src={order.addContactIcon} />
@@ -298,7 +208,6 @@ const page = () => {
                                 <tr>
                                   <th>#</th>
                                   <th>Product</th>
-
                                   <th>Seller</th>
                                   <th>Cost</th>
                                   <th>Quantity</th>
@@ -312,7 +221,6 @@ const page = () => {
                                       <td className='productId'>
                                         {product?.id}
                                       </td>
-
                                       <td>
                                         <div className='sub-row-img'>
                                           <img
@@ -326,7 +234,6 @@ const page = () => {
                                           <span>{product.product_name}</span>
                                         </div>
                                       </td>
-
                                       <td>{product.seller_name}</td>
                                       <td>{product.price}</td>
                                       <td>{product.qty}</td>
@@ -355,13 +262,26 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <select>
-            <option>Mass action</option>
-            <option>Mass action</option>
-          </select>
-
-         <Pagination />
-          {/* <ReactPaginate
+          <div>
+            <select
+              value={action}
+              onChange={(e) => {
+                setAction(e.target.value);
+              }}
+            >
+              <option value={""}>Mass action</option>
+              <option value={"delete"}>Delete</option>
+            </select>
+            {action && (
+              <button
+                className='crte-userd Confirm_btn'
+                onClick={handleMassDelete}
+              >
+                Confirm
+              </button>
+            )}
+          </div>
+          <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -371,31 +291,7 @@ const page = () => {
             onPageChange={onPageChange}
             containerClassName={"pagination"}
             activeClassName={"active"}
-          /> */}
-          {/* <ul className='pgnatne'>
-            <li>Showing 15 of 1154 elements</li>
-            <li>
-              <Link href={"/"}>
-                <img src='/images/frst-aro.svg' />
-              </Link>
-            </li>
-            <li>
-              <Link href={"/"}>
-                <img src='/images/revrse.svg' />
-              </Link>
-            </li>
-            <li>1 of 42</li>
-            <li>
-              <Link href={"/"}>
-                <img src='/images/nxt-aro.svg' />
-              </Link>
-            </li>
-            <li>
-              <Link href={"/"}>
-                <img src='/images/lstpge-aro.svg' />
-              </Link>
-            </li>
-          </ul> */}
+          />
         </div>
       </div>
     </>

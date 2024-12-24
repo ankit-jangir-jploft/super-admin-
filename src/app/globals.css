@@ -634,6 +634,7 @@ tr:nth-child(even) {
   padding: 6px 20px;
   color: #585858;
   border-radius: 50px;
+  width: 140px;
 }
 
 .psn-sts {
@@ -2100,13 +2101,49 @@ ul.pgnatne li {
   cursor: not-allowed;
 }
 
-.pagination-info {
-  font-size: 1rem;
-  margin: 0 1rem;
-  color: #555;
+ 
+  .pagination-info {
+    font-size: 14px;
+    color: #6C757D;
+    flex: 0 0 auto;
+    margin: 0px 10px;
 }
 .pagination-container p {
   margin-bottom: 0;
+  color: #6C757D;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.button_left_dub, .button_left_singl {
+  background: #F5F0E9 !important;
+  border-color: #A4A4A4;
+  color: #A4A4A4;
+  flex: 0 0 42px;
+  height: 42px;
+  width: 42px;
+  padding: 0px;
+  line-height: 1;
+}
+.button_right_singl, .button_right_dub {
+  background: #fff;
+  border-color: #A4A4A4;
+  flex: 0 0 42px;
+  transform: rotate(180deg);
+  height: 42px;
+    width: 42px;
+    padding: 0px;
+    line-height: 1;
+}
+button.crte-userd.Confirm_btn {
+  background: #FD5A59 !important;
+  border: none;
+  margin-left: 6px;
+  padding: 7px 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.tablebruk_left {
+  display: flex;
 }
 @media screen and (max-width: 767px) { 
   .bot-btn {
@@ -2133,5 +2170,19 @@ ul.pgnatne li {
 .btn-addcrt img {
   display: unset;
 }
+.pagination-container p { 
+  flex: 0 0 100%;
+}
+.pagination-container { 
+  flex-wrap: wrap;
+}
+}
 
+.Confirm_btn {
+  background: #fd5a59;
+  border-radius: 25px;
+  border: none;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 600;
 }
