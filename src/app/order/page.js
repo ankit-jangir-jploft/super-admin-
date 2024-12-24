@@ -14,7 +14,7 @@ const page = () => {
   const [pagination, setPagination] = useState();
 
   const toggleRow = (id) => {
-    setOpenRowId((prev) => (prev === id ? null : id)); // Close if the same row is clicked, otherwise open
+    setOpenRowId((prev) => (prev === id ? null : id));
   };
 
   const fetchOrders = async () => {
@@ -26,9 +26,9 @@ const page = () => {
       };
       const res = await GET(`${BASE_URL}/api/admin/OrderList`, options);
       if (res?.data?.status) {
+        console.log(res.data.data);
         setOrders(res.data?.data);
         setPagination(res.data?.pagination);
-        console.log(res.data.data[0]);
       }
     } catch (error) {
       console.log(error);
@@ -42,6 +42,15 @@ const page = () => {
   useEffect(() => {
     fetchOrders();
   }, [currentPage, searchOuery]);
+
+  const orders = {
+    0: { name: "Pending", style: "green-clr" },
+    1: { name: "Confirmed", style: "brown-btn" },
+    2: { name: "Processing", style: "gray-clr" },
+    3: { name: "Shipped", style: "blue-clr" },
+    4: { name: "Delivered", style: "purple-btn" },
+    5: { name: "Canceled", style: "red-btn" },
+  };
 
   // const orders = [
   //   {
@@ -229,9 +238,11 @@ const page = () => {
                         <td>{order.order_for || "N/A"}</td>
                         <td>
                           <button
-                            className={`status ${order.statusClass} brown-btn`}
+                            className={`status ${
+                              orders[+order.order_status]?.style
+                            }`}
                           >
-                            {order.order_status == 1 ? "Currently Picking" : ""}
+                            {orders[+order.order_status]?.name}
                           </button>
                         </td>
                         <td>{order.type}</td>

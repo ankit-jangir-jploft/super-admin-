@@ -33,11 +33,11 @@ const Sidebar = () => {
       icon: "/images/shopping-bag.svg",
       label: "Dugnad campaigns",
     },
-    // {
-    //   href: "/statistics",
-    //   icon: "/images/statistikk.svg",
-    //   label: "Statistics",
-    // },
+    {
+      href: "/statistics",
+      icon: "/images/statistikk.svg",
+      label: "Statistics",
+    },
     { href: "/settings", icon: "/images/settings.svg", label: "Settings" },
   ];
 
