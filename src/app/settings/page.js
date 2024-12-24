@@ -11,7 +11,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
 import "react-quill/dist/quill.snow.css";
-import { Badge, Button, Tab, Tabs } from "react-bootstrap";
+import { Badge, Tab, Tabs } from "react-bootstrap";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
@@ -22,11 +22,13 @@ const page = () => {
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState();
+
   function handleChange1(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
   }
 
   const [value, setValue] = useState("");
+
   const {
     handleSubmit,
     formState: { errors: errorsGenralSetting },
@@ -35,10 +37,10 @@ const page = () => {
     reset,
   } = useForm({
     defaultValues: {
-      status: false, // Default value for checkbox
-      budget: "",
-      default_vat_class: "25", // Default VAT class
-      language_id: "1", // Default language
+      status: false,
+      budget: "Jan",
+      default_vat_class: "25",
+      language_id: "1",
       title: "",
       text: "",
       setting_id: null,
@@ -304,12 +306,12 @@ const page = () => {
 
         // Set the preview images if available
         if (fetchFrontPageSetting?.logo_image) {
-          setHeaderLogo(`${fetchFrontPageSetting.logo_image}`); // Set preview base64 or URL
+          setHeaderLogo(`${fetchFrontPageSetting?.logo_image}`); // Set preview base64 or URL
           setHeaderLogoFile(null); // Make sure file state is cleared since it's just a URL/image path now
         }
 
         if (fetchFrontPageSetting?.header_image) {
-          setHeaderImage(`${fetchFrontPageSetting.header_image}`); // Set preview base64 or URL
+          setHeaderImage(`${fetchFrontPageSetting?.header_image}`); // Set preview base64 or URL
           setHeaderImageFileError(null); // Clear any errors if the image exists
         }
       }
@@ -388,21 +390,21 @@ const page = () => {
                         </div>
                       </div>
                       <div className='row'>
-                      <div className='col-md-12'>
-                      <Form.Label>Budget</Form.Label>
-                      <CustomRadioButton />
-                      </div>
+                        <div className='col-md-12'>
+                          <Form.Label>Budget</Form.Label>
+                          <CustomRadioButton />
+                        </div>
                       </div>
                       <div className='col-md-6 mt-4'>
-                        <div className='row'> 
+                        <div className='row'>
                           <div className='col-md-12'>
                             <Form.Group className='mb-3'>
                               <Form.Label>Default VAT class</Form.Label>
                               <Form.Select {...register("default_vat_class")}>
+                                <option value='0'>0%</option>
+                                <option value='12'>12%</option>
+                                <option value='15'>15%</option>
                                 <option value='25'>25%</option>
-                                <option value='30'>30%</option>
-                                <option value='40'>40%</option>
-                                <option value='50'>50%</option>
                               </Form.Select>
                             </Form.Group>
                           </div>
@@ -417,9 +419,8 @@ const page = () => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                        <h5 >Terms of Purchase </h5>
-                          <Form.Label className="mt-2">Title</Form.Label> 
-                          <Form.Control
+                          <Form.Label>Terms of Purchase</Form.Label>
+                          {/* <Form.Control
                             placeholder='Terms of purchase'
                             {...register("title", {
                               required: "Terms is required",
@@ -429,7 +430,7 @@ const page = () => {
                             <p className='text-danger'>
                               {errorsGenralSetting.title.message}
                             </p>
-                          )}
+                          )} */}
                         </Form.Group>
                       </div>
                     </div>
@@ -562,17 +563,16 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-8 mx-auto'>
                       <Form.Label className='ad-prdtse mt-4 mb-3'>
-                        Navbar
+                        Language
                         <Form.Select
                           className='ms-3 p-1'
                           {...register3("navbarLanguage", {
                             required: "Navbar language is required",
                           })}
                         >
-                          <option value='1'>English</option>
-                          <option value='2'>Hindi</option>
-                          <option value='3'>Spanish</option>
-                          <option value='4'>French</option>
+                          <option value='1'>Norwegian</option>
+                          <option value='1'>Sweden</option>
+
                         </Form.Select>
                         {errors.navbarLanguage && (
                           <p className='text-danger block'>
@@ -581,13 +581,13 @@ const page = () => {
                         )}
                       </Form.Label>
 
-                      <ul className='nvbre-txt'>
+                      {/* <ul className='nvbre-txt'>
                         <li>Nav One</li>
                         <li>Nav Two</li>
                         <li>Nav Three</li>
                         <li>Nav Four</li>
                         <li>Nav Five</li>
-                      </ul>
+                      </ul> */}
 
                       <input
                         type='hidden'
@@ -596,10 +596,10 @@ const page = () => {
 
                       <div className='row'>
                         <div className='col-md-6'>
-                          <Form.Label className='mt-4'>Upload Logo</Form.Label>
+                          {/* <Form.Label className='mt-4'>Upload Logo</Form.Label>
                           <div className='crpr-im filr-setng'>
                             {headerLogo && (
-                              <Image
+                              <img
                                 src={headerLogo}
                                 alt='Logo Preview'
                                 className='rounded-circle m-4'
@@ -623,12 +623,12 @@ const page = () => {
                               </p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
-                          </div>
-                          {headerLogoFileError && (
+                          </div> */}
+                          {/* {headerLogoFileError && (
                             <p className='text-danger'>{headerLogoFileError}</p>
-                          )}
+                          )} */}
 
-                          <Form.Group className='mb-3'>
+                          <Form.Group className='mt-4'>
                             <Form.Label>Header Title</Form.Label>
                             <Form.Control
                               placeholder='Lorem Ipsum is simply dummy text of the printing and typesetting'
@@ -674,25 +674,25 @@ const page = () => {
                           </Form.Group>
                         </div>
 
-                        <div className='col-md-6'>
+                        <div className='col-md-6' style={{ marginTop: "-33px" }}>
                           <Form.Label className='mt-4'>Header Image</Form.Label>
                           <div className='crpr-im filr-setng filr-setng1'>
-                            {headerImage && (
-                              <Image
-                                src={headerImage}
-                                alt='Header Image Preview'
-                                className='rounded-circle m-4'
-                                width={100}
-                                height={100}
-                              />
-                            )}
+
+                            <Image
+                              src={headerImage || '/images/image-upload1.svg' }
+                              alt='Header Image Preview'
+                              className='rounded-circle m-4'
+                              width={100}
+                              height={100}
+                            />
+
                             <div className='cstm-fle'>
                               <input
                                 onChange={handleImageChange}
                                 type='file'
                               />
                               <img
-                                src='/images/image-upload1.svg'
+                                 src='/images/image-upload1.svg'
                                 alt='Upload icon'
                               />
                               <p className='m-0'>
@@ -710,7 +710,7 @@ const page = () => {
                         </div>
                       </div>
 
-                      <div className='d-flex justify-content-center'>
+                      <div className='d-flex justify-content-center mt-20'>
                         <button
                           className='btn btn-primary w-25'
                           type='submit'
@@ -726,16 +726,15 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
-                  <div className='row mb-2'>
-                    <div className='col-md-12 text-end'>
-                      <Link
-                        href='/createuser'
-                        className='crte-userd CreateUserCustom'
-                      >
-                        Create User
-                      </Link>
-                    </div>
+                  <div className='text-end' style={{ marginTop: "20px" }}>
+                    <Link
+                      href='/createuser'
+                      className='crte-userd CreateUserCustom'
+                    >
+                      Create User
+                    </Link>
                   </div>
+
                   <div className='table-responsive order-table'>
                     <table>
                       <thead>
@@ -752,15 +751,16 @@ const page = () => {
                         {fetchSeller?.data?.map((row, index) => (
                           <tr key={row?.id}>
                             <td>
-                              {row?.profile_image && (
-                                <Image
-                                  src={row?.profile_image}
-                                  // alt="Profile Image"
-                                  width={100}
-                                  height={100}
-                                  className='rounded-circle'
-                                />
-                              )}
+
+                              <Image
+                                src={row?.profile_image}
+                                alt="Profile Image"
+                                width={40}
+                                height={40}
+                                className='rounded-circle'
+                                crossOrigin="anonymous"
+                              />
+
                             </td>
                             <td>{row?.name}</td>
                             <td>
