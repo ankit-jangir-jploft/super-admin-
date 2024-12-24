@@ -417,10 +417,10 @@ const page = () => {
                             <Form.Group className='mb-3'>
                               <Form.Label>Default VAT class</Form.Label>
                               <Form.Select {...register("default_vat_class")}>
+                                <option value='0'>0%</option>
+                                <option value='12'>12%</option>
+                                <option value='15'>15%</option>
                                 <option value='25'>25%</option>
-                                <option value='30'>30%</option>
-                                <option value='40'>40%</option>
-                                <option value='50'>50%</option>
                               </Form.Select>
                             </Form.Group>
                           </div>
@@ -436,7 +436,7 @@ const page = () => {
 
                         <Form.Group className='mb-3'>
                           <Form.Label>Terms of Purchase</Form.Label>
-                          <Form.Control
+                          {/* <Form.Control
                             placeholder='Terms of purchase'
                             {...register("title", {
                               required: "Terms is required",
@@ -446,7 +446,7 @@ const page = () => {
                             <p className='text-danger'>
                               {errorsGenralSetting.title.message}
                             </p>
-                          )}
+                          )} */}
                         </Form.Group>
                       </div>
                     </div>
@@ -743,8 +743,7 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
-                  <div className='row'>
-                    <div className='col-md-12 text-end'>
+                    <div className='text-end' style={{marginTop:"20px"}}>
                       <Link
                         href='/createuser'
                         className='crte-userd'
@@ -752,7 +751,7 @@ const page = () => {
                         Create User
                       </Link>
                     </div>
-                  </div>
+                
                   <div className='table-responsive order-table'>
                     <table>
                       <thead>
@@ -770,11 +769,11 @@ const page = () => {
                           <tr key={row?.id}>
                             <td>
                               {row?.profile_image && (
-                                <Image
+                                <img
                                   src={row?.profile_image}
                                   // alt="Profile Image"
-                                  width={100}
-                                  height={100}
+                                  width={40}
+                                  height={40}
                                   className='rounded-circle'
                                 />
                               )}
@@ -789,11 +788,11 @@ const page = () => {
                               {row?.role_id === 2 ? "Seller" : "Customer"}
                             </td>
                             <td>{row?.email}</td>
-                            {/* <td>
-                              <Link href={`/useredit?id=${row?.id}`} passHref>
+                            <td>
+                              <Link href={`/useredit/${row?.id}`}>
                                 <img src="/images/edit-icn.svg" alt="Edit" />
                               </Link>
-                            </td> */}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
