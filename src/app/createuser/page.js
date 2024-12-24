@@ -98,19 +98,16 @@ const Page = () => {
                         <div className="shdw-crd crte-ordr edte-usr">
                             <div className="row">
                                 <div className="col-md-7 mx-auto">
-                                    <div className="d-block text-center">
+                                    <div className="d-block text-center profile_img">
                                         <img
                                             className="d-inline-block w-25 h-25"
                                             style={{ borderRadius: "100%" }}
                                             src={selectedImage || "/images/usr-edt.png"}
                                         />
-                                    </div>
-
-                                    <Form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="d-flex justify-content-center m-4">
-                                            <Form.Group>
-                                                <Form.Label>Upload Photo</Form.Label>
+                                        <h2 className='my-4 color_red'>Edit Photo</h2>
+                                        <Form.Group className="UploadPhoto_file"> 
                                                 <Form.Control
+                                                className="UploadPhoto"
                                                     type="file"
                                                     {...register("profile_image")}
                                                     accept="image/*"
@@ -124,7 +121,11 @@ const Page = () => {
                                                     <p className="text-danger">{profileImageFileError}</p>
                                                 )}
                                             </Form.Group>
-                                        </div>
+                                        
+                                    </div>
+
+                                    <Form onSubmit={handleSubmit(onSubmit)}>
+                                         
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <Form.Group className="mb-3">
@@ -219,7 +220,15 @@ const Page = () => {
                                         <div className="row mt-3 mb-5">
                                             <div className="col-md-6">
                                                 <button
-                                                    className="cr-btn btn btn-primary w-25"
+                                                    className="createorder_top_right w-100 btn_bg_delt"
+                                                    type="submit"
+                                                >
+                                                    Delete user
+                                                </button>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <button
+                                                    className="createorder_top_right btn_bg_save w-100"
                                                     type="submit"
                                                 >
                                                     Save

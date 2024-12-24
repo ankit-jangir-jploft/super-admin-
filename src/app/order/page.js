@@ -5,6 +5,7 @@ import Link from "next/link";
 import { GET } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
+import Pagination from "../Components/PaginationCustom";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -358,7 +359,9 @@ const page = () => {
             <option>Mass action</option>
             <option>Mass action</option>
           </select>
-          <ReactPaginate
+
+         <Pagination />
+          {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -368,7 +371,7 @@ const page = () => {
             onPageChange={onPageChange}
             containerClassName={"pagination"}
             activeClassName={"active"}
-          />
+          /> */}
           {/* <ul className='pgnatne'>
             <li>Showing 15 of 1154 elements</li>
             <li>

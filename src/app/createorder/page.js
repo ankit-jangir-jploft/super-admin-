@@ -11,6 +11,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CreateCustomerModal from "../modals/createcustomer";
+import { Button } from "bootstrap";
 
 const page = () => {
   const router = useRouter();
@@ -173,7 +174,7 @@ const page = () => {
       <div className='detail-admin-main'>
         <div className='admin-header'>
           {/* <h2>Create order</h2> */}
-          <div className='d-flex justify-content-between w-100 align-items-center'>
+          <div className='d-flex justify-content-between w-100 align-items-center flex-wrap'>
             <h2>Create order</h2>
             <div className='bot-btn'>
               <Link
@@ -183,7 +184,7 @@ const page = () => {
                 Cancel
               </Link>
               <button
-                className='cr-btn btn'
+                className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
                 Create order
@@ -231,12 +232,12 @@ const page = () => {
                         </Form.Control.Feedback>
                       </Form.Select>
                     </div>
-                    <button
-                      className='add-btne btn'
-                      onClick={() => setCreate(true)}
+                    <Button
+                      href=''
+                      className='add-btne btn-borderbl '
                     >
                       +
-                    </button>
+                    </Button>
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
@@ -374,7 +375,7 @@ const page = () => {
                           ) : (
                             <button
                               onClick={() => countHandler(prod.id, prod.price)}
-                              className='btn d-block w-100'
+                              className='btn d-block w-100 btn-addcrt'
                             >
                               <img
                                 src='/images/bag.svg'
