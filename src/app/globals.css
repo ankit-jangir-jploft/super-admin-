@@ -2177,3 +2177,12 @@ button.crte-userd.Confirm_btn {
   flex-wrap: wrap;
 }
 }
+
+.Confirm_btn {
+  background: #fd5a59;
+  border-radius: 25px;
+  border: none;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
