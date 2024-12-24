@@ -220,7 +220,7 @@ const Page = () => {
                                         <div className="row mt-3 mb-5">
                                             <div className="col-md-6">
                                                 <button
-                                                    className="cr-btn btn btn-primary w-25"
+                                                    className="createorder_top_right w-100 btn_bg_delt"
                                                     type="submit"
                                                 >
                                                     Delete user
@@ -228,7 +228,7 @@ const Page = () => {
                                             </div>
                                             <div className="col-md-6">
                                                 <button
-                                                    className="cr-btn btn btn-primary w-25"
+                                                    className="createorder_top_right btn_bg_save w-100"
                                                     type="submit"
                                                 >
                                                     Save

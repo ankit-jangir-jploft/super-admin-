@@ -5,6 +5,7 @@ import Link from "next/link";
 import { GET } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
+import Pagination from "../Components/PaginationCustom";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -45,11 +46,11 @@ const page = () => {
 
   const orders = {
     0: { name: "Pending", style: "green-clr" },
-    1: { name: "Confirmed", style: "brown-btn" },
+    1: { name: "Confirmed", style: "brown-clr" },
     2: { name: "Processing", style: "gray-clr" },
     3: { name: "Shipped", style: "blue-clr" },
-    4: { name: "Delivered", style: "purple-btn" },
-    5: { name: "Canceled", style: "red-btn" },
+    4: { name: "Delivered", style: "purple-clr" },
+    5: { name: "Canceled", style: "red-clr" },
   };
 
   // const orders = [
@@ -220,20 +221,31 @@ const page = () => {
                   <th>Items</th>
                   <th>Sum</th>
                   <th>Options</th>
-
                   <th>Contact</th>
                 </tr>
               </thead>
               <tbody>
-                {allOrders.length &&
+                {(allOrders.length &&
                   allOrders.map((order, index) => (
                     <React.Fragment key={index}>
                       <tr>
                         <td>
                           <input type='checkbox' />
                         </td>
-                        <td>#{order.order_number}</td>
-                        <td>{order.created_at}</td>
+                        <td
+                          onClick={() =>
+                            (window.location.href = `/orderdetail/${order?.id}`)
+                          }
+                        >
+                          #{order.order_number}
+                        </td>
+                        <td
+                          onClick={() =>
+                            (window.location.href = `/orderdetail/${order?.id}`)
+                          }
+                        >
+                          {order.created_at}
+                        </td>
                         <td>{order.order_by}</td>
                         <td>{order.order_for || "N/A"}</td>
                         <td>
@@ -328,7 +340,16 @@ const page = () => {
                         </tr>
                       )}
                     </React.Fragment>
-                  ))}
+                  ))) || (
+                  <tr>
+                    <td
+                      colSpan='12'
+                      style={{ textAlign: "center", padding: "20px" }}
+                    >
+                      No Orders Yet
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -338,7 +359,9 @@ const page = () => {
             <option>Mass action</option>
             <option>Mass action</option>
           </select>
-          <ReactPaginate
+
+         <Pagination />
+          {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -348,7 +371,7 @@ const page = () => {
             onPageChange={onPageChange}
             containerClassName={"pagination"}
             activeClassName={"active"}
-          />
+          /> */}
           {/* <ul className='pgnatne'>
             <li>Showing 15 of 1154 elements</li>
             <li>

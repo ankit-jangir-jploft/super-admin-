@@ -110,7 +110,7 @@ const Page = ({param}) => {
               <div className='row'>
                 <div className='col-md-7 mx-auto'>
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className='d-block text-center'>
+                    <div className='d-block text-center mb-4'>
                       <Image
                         width={100}
                         height={100}
@@ -118,11 +118,14 @@ const Page = ({param}) => {
                         src={profileImage || "/images/usr-edt.png"}
                         alt='Profile'
                       />
-                      <Form.Control
-                        type='file'
-                        accept='image/*'
-                        onChange={handleImageChange}
-                      />
+                       <Form.Group className="UploadPhoto_file"> 
+                          <Form.Control
+                           className="UploadPhoto"
+                            type='file'
+                            accept='image/*'
+                          onChange={handleImageChange}
+                        />
+                           </Form.Group>
                     </div>
                     <div className='row'>
                       <div className='col-md-6'>
@@ -226,16 +229,24 @@ const Page = ({param}) => {
                         </Form.Group>
                       </div>
                     </div>
-                    <div className='row mt-3 mb-5'>
-                      <div className='col-md-6'>
-                        <button
-                          type='submit'
-                          className='btn btn-primary w-25'
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
+                    <div className="row mt-3 mb-5">
+                                            <div className="col-md-6">
+                                                <button
+                                                    className="createorder_top_right w-100 btn_bg_delt"
+                                                    type="submit"
+                                                >
+                                                    Delete user
+                                                </button>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <button
+                                                    className="createorder_top_right btn_bg_save w-100"
+                                                    type="submit"
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
                   </form>
                 </div>
               </div>
