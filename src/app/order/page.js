@@ -355,10 +355,18 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <select>
+          <div className="tablebruk_left">
+          <select class="form-select">
             <option>Mass action</option>
             <option>Mass action</option>
           </select>
+          <button
+                        href=''
+                        className='crte-userd Confirm_btn'
+                      >
+                       Confirm
+                      </button>
+          </div>
 
          <Pagination />
           {/* <ReactPaginate
