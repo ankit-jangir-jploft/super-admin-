@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
+import CustomRadioButton from "../Components/CustomRadioButton";
 import Image from "next/image";
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -357,7 +358,7 @@ const page = () => {
                             className='mb-3'
                             controlId='formBasicCheckbox'
                           >
-                            <Form.Check
+                            <Form.Check className="form_checkbox_top"
                               type='checkbox'
                               label='Automatically unpublish items in the online store with less than 100 pieces in stock'
                               {...register("status")}
@@ -386,33 +387,14 @@ const page = () => {
                           </button>
                         </div>
                       </div>
-
+                      <div className='row'>
+                      <div className='col-md-12'>
+                      <Form.Label>Budget</Form.Label>
+                      <CustomRadioButton />
+                      </div>
+                      </div>
                       <div className='col-md-6 mt-4'>
-                        <div className='row'>
-                          <div className='col-md-12'>
-                            <Form.Group className='mb-3'>
-                              <Form.Label>Budget</Form.Label>
-                              <Form.Control
-                                placeholder='Enter budget'
-                                {...register("budget", {
-                                  required: "Budget is required",
-                                })}
-                                onInput={(e) => {
-                                  const value = e.target.value.replace(
-                                    /\D/g,
-                                    ""
-                                  ); // Allow only numeric input
-                                  e.target.value = value;
-                                }}
-                              />
-                              {errorsGenralSetting.budget && (
-                                <p className='text-danger'>
-                                  {errorsGenralSetting.budget.message}
-                                </p>
-                              )}
-                            </Form.Group>
-                          </div>
-
+                        <div className='row'> 
                           <div className='col-md-12'>
                             <Form.Group className='mb-3'>
                               <Form.Label>Default VAT class</Form.Label>
@@ -428,14 +410,15 @@ const page = () => {
 
                         <Form.Group className='mb-3'>
                           <Form.Label>Language</Form.Label>
-                          <Form.Select {...register("language_id")}>
+                          <Form.Select {...register("language_id")} className="LanguageBox">
                             <option value='1'>English</option>
                             {/* <option value="2">Korea</option> */}
                           </Form.Select>
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                        <h5 >Terms of Purchase </h5>
+                          <Form.Label className="mt-2">Title</Form.Label> 
                           <Form.Control
                             placeholder='Terms of purchase'
                             {...register("title", {
@@ -743,11 +726,11 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
-                  <div className='row'>
+                  <div className='row mb-2'>
                     <div className='col-md-12 text-end'>
                       <Link
                         href='/createuser'
-                        className='crte-userd'
+                        className='crte-userd CreateUserCustom'
                       >
                         Create User
                       </Link>
@@ -789,11 +772,11 @@ const page = () => {
                               {row?.role_id === 2 ? "Seller" : "Customer"}
                             </td>
                             <td>{row?.email}</td>
-                            {/* <td>
-                              <Link href={`/useredit?id=${row?.id}`} passHref>
+                            <td>
+                              <Link href={`/useredit/${row?.id}`}>
                                 <img src="/images/edit-icn.svg" alt="Edit" />
                               </Link>
-                            </td> */}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

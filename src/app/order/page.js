@@ -6,6 +6,7 @@ import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import Pagination from "../Components/PaginationCustom";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -273,7 +274,7 @@ const page = () => {
             </select>
             {action && (
               <button
-                className=' btn btn-danger Confirm_btn'
+                className='crte-userd Confirm_btn'
                 onClick={handleMassDelete}
               >
                 Confirm

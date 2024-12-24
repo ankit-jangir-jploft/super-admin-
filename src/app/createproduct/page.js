@@ -269,7 +269,7 @@ const page = () => {
                 Cancel
               </Link>
               <button
-                className='cr-btn btn'
+                className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
                 Create product
@@ -350,7 +350,7 @@ const page = () => {
                     </div>
                     <Link
                       href=''
-                      className='add-btne'
+                      className='add-btne btn-borderbl'
                     >
                       +
                     </Link>
@@ -378,7 +378,7 @@ const page = () => {
                     </div>
                     <Link
                       href=''
-                      className='add-btne'
+                      className='add-btne btn-borderbl'
                     >
                       +
                     </Link>
@@ -575,7 +575,7 @@ const page = () => {
                     </div>
                     <button
                       onClick={handleAddKeyword}
-                      className='add-btne'
+                      className='add-btne btn-borderbl'
                     >
                       +
                     </button>
@@ -609,7 +609,7 @@ const page = () => {
                     </div>
                     <Link
                       href=''
-                      className='add-btne'
+                      className='add-btne btn-borderbl'
                     >
                       +
                     </Link>
