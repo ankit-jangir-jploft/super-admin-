@@ -10,6 +10,7 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import CreateCustomerModal from "../modals/createcustomer";
 
 const page = () => {
   const router = useRouter();
@@ -25,6 +26,9 @@ const page = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [orderConfirm, setOrderConfirm] = useState(0);
   const [errors, setErrors] = useState({});
+  const [adminManagers, setAdminManagers] = useState([]);
+
+  const [showCreateCustomer, setCreate] = useState(false);
 
   const radios = [
     { name: "No", value: 0 },
@@ -77,12 +81,16 @@ const page = () => {
     try {
       const options = {
         per_page: 20,
+        customer_id: selectedCustomer?.id,
       };
 
       const res = await GET(`${BASE_URL}/api/admin/userAddressList`, options);
-      console.log(res.data);
+
       if (res?.data?.status) {
+        console.log("res?.data.data", res?.data.data);
         setAllAddress(res.data?.data);
+      } else {
+        setAllAddress([]);
       }
     } catch (error) {
       console.log(error);
@@ -119,11 +127,21 @@ const page = () => {
     } catch (error) {}
   };
 
+  const fetchAdminManater = async () => {
+    try {
+      const res = await GET(`${BASE_URL}/api/admin/adminManagerList`);
+      if (res?.data?.status) {
+        setAdminManagers(res.data?.data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     fetchCustomers();
     fetchProductList();
     fetchAddress();
-  }, []);
+    fetchAdminManater();
+  }, [selectedCustomer]);
 
   const submitHandler = async () => {
     if (!validateFields()) {
@@ -172,13 +190,6 @@ const page = () => {
               </button>
             </div>
           </div>
-          {/* <div className='search-frm'>
-            <input type='text' placeholder='Sok i order' />
-            <img className='input-right-icon' src="/images/search-interface.svg" />
-            <button className='add-icon'>
-              <img src="/images/add.svg" />
-            </button>
-          </div> */}
         </div>
 
         <div className='row'>
@@ -198,7 +209,8 @@ const page = () => {
                             (custm) => custm.id == selectedId
                           );
                           console.log(customer);
-                          setSelectedCustomer(customer || {}); // Store the full customer object
+                          setSelectedCustomer(customer || {});
+                          fetchAddress();
                         }}
                         isInvalid={!!errors.selectedCustomer}
                       >
@@ -219,24 +231,36 @@ const page = () => {
                         </Form.Control.Feedback>
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
-                      className='add-btne'
+                    <button
+                      className='add-btne btn'
+                      onClick={() => setCreate(true)}
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
                     <Form.Label>Ordered by</Form.Label>
-                    <Form.Control
+                    <Form.Select
                       value={orderedBy}
                       onChange={(e) => {
                         setOrderedBy(e.target.value);
                       }}
-                      placeholder='Roger Nordmann'
+                      placeholder=''
                       isInvalid={!!errors.orderedBy}
-                    />
+                    >
+                      {adminManagers?.length &&
+                        adminManagers?.map((admin) => {
+                          return (
+                            <option
+                              key={admin.id}
+                              value={admin.id}
+                            >
+                              {admin.name}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
                     <Form.Control.Feedback type='invalid'>
                       {errors.orderedBy}
                     </Form.Control.Feedback>
@@ -372,6 +396,13 @@ const page = () => {
             </div>
           </div>
         </div>
+        <CreateCustomerModal
+          isOpen={showCreateCustomer}
+          onClose={() => {
+            setCreate(false);
+            fetchCustomers();
+          }}
+        />
       </div>
     </>
   );
