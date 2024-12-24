@@ -111,6 +111,7 @@ const Page = () => {
                                             <Form.Group>
                                                 <Form.Label>Upload Photo</Form.Label>
                                                 <Form.Control
+                                                className="UploadPhoto"
                                                     type="file"
                                                     {...register("profile_image")}
                                                     accept="image/*"

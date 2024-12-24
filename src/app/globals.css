@@ -961,8 +961,10 @@ table th {
 .swtch-bt .btn {
   border: none;
   color: #000;
-  padding: 2px 25px;
+  padding: 6px 25px;
   border-radius: 40px !important;
+  line-height: 1;
+  font-size: 14px;
 }
 
 .swtch-bt .btn-group {
@@ -1372,6 +1374,7 @@ ul.nvbre-txt li {
   text-align: center;
   background: #fd5a59;
   color: #fff !important;
+  display: inline-block;
 }
 
 .edte-usr .add-quet a,
@@ -1655,10 +1658,12 @@ ul.pgnatne li {
   }
 
   .side-logo {
-    padding: 20px 20px 0;
+    padding: 10px 20px;
     height: 47px;
-  }
-
+}
+.menu-list-mange { 
+  margin-top: 0px; 
+}
   .add-product-filds .row {
     padding: 0 20px 0 16px;
   }
@@ -1804,4 +1809,228 @@ ul.pgnatne li {
   color: var(--bs-btn-hover-color);
   background-color: #fd5a59 !important;
   border-color: var(--bs-btn-hover-border-color);
+}
+.btn-border-top {
+  background: #F7F4F1 !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+}
+.edit-icon-top {
+  width: 50px;
+  height: 50px;
+  background: #fd5a59;
+  line-height: 50px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 50%;
+}
+ 
+.img-item-box-slider .slick-slide {
+  padding: 0 3px; 
+  position: relative;
+}
+.readibutton {
+  position: absolute;
+  right:10px;
+  top: 5px;
+}
+.img-item-box-slider .slick-list {
+  margin: 0 -3px; 
+}
+.img-item-box-slider .slick-slide img {
+  padding:6px; 
+  background: #F4F4F4;
+  border-radius: 12px;
+}
+.right-arrow {
+  position: absolute;
+  right: 0;
+  top: -50%;
+  transform: translateY(-50%);
+}
+.prevarrow-slide {
+  position: absolute;
+  left: -10px;
+  z-index: 99;
+  transform: rotate(180deg); 
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.nextarrow-slide {
+  position: absolute;
+  right: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+} 
+.tag-box-btm h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+}
+
+.tag-box-btm .tag_list ul {
+    padding: 0px;
+}
+
+.tag-box-btm .tag_list ul li {
+    display: inline-block;
+    border: 1px solid #FD5A59;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background: #F5F0E9;
+    padding: 5px 10px;
+    border-radius: 50px;
+    font-size: 14px;
+    color: #16151C;
+    font-weight: 500;
+}
+.btom_cart_box .order-dtl-box {
+  min-height: auto !important;
+}
+.btn-addcrt {
+  padding: 2px;
+  margin-top: 15px;
+}
+.btn-addcrt {
+  padding: 7px;
+  margin-top: 15px;
+  background: #FD5A59;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+}
+.btn-addcrt:hover {
+  color: #fff;
+}
+.btn-group .btn-check+.btn:hover {
+  color: #fff;
+}
+.btn-borderbl {
+  background: transparent !important;
+  border-color: #CACACA !important;
+  padding: 0px;
+  color: #666666 !important;
+  flex: 0 0 50px;
+  line-height: 44px !important;
+}
+.createorder_top_right {
+  border-radius: 30px;
+  font-size: 16px;
+  padding: 14px 35px;
+  font-weight: 500;
+  text-align: center;
+  width: 300px;
+}
+.btn-addcrt img {
+  width: auto;
+}
+.form_checkbox_top label.form-check-label {
+  margin-top: -5px;
+}
+.form_checkbox_top {
+  display: flex;
+  align-items: self-start;
+}
+.UploadPhoto {
+  height: auto !important;
+}
+.budget_box  .radioContainer {
+  display: flex;
+  gap: 16px; /* Space between buttons */
+}
+
+.budget_box .radioLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Makes the button circular */
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.budget_box  .radioLabel:hover {
+  border-color: #888;
+}
+
+.budget_box  .radioInput {
+  display: none; /* Hides the default radio button */
+}
+
+.budget_box  .selected {
+  border-color: #ea5154 !important;
+  background-color: #ea5154;
+  color: #000;
+  color: #fff !important;
+}
+.budget_box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.budget_box label {
+  border: 1px solid #CACACA;
+  flex: 0 0 121px;
+  border-radius: 50px;
+  position: relative;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666666;
+}
+.LanguageBox {
+  width: 130px;
+  height: auto !important;
+  padding: 5px 10px;
+  border-color: #FD5A59 !important;
+  margin-top: 5px;
+}
+.budget_box label input.radio-input {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  line-height: 1;
+  height: auto;
+  z-index: 1;
+  opacity: 0;
+}
+.CreateUserCustom{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+@media screen and (max-width: 767px) { 
+  .bot-btn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    flex-basis: 100%;
+}
+  .createorder_top_right, .bot-btn a {
+    
+    width: 100%;
+    margin-right: 0;
+  }
+  .prodct-crd {
+    margin-bottom: 20px;
+    min-width: 300px;
+}
+.prodct-crd img {
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+.btn-addcrt img {
+  display: unset;
+}
+
 }
