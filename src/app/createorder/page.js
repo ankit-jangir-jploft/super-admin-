@@ -11,7 +11,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CreateCustomerModal from "../modals/createcustomer";
-import { Button } from "bootstrap";
+import { Button } from "react-bootstrap";
 
 const page = () => {
   const router = useRouter();
@@ -146,6 +146,7 @@ const page = () => {
 
   const submitHandler = async () => {
     if (!validateFields()) {
+      toast.error("Validations failed!");
       return;
     }
 

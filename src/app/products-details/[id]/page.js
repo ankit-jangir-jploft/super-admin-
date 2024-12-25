@@ -4,28 +4,27 @@ import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 import CreateTask from "@/app/Components/CreateTask";
-import { GET } from "@/app/Utils/apiFunctions";
+import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
-import SlickSlider from "../Components/SliderItem";
-
+import SlickSlider from "../../Components/Sidebar/Sidebar";
 
 const page = ({ params }) => {
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
-  const [customer, setCustomers] = useState({});
+  const [productDetails, setProductDetails] = useState({});
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
 
-  const fetchCustomerDetails = async () => {
+  const fetchProductDetails = async () => {
     try {
       const options = {
         id: id,
       };
-      const res = await GET(`${BASE_URL}/api/admin/customerDetail`, options);
+      const res = await GET(`${BASE_URL}/api/admin/productDetail`, options);
       console.log(res.data);
       if (res?.data?.status) {
-        setCustomers(res?.data?.data[0]);
+        setProductDetails(res?.data?.data[0]);
       }
     } catch (error) {
       console.log(error);
@@ -33,8 +32,32 @@ const page = ({ params }) => {
   };
 
   useEffect(() => {
-    fetchCustomerDetails();
+    fetchProductDetails();
   }, []);
+
+  const deleteKeywordHandler = async (keywordId) => {
+    try {
+      const options = {
+        keyword_id: keywordId,
+        customer_id: id,
+      };
+      const res = await POST(
+        `${BASE_URL}/api/admin/deleteCustomerKeyword`,
+        options
+      );
+
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res?.data?.message);
+        fetchProductDetails();
+      } else {
+        toast.dismiss();
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -43,10 +66,11 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {customer?.name}{" "}
+            {productDetails?.name}{" "}
             <span>
-              #{customer?.id} |{" "}
-              {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
+              {productDetails?.product_number}{" "}
+              {/* {productDetails?.userDetail?.delivery_address ||
+                "Q ldrettslag J14"} */}
             </span>
           </h2>
           <div className='search-frm'>
@@ -70,20 +94,57 @@ const page = ({ params }) => {
                 <Col md={4}>
                   <div className='order-dtl-box'>
                     <h2>General </h2>
-                    <div className=" content-box-left-right">
-                      <p>Display <span>Everywhere</span></p>
-                      <p>Visible in online stores: <span>Yes</span></p>
-                      <p>Visible in product gallery: <span>Yes</span></p>
-                      <p>Warehouse location: <span>A1</span></p>
-                      <p>Stock keep: <span>Yes</span></p>
-                      <p>Quantity in stock: <span>53534</span></p>
-                      <p>Category: <span>Cards</span></p>
-                      <p>Sub category: <span>Christmas</span></p>
-                      <p>GTIN / EAN: <span>21</span></p>
-                      <p>Menu order: <span>1</span></p>
-                      <div className="mt-2"></div>
-                      <p>Created at: <span>03.11.2024 - 14:12</span></p>
-                      <p>Updated at: <span>04.11.2024 - 17:11</span></p>
+                    <div className=' content-box-left-right'>
+                      <p>
+                        Display <span>{productDetails?.display}</span>
+                      </p>
+                      <p>
+                        Visible in online stores:{" "}
+                        <span>
+                          {productDetails?.product_status == 1 ? "Yes" : "No"}
+                        </span>
+                      </p>
+                      <p>
+                        Visible in product gallery:{" "}
+                        <span>
+                          {productDetails?.product_status == 1 ? "Yes" : "No"}
+                        </span>
+                      </p>
+                      <p>
+                        Warehouse location:{" "}
+                        <span>{productDetails?.warehouse_address}</span>
+                      </p>
+                      <p>
+                        Stock keep:{" "}
+                        <span>
+                          {productDetails?.stock_keep == 1 ? "Yes" : "No"}
+                        </span>
+                      </p>
+                      <p>
+                        Quantity in stock:{" "}
+                        <span>{productDetails?.quantity}</span>
+                      </p>
+                      <p>
+                        Category:{" "}
+                        <span>{productDetails?.categories?.name}</span>
+                      </p>
+                      <p>
+                        Sub category:{" "}
+                        <span>{productDetails?.sub_category}</span>
+                      </p>
+                      <p>
+                        GTIN / EAN: <span>{productDetails?.gtin}</span>
+                      </p>
+                      <p>
+                        Menu order: <span>{productDetails?.menu_order}</span>
+                      </p>
+                      <div className='mt-2'></div>
+                      <p>
+                        Created at: <span>03.11.2024 - 14:12</span>
+                      </p>
+                      <p>
+                        Updated at: <span>04.11.2024 - 17:11</span>
+                      </p>
                     </div>
                   </div>
                 </Col>
@@ -94,21 +155,21 @@ const page = ({ params }) => {
                       <div className='order-dtl-box'>
                         <h2>Pricing </h2>
                         <p>
-                          Price: <span>50</span>
+                          Price: <span>{productDetails?.price}</span>
                         </p>
                         <p>
-                          Sales price:<span>125</span>
+                          Sales price:<span>{productDetails?.sale_price}</span>
                         </p>
                         <p>
-                          Special price: <span>-</span>
+                          Special price:{" "}
+                          <span>{productDetails?.speacial_price}</span>
                         </p>
                         <p>
-                          VAT: <span>Taxable</span>
+                          VAT: <span>{productDetails?.vat}</span>
                         </p>
                         <p>
-                          VAT class: <span>Standard (25%)</span>
+                          VAT class: <span>{productDetails?.vat_class}</span>
                         </p>
-
                       </div>
                     </Col>
                     <Col md={6}>
@@ -118,67 +179,69 @@ const page = ({ params }) => {
                           Length: <span>21 cm</span>
                         </p>
                         <p>
-                          Width: <span>9 cm</span>
+                          Width: <span>{productDetails?.width} cm</span>
                         </p>
                         <p>
-                          Depth: <span>2 cm</span>
+                          Depth: <span>{productDetails?.depth} cm</span>
                         </p>
                         <p>
-                          Weight: <span>31 g</span>
+                          Weight: <span>{productDetails?.weight} g</span>
                         </p>
                       </div>
                     </Col>
                     <Col md={11}>
                       <div className='img-item-box-slider'>
                         <SlickSlider />
-
                       </div>
                     </Col>
                   </Row>
                 </Col>
-                <Col md={12} className="btom_cart_box">
+                <Col
+                  md={12}
+                  className='btom_cart_box'
+                >
                   <div className='order-dtl-box mt-4'>
                     <h2>My pages description</h2>
-                    <p>Kortene er trykket i Norge på miljøvennlig FSC godkjent papir. Størrelsen er 10x15 cm. 10 forskjellige design.</p>
+                    <p>{productDetails?.page_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
                     <h2>Short description</h2>
-                    <p>The cards are printed in Norway on environmentally friendly FSC approved paper. The size is 10×15 cm. 10 different designs.</p>
+                    <p>{productDetails?.short_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
                     <h2>Product description</h2>
-                    <p><b>Dugnad med god fortjeneste!</b></p>
-                    <p>
-                      40 stk kjempefine til og fra lapper til julegavene dine. Disse er i sort og natur med gulltrykk.
-                      Lappene leveres i en sort konvolutt med snor lås på baksiden</p>
-                    <p>+60% fortjeneste til gruppen</p>
-                    <p>+Lettsolgt dugnad alle kan være med på</p>
 
+                    <p>{productDetails?.product_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
                     <h2>Meta description</h2>
-                    <p>Dugnadspakke med 40stk til og fra lapper til jul. Disse er veldig enkle å selge i en dugnad for en skoleklasse, et idrettslag, en russegruppe eller andre organisasjoner.</p>
+                    <p>{productDetails?.meta_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='tag-box-btm mt-4'>
                     <h2>Keywords</h2>
-                    <div className="tag_list">
+                    <div className='tag_list'>
                       <ul>
-                        <li>Card  <img src='/images/close-tag.svg' /></li>
-                        <li>Cards  <img src='/images/close-tag.svg' /></li>
-                        <li>Christmas  <img src='/images/close-tag.svg' /></li>
-                        <li>card pack  <img src='/images/close-tag.svg' /></li>
-                        <li>dugnad  <img src='/images/close-tag.svg' /></li>
-                        <li>keyword 6  <img src='/images/close-tag.svg' /></li>
-                        <li>keyword 7  <img src='/images/close-tag.svg' /></li>
-                        <li>keyword 8  <img src='/images/close-tag.svg' /></li>
+                        {productDetails?.keywords?.map((keyword) => {
+                          return (
+                            <li>
+                              {keyword?.name}{" "}
+                              <img
+                                src='/images/close-tag.svg'
+                                onClick={() =>
+                                  deleteKeywordHandler(keyword?.id)
+                                }
+                              />
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -186,11 +249,11 @@ const page = ({ params }) => {
                 <Col md={12}>
                   <div className='tag-box-btm  '>
                     <h2>Related products</h2>
-                    <div className="tag_list">
+                    <div className='tag_list'>
                       <ul>
-                        <li>Anledningspakke #3  (DUG30GULL) </li> 
-                        <li>Julepakke #1  (PDK8) </li> 
-                        <li>Julepakke #2  (PDK9) </li>  
+                        <li>Anledningspakke #3 (DUG30GULL) </li>
+                        <li>Julepakke #1 (PDK8) </li>
+                        <li>Julepakke #2 (PDK9) </li>
                       </ul>
                     </div>
                   </div>
@@ -286,7 +349,6 @@ const page = ({ params }) => {
               </div>
             </Col>
           </Row>
-
         </div>
       </div>
       <CreateTask

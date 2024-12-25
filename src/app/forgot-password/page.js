@@ -78,14 +78,14 @@ const page = () => {
                   className='form-group'
                   controlId='formBasicEmail'
                 >
-                  <Form.Label>Brukernavn</Form.Label>
+                  <Form.Label>Epostadresse</Form.Label>
                   <Form.Control
                     type='email'
                     name='email'
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder=''
+                    placeholder='Epostadresse'
                     isInvalid={!!formik.errors.email && formik.touched.email}
                   />
                   <Form.Control.Feedback type='invalid'>

@@ -130,17 +130,17 @@ const page = () => {
                         <td>{product?.createdAt || "N/A"}</td>
                         <td>
                           <Link
-                            href={"/produkter"}
+                            href={`/products-details/${product?.id}`}
                             style={{ marginRight: "10px" }}
                           >
                             <img src='/images/prdctes.svg' />
                           </Link>
-
+                        </td>
+                        <td>
                           <Link href={`/updateproduct/${product?.id}`}>
                             <img src='/images/prdctes.svg' />
                           </Link>
                         </td>
-                        <td></td>
                       </tr>
                     );
                   })}

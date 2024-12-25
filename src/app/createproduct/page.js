@@ -49,7 +49,7 @@ const page = () => {
     Weight: "",
     gtin: "",
     menuOrder: "",
-    Display: "",
+    Display: "Everywhere",
     warehouseAddress: "",
     quantity: "",
     keepStock: false,
@@ -700,6 +700,7 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     <Form.Label>Display</Form.Label>
                     <Form.Select
+                      value={productForm.Display}
                       onChange={(e) =>
                         setForm((prev) => ({
                           ...prev,
@@ -707,7 +708,7 @@ const page = () => {
                         }))
                       }
                     >
-                      <option value={1}>Everywhere</option>
+                      <option value={"Everywhere"}>Everywhere</option>
                     </Form.Select>
                   </Form.Group>
 
