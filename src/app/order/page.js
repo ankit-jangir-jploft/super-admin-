@@ -262,8 +262,9 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <div>
+          <div className='tablebruk_left'>
             <select
+              className='form-select'
               value={action}
               onChange={(e) => {
                 setAction(e.target.value);

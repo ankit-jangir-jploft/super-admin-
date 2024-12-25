@@ -8,6 +8,19 @@ import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 
+function formatDateToCustom(dateString) {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  } catch {
+    return "";
+  }
+}
+
 const page = ({ params }) => {
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
@@ -16,6 +29,7 @@ const page = ({ params }) => {
   const [logs, setLogs] = useState([]);
   const [tagContent, setTagContent] = useState("");
   const [logsData, setLogsData] = useState([]);
+  const [orderDetails, setOrderDetails] = useState([]);
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
@@ -29,6 +43,7 @@ const page = ({ params }) => {
       console.log(res.data);
       if (res?.data?.status) {
         setCustomers(res?.data?.data[0]);
+        setOrderDetails(res.data?.orderList || []);
       }
     } catch (error) {
       console.log(error);
@@ -70,9 +85,17 @@ const page = ({ params }) => {
       };
 
       const res = await POST(
-        `${BASE_URL}/api/admin/deleteCustomerTag`,
+        `${BASE_URL}/api/admin/customerTagdelete`,
         options
       );
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res.data?.message);
+        fetchTags();
+      } else {
+        toast.dismiss();
+        toast.error(res.data?.message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +109,7 @@ const page = ({ params }) => {
       };
 
       const res = await POST(
-        `${BASE_URL}/api/admin/customerLogCreate`,
+        `${BASE_URL}/api/admin/customerCreateTags`,
         options
       );
       if (res?.data?.status) {
@@ -125,6 +148,15 @@ const page = ({ params }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const orders = {
+    0: { name: "Pending", style: "green-clr" },
+    1: { name: "Confirmed", style: "brown-clr" },
+    2: { name: "Processing", style: "gray-clr" },
+    3: { name: "Shipped", style: "blue-clr" },
+    4: { name: "Delivered", style: "purple-clr" },
+    5: { name: "Canceled", style: "red-clr" },
   };
 
   useEffect(() => {
@@ -258,20 +290,22 @@ const page = ({ params }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>#10202</td>
-                      <td>14.08.2024</td>
-                      <td>Fullfort</td>
-                      <td>4 stk</td>
-                      <td>kr 0</td>
-                    </tr>
-                    <tr>
-                      <td>#10202</td>
-                      <td>14.08.2024</td>
-                      <td>Fullfort</td>
-                      <td>4 stk</td>
-                      <td>kr 0</td>
-                    </tr>
+                    {orderDetails?.length &&
+                      orderDetails?.map((order) => {
+                        return (
+                          <tr>
+                            <td>#{order?.order_number}</td>
+                            <td>{formatDateToCustom(order?.created_at)}</td>
+                            <td>
+                              {order?.order_status
+                                ? orders[order?.order_status]
+                                : ""}
+                            </td>
+                            <td>{order?.total_item} stk</td>
+                            <td>kr {order?.total_amount}</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
