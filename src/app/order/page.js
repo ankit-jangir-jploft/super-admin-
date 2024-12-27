@@ -7,6 +7,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -16,7 +17,7 @@ const page = () => {
   const [searchOuery, setQuery] = useState("");
   const [pagination, setPagination] = useState();
   const [action, setAction] = useState();
-
+  const [userData, setUserData] = useState({});
   const toggleRow = (id) => {
     setOpenRowId((prev) => (prev === id ? null : id));
   };
@@ -44,6 +45,8 @@ const page = () => {
 
   useEffect(() => {
     fetchOrders();
+    const userDetail = JSON.parse(Cookies.get("user"));
+    setUserData(userDetail);
   }, [currentPage, searchOuery]);
 
   const handleSelectOrder = (orderId) => {
@@ -72,6 +75,7 @@ const page = () => {
         toast.success(res?.data?.message);
         setSelectedOrders([]);
         fetchOrders();
+        setAction("");
       } else {
         toast.dismiss();
         toast.error("Failed to delete orders!");
@@ -109,8 +113,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>

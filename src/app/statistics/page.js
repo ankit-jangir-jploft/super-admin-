@@ -6,12 +6,14 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { GET } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
+import Cookies from "js-cookie";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 const page = () => {
   const [statistics, setStatistics] = useState({});
+  const [userData, setUserData] = useState({});
 
   const fetchStatistics = async () => {
     try {
@@ -26,6 +28,8 @@ const page = () => {
 
   useEffect(() => {
     fetchStatistics();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, []);
 
   const verticalBarChartOptions = (themeColors, dates) => ({
@@ -289,8 +293,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -383,10 +394,7 @@ const page = () => {
           </div>
           <div className='col-md-6'>
             <div className='grph-crd'>
-              <input
-                type='Date'
-                placeholder='Year to date'
-              ></input>
+              <input type='Date'></input>
               <ApexCharts
                 options={options}
                 series={Series}
@@ -516,10 +524,7 @@ const page = () => {
           </div>
           <div className='col-md-3'>
             <div className='grph-crd'>
-              <input
-                type='Date'
-                placeholder='Year to date'
-              ></input>
+              <input type='Date'></input>
               <h3>Budget</h3>
               <ApexCharts
                 options={options1}

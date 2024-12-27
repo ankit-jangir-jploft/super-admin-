@@ -44,8 +44,9 @@ const Login = () => {
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
-
+          console.log("login response", res?.data?.data);
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
+          Cookies.set("user", JSON.stringify(res.data.data?.user));
           window.location.href = "/";
         } else {
           toast.dismiss();

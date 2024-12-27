@@ -7,6 +7,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -15,6 +16,7 @@ const page = () => {
   const [pagination, setPagination] = useState({});
   const [searchQuery, setSearch] = useState("");
   const [action, setAction] = useState("");
+  const [userData, setUserData] = useState({});
 
   const fetchCustomers = async () => {
     try {
@@ -40,6 +42,8 @@ const page = () => {
 
   useEffect(() => {
     fetchCustomers();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, [searchQuery, currentPage]);
 
   const handleSelectCustomer = (customerId) => {
@@ -78,6 +82,7 @@ const page = () => {
         toast.success(res.data.message);
         setSelectedCustomers([]);
         fetchCustomers();
+        setAction("");
       } else {
         toast.dismiss();
         toast.error("Failed to perform the action!");
@@ -108,8 +113,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>

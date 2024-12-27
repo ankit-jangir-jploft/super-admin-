@@ -14,14 +14,14 @@ const page = () => {
   const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
 
-  const fetchCompanies = async () => {
-    try {
-      const res = await GET(`${BASE_URL}/api/admin/companyList`);
-      if (res?.data?.status) {
-        setCompanies(res?.data?.data);
-      }
-    } catch (error) {}
-  };
+  // const fetchCompanies = async () => {
+  //   try {
+  //     const res = await GET(`${BASE_URL}/api/admin/companyList`);
+  //     if (res?.data?.status) {
+  //       setCompanies(res?.data?.data);
+  //     }
+  //   } catch (error) {}
+  // };
 
   const fetchSellers = async () => {
     try {
@@ -33,12 +33,12 @@ const page = () => {
   };
   useEffect(() => {
     fetchSellers();
-    fetchCompanies();
+    // fetchCompanies();
   }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    company_id: Yup.string().required("Company is required"),
+    // company_id: Yup.string().required("Company is required"),
     orgnizationNumber: Yup.string()
       .matches(/^\d+$/, "Must be a number")
       .required("Organisation number is required"),
@@ -60,7 +60,7 @@ const page = () => {
 
   const initialValues = {
     name: "",
-    company_id: "",
+    // company_id: "",
     orgnizationNumber: "",
     address: "",
     zip: "",
@@ -93,7 +93,7 @@ const page = () => {
             <h2>Create customer</h2>
             <div className='bot-btn'>
               <Link
-                href={"/"}
+                href={"/kunder"}
                 className='can-btn'
               >
                 Cancel
@@ -130,7 +130,6 @@ const page = () => {
                           type='text'
                           id='name'
                           name='name'
-                          placeholder='Q Idrettslag G13'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -140,7 +139,7 @@ const page = () => {
                         />
                       </div>
 
-                      <div className='form-group'>
+                      {/* <div className='form-group'>
                         <label htmlFor='company'>Company</label>
                         <Field
                           as='select'
@@ -169,7 +168,7 @@ const page = () => {
                           component='div'
                           className='text-danger'
                         />
-                      </div>
+                      </div> */}
 
                       <div className='form-group'>
                         <label htmlFor='orgnizationNumber'>
@@ -179,7 +178,6 @@ const page = () => {
                           type='text'
                           id='orgnizationNumber'
                           name='orgnizationNumber'
-                          placeholder='98787867'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -195,7 +193,6 @@ const page = () => {
                           type='text'
                           id='address'
                           name='address'
-                          placeholder='Snarveien 42'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -212,7 +209,6 @@ const page = () => {
                             type='text'
                             id='zip'
                             name='zip'
-                            placeholder='2042'
                             className='form-control'
                           />
                           <ErrorMessage
@@ -227,7 +223,6 @@ const page = () => {
                             type='text'
                             id='city'
                             name='city'
-                            placeholder='Storbyåsen'
                             className='form-control'
                           />
                           <ErrorMessage
@@ -274,7 +269,6 @@ const page = () => {
                           type='text'
                           id='ContactPerson'
                           name='contactPerson'
-                          placeholder='Kari Nordmann'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -290,7 +284,6 @@ const page = () => {
                           type='text'
                           id='phone'
                           name='phone'
-                          placeholder='+47 38833663'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -306,7 +299,6 @@ const page = () => {
                           type='email'
                           id='email'
                           name='email'
-                          placeholder='kari.nordmann@mail.com'
                           className='form-control'
                         />
                         <ErrorMessage

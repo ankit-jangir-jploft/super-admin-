@@ -114,7 +114,12 @@ const page = () => {
             </button>
           </div>
           <div className=''>
-            <button className='bold-btn w-auto me-2'>
+            <button
+              onClick={() => {
+                window.location.href = `/shipping/${id}`;
+              }}
+              className='bold-btn w-auto me-2'
+            >
               <img src='/images/pick-list.svg' /> Pick list
             </button>
             <button className='bold-btn w-auto me-2'>

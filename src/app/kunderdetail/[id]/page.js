@@ -50,6 +50,21 @@ const page = ({ params }) => {
     }
   };
 
+  const sendMailHandler = async () => {
+    try {
+      const options = {
+        customer_id: id,
+      };
+      const res = await GET(`${BASE_URL}/api/admin/sendMailCustomer`, options);
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success("Mail sent successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchTags = async () => {
     try {
       const options = {
@@ -183,9 +198,29 @@ const page = ({ params }) => {
             PAGAENDE FORHANDSSALG
           </button>
           <div>
-            <button className='bold-btn w-auto me-2'>Send Epost</button>
-            <button className='bold-btn w-auto me-2'>Ring</button>
-            <button className='bold-btn w-auto me-2'>Legg til oppgave</button>
+            <button
+              className='bold-btn w-auto me-2'
+              onClick={sendMailHandler}
+            >
+              Send Epost
+            </button>
+            {/* <button className='bold-btn w-auto me-2'> */}
+            <a
+              className='bold-btn w-auto me-2'
+              href={`tel:+${customer?.phone}`}
+            >
+              Ring
+            </a>
+            {/* </button> */}
+            <button
+              className='bold-btn w-auto me-2'
+              onClick={(e) => {
+                e.preventDefault();
+                handlePopup();
+              }}
+            >
+              Legg til oppgave
+            </button>
             <button
               className='add-icon'
               onClick={(e) => {
@@ -290,7 +325,7 @@ const page = ({ params }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orderDetails?.length &&
+                    {(orderDetails?.length &&
                       orderDetails?.map((order) => {
                         return (
                           <tr>
@@ -305,14 +340,23 @@ const page = ({ params }) => {
                             <td>kr {order?.total_amount}</td>
                           </tr>
                         );
-                      })}
+                      })) || (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className='text-center'
+                        >
+                          No data
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
               <div className='order-dtl-box mt-4'>
                 <h2>Tags</h2>
                 <div className='p-2'>
-                  {tags.length &&
+                  {(tags.length &&
                     tags.map((tag) => {
                       return (
                         <button
@@ -322,12 +366,11 @@ const page = ({ params }) => {
                           {tag?.name} <img src='/images/close.svg' />
                         </button>
                       );
-                    })}
+                    })) || <div>No Tags</div>}
                 </div>
                 <div className='search-frm justify-content-end px-3'>
                   <input
                     type='text'
-                    placeholder='Sok i order'
                     className='rounded w-auto ps-2'
                     value={tagContent}
                     onChange={(e) => setTagContent(e.target.value)}
@@ -344,7 +387,7 @@ const page = ({ params }) => {
             <Col lg={4}>
               <div className='order-dtl-box'>
                 <h2>Logg </h2>
-                {logs?.length &&
+                {(logs?.length &&
                   logs.map((log) => {
                     return (
                       <div className='logg-dtl'>
@@ -352,13 +395,12 @@ const page = ({ params }) => {
                         <label>{log?.content}</label>
                       </div>
                     );
-                  })}
+                  })) || <div className=' text-center'> No logs</div>}
 
                 <div className='logg-til-desc'>
                   <div className='form-group'>
                     <textarea
                       rows='4'
-                      placeholder='Legg til internt notat...'
                       value={logsData}
                       onChange={(e) => setLogsData(e.target.value)}
                     ></textarea>

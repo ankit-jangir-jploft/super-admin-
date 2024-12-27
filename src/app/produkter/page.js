@@ -7,6 +7,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [currentPage, setCurrent] = useState(1);
@@ -15,6 +16,7 @@ const page = () => {
   const [searchQuery, setQuery] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [action, setAction] = useState("");
+  const [userData, setUserData] = useState({});
 
   const fetchProductList = async () => {
     try {
@@ -86,6 +88,8 @@ const page = () => {
 
   useEffect(() => {
     fetchProductList();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, [currentPage, searchQuery]);
 
   return (
@@ -109,8 +113,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -141,7 +152,7 @@ const page = () => {
                 </tr>
               </thead>
               <tbody>
-                {products.length &&
+                {(products.length &&
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -197,7 +208,16 @@ const page = () => {
                         </Link>
                       </td>
                     </tr>
-                  ))}
+                  ))) || (
+                  <tr>
+                    <td
+                      className='text-center'
+                      colSpan={13}
+                    >
+                      No Products Yet
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
