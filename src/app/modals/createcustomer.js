@@ -9,19 +9,19 @@ import { useRouter } from "next/navigation";
 
 const CreateCustomerModal = ({ isOpen, onClose }) => {
   const router = useRouter();
-  const [companies, setCompanies] = useState([]);
+  // const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
 
-  const fetchCompanies = async () => {
-    try {
-      const res = await GET(`${BASE_URL}/api/admin/companyList`);
-      if (res?.data?.status) {
-        setCompanies(res?.data?.data);
-      }
-    } catch (error) {
-      console.error("Error fetching companies:", error);
-    }
-  };
+  // const fetchCompanies = async () => {
+  //   try {
+  //     const res = await GET(`${BASE_URL}/api/admin/companyList`);
+  //     if (res?.data?.status) {
+  //       setCompanies(res?.data?.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching companies:", error);
+  //   }
+  // };
 
   const fetchSellers = async () => {
     try {
@@ -37,13 +37,13 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       fetchSellers();
-      fetchCompanies();
+      // fetchCompanies();
     }
   }, [isOpen]);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    company_id: Yup.string().required("Company is required"),
+    // company_id: Yup.string().required("Company is required"),
     orgnizationNumber: Yup.string()
       .matches(/^\d+$/, "Must be a number")
       .required("Organisation number is required"),
@@ -64,7 +64,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
   const initialValues = {
     name: "",
-    company_id: "",
+    // company_id: "",
     orgnizationNumber: "",
     address: "",
     zip: "",
@@ -141,7 +141,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='text'
                           id='name'
                           name='name'
-                          placeholder='Q Idrettslag G13'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -151,7 +150,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                         />
                       </div>
 
-                      <div className='form-group'>
+                      {/* <div className='form-group'>
                         <label htmlFor='company'>Company</label>
                         <Field
                           as='select'
@@ -177,7 +176,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           component='div'
                           className='text-danger'
                         />
-                      </div>
+                      </div> */}
 
                       <div className='form-group'>
                         <label htmlFor='orgnizationNumber'>
@@ -187,7 +186,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='text'
                           id='orgnizationNumber'
                           name='orgnizationNumber'
-                          placeholder='98787867'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -203,7 +201,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='text'
                           id='address'
                           name='address'
-                          placeholder='Snarveien 42'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -220,7 +217,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             type='text'
                             id='zip'
                             name='zip'
-                            placeholder='2042'
                             className='form-control'
                           />
                           <ErrorMessage
@@ -235,7 +231,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             type='text'
                             id='city'
                             name='city'
-                            placeholder='Storbyåsen'
                             className='form-control'
                           />
                           <ErrorMessage
@@ -282,7 +277,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='text'
                           id='ContactPerson'
                           name='contactPerson'
-                          placeholder='Kari Nordmann'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -298,7 +292,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='text'
                           id='phone'
                           name='phone'
-                          placeholder='+47 38833663'
                           className='form-control'
                         />
                         <ErrorMessage
@@ -314,7 +307,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           type='email'
                           id='email'
                           name='email'
-                          placeholder='kari.nordmann@mail.com'
                           className='form-control'
                         />
                         <ErrorMessage
