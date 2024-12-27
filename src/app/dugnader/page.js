@@ -78,7 +78,7 @@ const page = () => {
                   <th>Turnover</th>
                   <th>Profit</th>
                   <th>Status</th>
-                  <th>Postnr</th>
+
                   <th>Contact person</th>
                   <th>Seller</th>
                   <th>Contact</th>
@@ -108,7 +108,7 @@ const page = () => {
                         {item?.status === 1 ? "Active" : "Inactive"}
                       </button>
                     </td>
-                    <td>{item?.postnr}</td>
+
                     <td>{item?.contact_person}</td>
                     <td>{item?.seller}</td>
                     <td>{item?.contact}</td>

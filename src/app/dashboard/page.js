@@ -44,7 +44,7 @@ const page = () => {
         show: false,
       },
     },
-    colors: ["#FD575A", "#545454"],
+    colors: ["#CDCDCD", "#FD575A"],
     dataLabels: {
       enabled: true,
     },
@@ -95,12 +95,12 @@ const page = () => {
         type: "donut",
       },
       labels: ["Sales", "Profit"],
-      colors: ["#CDCDCD", "#FD5A59"],
+      colors: ["#CDCDCD", "#FD575A"], // Match colors
       legend: {
         position: "bottom",
         itemMargin: {
-          horizontal: 10, // Horizontal gap between legend items
-          vertical: 5, // Vertical gap between rows of legend items (for multiple lines)
+          horizontal: 10,
+          vertical: 5,
         },
       },
       responsive: [
