@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/app/Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 import CreateTask from "@/app/Components/CreateTask";
@@ -18,6 +19,12 @@ const page = ({ params }) => {
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchProductDetails = async () => {
     try {
@@ -276,9 +283,9 @@ const page = ({ params }) => {
                               {keyword}{" "}
                               <img
                                 src='/images/close-tag.svg'
-                                // onClick={() =>
-                                //   deleteKeywordHandler(keyword?.id)
-                                // }
+                              // onClick={() =>
+                              //   deleteKeywordHandler(keyword?.id)
+                              // }
                               />
                             </li>
                           );
@@ -318,6 +325,7 @@ const page = ({ params }) => {
                     );
                   })) || <div>No logs available</div>}
 
+                {roleType!=='guest' && 
                 <div className='logg-til-desc'>
                   <div className='form-group'>
                     <textarea
@@ -335,7 +343,7 @@ const page = ({ params }) => {
                       Legg til notat
                     </button>
                   </div>
-                </div>
+                </div> }
               </div>
             </Col>
           </Row>
