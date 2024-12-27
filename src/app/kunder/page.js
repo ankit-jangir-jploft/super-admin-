@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
@@ -15,6 +16,12 @@ const page = () => {
   const [pagination, setPagination] = useState({});
   const [searchQuery, setSearch] = useState("");
   const [action, setAction] = useState("");
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchCustomers = async () => {
     try {
@@ -143,63 +150,64 @@ const page = () => {
               <tbody>
                 {customers.length
                   ? customers.map((customer) => (
-                      <tr key={customer.id}>
-                        <td>
-                          <input
-                            type='checkbox'
-                            checked={selectedCustomers.includes(customer.id)}
-                            onChange={() => handleSelectCustomer(customer.id)}
-                          />
-                        </td>
-                        <td>{customer?.id || "N/A"}</td>
-                        <td>{customer?.name || "N/A"}</td>
-                        <td>{customer?.createdAt || "N/A"}</td>
-                        <td>{customer?.DugnadsGroup || "N/A"}</td>
-                        <td>{customer?.contactPerson || "N/A"}</td>
-                        <td>{customer?.email || "N/A"}</td>
-                        <td>{customer?.phone || "N/A"}</td>
-                        <td>
-                          <button className='status'>Created</button>
-                        </td>
-                        <td>
-                          <button className='status cold'>Cold</button>
-                        </td>
-                        <td>{customer?.lastLog || "N/A"}</td>
-                        <td>{customer?.lastContact || "N/A"}</td>
-                        <td>{customer?.sellerName || "N/A"}</td>
-                        <td>
-                          <Link href={`/kunderdetail/${customer?.id}`}>
-                            <img src='/images/added-us.svg' />
-                          </Link>
-                        </td>
-                      </tr>
-                    ))
+                    <tr key={customer.id}>
+                      <td>
+                        <input
+                          type='checkbox'
+                          checked={selectedCustomers.includes(customer.id)}
+                          onChange={() => handleSelectCustomer(customer.id)}
+                        />
+                      </td>
+                      <td>{customer?.id || "N/A"}</td>
+                      <td>{customer?.name || "N/A"}</td>
+                      <td>{customer?.createdAt || "N/A"}</td>
+                      <td>{customer?.DugnadsGroup || "N/A"}</td>
+                      <td>{customer?.contactPerson || "N/A"}</td>
+                      <td>{customer?.email || "N/A"}</td>
+                      <td>{customer?.phone || "N/A"}</td>
+                      <td>
+                        <button className='status'>Created</button>
+                      </td>
+                      <td>
+                        <button className='status cold'>Cold</button>
+                      </td>
+                      <td>{customer?.lastLog || "N/A"}</td>
+                      <td>{customer?.lastContact || "N/A"}</td>
+                      <td>{customer?.sellerName || "N/A"}</td>
+                      <td>
+                        <Link href={`/kunderdetail/${customer?.id}`}>
+                          <img src='/images/added-us.svg' />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
                   : null}
               </tbody>
             </table>
           </div>
         </div>
         <div className='tablebruk'>
-          <div className='tablebruk_left'>
-            <select
-              className='form-select'
-              value={action}
-              onChange={(e) => {
-                setAction(e.target.value);
-              }}
-            >
-              <option value={""}>Mass action</option>
-              <option value={"delete"}>Delete</option>
-            </select>
-            {action && (
-              <button
-                className='crte-userd Confirm_btn'
-                onClick={handleMassAction}
+          {roleType === 'guest' ? '' :
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
               >
-                Confirm
-              </button>
-            )}
-          </div>
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassAction}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>}
           {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}

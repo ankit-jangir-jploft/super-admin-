@@ -15,6 +15,7 @@ import { Badge, Tab, Tabs } from "react-bootstrap";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [fetchSeller, setFetchSeller] = useState();
@@ -22,6 +23,12 @@ const page = () => {
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState();
+  const [roleType, setRoleType] = useState();
+  
+    useEffect(() => {
+      // Fetch roleType only on the client side
+      setRoleType(Cookies.get("roleType"));
+    }, []);
 
   function handleChange1(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -380,6 +387,7 @@ const page = () => {
                       />
 
                       <div className='col-md-6'>
+                      {roleType !== 'guest' &&
                         <div className='bot-btn justify-content-end'>
                           <button
                             type='submit'
@@ -387,7 +395,7 @@ const page = () => {
                           >
                             {isEditMode ? "Update Settings" : "Create Settings"}
                           </button>
-                        </div>
+                        </div> }
                       </div>
                       <div className='row'>
                         <div className='col-md-12'>
@@ -534,6 +542,7 @@ const page = () => {
 
                   <div className='row mt-3'>
                     <div className='col-md-6'>
+                    {roleType !== 'guest' &&
                       <div className='bot-btn add-quet'>
                         <button
                           type='button'
@@ -542,9 +551,10 @@ const page = () => {
                         >
                           Add question and answer
                         </button>
-                      </div>
+                      </div> }
                     </div>
                     <div className='col-md-6'>
+                    {roleType !== 'guest' &&
                       <div
                         className='bot-btn justify-content-end'
                         onClick={handleSave}
@@ -552,7 +562,7 @@ const page = () => {
                         <button className='btn btn-primary w-25 p-2'>
                           Save
                         </button>
-                      </div>
+                      </div> }
                     </div>
                   </div>
                 </Tab>
@@ -709,7 +719,7 @@ const page = () => {
                           )}
                         </div>
                       </div>
-
+                      {roleType !== 'guest' &&
                       <div className='d-flex justify-content-center mt-20'>
                         <button
                           className='btn btn-primary w-25'
@@ -718,7 +728,7 @@ const page = () => {
                         >
                           Submit
                         </button>
-                      </div>
+                      </div> }
                     </div>
                   </div>
                 </Tab>
@@ -726,6 +736,7 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
+                  {roleType !== 'guest' &&
                   <div className='text-end' style={{ marginTop: "20px" }}>
                     <Link
                       href='/createuser'
@@ -733,7 +744,7 @@ const page = () => {
                     >
                       Create User
                     </Link>
-                  </div>
+                  </div> }
 
                   <div className='table-responsive order-table'>
                     <table>
@@ -744,7 +755,8 @@ const page = () => {
                           <th>Status</th>
                           <th>Type</th>
                           <th>Email</th>
-                          <th></th>
+                          {roleType !== 'guest' &&
+                          <th></th> }
                         </tr>
                       </thead>
                       <tbody>
@@ -772,11 +784,12 @@ const page = () => {
                               {row?.role_id === 2 ? "Seller" : "Customer"}
                             </td>
                             <td>{row?.email}</td>
+                            {roleType !== 'guest' &&
                             <td>
                               <Link href={`/useredit/${row?.id}`}>
                                 <img src="/images/edit-icn.svg" alt="Edit" />
                               </Link>
-                            </td>
+                            </td> }
                           </tr>
                         ))}
                       </tbody>

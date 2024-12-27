@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined in your utils
 import { BASE_URL } from "../Utils/apiHelper";
@@ -16,6 +17,12 @@ const page = () => {
   const [searchOuery, setQuery] = useState("");
   const [pagination, setPagination] = useState();
   const [action, setAction] = useState();
+   const [roleType, setRoleType] = useState();
+  
+    useEffect(() => {
+      // Fetch roleType only on the client side
+      setRoleType(Cookies.get("roleType"));
+    }, []);
 
   const toggleRow = (id) => {
     setOpenRowId((prev) => (prev === id ? null : id));
@@ -262,6 +269,7 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
+          {roleType!=='guest' &&
           <div className='tablebruk_left'>
             <select
               className='form-select'
@@ -281,7 +289,7 @@ const page = () => {
                 Confirm
               </button>
             )}
-          </div>
+          </div> }
           <Paginate
             currentPage={currentPage}
             totalPages={pagination?.totalPages}

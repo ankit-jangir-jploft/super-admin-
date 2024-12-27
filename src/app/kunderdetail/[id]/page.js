@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
+import Cookies from "js-cookie";
 import CreateTask from "@/app/Components/CreateTask";
 import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
@@ -30,6 +31,13 @@ const page = ({ params }) => {
   const [tagContent, setTagContent] = useState("");
   const [logsData, setLogsData] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
+
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
@@ -178,6 +186,7 @@ const page = ({ params }) => {
             </span>
           </h2>
         </div>
+        {roleType === 'guest' ? '' :
         <div className='filter-manage'>
           <button className='status green-clr w-auto me-2'>
             PAGAENDE FORHANDSSALG
@@ -196,7 +205,7 @@ const page = ({ params }) => {
               <img src='/images/add.svg' />
             </button>
           </div>
-        </div>
+        </div> }
         <div className='order-tble kunder-dtl-box w-100 d-inline-block'>
           <Row>
             <Col md={3}>
@@ -315,15 +324,22 @@ const page = ({ params }) => {
                   {tags.length &&
                     tags.map((tag) => {
                       return (
-                        <button
-                          onClick={() => handleDelete(tag?.id)}
-                          className='tags-btn'
-                        >
-                          {tag?.name} <img src='/images/close.svg' />
-                        </button>
+                        roleType === 'guest' ?
+                          <button
+                            className='tags-btn'
+                          >
+                            {tag?.name}
+                          </button> :
+                          <button
+                            onClick={() => handleDelete(tag?.id)}
+                            className='tags-btn'
+                          >
+                            {tag?.name} <img src='/images/close.svg' />
+                          </button>
                       );
                     })}
                 </div>
+                {roleType === 'guest' ? '' :
                 <div className='search-frm justify-content-end px-3'>
                   <input
                     type='text'
@@ -338,7 +354,7 @@ const page = ({ params }) => {
                   >
                     <img src='/images/add.svg' />
                   </button>
-                </div>
+                </div>}
               </div>
             </Col>
             <Col lg={4}>
@@ -353,7 +369,7 @@ const page = ({ params }) => {
                       </div>
                     );
                   })}
-
+                {roleType === 'guest' ? '' :
                 <div className='logg-til-desc'>
                   <div className='form-group'>
                     <textarea
@@ -371,7 +387,7 @@ const page = ({ params }) => {
                       Legg til notat
                     </button>
                   </div>
-                </div>
+                </div> }
               </div>
             </Col>
           </Row>
