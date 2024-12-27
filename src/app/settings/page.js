@@ -24,6 +24,12 @@ const page = () => {
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState();
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   function handleChange1(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -393,14 +399,18 @@ const page = () => {
                       />
 
                       <div className='col-md-6'>
-                        <div className='bot-btn justify-content-end'>
-                          <button
-                            type='submit'
-                            className='btn btn-primary w-25 p-2'
-                          >
-                            {isEditMode ? "Update Settings" : "Create Settings"}
-                          </button>
-                        </div>
+                        {roleType !== "guest" && (
+                          <div className='bot-btn justify-content-end'>
+                            <button
+                              type='submit'
+                              className='btn btn-primary w-25 p-2'
+                            >
+                              {isEditMode
+                                ? "Update Settings"
+                                : "Create Settings"}
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className='row'>
                         <div className='col-md-12'>
@@ -550,25 +560,29 @@ const page = () => {
 
                   <div className='row mt-3'>
                     <div className='col-md-6'>
-                      <div className='bot-btn add-quet'>
-                        <button
-                          type='button'
-                          className='btn btn-primary w-50 p-2'
-                          onClick={handleAddQuestion}
-                        >
-                          Add question and answer
-                        </button>
-                      </div>
+                      {roleType !== "guest" && (
+                        <div className='bot-btn add-quet'>
+                          <button
+                            type='button'
+                            className='btn btn-primary w-50 p-2'
+                            onClick={handleAddQuestion}
+                          >
+                            Add question and answer
+                          </button>
+                        </div>
+                      )}
                     </div>
                     <div className='col-md-6'>
-                      <div
-                        className='bot-btn justify-content-end'
-                        onClick={handleSave}
-                      >
-                        <button className='btn btn-primary w-25 p-2'>
-                          Save
-                        </button>
-                      </div>
+                      {roleType !== "guest" && (
+                        <div
+                          className='bot-btn justify-content-end'
+                          onClick={handleSave}
+                        >
+                          <button className='btn btn-primary w-25 p-2'>
+                            Save
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Tab>
@@ -726,16 +740,17 @@ const page = () => {
                           )}
                         </div>
                       </div>
-
-                      <div className='d-flex justify-content-center mt-20'>
-                        <button
-                          className='btn btn-primary w-25'
-                          type='submit'
-                          onClick={handleSubmit3(onSubmit3)}
-                        >
-                          Submit
-                        </button>
-                      </div>
+                      {roleType !== "guest" && (
+                        <div className='d-flex justify-content-center mt-20'>
+                          <button
+                            className='btn btn-primary w-25'
+                            type='submit'
+                            onClick={handleSubmit3(onSubmit3)}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Tab>
@@ -743,17 +758,19 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
-                  <div
-                    className='text-end'
-                    style={{ marginTop: "20px" }}
-                  >
-                    <Link
-                      href='/createuser'
-                      className='crte-userd CreateUserCustom'
+                  {roleType !== "guest" && (
+                    <div
+                      className='text-end'
+                      style={{ marginTop: "20px" }}
                     >
-                      Create User
-                    </Link>
-                  </div>
+                      <Link
+                        href='/createuser'
+                        className='crte-userd CreateUserCustom'
+                      >
+                        Create User
+                      </Link>
+                    </div>
+                  )}
 
                   <div className='table-responsive order-table'>
                     <table>
@@ -764,7 +781,7 @@ const page = () => {
                           <th>Status</th>
                           <th>Type</th>
                           <th>Email</th>
-                          <th></th>
+                          {roleType !== "guest" && <th></th>}
                         </tr>
                       </thead>
                       <tbody>
@@ -790,14 +807,16 @@ const page = () => {
                               {row?.role_id === 2 ? "Seller" : "Customer"}
                             </td>
                             <td>{row?.email}</td>
-                            <td>
-                              <Link href={`/useredit/${row?.id}`}>
-                                <img
-                                  src='/images/edit-icn.svg'
-                                  alt='Edit'
-                                />
-                              </Link>
-                            </td>
+                            {roleType !== "guest" && (
+                              <td>
+                                <Link href={`/useredit/${row?.id}`}>
+                                  <img
+                                    src='/images/edit-icn.svg'
+                                    alt='Edit'
+                                  />
+                                </Link>
+                              </td>
+                            )}
                           </tr>
                         ))}
                       </tbody>

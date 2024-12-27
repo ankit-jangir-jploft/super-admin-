@@ -42,12 +42,20 @@ const Login = () => {
       try {
         const res = await axios.post(`${BASE_URL}/api/admin/login`, values);
         if (res?.data?.status) {
+          console.log("res?.data?.", res?.data);
+
           toast.dismiss();
           toast.success(res.data?.message);
           console.log("login response", res?.data?.data);
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
           Cookies.set("user", JSON.stringify(res.data.data?.user));
           window.location.href = "/";
+          Cookies.set("roleType", res.data?.data?.user?.role_type);
+          if (res.data?.data?.user?.role_type === "warehouse") {
+            window.location.href = "/order";
+          } else {
+            window.location.href = "/";
+          }
         } else {
           toast.dismiss();
           toast.error(res.data?.message);

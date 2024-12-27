@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
@@ -17,6 +18,12 @@ const page = () => {
   const [searchQuery, setSearch] = useState("");
   const [action, setAction] = useState("");
   const [userData, setUserData] = useState({});
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchCustomers = async () => {
     try {
@@ -192,26 +199,30 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <div className='tablebruk_left'>
-            <select
-              className='form-select'
-              value={action}
-              onChange={(e) => {
-                setAction(e.target.value);
-              }}
-            >
-              <option value={""}>Mass action</option>
-              <option value={"delete"}>Delete</option>
-            </select>
-            {action && (
-              <button
-                className='crte-userd Confirm_btn'
-                onClick={handleMassAction}
+          {roleType === "guest" ? (
+            ""
+          ) : (
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
               >
-                Confirm
-              </button>
-            )}
-          </div>
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassAction}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
+          )}
           {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}

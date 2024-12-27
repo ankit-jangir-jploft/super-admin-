@@ -155,10 +155,7 @@ const page = () => {
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
+            <input type='text' />
             <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>

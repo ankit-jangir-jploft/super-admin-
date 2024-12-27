@@ -2,11 +2,11 @@
 import Sidebar from "../Components/Sidebar/Sidebar";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { POST } from "../Utils/apiFunctions";
+import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation"; // Use useRouter for client-side navigation
@@ -17,7 +17,29 @@ const Page = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [profileImageFileError, setProfileImageFileError] = useState(null);
     const [pending, setPending] = useState(false)
+    const [roles, setRoles] = useState([]);
     const router = useRouter(); // Initialize useRouter for redirection
+
+    useEffect(() => {
+        const fetchRoles = async () => {
+            try {
+                setPending(true)
+                const response = await GET(`${BASE_URL}/api/admin/role`);
+                if (response?.data?.status === true) {
+                    setRoles(response?.data?.data || [])
+                } else {
+                    toast.error("Error submitting form.");
+                }
+            } catch (error) {
+                toast.error("Error submitting form.");
+                console.error(error);
+            } finally {
+                setPending(false);
+            }
+        }
+
+        fetchRoles();
+    }, [])
 
     const radios = [
         { name: "Light", value: "1" },
@@ -54,15 +76,12 @@ const Page = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-
-
-
             if (response?.data?.status === true) {
                 setPending(false)
                 toast.success("Form submitted successfully!");
                 router.push("/settings");
 
-            }else{
+            } else {
                 setPending(false)
             }
         } catch (error) {
@@ -105,27 +124,27 @@ const Page = () => {
                                             src={selectedImage || "/images/user.png"}
                                         />
                                         <h2 className='my-4 color_red'>Edit Photo</h2>
-                                        <Form.Group className="UploadPhoto_file"> 
-                                                <Form.Control
+                                        <Form.Group className="UploadPhoto_file">
+                                            <Form.Control
                                                 className="UploadPhoto"
-                                                    type="file"
-                                                    {...register("profile_image")}
-                                                    accept="image/*"
-                                                    onChange={(e) => {
-                                                        if (e.target.files && e.target.files[0]) {
-                                                            setSelectedImage(URL.createObjectURL(e.target.files[0])); // Update image preview
-                                                        }
-                                                    }}
-                                                />
-                                                {profileImageFileError && (
-                                                    <p className="text-danger">{profileImageFileError}</p>
-                                                )}
-                                            </Form.Group>
-                                        
+                                                type="file"
+                                                {...register("profile_image")}
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    if (e.target.files && e.target.files[0]) {
+                                                        setSelectedImage(URL.createObjectURL(e.target.files[0])); // Update image preview
+                                                    }
+                                                }}
+                                            />
+                                            {profileImageFileError && (
+                                                <p className="text-danger">{profileImageFileError}</p>
+                                            )}
+                                        </Form.Group>
+
                                     </div>
 
                                     <Form onSubmit={handleSubmit(onSubmit)}>
-                                         
+
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <Form.Group className="mb-3">
@@ -163,8 +182,11 @@ const Page = () => {
                                                     <Form.Select
                                                         {...register("role_id", { required: "User type is required" })}
                                                     >
-                                                        <option value="2">Seller</option>
-                                                        <option value="3">Customer</option>
+                                                        {roles?.map((role) => {
+                                                            return (
+                                                                <option value={role.id}>{role.name}</option>
+                                                            )
+                                                        })}
                                                     </Form.Select>
                                                     {errors.role_id && (
                                                         <span className="text-danger">{errors.role_id.message}</span>

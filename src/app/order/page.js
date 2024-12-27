@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined in your utils
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
-import Cookies from "js-cookie";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -18,6 +18,13 @@ const page = () => {
   const [pagination, setPagination] = useState();
   const [action, setAction] = useState();
   const [userData, setUserData] = useState({});
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
+
   const toggleRow = (id) => {
     setOpenRowId((prev) => (prev === id ? null : id));
   };
@@ -273,26 +280,28 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <div className='tablebruk_left'>
-            <select
-              className='form-select'
-              value={action}
-              onChange={(e) => {
-                setAction(e.target.value);
-              }}
-            >
-              <option value={""}>Mass action</option>
-              <option value={"delete"}>Delete</option>
-            </select>
-            {action && (
-              <button
-                className='crte-userd Confirm_btn'
-                onClick={handleMassDelete}
+          {roleType !== "guest" && (
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
               >
-                Confirm
-              </button>
-            )}
-          </div>
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassDelete}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
+          )}
           <Paginate
             currentPage={currentPage}
             totalPages={pagination?.totalPages}

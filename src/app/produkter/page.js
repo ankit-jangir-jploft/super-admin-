@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
-import Cookies from "js-cookie";
 
 const page = () => {
   const [currentPage, setCurrent] = useState(1);
@@ -17,6 +17,12 @@ const page = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [action, setAction] = useState("");
   const [userData, setUserData] = useState({});
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchProductList = async () => {
     try {
@@ -148,7 +154,7 @@ const page = () => {
                   <th>Sub category</th>
                   <th>Created</th>
                   <th>View</th>
-                  <th>Edit</th>
+                  {roleType !== "guest" && <th>Edit</th>}
                 </tr>
               </thead>
               <tbody>
@@ -202,11 +208,13 @@ const page = () => {
                           <img src='/images/prdctes.svg' />
                         </Link>
                       </td>
-                      <td>
-                        <Link href={`/updateproduct/${product?.id}`}>
-                          <img src='/images/prdctes.svg' />
-                        </Link>
-                      </td>
+                      {roleType !== "guest" && (
+                        <td>
+                          <Link href={`/updateproduct/${product?.id}`}>
+                            <img src='/images/prdctes.svg' />
+                          </Link>
+                        </td>
+                      )}
                     </tr>
                   ))) || (
                   <tr>
@@ -223,26 +231,28 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <div className='tablebruk_left'>
-            <select
-              className='form-select'
-              value={action}
-              onChange={(e) => {
-                setAction(e.target.value);
-              }}
-            >
-              <option value={""}>Mass action</option>
-              <option value={"delete"}>Delete</option>
-            </select>
-            {action && (
-              <button
-                className='crte-userd Confirm_btn'
-                onClick={handleMassAction}
+          {roleType !== "guest" && (
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
               >
-                Confirm
-              </button>
-            )}
-          </div>
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassAction}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
+          )}
           {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}

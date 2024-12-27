@@ -2,15 +2,20 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation"; // Import the useRouter hook
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const [isActive, setIsActive] = useState(false);
   const [smallsidebar, setSmallSidebar] = useState(false);
   const [imagePath, setImagePath] = useState("/images/menu.svg");
-
+  const [roleType, setRoleType] = useState(null); // Initialize as null
   const router = usePathname();
   const route = useRouter();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   // Function to toggle the sidebar state
   const toggleClass = () => {
@@ -23,23 +28,55 @@ const Sidebar = () => {
     );
   };
 
-  const menuItems = [
-    { href: "/", icon: "/images/home.svg", label: "Dashboard" },
-    { href: "/order", icon: "/images/order.svg", label: "Orders" },
-    { href: "/kunder", icon: "/images/customers.svg", label: "Customers" },
-    { href: "/produkter", icon: "/images/product.svg", label: "Products" },
-    {
-      href: "/dugnader",
-      icon: "/images/shopping-bag.svg",
-      label: "Dugnad campaigns",
-    },
-    {
-      href: "/statistics",
-      icon: "/images/statistikk.svg",
-      label: "Statistics",
-    },
-    { href: "/settings", icon: "/images/settings.svg", label: "Settings" },
-  ];
+  // Render nothing until roleType is available
+  if (roleType === null) {
+    return null;
+  }
+
+  let menuItems = []
+
+  if (roleType === "seller") {
+    menuItems = [
+      { href: "/", icon: "/images/home.svg", label: "Dashboard" },
+      { href: "/order", icon: "/images/order.svg", label: "Orders" },
+      { href: "/kunder", icon: "/images/customers.svg", label: "Customers" },
+      {
+        href: "/dugnader",
+        icon: "/images/shopping-bag.svg",
+        label: "Dugnad campaigns",
+      },
+      {
+        href: "/statistics",
+        icon: "/images/statistikk.svg",
+        label: "Statistics",
+      },
+    ]
+  } else if (roleType === "superadmin" || roleType === 'guest') {
+    menuItems = [
+      { href: "/", icon: "/images/home.svg", label: "Dashboard" },
+      { href: "/order", icon: "/images/order.svg", label: "Orders" },
+      { href: "/kunder", icon: "/images/customers.svg", label: "Customers" },
+      { href: "/produkter", icon: "/images/product.svg", label: "Products" },
+      {
+        href: "/dugnader",
+        icon: "/images/shopping-bag.svg",
+        label: "Dugnad campaigns",
+      },
+      {
+        href: "/statistics",
+        icon: "/images/statistikk.svg",
+        label: "Statistics",
+      },
+      { href: "/settings", icon: "/images/settings.svg", label: "Settings" },
+    ];
+  } else if (roleType === 'warehouse') {
+    menuItems = [
+      { href: "/order", icon: "/images/order.svg", label: "Orders" }
+    ];
+  }
+
+
+
 
   return (
     <div
@@ -47,8 +84,8 @@ const Sidebar = () => {
         isActive
           ? "active sidebar-admin"
           : smallsidebar
-          ? "small-sidebar sidebar-admin"
-          : "sidebar-admin"
+            ? "small-sidebar sidebar-admin"
+            : "sidebar-admin"
       }
     >
       <span

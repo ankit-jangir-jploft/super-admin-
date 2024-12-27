@@ -278,91 +278,61 @@ const page = () => {
                     <p>Lager lokasjon</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='A1'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Lagerstyring</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='checkbox'
-                      placeholder='A1'
-                    />
+                    <input type='checkbox' />
                   </Col>
                   <Col lg={6}>
                     <p>Antall</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='53534'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Vekt (g)</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='31'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Lengde (cm)</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='21'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Bredde (cm)</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='9'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Hoyde (cm)</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='1'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Menyrekkefolge</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='1'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>GTIN / EAN</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='text'
-                      placeholder='1'
-                    />
+                    <input type='text' />
                   </Col>
                   <Col lg={6}>
                     <p>Vises i produktgalleri</p>
                   </Col>
                   <Col lg={6}>
-                    <input
-                      type='checkbox'
-                      placeholder='1'
-                    />
+                    <input type='checkbox' />
                   </Col>
                 </Row>
               </div>
@@ -420,10 +390,7 @@ const page = () => {
 
                 <div className='logg-til-desc'>
                   <div className='form-group'>
-                    <textarea
-                      rows='4'
-                      placeholder='Legg til internt notat...'
-                    ></textarea>
+                    <textarea rows='4'></textarea>
                   </div>
                   <div className='text-end'>
                     <button className='btn-primary px-3 py-1'>

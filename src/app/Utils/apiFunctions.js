@@ -33,6 +33,8 @@ export const POST = async (Url, data) => {
     return res;
   } catch (error) {
     toast.dismiss();
+    console.log("error", error);
+    
     return toast.error(
       error.response.data.message ? error.response.data.message : error.message
     );
