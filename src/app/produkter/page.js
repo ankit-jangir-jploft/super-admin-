@@ -16,6 +16,7 @@ const page = () => {
   const [searchQuery, setQuery] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [action, setAction] = useState("");
+  const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
 
   useEffect(() => {
@@ -93,6 +94,8 @@ const page = () => {
 
   useEffect(() => {
     fetchProductList();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, [currentPage, searchQuery]);
 
   return (
@@ -116,8 +119,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -144,13 +154,11 @@ const page = () => {
                   <th>Sub category</th>
                   <th>Created</th>
                   <th>View</th>
-                  {roleType !== 'guest' &&
-                    <th>Edit</th>
-                  }
+                  {roleType !== "guest" && <th>Edit</th>}
                 </tr>
               </thead>
               <tbody>
-                {products.length &&
+                {(products.length &&
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>
@@ -178,10 +186,11 @@ const page = () => {
                       <td>{product?.price || "N/A"}</td>
                       <td>
                         <button
-                          className={`status ${product?.product_status === 1
+                          className={`status ${
+                            product?.product_status === 1
                               ? "green-clr"
                               : "yellow"
-                            }`}
+                          }`}
                         >
                           {product?.product_status === 1
                             ? "Published"
@@ -199,21 +208,30 @@ const page = () => {
                           <img src='/images/prdctes.svg' />
                         </Link>
                       </td>
-                      {roleType !== 'guest' &&
+                      {roleType !== "guest" && (
                         <td>
                           <Link href={`/updateproduct/${product?.id}`}>
                             <img src='/images/prdctes.svg' />
                           </Link>
                         </td>
-                      }
+                      )}
                     </tr>
-                  ))}
+                  ))) || (
+                  <tr>
+                    <td
+                      className='text-center'
+                      colSpan={13}
+                    >
+                      No Products Yet
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
         <div className='tablebruk'>
-          {roleType !== 'guest' &&
+          {roleType !== "guest" && (
             <div className='tablebruk_left'>
               <select
                 className='form-select'
@@ -233,7 +251,8 @@ const page = () => {
                   Confirm
                 </button>
               )}
-            </div>}
+            </div>
+          )}
           {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}

@@ -348,7 +348,6 @@ const page = ({ params }) => {
                           ProductNumber: e.target.value,
                         }))
                       }
-                      placeholder='DUG40GULL'
                       isInvalid={!!errors?.ProductNumber}
                     />
                     <Form.Control.Feedback type='invalid'>
@@ -452,7 +451,6 @@ const page = ({ params }) => {
                               Price: e.target.value,
                             }))
                           }
-                          placeholder='50'
                           isInvalid={!!errors?.Price}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -471,7 +469,6 @@ const page = ({ params }) => {
                               SalesPrice: e.target.value,
                             }))
                           }
-                          placeholder='125'
                           isInvalid={!!errors?.SalesPrice}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -512,7 +509,6 @@ const page = ({ params }) => {
                               Length: e.target.value,
                             }))
                           }
-                          placeholder='21'
                           isInvalid={!!errors?.Length}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -531,7 +527,6 @@ const page = ({ params }) => {
                               Width: e.target.value,
                             }))
                           }
-                          placeholder='9'
                           isInvalid={!!errors?.Width}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -550,7 +545,6 @@ const page = ({ params }) => {
                               Depth: e.target.value,
                             }))
                           }
-                          placeholder='2'
                           isInvalid={!!errors?.Depth}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -572,7 +566,6 @@ const page = ({ params }) => {
                               Weight: e.target.value,
                             }))
                           }
-                          placeholder='31'
                           isInvalid={!!errors?.Weight}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -591,7 +584,6 @@ const page = ({ params }) => {
                               gtin: e.target.value,
                             }))
                           }
-                          placeholder='21'
                           isInvalid={!!errors?.gtin}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -610,7 +602,6 @@ const page = ({ params }) => {
                               menuOrder: e.target.value,
                             }))
                           }
-                          placeholder='1'
                           isInvalid={!!errors?.menuOrder}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -665,7 +656,7 @@ const page = ({ params }) => {
                       />
                     </div>
                     <Link
-                      href=''
+                      href='/createproduct'
                       className='add-btne'
                     >
                       +
@@ -701,7 +692,6 @@ const page = ({ params }) => {
                           ProductName: e.target.value,
                         }))
                       }
-                      placeholder='Julepakke #2 - Til og fra lapper'
                       isInvalid={!!errors?.ProductName}
                     />
                     <Form.Control.Feedback>
@@ -780,7 +770,6 @@ const page = ({ params }) => {
                               warehouseAddress: e.target.value,
                             }))
                           }
-                          placeholder='A1'
                         />
                       </Form.Group>
                     </div>
@@ -795,7 +784,6 @@ const page = ({ params }) => {
                               quantity: e.target.value,
                             }))
                           }
-                          placeholder='53534'
                         />
                       </Form.Group>
                     </div>
@@ -866,7 +854,6 @@ const page = ({ params }) => {
                           shortDescription: e.target.value,
                         }))
                       }
-                      placeholder='The cards are printed in Norway on environmentally friendly FSC approved paper. The size is 10×15 cm. 10 different designs.'
                       rows={3}
                     />
                   </Form.Group>
@@ -895,7 +882,6 @@ const page = ({ params }) => {
                           PageDescription: e.target.value,
                         }))
                       }
-                      placeholder='Kortene er trykket i Norge på miljøvennlig FSC godkjent papir. Størrelsen er 10x15 cm. 10 forskjellige design.'
                     />
                   </Form.Group>
 
@@ -903,7 +889,6 @@ const page = ({ params }) => {
                     <Form.Label>Meta description</Form.Label>
                     <Form.Control
                       as='textarea'
-                      placeholder='Dugnadspakke med 40stk til og fra lapper til jul. Disse er veldig enkle å selge i en dugnad for en skoleklasse, et idrettslag, en russegruppe eller andre organisasjoner.'
                       rows={3}
                       value={productForm.MetaDescription}
                       onChange={(e) =>

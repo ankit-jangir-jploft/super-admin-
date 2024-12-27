@@ -19,16 +19,17 @@ import Cookies from "js-cookie";
 
 const page = () => {
   const [fetchSeller, setFetchSeller] = useState();
+  const [userData, setUserData] = useState({});
 
   let [count, setCount] = useState(0);
 
   const [file, setFile] = useState();
   const [roleType, setRoleType] = useState();
-  
-    useEffect(() => {
-      // Fetch roleType only on the client side
-      setRoleType(Cookies.get("roleType"));
-    }, []);
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   function handleChange1(e) {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -118,6 +119,9 @@ const page = () => {
     fetchFaqList();
     fetchSellerList();
     fetchFrontPageSettings();
+
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, []);
 
   const [faqList, setFaqList] = useState([
@@ -341,8 +345,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -367,7 +378,8 @@ const page = () => {
                             className='mb-3'
                             controlId='formBasicCheckbox'
                           >
-                            <Form.Check className="form_checkbox_top"
+                            <Form.Check
+                              className='form_checkbox_top'
                               type='checkbox'
                               label='Automatically unpublish items in the online store with less than 100 pieces in stock'
                               {...register("status")}
@@ -387,15 +399,18 @@ const page = () => {
                       />
 
                       <div className='col-md-6'>
-                      {roleType !== 'guest' &&
-                        <div className='bot-btn justify-content-end'>
-                          <button
-                            type='submit'
-                            className='btn btn-primary w-25 p-2'
-                          >
-                            {isEditMode ? "Update Settings" : "Create Settings"}
-                          </button>
-                        </div> }
+                        {roleType !== "guest" && (
+                          <div className='bot-btn justify-content-end'>
+                            <button
+                              type='submit'
+                              className='btn btn-primary w-25 p-2'
+                            >
+                              {isEditMode
+                                ? "Update Settings"
+                                : "Create Settings"}
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className='row'>
                         <div className='col-md-12'>
@@ -420,7 +435,10 @@ const page = () => {
 
                         <Form.Group className='mb-3'>
                           <Form.Label>Language</Form.Label>
-                          <Form.Select {...register("language_id")} className="LanguageBox">
+                          <Form.Select
+                            {...register("language_id")}
+                            className='LanguageBox'
+                          >
                             <option value='1'>English</option>
                             {/* <option value="2">Korea</option> */}
                           </Form.Select>
@@ -542,27 +560,29 @@ const page = () => {
 
                   <div className='row mt-3'>
                     <div className='col-md-6'>
-                    {roleType !== 'guest' &&
-                      <div className='bot-btn add-quet'>
-                        <button
-                          type='button'
-                          className='btn btn-primary w-50 p-2'
-                          onClick={handleAddQuestion}
-                        >
-                          Add question and answer
-                        </button>
-                      </div> }
+                      {roleType !== "guest" && (
+                        <div className='bot-btn add-quet'>
+                          <button
+                            type='button'
+                            className='btn btn-primary w-50 p-2'
+                            onClick={handleAddQuestion}
+                          >
+                            Add question and answer
+                          </button>
+                        </div>
+                      )}
                     </div>
                     <div className='col-md-6'>
-                    {roleType !== 'guest' &&
-                      <div
-                        className='bot-btn justify-content-end'
-                        onClick={handleSave}
-                      >
-                        <button className='btn btn-primary w-25 p-2'>
-                          Save
-                        </button>
-                      </div> }
+                      {roleType !== "guest" && (
+                        <div
+                          className='bot-btn justify-content-end'
+                          onClick={handleSave}
+                        >
+                          <button className='btn btn-primary w-25 p-2'>
+                            Save
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Tab>
@@ -582,7 +602,6 @@ const page = () => {
                         >
                           <option value='1'>Norwegian</option>
                           <option value='1'>Sweden</option>
-
                         </Form.Select>
                         {errors.navbarLanguage && (
                           <p className='text-danger block'>
@@ -684,12 +703,14 @@ const page = () => {
                           </Form.Group>
                         </div>
 
-                        <div className='col-md-6' style={{ marginTop: "-33px" }}>
+                        <div
+                          className='col-md-6'
+                          style={{ marginTop: "-33px" }}
+                        >
                           <Form.Label className='mt-4'>Header Image</Form.Label>
                           <div className='crpr-im filr-setng filr-setng1'>
-
                             <Image
-                              src={headerImage || '/images/image-upload1.svg' }
+                              src={headerImage || "/images/image-upload1.svg"}
                               alt='Header Image Preview'
                               className='rounded-circle m-4'
                               width={100}
@@ -702,7 +723,7 @@ const page = () => {
                                 type='file'
                               />
                               <img
-                                 src='/images/image-upload1.svg'
+                                src='/images/image-upload1.svg'
                                 alt='Upload icon'
                               />
                               <p className='m-0'>
@@ -719,16 +740,17 @@ const page = () => {
                           )}
                         </div>
                       </div>
-                      {roleType !== 'guest' &&
-                      <div className='d-flex justify-content-center mt-20'>
-                        <button
-                          className='btn btn-primary w-25'
-                          type='submit'
-                          onClick={handleSubmit3(onSubmit3)}
-                        >
-                          Submit
-                        </button>
-                      </div> }
+                      {roleType !== "guest" && (
+                        <div className='d-flex justify-content-center mt-20'>
+                          <button
+                            className='btn btn-primary w-25'
+                            type='submit'
+                            onClick={handleSubmit3(onSubmit3)}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Tab>
@@ -736,15 +758,19 @@ const page = () => {
                   eventKey='users'
                   title='Users'
                 >
-                  {roleType !== 'guest' &&
-                  <div className='text-end' style={{ marginTop: "20px" }}>
-                    <Link
-                      href='/createuser'
-                      className='crte-userd CreateUserCustom'
+                  {roleType !== "guest" && (
+                    <div
+                      className='text-end'
+                      style={{ marginTop: "20px" }}
                     >
-                      Create User
-                    </Link>
-                  </div> }
+                      <Link
+                        href='/createuser'
+                        className='crte-userd CreateUserCustom'
+                      >
+                        Create User
+                      </Link>
+                    </div>
+                  )}
 
                   <div className='table-responsive order-table'>
                     <table>
@@ -755,24 +781,21 @@ const page = () => {
                           <th>Status</th>
                           <th>Type</th>
                           <th>Email</th>
-                          {roleType !== 'guest' &&
-                          <th></th> }
+                          {roleType !== "guest" && <th></th>}
                         </tr>
                       </thead>
                       <tbody>
                         {fetchSeller?.data?.map((row, index) => (
                           <tr key={row?.id}>
                             <td>
-
                               <Image
                                 src={row?.profile_image}
-                                alt="Profile Image"
+                                alt='Profile Image'
                                 width={40}
                                 height={40}
                                 className='rounded-circle'
-                                crossOrigin="anonymous"
+                                crossOrigin='anonymous'
                               />
-
                             </td>
                             <td>{row?.name}</td>
                             <td>
@@ -784,12 +807,16 @@ const page = () => {
                               {row?.role_id === 2 ? "Seller" : "Customer"}
                             </td>
                             <td>{row?.email}</td>
-                            {roleType !== 'guest' &&
-                            <td>
-                              <Link href={`/useredit/${row?.id}`}>
-                                <img src="/images/edit-icn.svg" alt="Edit" />
-                              </Link>
-                            </td> }
+                            {roleType !== "guest" && (
+                              <td>
+                                <Link href={`/useredit/${row?.id}`}>
+                                  <img
+                                    src='/images/edit-icn.svg'
+                                    alt='Edit'
+                                  />
+                                </Link>
+                              </td>
+                            )}
                           </tr>
                         ))}
                       </tbody>

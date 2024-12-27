@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
-import Cookies from "js-cookie";
+
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -16,6 +17,7 @@ const page = () => {
   const [pagination, setPagination] = useState({});
   const [searchQuery, setSearch] = useState("");
   const [action, setAction] = useState("");
+  const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
 
   useEffect(() => {
@@ -47,6 +49,8 @@ const page = () => {
 
   useEffect(() => {
     fetchCustomers();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, [searchQuery, currentPage]);
 
   const handleSelectCustomer = (customerId) => {
@@ -85,6 +89,7 @@ const page = () => {
         toast.success(res.data.message);
         setSelectedCustomers([]);
         fetchCustomers();
+        setAction("");
       } else {
         toast.dismiss();
         toast.error("Failed to perform the action!");
@@ -115,8 +120,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -150,44 +162,46 @@ const page = () => {
               <tbody>
                 {customers.length
                   ? customers.map((customer) => (
-                    <tr key={customer.id}>
-                      <td>
-                        <input
-                          type='checkbox'
-                          checked={selectedCustomers.includes(customer.id)}
-                          onChange={() => handleSelectCustomer(customer.id)}
-                        />
-                      </td>
-                      <td>{customer?.id || "N/A"}</td>
-                      <td>{customer?.name || "N/A"}</td>
-                      <td>{customer?.createdAt || "N/A"}</td>
-                      <td>{customer?.DugnadsGroup || "N/A"}</td>
-                      <td>{customer?.contactPerson || "N/A"}</td>
-                      <td>{customer?.email || "N/A"}</td>
-                      <td>{customer?.phone || "N/A"}</td>
-                      <td>
-                        <button className='status'>Created</button>
-                      </td>
-                      <td>
-                        <button className='status cold'>Cold</button>
-                      </td>
-                      <td>{customer?.lastLog || "N/A"}</td>
-                      <td>{customer?.lastContact || "N/A"}</td>
-                      <td>{customer?.sellerName || "N/A"}</td>
-                      <td>
-                        <Link href={`/kunderdetail/${customer?.id}`}>
-                          <img src='/images/added-us.svg' />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
+                      <tr key={customer.id}>
+                        <td>
+                          <input
+                            type='checkbox'
+                            checked={selectedCustomers.includes(customer.id)}
+                            onChange={() => handleSelectCustomer(customer.id)}
+                          />
+                        </td>
+                        <td>{customer?.id || "N/A"}</td>
+                        <td>{customer?.name || "N/A"}</td>
+                        <td>{customer?.createdAt || "N/A"}</td>
+                        <td>{customer?.DugnadsGroup || "N/A"}</td>
+                        <td>{customer?.contactPerson || "N/A"}</td>
+                        <td>{customer?.email || "N/A"}</td>
+                        <td>{customer?.phone || "N/A"}</td>
+                        <td>
+                          <button className='status'>Created</button>
+                        </td>
+                        <td>
+                          <button className='status cold'>Cold</button>
+                        </td>
+                        <td>{customer?.lastLog || "N/A"}</td>
+                        <td>{customer?.lastContact || "N/A"}</td>
+                        <td>{customer?.sellerName || "N/A"}</td>
+                        <td>
+                          <Link href={`/kunderdetail/${customer?.id}`}>
+                            <img src='/images/added-us.svg' />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))
                   : null}
               </tbody>
             </table>
           </div>
         </div>
         <div className='tablebruk'>
-          {roleType === 'guest' ? '' :
+          {roleType === "guest" ? (
+            ""
+          ) : (
             <div className='tablebruk_left'>
               <select
                 className='form-select'
@@ -207,7 +221,8 @@ const page = () => {
                   Confirm
                 </button>
               )}
-            </div>}
+            </div>
+          )}
           {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}

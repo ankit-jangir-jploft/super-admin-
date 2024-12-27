@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET } from "../Utils/apiFunctions";
+import Cookies from "js-cookie";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -12,6 +13,7 @@ const ApexCharts = dynamic(() => import("react-apexcharts"), {
 
 const page = () => {
   const [dashBoardData, setDashBoardData] = useState();
+  const [userData, setUserData] = useState();
   const series = [
     {
       name: "Sales - 2013",
@@ -137,10 +139,13 @@ const page = () => {
     }
   };
 
-  console.log("lineChartOptions", lineChartOptions);
+  // console.log("lineChartOptions", lineChartOptions);
 
   useEffect(() => {
     fetchData();
+
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, []);
 
   return (
@@ -150,15 +155,19 @@ const page = () => {
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
-            <Link href={"/"}>
+            <input type='text' />
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>

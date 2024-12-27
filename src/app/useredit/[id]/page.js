@@ -18,7 +18,7 @@ const Page = ({ param }) => {
   const [profileImage, setProfileImage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [fetchSellerById, setFetchSellerById] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -29,7 +29,7 @@ const Page = ({ param }) => {
 
   // const { sellerId } = useSearchParams();
 
-  const params = useParams()
+  const params = useParams();
 
   const radios = [
     { name: "Light", value: "1" },
@@ -80,13 +80,12 @@ const Page = ({ param }) => {
         formData
       );
 
-      console.log({ response })
+      console.log({ response });
 
       if (response?.data?.status === true) {
-
         toast.success("Seller updated successfully!");
         fetchSellerList();
-        router.push("/settings")
+        router.push("/settings");
       }
     } catch (error) {
       console.log(error);
@@ -123,9 +122,9 @@ const Page = ({ param }) => {
                         src={profileImage || "/images/user-edt.png"}
                         alt='Profile'
                       />
-                      <Form.Group className="UploadPhoto_file">
+                      <Form.Group className='UploadPhoto_file'>
                         <Form.Control
-                          className="UploadPhoto"
+                          className='UploadPhoto'
                           type='file'
                           accept='image/*'
                           onChange={handleImageChange}
@@ -140,7 +139,6 @@ const Page = ({ param }) => {
                             {...register("name", {
                               required: "Name is required",
                             })}
-                            placeholder='Name'
                           />
                           {errors.name && (
                             <p className='text-danger'>{errors.name.message}</p>
@@ -159,7 +157,6 @@ const Page = ({ param }) => {
                                 message: "Invalid email address",
                               },
                             })}
-                            placeholder='Email'
                           />
                           {errors.email && (
                             <p className='text-danger'>
@@ -234,19 +231,19 @@ const Page = ({ param }) => {
                         </Form.Group>
                       </div>
                     </div>
-                    <div className="row mt-3 mb-5">
-                      <div className="col-md-6">
+                    <div className='row mt-3 mb-5'>
+                      <div className='col-md-6'>
                         <button
-                          className="createorder_top_right w-100 btn_bg_delt"
-                          type="submit"
+                          className='createorder_top_right w-100 btn_bg_delt'
+                          type='submit'
                         >
                           Delete user
                         </button>
                       </div>
-                      <div className="col-md-6">
+                      <div className='col-md-6'>
                         <button
-                          className="createorder_top_right btn_bg_save w-100"
-                          type="submit"
+                          className='createorder_top_right btn_bg_save w-100'
+                          type='submit'
                         >
                           Save
                         </button>

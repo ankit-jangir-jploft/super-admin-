@@ -58,6 +58,21 @@ const page = ({ params }) => {
     }
   };
 
+  const sendMailHandler = async () => {
+    try {
+      const options = {
+        customer_id: id,
+      };
+      const res = await GET(`${BASE_URL}/api/admin/sendMailCustomer`, options);
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success("Mail sent successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchTags = async () => {
     try {
       const options = {
@@ -186,26 +201,49 @@ const page = ({ params }) => {
             </span>
           </h2>
         </div>
-        {roleType === 'guest' ? '' :
-        <div className='filter-manage'>
-          <button className='status green-clr w-auto me-2'>
-            PAGAENDE FORHANDSSALG
-          </button>
-          <div>
-            <button className='bold-btn w-auto me-2'>Send Epost</button>
-            <button className='bold-btn w-auto me-2'>Ring</button>
-            <button className='bold-btn w-auto me-2'>Legg til oppgave</button>
-            <button
-              className='add-icon'
-              onClick={(e) => {
-                e.preventDefault();
-                handlePopup();
-              }}
-            >
-              <img src='/images/add.svg' />
+        {roleType === "guest" ? (
+          ""
+        ) : (
+          <div className='filter-manage'>
+            <button className='status green-clr w-auto me-2'>
+              PAGAENDE FORHANDSSALG
             </button>
+            <div>
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={sendMailHandler}
+              >
+                Send Epost
+              </button>
+              {/* <button className='bold-btn w-auto me-2'> */}
+              <a
+                className='bold-btn w-auto me-2'
+                href={`tel:+${customer?.phone}`}
+              >
+                Ring
+              </a>
+              {/* </button> */}
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePopup();
+                }}
+              >
+                Legg til oppgave
+              </button>
+              <button
+                className='add-icon'
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePopup();
+                }}
+              >
+                <img src='/images/add.svg' />
+              </button>
+            </div>
           </div>
-        </div> }
+        )}
         <div className='order-tble kunder-dtl-box w-100 d-inline-block'>
           <Row>
             <Col md={3}>
@@ -299,7 +337,7 @@ const page = ({ params }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orderDetails?.length &&
+                    {(orderDetails?.length &&
                       orderDetails?.map((order) => {
                         return (
                           <tr>
@@ -314,80 +352,91 @@ const page = ({ params }) => {
                             <td>kr {order?.total_amount}</td>
                           </tr>
                         );
-                      })}
+                      })) || (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className='text-center'
+                        >
+                          No data
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
               <div className='order-dtl-box mt-4'>
                 <h2>Tags</h2>
                 <div className='p-2'>
-                  {tags.length &&
+                  {(tags.length &&
                     tags.map((tag) => {
-                      return (
-                        roleType === 'guest' ?
-                          <button
-                            className='tags-btn'
-                          >
-                            {tag?.name}
-                          </button> :
-                          <button
-                            onClick={() => handleDelete(tag?.id)}
-                            className='tags-btn'
-                          >
-                            {tag?.name} <img src='/images/close.svg' />
-                          </button>
+                      return roleType === "guest" ? (
+                        <button className='tags-btn'>{tag?.name}</button>
+                      ) : (
+                        <button
+                          onClick={() => handleDelete(tag?.id)}
+                          className='tags-btn'
+                        >
+                          {tag?.name} <img src='/images/close.svg' />
+                        </button>
                       );
-                    })}
+                    })) || <div>No Tags</div>}
                 </div>
-                {roleType === 'guest' ? '' :
-                <div className='search-frm justify-content-end px-3'>
-                  <input
-                    type='text'
-                    placeholder='Sok i order'
-                    className='rounded w-auto ps-2'
-                    value={tagContent}
-                    onChange={(e) => setTagContent(e.target.value)}
-                  />
-                  <button
-                    className='add-icon'
-                    onClick={handleAddTags}
-                  >
-                    <img src='/images/add.svg' />
-                  </button>
-                </div>}
+                {roleType === "guest" ? (
+                  ""
+                ) : (
+                  <div className='search-frm justify-content-end px-3'>
+                    <input
+                      type='text'
+                      className='rounded w-auto ps-2'
+                      value={tagContent}
+                      onChange={(e) => setTagContent(e.target.value)}
+                    />
+                    <button
+                      className='add-icon'
+                      onClick={handleAddTags}
+                    >
+                      <img src='/images/add.svg' />
+                    </button>
+                  </div>
+                )}
               </div>
             </Col>
             <Col lg={4}>
               <div className='order-dtl-box'>
-                <h2>Logg </h2>
-                {logs?.length &&
-                  logs.map((log) => {
-                    return (
-                      <div className='logg-dtl'>
-                        <span>{log?.updated_at}</span>
-                        <label>{log?.content}</label>
-                      </div>
-                    );
-                  })}
-                {roleType === 'guest' ? '' :
-                <div className='logg-til-desc'>
-                  <div className='form-group'>
-                    <textarea
-                      rows='4'
-                      placeholder='Legg til internt notat...'
-                      value={logsData}
-                      onChange={(e) => setLogsData(e.target.value)}
-                    ></textarea>
-                  </div>
-                  <div className='text-end'>
-                    <button
-                      className='btn-primary px-3 py-1'
-                      onClick={handleAddLog}
+                <h2>Logg</h2>
+                {logs.length > 0 ? (
+                  logs.map((log, index) => (
+                    <div
+                      className='logg-dtl'
+                      key={index}
                     >
-                      Legg til notat
-                    </button>
+                      <span>{log?.updated_at}</span>
+                      <label>{log?.content}</label>
+                    </div>
+                  ))
+                ) : (
+                  <p>No logs available.</p>
+                )}
+                {roleType !== "guest" && (
+                  <div className='logg-til-desc'>
+                    <div className='form-group'>
+                      <textarea
+                        rows='4'
+                        value={logsData}
+                        onChange={(e) => setLogsData(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <div className='text-end'>
+                      <button
+                        className='btn-primary px-3 py-1'
+                        onClick={handleAddLog}
+                      >
+                        Legg til notat
+                      </button>
+                    </div>
                   </div>
-                </div> }
+                )}
               </div>
             </Col>
           </Row>
