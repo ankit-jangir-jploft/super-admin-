@@ -15,17 +15,51 @@ import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 
 const page = ({ params }) => {
-  const [productDetails, setProductDetails] = useState({});
-
   const { id } = params;
   const fetchProductData = async () => {
     try {
       const options = { id: id };
       const res = await GET(`${BASE_URL}/api/admin/productDetail`, options);
       if (res?.data?.status == "true") {
-        setProductDetails(res.data?.data[0]);
-        console.log("res.data?.data[0]?.images", res.data?.data[0]?.images);
         setFile(res.data?.data[0]?.images);
+        setKeywords(res.data?.data[0]?.keywords);
+        setChosendCategory(res.data?.data[0]?.category_id);
+        setChosendSubCategory(res.data?.data[0]?.sub_category_id);
+        const related = res.data?.data[0]?.related_products?.map((product) => {
+          const value = product.id;
+          const label = `${product.name} (${product.product_number})`;
+          const id = product.id;
+          return { value, label, id };
+        });
+        console.log("related -- ", related);
+        setSelected(related);
+        setForm({
+          ProductNumber: res.data?.data[0]?.product_number || "",
+          ProductName: res.data?.data[0]?.name || "",
+          VisibleInStore: res.data?.data[0]?.product_status ? true : false,
+          VisibleInProductGallery: res.data?.data[0]?.visible_in_productgallery
+            ? true
+            : false,
+          Price: res.data?.data[0]?.price || "",
+          SalesPrice: res.data?.data[0]?.sale_price || "",
+          SpecialPrice: res.data?.data[0]?.speacial_price || "",
+          Length: res.data?.data[0]?.height || "",
+          Width: res.data?.data[0]?.width || "",
+          Depth: res.data?.data[0]?.depth || "",
+          Weight: res.data?.data[0]?.weight || "",
+          gtin: res.data?.data[0]?.gtin || "",
+          menuOrder: res.data?.data[0]?.menu_order || "",
+          Display: res.data?.data[0]?.display || "",
+          warehouseAddress: res.data?.data[0]?.warehouse_address || "",
+          quantity: res.data?.data[0]?.quantity || "",
+          keepStock: res.data?.data[0]?.stock_keep ? true : false,
+          vat: res.data?.data[0]?.vat || "",
+          vatClass: res.data?.data[0]?.vat_class || "",
+          shortDescription: res.data?.data[0]?.short_description || "",
+          ProductDescription: res.data?.data[0]?.product_description || "",
+          PageDescription: res.data?.data[0]?.page_description || "",
+          MetaDescription: res.data?.data[0]?.meta_description || "",
+        });
       }
     } catch (error) {}
   };
@@ -84,23 +118,28 @@ const page = ({ params }) => {
 
   const fetchCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/categoryList`);
-    if (res?.data?.status == "true") {
+    console.log(res);
+    if (res?.data?.status === true) {
       setCategories(res.data?.data);
     }
   };
+
   const fetchSubCategory = async () => {
-    const res = await GET(`${BASE_URL}/api/admin/subCategoryList`);
-    if (res?.data?.status == "true") {
+    const res = await GET(`${BASE_URL}/api/admin/subCategoryList`, {
+      parent_category_id: chosendCategory || "",
+    });
+    if (res?.data?.status === true) {
       setSubCategories(res.data?.data);
     }
   };
+
   const fetchReleted = async () => {
     const payload = {
       category_id: chosendCategory || "",
       sub_category_id: chosendSubCategory || "",
     };
     const res = await GET(`${BASE_URL}/api/admin/relatedProductlist`, payload);
-    if (res?.data?.status == "true") {
+    if (res?.data?.status === "true") {
       setReleted(res.data?.data);
     }
   };
@@ -124,7 +163,7 @@ const page = ({ params }) => {
   useEffect(() => {
     fetchCategory();
     fetchSubCategory();
-  }, []);
+  }, [chosendCategory, chosendSubCategory]);
 
   useEffect(() => {
     fetchReleted();
@@ -212,7 +251,7 @@ const page = ({ params }) => {
         formData.append("special_price", productForm.SpecialPrice);
         formData.append("height", productForm.Length);
         formData.append("width", productForm.Width);
-        formData.append("depth", productForm.depth);
+        formData.append("depth", productForm.Depth);
         formData.append("wight", productForm.Weight);
         formData.append("gtin", productForm.gtin);
         formData.append("keyword", keywords);
@@ -221,10 +260,8 @@ const page = ({ params }) => {
           selectedReletedProducts.map((pr) => pr.id)
         );
         formData.append("name", productForm.ProductName);
-        formData.append(
-          "visible_in_online_store",
-          productForm.VisibleInStore ? 1 : 0
-        );
+        formData.append("product_number", productForm.ProductNumber);
+        formData.append("product_status", productForm.VisibleInStore ? 1 : 0);
         formData.append(
           "visible_in_productgallery",
           productForm.VisibleInProductGallery ? 1 : 0
@@ -239,13 +276,31 @@ const page = ({ params }) => {
         formData.append("description", productForm.ProductDescription);
         formData.append("my_page_description", productForm.PageDescription);
         formData.append("meta_description", productForm.MetaDescription);
-        formData.append("sub_category_id", chosendSubCategory);
-        formData.append("productImages", files);
+        formData.append("sub_category_id", chosendSubCategory || "");
+        formData.append("language_id", "1");
+        formData.append("menu_order", productForm.menuOrder);
 
-        const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
-        console.log(res.data);
+        files?.forEach((fi) => {
+          formData.append("image[]", fi);
+        });
+
+        const res = await POST(
+          `${BASE_URL}/api/admin/productUpdate?id=${id}`,
+          formData
+        );
+        console.log("res.data", res.data);
+        if (res?.data?.status) {
+          toast.dismiss();
+          toast.success(res.data?.message);
+          window.location.href = "/produkter";
+        } else {
+          toast.dismiss();
+          toast.error(res?.data?.message);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
@@ -286,11 +341,11 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     <Form.Label>Productnumber</Form.Label>
                     <Form.Control
-                      value={productDetails.product_number}
+                      value={productForm.ProductNumber}
                       onChange={(e) =>
-                        setProductDetails((prev) => ({
+                        setForm((prev) => ({
                           ...prev,
-                          product_number: e.target.value,
+                          ProductNumber: e.target.value,
                         }))
                       }
                       placeholder='DUG40GULL'
@@ -329,9 +384,12 @@ const page = ({ params }) => {
                     <div className='cstmr-dve'>
                       <Form.Label>Category</Form.Label>
                       <Form.Select
-                        onChange={(e) => setChosendCategory(e.target.value)}
+                        onChange={(e) => {
+                          setChosendCategory(e.target.value);
+                        }}
                         value={chosendCategory}
                       >
+                        <option value=''>Select Category</option>
                         {(categories.length &&
                           categories?.map((cat, i) => {
                             return (
@@ -360,6 +418,7 @@ const page = ({ params }) => {
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
                       >
+                        <option value=''>Select Sub Category</option>
                         {(subCategories.length &&
                           subCategories?.map((sub, i) => {
                             return (
@@ -599,6 +658,7 @@ const page = ({ params }) => {
                       <StateManagedSelect
                         isMulti
                         options={options}
+                        value={selectedReletedProducts}
                         onChange={(selected) => {
                           setSelected(selected);
                         }}

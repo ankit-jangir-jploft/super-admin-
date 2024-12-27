@@ -6,7 +6,7 @@ import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
-import Pagination from "../Components/PaginationCustom";
+import Paginate from "../Utils/Paginate";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -38,8 +38,8 @@ const page = () => {
     }
   };
 
-  const onPageChange = ({ selected }) => {
-    setCurrent(selected + 1);
+  const onPageChange = (selected) => {
+    setCurrent(selected);
   };
 
   useEffect(() => {
@@ -282,16 +282,10 @@ const page = () => {
               </button>
             )}
           </div>
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            pageCount={pagination?.totalPages}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
+          <Paginate
+            currentPage={currentPage}
+            totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
-            containerClassName={"pagination"}
-            activeClassName={"active"}
           />
         </div>
       </div>

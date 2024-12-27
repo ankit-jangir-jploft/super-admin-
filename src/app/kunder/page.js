@@ -6,6 +6,7 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import Paginate from "../Utils/Paginate";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -33,8 +34,8 @@ const page = () => {
     }
   };
 
-  const onPageChange = ({ selected }) => {
-    setCurrent(selected + 1);
+  const onPageChange = (selected) => {
+    setCurrent(selected);
   };
 
   useEffect(() => {
@@ -179,22 +180,27 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <select
-            value={action}
-            onChange={(e) => setAction(e.target.value)}
-          >
-            <option value=''>Mass action</option>
-            <option value='delete'>Delete</option>
-          </select>
-          {action && (
-            <button
-              className='btn btn-danger Confirm_btn'
-              onClick={handleMassAction}
+          <div className='tablebruk_left'>
+            <select
+              className='form-select'
+              value={action}
+              onChange={(e) => {
+                setAction(e.target.value);
+              }}
             >
-              Confirm
-            </button>
-          )}
-          <ReactPaginate
+              <option value={""}>Mass action</option>
+              <option value={"delete"}>Delete</option>
+            </select>
+            {action && (
+              <button
+                className='crte-userd Confirm_btn'
+                onClick={handleMassAction}
+              >
+                Confirm
+              </button>
+            )}
+          </div>
+          {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -204,6 +210,11 @@ const page = () => {
             onPageChange={onPageChange}
             containerClassName={"pagination"}
             activeClassName={"active"}
+          /> */}
+          <Paginate
+            currentPage={currentPage}
+            totalPages={pagination?.totalPages}
+            onPageChange={onPageChange}
           />
         </div>
       </div>

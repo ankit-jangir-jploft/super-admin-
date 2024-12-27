@@ -208,7 +208,7 @@ const page = () => {
         formData.append("special_price", productForm.SpecialPrice);
         formData.append("height", productForm.Length);
         formData.append("width", productForm.Width);
-        formData.append("depth", productForm.depth);
+        formData.append("depth", productForm.Depth);
         formData.append("wight", productForm.Weight);
         formData.append("gtin", productForm.gtin);
         formData.append("keyword", keywords);
@@ -235,6 +235,7 @@ const page = () => {
         formData.append("meta_description", productForm.MetaDescription);
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
+        formData.append("menu_order", productForm.menuOrder);
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
@@ -335,6 +336,7 @@ const page = () => {
                         onChange={(e) => setChosendCategory(e.target.value)}
                         value={chosendCategory}
                       >
+                        <option value='0'>Categories</option>
                         {(categories.length &&
                           categories?.map((cat, i) => {
                             return (
@@ -363,6 +365,7 @@ const page = () => {
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
                       >
+                        <option value='0'>Sub Categories</option>
                         {(subCategories.length &&
                           subCategories?.map((sub, i) => {
                             return (
@@ -777,7 +780,8 @@ const page = () => {
                             }));
                           }}
                         >
-                          <option value={1}>Taxable</option>
+                          <option value=''>Select VAT</option>
+                          <option value='taxable'>Taxable</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -793,7 +797,8 @@ const page = () => {
                             }))
                           }
                         >
-                          <option value={1}>Standard (25%)</option>
+                          <option value={1}>Select VAT class</option>
+                          <option value='standard (25%)'>Standard (25%)</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
