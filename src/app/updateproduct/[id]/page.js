@@ -316,6 +316,30 @@ const page = ({ params }) => {
     }
   };
 
+  const removeFile = async (file) => {
+    if (file?.id) {
+      try {
+        const payload = {
+          id: file?.id,
+          product_id: id,
+        };
+        const res = await POST(
+          `${BASE_URL}/api/admin/productImageDelete`,
+          payload
+        );
+        if (res?.data?.status) {
+          toast.dismiss();
+          toast.success(res.data?.message);
+          fetchProductData();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      setFiles((prev) => prev?.filter((f) => f?.name !== file?.name));
+    }
+  };
+
   return (
     <>
       <Sidebar />
@@ -371,13 +395,21 @@ const page = ({ params }) => {
                   <div className='crpr-im'>
                     {file.map((fl, i) => {
                       return (
-                        <img
-                          key={i}
-                          src={fl.image}
-                          onError={(e) =>
-                            (e.target.src = "/images/product.png")
-                          }
-                        />
+                        <>
+                          {" "}
+                          <img
+                            key={i}
+                            src={fl?.image}
+                          />
+                          <div
+                            className='close_img_top'
+                            onClick={() => {
+                              removeFile(fl);
+                            }}
+                          >
+                            X
+                          </div>
+                        </>
                       );
                     })}
 
