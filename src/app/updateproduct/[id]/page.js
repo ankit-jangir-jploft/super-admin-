@@ -13,6 +13,7 @@ import { BASE_URL } from "../../Utils/apiHelper";
 import { GET, POST } from "../../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
+import CreateCategoryModal from "@/app/modals/createcategory";
 
 const page = ({ params }) => {
   const { id } = params;
@@ -40,8 +41,8 @@ const page = ({ params }) => {
           VisibleInProductGallery: res.data?.data[0]?.visible_in_productgallery
             ? true
             : false,
-          Price: res.data?.data[0]?.price || "",
-          SalesPrice: res.data?.data[0]?.sale_price || "",
+          Price: res.data?.data[0]?.price || 0,
+          SalesPrice: res.data?.data[0]?.sale_price || 0,
           SpecialPrice: res.data?.data[0]?.speacial_price || "",
           Length: res.data?.data[0]?.height || "",
           Width: res.data?.data[0]?.width || "",
@@ -69,15 +70,16 @@ const page = ({ params }) => {
 
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
   function handleChange(e) {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
   }
 
   const [categories, setCategories] = useState([]);
-  const [chosendCategory, setChosendCategory] = useState();
+  const [chosendCategory, setChosendCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
-  const [chosendSubCategory, setChosendSubCategory] = useState();
+  const [chosendSubCategory, setChosendSubCategory] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [reletedProducts, setReleted] = useState([]);
@@ -193,10 +195,15 @@ const page = ({ params }) => {
       isValid = false;
     }
 
-    if (!productForm.SpecialPrice) {
-      tempErrors.SpecialPrice = "Special price is required.";
+    if (!productForm.quantity) {
+      tempErrors.quantity = "Quantity in stock required";
       isValid = false;
     }
+
+    // if (!productForm.SpecialPrice) {
+    //   tempErrors.SpecialPrice = "Special price is required.";
+    //   isValid = false;
+    // }
 
     if (!productForm.Length) {
       tempErrors.Length = "Length is required.";
@@ -217,14 +224,19 @@ const page = ({ params }) => {
       tempErrors.Weight = "Weight is required.";
       isValid = false;
     }
-    if (!productForm.gtin) {
-      tempErrors.gtin = "Gtin is required.";
-      isValid = false;
-    }
-    if (!productForm.menuOrder) {
-      tempErrors.menuOrder = "Menu Order is required.";
-      isValid = false;
-    }
+
+    // if (!files.length) {
+    //   tempErrors.files = "Product image is required.";
+    //   isValid = false;
+    // }
+    // if (!productForm.gtin) {
+    //   tempErrors.gtin = "Gtin is required.";
+    //   isValid = false;
+    // }
+    // if (!productForm.menuOrder) {
+    //   tempErrors.menuOrder = "Menu Order is required.";
+    //   isValid = false;
+    // }
 
     // if (!productForm.quantity) {
     //   tempErrors.quantity = "Quantity is required.";
@@ -243,9 +255,10 @@ const page = ({ params }) => {
 
   const submitHandler = async () => {
     try {
+      console.log("errors", errors);
       if (validateForm()) {
         const formData = new FormData();
-        formData.append("category_id", chosendCategory);
+        formData.append("category_id", chosendCategory ? chosendCategory : "");
         formData.append("price", productForm.Price);
         formData.append("sale_price", productForm.SalesPrice);
         formData.append("special_price", productForm.SpecialPrice);
@@ -402,12 +415,14 @@ const page = ({ params }) => {
                           })) || <option>Not Available</option>}
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
+                    <button
                       className='add-btne'
+                      onClick={() => {
+                        setShowCreateCategory(true);
+                      }}
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <Form.Group className='mb-3 cstmr-ad'>
@@ -682,7 +697,7 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
                       Product name{" "}
-                      <Link href={"/"}>/julepakke-2-til-og-fra-lapper</Link>
+                      <Link href={""}>/julepakke-2-til-og-fra-lapper</Link>
                     </Form.Label>
                     <Form.Control
                       value={productForm.ProductName}
@@ -910,6 +925,13 @@ const page = ({ params }) => {
           </div>
         </div>
       </div>
+      <CreateCategoryModal
+        onClose={() => {
+          setChosendCategory(false);
+          fetchCategory();
+        }}
+        isOpen={showCreateCategory}
+      />
     </>
   );
 };

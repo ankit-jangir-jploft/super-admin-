@@ -2187,7 +2187,6 @@ button.crte-userd.Confirm_btn {
   font-size: 14px;
   font-weight: 600;
 }
-/* General Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -2199,19 +2198,14 @@ button.crte-userd.Confirm_btn {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  border-radius: 20px;
+  border: none;
+  padding: 25px;
 }
-
-.modal-container {
-  background: #fff;
-  width: 90%;
-  max-width: 800px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  position: relative;
-  animation: slideIn 0.3s ease-out;
+form#customerForm .shdw-crd {
+  box-shadow: none;
+  padding: 0px;
 }
-
 @keyframes slideIn {
   from {
     transform: translateY(-50px);
@@ -2232,6 +2226,23 @@ button.crte-userd.Confirm_btn {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.modal-container {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+  padding: 20px;
+}
+
+/* General Modal Styles */
+/*
+
+
 
 .admin-header {
   background: #f4f4f4;
@@ -2271,10 +2282,10 @@ button.crte-userd.Confirm_btn {
 .cr-btn:hover,
 .can-btn:hover {
   opacity: 0.9;
-}
+} */
 
 /* Form Styles */
-.form-content {
+/* .form-content {
   padding: 24px;
 }
 
@@ -2326,10 +2337,10 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
   background: #0056b3;
-}
+} */
 
 /* Responsive */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .modal-container {
     width: 95%;
   }
@@ -2338,4 +2349,4 @@ button[type="submit"]:hover {
   .form-group.row .col-md-7 {
     padding-right: 0;
   }
-}
+} */

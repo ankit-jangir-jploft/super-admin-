@@ -177,13 +177,7 @@ const page = () => {
               <p>Number of groups</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2> {dashBoardData?.number_of_group}</h2>
-                <span>
-                  +11.02%{" "}
-                  <img
-                    className=''
-                    src='/images/ArrowRise.svg'
-                  />
-                </span>
+                <span>Active</span>
               </div>
             </div>
           </div>
@@ -192,13 +186,7 @@ const page = () => {
               <p>Number of sellers</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.number_of_seller}</h2>
-                <span>
-                  +0.03%{" "}
-                  <img
-                    className=''
-                    src='/images/ArrowRise.svg'
-                  />
-                </span>
+                <span>Active</span>
               </div>
             </div>
           </div>
@@ -207,13 +195,7 @@ const page = () => {
               <p>Profit</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.profit}</h2>
-                <span>
-                  +15.03%{" "}
-                  <img
-                    className=''
-                    src='/images/ArrowRise.svg'
-                  />
-                </span>
+                <span>Active</span>
               </div>
             </div>
           </div>
@@ -222,13 +204,7 @@ const page = () => {
               <p>No. of packages</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.no_of_packages} stk</h2>
-                <span>
-                  +6.08%{" "}
-                  <img
-                    className=''
-                    src='/images/ArrowRise.svg'
-                  />
-                </span>
+                <span>Active</span>
               </div>
             </div>
           </div>
