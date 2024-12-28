@@ -803,9 +803,7 @@ const page = () => {
                                 {row?.status === 1 ? "Active" : "Inactive"}
                               </Badge>
                             </td>
-                            <td>
-                              {row?.role_id === 2 ? "Seller" : "Customer"}
-                            </td>
+                            <td>{row?.role_type}</td>
                             <td>{row?.email}</td>
                             {roleType !== "guest" && (
                               <td>

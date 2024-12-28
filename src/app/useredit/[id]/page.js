@@ -4,12 +4,12 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
-import { useParams, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useParams } from "next/navigation";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { GET, POST } from "../../Utils/apiFunctions";
 import { BASE_URL } from "../../Utils/apiHelper";
 import Image from "next/image";
-import Form from "react-bootstrap/Form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
@@ -21,15 +21,6 @@ const Page = ({ param }) => {
   const [pending, setPending] = useState(false);
   const [roles, setRoles] = useState([]);
   const router = useRouter();
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
-  // const { sellerId } = useSearchParams();
 
   const params = useParams();
 
@@ -46,13 +37,6 @@ const Page = ({ param }) => {
       if (response?.data?.data?.[0]) {
         const seller = response.data.data[0];
         setFetchSellerById(seller);
-
-        // Update form state with fetched data
-        setValue("name", seller.name || "");
-        setValue("email", seller.email || "");
-        setValue("userType", seller.role_id || ""); // Dynamically set userType
-        setValue("status", seller.status === 1 ? "Active" : "Inactive");
-        setValue("language", seller.language_id === 1 ? "English" : "Hindi");
         setProfileImage(seller?.profile_image || "");
       }
     } catch (error) {
@@ -67,10 +51,10 @@ const Page = ({ param }) => {
       if (response?.data?.status === true) {
         setRoles(response?.data?.data || []);
       } else {
-        toast.error("Error submitting form.");
+        toast.error("Error fetching roles.");
       }
     } catch (error) {
-      toast.error("Error submitting form.");
+      toast.error("Error fetching roles.");
       console.error(error);
     } finally {
       setPending(false);
@@ -84,20 +68,44 @@ const Page = ({ param }) => {
     }
   }, [params]);
 
-  const onSubmit = async (data) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file);
+    if (file) {
+      setProfileImage(URL.createObjectURL(file));
+    }
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    userType: Yup.string().required("User Type is required"),
+    status: Yup.string().required("Status is required"),
+    language: Yup.string().required("Language is required"),
+  });
+
+  const initialValues = {
+    name: fetchSellerById?.name || "",
+    email: fetchSellerById?.email || "",
+    userType: fetchSellerById?.role_id || "",
+    status: fetchSellerById?.status === 1 ? "Active" : "Inactive",
+    language: fetchSellerById?.language_id,
+  };
+
+  const onSubmit = async (values) => {
     try {
       const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("role_id", data.userType);
-      formData.append("status", data.status === "Active" ? 1 : 0);
-      formData.append("language_id", data.language === "English" ? 1 : 1);
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("role_id", values.userType);
+      formData.append("status", values.status === "Active" ? 1 : 0);
+      formData.append("language_id", values.language);
       formData.append("appearance", radioValue);
 
       if (selectedImage) {
         formData.append("profile_image", selectedImage);
-      } else {
-        formData.append("profile_image", profileImage);
       }
 
       const response = await POST(
@@ -116,14 +124,6 @@ const Page = ({ param }) => {
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedImage(file);
-    if (file) {
-      setProfileImage(URL.createObjectURL(file));
-    }
-  };
-
   return (
     <>
       <Sidebar />
@@ -136,157 +136,177 @@ const Page = ({ param }) => {
             <div className='shdw-crd crte-ordr edte-usr'>
               <div className='row'>
                 <div className='col-md-7 mx-auto'>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className='d-block text-center mb-4'>
-                      <Image
-                        width={100}
-                        height={100}
-                        className='d-inline-block rounded-circle'
-                        src={profileImage || "/images/user-edt.png"}
-                        alt='Profile'
-                      />
-                      <Form.Group className='UploadPhoto_file'>
-                        <Form.Control
-                          className='UploadPhoto'
-                          type='file'
-                          accept='image/*'
-                          onChange={handleImageChange}
-                        />
-                      </Form.Group>
-                    </div>
-                    <div className='row'>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <Form.Label>Name</Form.Label>
-                          <Form.Control
-                            {...register("name", {
-                              required: "Name is required",
-                            })}
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    enableReinitialize
+                    onSubmit={onSubmit}
+                  >
+                    {({ setFieldValue }) => (
+                      <Form>
+                        <div className='d-block text-center mb-4'>
+                          <Image
+                            width={100}
+                            height={100}
+                            className='d-inline-block rounded-circle'
+                            src={profileImage || "/images/user-edt.png"}
+                            alt='Profile'
                           />
-                          {errors.name && (
-                            <p className='text-danger'>{errors.name.message}</p>
-                          )}
-                        </Form.Group>
-                      </div>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <Form.Label>Email</Form.Label>
-                          <Form.Control
-                            {...register("email", {
-                              required: "Email is required",
-                              pattern: {
-                                value:
-                                  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                message: "Invalid email address",
-                              },
-                            })}
-                          />
-                          {errors.email && (
-                            <p className='text-danger'>
-                              {errors.email.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                      </div>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <Form.Label>User Type</Form.Label>
-                          <Form.Select
-                            {...register("userType", {
-                              required: "User Type is required",
-                            })}
-                            defaultValue={fetchSellerById?.role_id || ""}
-                          >
-                            <option value=''>Select User Type</option>
-                            {roles?.map((role) => (
-                              <option
-                                key={role.id}
-                                value={role.id}
-                              >
-                                {role.name}
-                              </option>
-                            ))}
-                          </Form.Select>
-                          {errors.userType && (
-                            <p className='text-danger'>
-                              {errors.userType.message}
-                            </p>
-                          )}
-                        </Form.Group>
-                      </div>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <Form.Label>Status</Form.Label>
-                          <Form.Select
-                            {...register("status")}
-                            defaultValue='Active'
-                          >
-                            <option value='Active'>Active</option>
-                            <option value='Inactive'>Inactive</option>
-                          </Form.Select>
-                        </Form.Group>
-                      </div>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <Form.Label>Language</Form.Label>
-                          <Form.Select
-                            {...register("language")}
-                            defaultValue='1'
-                          >
-                            <option value='English'>English</option>
-                            <option value='Hindi'>Hindi</option>
-                          </Form.Select>
-                        </Form.Group>
-                      </div>
-                      <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
-                          <div className='swtch-bt'>
-                            <Form.Label>Appearance</Form.Label>
-                            <ButtonGroup>
-                              {radios.map((radio, idx) => (
-                                <ToggleButton
-                                  key={idx}
-                                  id={`radio-${idx}`}
-                                  type='radio'
-                                  variant={
-                                    idx % 2
-                                      ? "outline-success"
-                                      : "outline-danger"
-                                  }
-                                  name='radio'
-                                  value={radio.value}
-                                  checked={radioValue === radio.value}
-                                  onChange={(e) =>
-                                    setRadioValue(e.currentTarget.value)
-                                  }
-                                >
-                                  {radio.name}
-                                </ToggleButton>
-                              ))}
-                            </ButtonGroup>
+                          <div className='UploadPhoto_file'>
+                            <input
+                              className='UploadPhoto'
+                              type='file'
+                              accept='image/*'
+                              onChange={(e) => {
+                                handleImageChange(e);
+                                setFieldValue(
+                                  "profile_image",
+                                  e.target.files[0]
+                                );
+                              }}
+                            />
                           </div>
-                        </Form.Group>
-                      </div>
-                    </div>
-                    <div className='row mt-3 mb-5'>
-                      <div className='col-md-6'>
-                        <button
-                          className='createorder_top_right w-100 btn_bg_delt'
-                          type='submit'
-                        >
-                          Delete user
-                        </button>
-                      </div>
-                      <div className='col-md-6'>
-                        <button
-                          className='createorder_top_right btn_bg_save w-100'
-                          type='submit'
-                        >
-                          Update
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                        </div>
+                        <div className='row'>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <label>Name</label>
+                              <Field
+                                name='name'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='name'
+                                component='p'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <label>Email</label>
+                              <Field
+                                name='email'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='email'
+                                component='p'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <label>User Type</label>
+                              <Field
+                                as='select'
+                                name='userType'
+                                className='form-control'
+                              >
+                                <option value=''>Select User Type</option>
+                                {roles?.map((role) => (
+                                  <option
+                                    key={role.id}
+                                    value={role.id}
+                                  >
+                                    {role.name}
+                                  </option>
+                                ))}
+                              </Field>
+                              <ErrorMessage
+                                name='userType'
+                                component='p'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <label>Status</label>
+                              <Field
+                                as='select'
+                                name='status'
+                                className='form-control'
+                              >
+                                <option value='Active'>Active</option>
+                                <option value='Inactive'>Inactive</option>
+                              </Field>
+                              <ErrorMessage
+                                name='status'
+                                component='p'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <label>Language</label>
+                              <Field
+                                as='select'
+                                name='language'
+                                className='form-control'
+                              >
+                                <option value={1}>English</option>
+                              </Field>
+                              <ErrorMessage
+                                name='language'
+                                component='p'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='col-md-6'>
+                            <div className='mb-3'>
+                              <div className='swtch-bt'>
+                                <label>Appearance</label>
+                                <ButtonGroup>
+                                  {radios.map((radio, idx) => (
+                                    <ToggleButton
+                                      key={idx}
+                                      id={`radio-${idx}`}
+                                      type='radio'
+                                      variant={
+                                        idx % 2
+                                          ? "outline-success"
+                                          : "outline-danger"
+                                      }
+                                      name='radio'
+                                      value={radio.value}
+                                      checked={radioValue === radio.value}
+                                      onChange={(e) =>
+                                        setRadioValue(e.currentTarget.value)
+                                      }
+                                    >
+                                      {radio.name}
+                                    </ToggleButton>
+                                  ))}
+                                </ButtonGroup>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='row mt-3 mb-5'>
+                          <div className='col-md-6'>
+                            <button
+                              className='createorder_top_right w-100 btn_bg_delt'
+                              type='button'
+                            >
+                              Delete user
+                            </button>
+                          </div>
+                          <div className='col-md-6'>
+                            <button
+                              className='createorder_top_right btn_bg_save w-100'
+                              type='submit'
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
                 </div>
               </div>
             </div>
@@ -298,11 +318,3 @@ const Page = ({ param }) => {
 };
 
 export default Page;
-
-// import React from "react";
-
-// function page() {
-//   return <div></div>;
-// }
-
-// export default page;
