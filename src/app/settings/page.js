@@ -348,7 +348,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px" }}
+                style={{ width: "41px", height:"41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -445,7 +445,7 @@ const page = () => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                          {/* <Form.Label>Terms of Purchase</Form.Label> */}
                           {/* <Form.Control
                             placeholder='Terms of purchase'
                             {...register("title", {
@@ -464,7 +464,7 @@ const page = () => {
                     <div className='row'>
                       <div className='col-md-12'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Text</Form.Label>
+                          <Form.Label>Terms of Purchase</Form.Label>
                           <Controller
                             name='text'
                             control={control}

@@ -322,6 +322,7 @@ a {
   background-image: url("/images/search-interface.svg");
   background-repeat: no-repeat;
   background-position: 15px 15px;
+  padding-left: 36px !important;
 }
 
 table {
@@ -464,6 +465,7 @@ tr:nth-child(even) {
   justify-content: space-between;
   align-items: center;
   min-height: 48px;
+  gap: 5px;
 }
 
 .order-dtl-box h2 span {
@@ -484,10 +486,12 @@ tr:nth-child(even) {
   padding: 0px 15px;
   color: #000000;
   font-weight: 400;
+  word-break: break-all;
 }
 
 .order-dtl-box p a {
   color: #ea5154;
+  text-decoration: underline !important;
 }
 
 .order-dtl-box p span {
@@ -577,7 +581,13 @@ tr:nth-child(even) {
 .logg-til-desc textarea {
   width: 100%;
   border: 1px solid #c9c9c9;
-  padding: 10px;
+  padding:13px 20px;
+  height: 52px;
+  border-radius: 50px;
+  line-height: 52px;
+  resize: none;
+  overflow: auto;
+  line-height: 1.3;
 }
 
 .total-prc {
@@ -749,6 +759,7 @@ tr:nth-child(even) {
   border-radius: 15px;
   border: 1px solid #e6e6e6;
   padding: 25px 30px;
+  height: 100%;
 }
 
 .pinks-cr {
@@ -812,6 +823,7 @@ table th {
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   border: none;
   position: relative;
+  height: 100%;
 }
 
 .statistics-mne tr td {
@@ -927,7 +939,7 @@ table th {
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   border: none;
   position: relative;
-  padding: 25px;
+  padding: 11px;
 }
 
 .crte-ordr input,
@@ -1006,6 +1018,7 @@ table th {
   border-radius: 16px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   padding: 15px;
+  margin-bottom: 30px;
 }
 
 .prodct-crd h4 {
@@ -1916,6 +1929,12 @@ ul.pgnatne li {
   color: #666666 !important;
   flex: 0 0 50px;
   line-height: 44px !important;
+  transition: all 0.3s ease;
+}
+.btn-borderbl:hover {
+  border-color: #fd575a !important;
+  background: #fd575a !important;
+  color: #fff !important;
 }
 .createorder_top_right {
   border-radius: 30px;
@@ -2146,6 +2165,55 @@ button.crte-userd.Confirm_btn {
 .tablebruk_left {
   display: flex;
 }
+.filter_date input[type="Date"] {
+  border-radius: 50px;
+  border: 1px solid #CACACA;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 1;
+  margin: 0px 5px;
+  color: #666666;
+}
+.filter_date {
+  color: #1C1C1C;
+  font-size: 15px;
+}
+.leftSalesperson {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftSalesperson .left_side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.leftSalesperson .left_side .text_bx h3 {
+  font-size: 12px;
+  color: #151D48;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.leftSalesperson .left_side .text_bx p {
+  color: #767676;
+  margin-bottom: 0px;
+  font-size: 12px;
+}
+.grafh_footer {
+  display: flex;
+  justify-content: space-between;
+}
+.grafph_btm {
+  flex-basis: 49%;
+}
+.grafph_btm .count_num {
+  color: #FD5A59;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 @media screen and (max-width: 767px) {
   .bot-btn {
     display: flex;
@@ -2187,6 +2255,37 @@ button.crte-userd.Confirm_btn {
   font-size: 14px;
   font-weight: 600;
 }
+.shdw-crd th, .shdw-crd td {
+  border: none;
+}
+
+.order-dtl-box .logg-til-desc {
+  background: #F7F4F1;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.order-dtl-box .logg-til-desc .form-group {
+  margin-bottom: 0px;
+}
+.send_chat_btn {
+  position: relative;
+  border: none;
+  background: transparent;
+}
+.order-dtl-box .logg-til-desc .form-group {
+  margin-bottom: 0px;
+  flex: 0 0 82%;
+  width: 100%;
+}
+.order-dtl-box .logg-til-desc .text-end {
+  flex: 0 0 52px;
+}
+.order-dtl-box .search-frm { 
+  margin: 0px 10px;
+}
+/* General Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -2227,16 +2326,18 @@ form#customerForm .shdw-crd {
   cursor: pointer;
 }
 
-.modal-container {
-  background: #fff;
-  width: 90%;
-  max-width: 800px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  position: relative;
-  animation: slideIn 0.3s ease-out;
+.modal-custmr-ad {
   padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+}
+.createcustomer_btn, .createcustomer_btncmf {
+  padding: 10px;
+}
+h2.hedingtext_top {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .close_img_top {

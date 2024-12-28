@@ -284,7 +284,10 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main statistics-mne'>
         <div className='admin-header'>
-          <h2>Statistics </h2>
+          <h2>Statistics  <Link href={'/'}><img src="/images/linkhed.svg" /></Link></h2>
+          <div className='filter_date'>
+            From <input type='Date' placeholder='Year to date'></input> To <input type='Date' placeholder='Year to date'></input>
+          </div>
           <div className='search-frm'>
             <input
               type='text'
@@ -296,7 +299,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px" }}
+                style={{ width: "41px", height:"41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -304,6 +307,7 @@ const page = () => {
               />
             </Link>
           </div>
+
         </div>
         <div className='row'>
           <div className='col-md-3'>

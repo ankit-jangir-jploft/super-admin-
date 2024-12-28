@@ -92,6 +92,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
   return (
     <div className='modal-overlay'>
+      <div className="modal-custmr-ad">
       <div className='modal-container'>
         <button
           className='modal-close'
@@ -106,14 +107,14 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
             <div className='bot-btn'>
               <button
                 onClick={onClose}
-                className='can-btn btn'
+                className='can-btn btn Createcustomer_btncmf'
               >
                 Cancel
               </button>
               <button
                 type='submit'
                 form='customerForm'
-                className='cr-btn btn'
+                className='cr-btn btn Createcustomer_btn'
               >
                 Create customer
               </button>
@@ -343,6 +344,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
             </Form>
           )}
         </Formik>
+      </div>
       </div>
     </div>
   );

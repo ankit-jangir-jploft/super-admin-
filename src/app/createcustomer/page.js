@@ -101,7 +101,7 @@ const page = () => {
               <button
                 type='submit'
                 form='customerForm'
-                className='cr-btn btn'
+                className='cr-btn btn createorder_top_right'
               >
                 Create customer
               </button>

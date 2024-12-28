@@ -273,14 +273,19 @@ const page = () => {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       rows='4'
+                      placeholder="Add an internal note"
                     ></textarea>
                   </div>
                   <div className='text-end'>
                     <button
-                      className='btn-primary px-3 py-1'
+                      className='send_chat_btn'
                       onClick={handleLogSubmit}
                     >
-                      Legg til notat
+                      {/* Legg til notat  */} 
+                      <img
+                        className=''
+                        src='/images/chat_arrow.svg'
+                      />
                     </button>
                   </div>
                 </div>

@@ -9,19 +9,28 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <div style={styles.paginationContainer}>
+      <p className="mb-0">Showing 15 of 354 elements</p>
       <button
         onClick={handleFirstPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
-        &laquo;
+        <img
+                    src=
+                    "/images/button_left_singl.svg" 
+                    alt='product'
+                />
       </button>
       <button
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
-        &lsaquo;
+         <img
+                    src=
+                    "/images/button_left_dub.svg" 
+                    alt='product'
+                />
       </button>
       <span style={styles.pageInfo}>
         {currentPage} of {totalPages}
@@ -33,7 +42,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           currentPage === totalPages ? styles.disabledButton : styles.button
         }
       >
-        &rsaquo;
+        <img  
+                    src=
+                    "/images/right-singlarrow.svg" 
+                    alt='product'
+                />
       </button>
       <button
         onClick={handleLastPage}
@@ -42,7 +55,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           currentPage === totalPages ? styles.disabledButton : styles.button
         }
       >
-        &raquo;
+         <img 
+                    src=
+                    "/images/right-dublarrow1.svg" 
+                    alt='product'
+                />
       </button>
     </div>
   );
@@ -57,10 +74,8 @@ const styles = {
     fontSize: "14px",
   },
   button: {
-    width: "35px",
-    height: "31px",
-    borderRadius: "50%",
-    border: "1px solid #ccc",
+    
+    border: "0",
     background: "#fff",
     cursor: "pointer",
     display: "flex",
@@ -68,11 +83,8 @@ const styles = {
     alignItems: "center",
   },
   disabledButton: {
-    width: "35px",
-    height: "31px",
-    borderRadius: "50%",
-    border: "1px solid #eee",
-    background: "#f9f9f9",
+    border: "0",
+    borderRadius: "50%", 
     color: "#aaa",
     cursor: "not-allowed",
     display: "flex",
