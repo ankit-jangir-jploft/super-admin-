@@ -179,7 +179,7 @@ const page = () => {
             <h2>Create order</h2>
             <div className='bot-btn'>
               <Link
-                href={"/kundar"}
+                href={"/order"}
                 className='can-btn'
               >
                 Cancel
@@ -216,6 +216,7 @@ const page = () => {
                         }}
                         isInvalid={!!errors.selectedCustomer}
                       >
+                        <option value=''>Select customer</option>
                         {customers.length > 0 ? (
                           customers.map((custm) => (
                             <option
@@ -234,8 +235,8 @@ const page = () => {
                       </Form.Select>
                     </div>
                     <Button
-                      href=''
                       className='add-btne btn-borderbl '
+                      onClick={() => setCreate(true)}
                     >
                       +
                     </Button>
@@ -248,9 +249,9 @@ const page = () => {
                       onChange={(e) => {
                         setOrderedBy(e.target.value);
                       }}
-                      placeholder=''
                       isInvalid={!!errors.orderedBy}
                     >
+                      <option value=''>Select ordered by</option>
                       {adminManagers?.length &&
                         adminManagers?.map((admin) => {
                           return (
@@ -319,10 +320,7 @@ const page = () => {
                   </div>
                   <Form.Group className='mb-3'>
                     <Form.Label>Send order confirmation to</Form.Label>
-                    <Form.Control
-                      value={selectedCustomer.email}
-                      placeholder=''
-                    >
+                    <Form.Control value={selectedCustomer.email}>
                       {/* <option>kari.nordmann@mail.com</option> */}
                     </Form.Control>
                   </Form.Group>
@@ -331,7 +329,6 @@ const page = () => {
                     <Form.Control
                       value={comments}
                       onChange={(e) => setComments(e.target.value)}
-                      placeholder=''
                     />
                   </Form.Group>
                 </div>

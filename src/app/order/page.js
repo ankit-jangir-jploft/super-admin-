@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions"; // Assuming DELETE is defined in your utils
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
-import Pagination from "../Components/PaginationCustom";
+import Paginate from "../Utils/Paginate";
 
 const page = () => {
   const [openRowId, setOpenRowId] = useState(null);
@@ -16,6 +17,13 @@ const page = () => {
   const [searchOuery, setQuery] = useState("");
   const [pagination, setPagination] = useState();
   const [action, setAction] = useState();
+  const [userData, setUserData] = useState({});
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const toggleRow = (id) => {
     setOpenRowId((prev) => (prev === id ? null : id));
@@ -38,12 +46,14 @@ const page = () => {
     }
   };
 
-  const onPageChange = ({ selected }) => {
-    setCurrent(selected + 1);
+  const onPageChange = (selected) => {
+    setCurrent(selected);
   };
 
   useEffect(() => {
     fetchOrders();
+    const userDetail = JSON.parse(Cookies.get("user"));
+    setUserData(userDetail);
   }, [currentPage, searchOuery]);
 
   const handleSelectOrder = (orderId) => {
@@ -72,6 +82,7 @@ const page = () => {
         toast.success(res?.data?.message);
         setSelectedOrders([]);
         fetchOrders();
+        setAction("");
       } else {
         toast.dismiss();
         toast.error("Failed to delete orders!");
@@ -109,8 +120,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -169,7 +187,7 @@ const page = () => {
                             {orders[+order.order_status]?.name}
                           </button>
                         </td>
-                        <td>{order.type}</td>
+                        <td>{order.origin}</td>
                         <td>{order.order_details_count}</td>
                         <td>{order.order_details_price_sum}</td>
                         <td>
@@ -192,8 +210,8 @@ const page = () => {
                           </div>
                         </td>
                         <td>
-                          <Link href='/'>
-                            <img src={order.addContactIcon} />
+                          <Link href={`/kunderdetail/${order?.user_id}`}>
+                            <img src='/images/prdctes.svg' />
                           </Link>
                         </td>
                       </tr>
@@ -262,36 +280,32 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <div className='tablebruk_left'>
-            <select
-              className='form-select'
-              value={action}
-              onChange={(e) => {
-                setAction(e.target.value);
-              }}
-            >
-              <option value={""}>Mass action</option>
-              <option value={"delete"}>Delete</option>
-            </select>
-            {action && (
-              <button
-                className='crte-userd Confirm_btn'
-                onClick={handleMassDelete}
+          {roleType !== "guest" && (
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
               >
-                Confirm
-              </button>
-            )}
-          </div>
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            pageCount={pagination?.totalPages}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassDelete}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
+          )}
+          <Paginate
+            currentPage={currentPage}
+            totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
-            containerClassName={"pagination"}
-            activeClassName={"active"}
           />
         </div>
       </div>

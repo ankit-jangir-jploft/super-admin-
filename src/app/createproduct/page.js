@@ -14,6 +14,7 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 import { useRouter } from "next/navigation";
+import CreateCategoryModal from "../modals/createcategory";
 
 const page = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const page = () => {
 
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
   function handleChange(e) {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
@@ -28,9 +30,9 @@ const page = () => {
   const [value, setValue] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [chosendCategory, setChosendCategory] = useState();
+  const [chosendCategory, setChosendCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
-  const [chosendSubCategory, setChosendSubCategory] = useState();
+  const [chosendSubCategory, setChosendSubCategory] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [reletedProducts, setReleted] = useState([]);
@@ -128,7 +130,6 @@ const page = () => {
   const validateForm = () => {
     let isValid = true;
     const tempErrors = {};
-    console.log("files", files);
 
     if (!productForm.ProductNumber) {
       tempErrors.ProductNumber = "Product number is required.";
@@ -150,10 +151,15 @@ const page = () => {
       isValid = false;
     }
 
-    if (!productForm.SpecialPrice) {
-      tempErrors.SpecialPrice = "Special price is required.";
+    if (!productForm.quantity) {
+      tempErrors.quantity = "Quantity in stock required";
       isValid = false;
     }
+
+    // if (!productForm.SpecialPrice) {
+    //   tempErrors.SpecialPrice = "Special price is required.";
+    //   isValid = false;
+    // }
 
     if (!productForm.Length) {
       tempErrors.Length = "Length is required.";
@@ -174,14 +180,19 @@ const page = () => {
       tempErrors.Weight = "Weight is required.";
       isValid = false;
     }
-    if (!productForm.gtin) {
-      tempErrors.gtin = "Gtin is required.";
+
+    if (!files.length) {
+      tempErrors.files = "Product image is required.";
       isValid = false;
     }
-    if (!productForm.menuOrder) {
-      tempErrors.menuOrder = "Menu Order is required.";
-      isValid = false;
-    }
+    // if (!productForm.gtin) {
+    //   tempErrors.gtin = "Gtin is required.";
+    //   isValid = false;
+    // }
+    // if (!productForm.menuOrder) {
+    //   tempErrors.menuOrder = "Menu Order is required.";
+    //   isValid = false;
+    // }
 
     // if (!productForm.quantity) {
     //   tempErrors.quantity = "Quantity is required.";
@@ -200,6 +211,7 @@ const page = () => {
 
   const submitHandler = async () => {
     try {
+      console.log("errors", errors);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory);
@@ -208,7 +220,7 @@ const page = () => {
         formData.append("special_price", productForm.SpecialPrice);
         formData.append("height", productForm.Length);
         formData.append("width", productForm.Width);
-        formData.append("depth", productForm.depth);
+        formData.append("depth", productForm.Depth);
         formData.append("wight", productForm.Weight);
         formData.append("gtin", productForm.gtin);
         formData.append("keyword", keywords);
@@ -235,6 +247,7 @@ const page = () => {
         formData.append("meta_description", productForm.MetaDescription);
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
+        formData.append("menu_order", productForm.menuOrder);
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
@@ -299,7 +312,6 @@ const page = () => {
                           ProductNumber: e.target.value,
                         }))
                       }
-                      placeholder='DUG40GULL'
                       isInvalid={!!errors?.ProductNumber}
                     />
                     <Form.Control.Feedback type='invalid'>
@@ -327,6 +339,15 @@ const page = () => {
                       </span>
                     </div>
                   </div>
+                  {errors?.files ? (
+                    <>
+                      <p style={{ color: "#dc3545", fontSize: ".875em" }}>
+                        {errors?.files}
+                      </p>
+                    </>
+                  ) : (
+                    <></>
+                  )}
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
@@ -335,6 +356,7 @@ const page = () => {
                         onChange={(e) => setChosendCategory(e.target.value)}
                         value={chosendCategory}
                       >
+                        <option value='0'>Categories</option>
                         {(categories.length &&
                           categories?.map((cat, i) => {
                             return (
@@ -348,12 +370,15 @@ const page = () => {
                           })) || <option>Not Available</option>}
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
+                    <button
+                      onClick={() => {
+                        setShowCreateCategory(true);
+                        fetchCategory();
+                      }}
                       className='add-btne btn-borderbl'
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <Form.Group className='mb-3 cstmr-ad'>
@@ -363,6 +388,7 @@ const page = () => {
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
                       >
+                        <option value='0'>Sub Categories</option>
                         {(subCategories.length &&
                           subCategories?.map((sub, i) => {
                             return (
@@ -396,7 +422,6 @@ const page = () => {
                               Price: e.target.value,
                             }))
                           }
-                          placeholder='50'
                           isInvalid={!!errors?.Price}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -415,7 +440,6 @@ const page = () => {
                               SalesPrice: e.target.value,
                             }))
                           }
-                          placeholder='125'
                           isInvalid={!!errors?.SalesPrice}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -434,7 +458,6 @@ const page = () => {
                               SpecialPrice: e.target.value,
                             }))
                           }
-                          placeholder=''
                           isInvalid={!!errors?.SpecialPrice}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -456,7 +479,6 @@ const page = () => {
                               Length: e.target.value,
                             }))
                           }
-                          placeholder='21'
                           isInvalid={!!errors?.Length}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -475,7 +497,6 @@ const page = () => {
                               Width: e.target.value,
                             }))
                           }
-                          placeholder='9'
                           isInvalid={!!errors?.Width}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -494,7 +515,6 @@ const page = () => {
                               Depth: e.target.value,
                             }))
                           }
-                          placeholder='2'
                           isInvalid={!!errors?.Depth}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -516,7 +536,6 @@ const page = () => {
                               Weight: e.target.value,
                             }))
                           }
-                          placeholder='31'
                           isInvalid={!!errors?.Weight}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -535,7 +554,6 @@ const page = () => {
                               gtin: e.target.value,
                             }))
                           }
-                          placeholder='21'
                           isInvalid={!!errors?.gtin}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -554,7 +572,6 @@ const page = () => {
                               menuOrder: e.target.value,
                             }))
                           }
-                          placeholder='1'
                           isInvalid={!!errors?.menuOrder}
                         />
                         <Form.Control.Feedback type='invalid'>
@@ -568,7 +585,6 @@ const page = () => {
                     <div className='cstmr-dve'>
                       <Form.Label>Keywords</Form.Label>
                       <Form.Control
-                        placeholder=''
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
                       />
@@ -644,7 +660,6 @@ const page = () => {
                           ProductName: e.target.value,
                         }))
                       }
-                      placeholder='Julepakke #2 - Til og fra lapper'
                       isInvalid={!!errors?.ProductName}
                     />
                     <Form.Control.Feedback>
@@ -724,7 +739,6 @@ const page = () => {
                               warehouseAddress: e.target.value,
                             }))
                           }
-                          placeholder='A1'
                         />
                       </Form.Group>
                     </div>
@@ -739,8 +753,11 @@ const page = () => {
                               quantity: e.target.value,
                             }))
                           }
-                          placeholder='53534'
+                          isInvalid={!!errors?.quantity}
                         />
+                        <Form.Control.Feedback type='invalid'>
+                          {errors?.quantity}
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </div>
                     <div className='col-md-4 cstm-chk'>
@@ -777,7 +794,8 @@ const page = () => {
                             }));
                           }}
                         >
-                          <option value={1}>Taxable</option>
+                          <option value=''>Select VAT</option>
+                          <option value='taxable'>Taxable</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -793,7 +811,8 @@ const page = () => {
                             }))
                           }
                         >
-                          <option value={1}>Standard (25%)</option>
+                          <option value={1}>Select VAT class</option>
+                          <option value='standard (25%)'>Standard (25%)</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -810,7 +829,6 @@ const page = () => {
                           shortDescription: e.target.value,
                         }))
                       }
-                      placeholder='The cards are printed in Norway on environmentally friendly FSC approved paper. The size is 10×15 cm. 10 different designs.'
                       rows={3}
                     />
                   </Form.Group>
@@ -839,7 +857,6 @@ const page = () => {
                           PageDescription: e.target.value,
                         }))
                       }
-                      placeholder='Kortene er trykket i Norge på miljøvennlig FSC godkjent papir. Størrelsen er 10x15 cm. 10 forskjellige design.'
                     />
                   </Form.Group>
 
@@ -847,7 +864,6 @@ const page = () => {
                     <Form.Label>Meta description</Form.Label>
                     <Form.Control
                       as='textarea'
-                      placeholder='Dugnadspakke med 40stk til og fra lapper til jul. Disse er veldig enkle å selge i en dugnad for en skoleklasse, et idrettslag, en russegruppe eller andre organisasjoner.'
                       rows={3}
                       value={productForm.MetaDescription}
                       onChange={(e) =>
@@ -869,6 +885,13 @@ const page = () => {
           </div>
         </div>
       </div>
+      <CreateCategoryModal
+        isOpen={showCreateCategory}
+        onClose={() => {
+          setShowCreateCategory(false);
+          fetchCategory();
+        }}
+      />
     </>
   );
 };

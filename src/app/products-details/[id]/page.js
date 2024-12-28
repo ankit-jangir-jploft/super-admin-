@@ -1,20 +1,30 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/app/Components/Sidebar/Sidebar";
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { Col, Row } from "react-bootstrap";
 import CreateTask from "@/app/Components/CreateTask";
 import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
-import SlickSlider from "../../Components/Sidebar/Sidebar";
+import SlickSlider from "../../Components/SliderItem";
+import { toast } from "react-toastify";
 
 const page = ({ params }) => {
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
   const [productDetails, setProductDetails] = useState({});
+  const [logs, setLogs] = useState([]);
+  const [content, setContent] = useState("");
   const handlePopup = () => {
     setShowModal(!modalShow);
   };
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchProductDetails = async () => {
     try {
@@ -31,9 +41,48 @@ const page = ({ params }) => {
     }
   };
 
+  const fetchProductLogs = async () => {
+    try {
+      const options = {
+        product_id: id,
+      };
+      const res = await GET(`${BASE_URL}/api/admin/productLogList`, options);
+
+      if (res?.data?.status) {
+        setLogs(res?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProductDetails();
+    fetchProductLogs();
   }, []);
+
+  const addLogsHandler = async () => {
+    try {
+      const payload = {
+        product_id: id,
+        content: content,
+      };
+
+      const res = await POST(`${BASE_URL}/api/admin/productLogCreate`, payload);
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res.data?.message);
+        setContent("");
+        fetchProductLogs();
+      } else {
+        toast.dismiss();
+        toast.error(res.data?.message);
+      }
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message);
+    }
+  };
 
   const deleteKeywordHandler = async (keywordId) => {
     try {
@@ -125,8 +174,7 @@ const page = ({ params }) => {
                         <span>{productDetails?.quantity}</span>
                       </p>
                       <p>
-                        Category:{" "}
-                        <span>{productDetails?.categories?.name}</span>
+                        Category: <span>{productDetails?.category_name}</span>
                       </p>
                       <p>
                         Sub category:{" "}
@@ -214,8 +262,17 @@ const page = ({ params }) => {
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
                     <h2>Product description</h2>
-
-                    <p>{productDetails?.product_description}</p>
+                    <div
+                      style={{
+                        textAlign: "left",
+                        display: "flex",
+                        alignItems: "self-start",
+                        justifyContent: "flex-start",
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: productDetails?.product_description || "",
+                      }}
+                    />
                   </div>
                 </Col>
                 <Col md={12}>
@@ -232,12 +289,12 @@ const page = ({ params }) => {
                         {productDetails?.keywords?.map((keyword) => {
                           return (
                             <li>
-                              {keyword?.name}{" "}
+                              {keyword}{" "}
                               <img
                                 src='/images/close-tag.svg'
-                                onClick={() =>
-                                  deleteKeywordHandler(keyword?.id)
-                                }
+                                // onClick={() =>
+                                //   deleteKeywordHandler(keyword?.id)
+                                // }
                               />
                             </li>
                           );
@@ -251,9 +308,13 @@ const page = ({ params }) => {
                     <h2>Related products</h2>
                     <div className='tag_list'>
                       <ul>
-                        <li>Anledningspakke #3 (DUG30GULL) </li>
-                        <li>Julepakke #1 (PDK8) </li>
-                        <li>Julepakke #2 (PDK9) </li>
+                        {productDetails?.related_products?.map((product) => {
+                          return (
+                            <li key={product?.id}>
+                              {product?.name} ({product?.product_number}){" "}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -263,99 +324,36 @@ const page = ({ params }) => {
             <Col lg={4}>
               <div className='order-dtl-box'>
                 <h2>Logg </h2>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Kunde opprettet som gjest</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Ordre #10202</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>
-                    Endret status - Folg app provepakke{" "}
-                    <Link href='orderdetail'>
-                      <img
-                        className='img-fluid exclamation-img'
-                        src='/images/exclamation-mark.svg'
-                      />
-                    </Link>
-                  </label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'> Bengt</Link>
-                  </span>
-                  <label>Kunde tilordnet robert</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Robert</Link>
-                  </span>
-                  <label>Robert opprettet en oppgave i Asana</label>
-                </div>
+                {(logs?.length &&
+                  logs?.map((log, i) => {
+                    return (
+                      <div className='logg-dtl'>
+                        <span>{log?.created_at}</span>
+                        <label>{log?.name}</label>
+                      </div>
+                    );
+                  })) || <div>No logs available</div>}
 
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>
-                    Emdert til{" "}
-                    <button className='status red w-auto'>varm</button>
-                  </label>
-                </div>
-
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04 </span>
-                  <label>Order #10310</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Bengt</Link>
-                  </span>
-                  <label>Folger du opp denne ordren Robert ?</label>
-                </div>
-
-                <div className='logg-dtl'>
-                  <span>
-                    29.09.2024 - 15:04 <Link href='orderdetail'>Robert</Link>
-                  </span>
-                  <label>Kontaktet pa telefon, ga litt informasjon</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Automatisk SMS og e-post om dugnadsstart sendt.</label>
-                </div>
-                <div className='logg-dtl'>
-                  <span>29.09.2024 - 15:04</span>
-                  <label>Endret status - Pagaende forhandssalg</label>
-                </div>
-                <div className='logg-til-desc'>
-                  <div className='form-group'>
-                    <textarea
-                      rows='4'
-                      placeholder='Legg til internt notat...'
-                    ></textarea>
+                {roleType !== "guest" && (
+                  <div className='logg-til-desc'>
+                    <div className='form-group'>
+                      <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        rows='4'
+                        placeholder=''
+                      ></textarea>
+                    </div>
+                    <div className='text-end'>
+                      <button
+                        onClick={addLogsHandler}
+                        className='btn-primary px-3 py-1'
+                      >
+                        Legg til notat
+                      </button>
+                    </div>
                   </div>
-                  <div className='text-end'>
-                    {/* <button className='btn-primary px-3 py-1'>
-                      Legg til notat
-                    </button> */}
-                    <button
-                      className='send_chat_btn'
-                      onClick={handleLogSubmit}
-                    >
-                      {/* Legg til notat  */} 
-                      <img
-                        className=''
-                        src='/images/chat_arrow.svg'
-                      />
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             </Col>
           </Row>

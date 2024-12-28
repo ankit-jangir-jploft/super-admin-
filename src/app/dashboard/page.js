@@ -5,76 +5,88 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET } from "../Utils/apiFunctions";
+import Cookies from "js-cookie";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
 const page = () => {
-
-  const [dashBoardData, setDashBoardData] = useState()
-
-
-  const state = {
-    series: [
-      {
-        name: "Sales - 2013",
-        data: [10, 29, 20, 36, 7, 25, 70],
-      },
-      {
-        name: "Profit - 2013",
-        data: [34, 29, 40, 50, 78, 25, 60],
-      },
-    ],
-    options: {
-      chart: {
-        height: 300,
-        type: "line",
-        dropShadow: {
-          enabled: true,
-          color: "#000",
-          top: 18,
-          left: 7,
-          blur: 10,
-          opacity: 0.2,
-        },
-        zoom: {
-          enabled: false,
-        },
-        toolbar: {
-          show: false,
-        },
-      },
-      colors: ["#FD575A", "#545454"],
-      dataLabels: {
+  const [dashBoardData, setDashBoardData] = useState();
+  const [userData, setUserData] = useState();
+  const series = [
+    {
+      name: "Sales - 2013",
+      data: [10, 29, 20, 36, 7, 25, 70],
+    },
+    {
+      name: "Profit - 2013",
+      data: [34, 29, 40, 50, 78, 25, 60],
+    },
+  ];
+  const [lineChart, setLineChart] = useState(series);
+  const [lineChartOptions, setLineOptions] = useState({
+    chart: {
+      height: 300,
+      type: "line",
+      dropShadow: {
         enabled: true,
+        color: "#000",
+        top: 18,
+        left: 7,
+        blur: 10,
+        opacity: 0.2,
       },
-      stroke: {
-        curve: "smooth",
+      zoom: {
+        enabled: false,
       },
-      grid: {
-        borderColor: "#e7e7e7",
-        row: {
-          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-          opacity: 0.5,
-        },
-      },
-      markers: {
-        size: 1,
-      },
-      xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-      },
-
-      legend: {
-        position: "top",
-        horizontalAlign: "right",
-        floating: true,
-        offsetY: -25,
-        offsetX: -5,
+      toolbar: {
+        show: false,
       },
     },
-  };
+    colors: ["#CDCDCD", "#FD575A"],
+    dataLabels: {
+      enabled: true,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    grid: {
+      borderColor: "#e7e7e7",
+      row: {
+        colors: ["#f3f3f3", "transparent"],
+        opacity: 0.5,
+      },
+    },
+    markers: {
+      size: 1,
+    },
+    xaxis: {
+      categories: [
+        "Dec",
+        "Nov",
+        "Oct",
+        "Sep",
+        "Aug",
+        "Jul",
+        "Jun",
+        "May",
+        "Apr",
+        "Mar",
+        "Feb",
+        "Jan",
+      ].reverse(),
+    },
+    legend: {
+      position: "top",
+      horizontalAlign: "right",
+      floating: true,
+      offsetY: -25,
+      offsetX: -5,
+    },
+  });
+
+  const [donutChart, setDonut] = useState([]);
 
   const state1 = {
     series: [55, 15],
@@ -83,12 +95,12 @@ const page = () => {
         type: "donut",
       },
       labels: ["Sales", "Profit"],
-      colors: ["#CDCDCD", "#FD5A59"],
+      colors: ["#CDCDCD", "#FD575A"], // Match colors
       legend: {
         position: "bottom",
         itemMargin: {
-          horizontal: 10, // Horizontal gap between legend items
-          vertical: 5, // Vertical gap between rows of legend items (for multiple lines)
+          horizontal: 10,
+          vertical: 5,
         },
       },
       responsive: [
@@ -104,26 +116,37 @@ const page = () => {
     },
   };
 
-
   const fetchData = async () => {
     try {
       const response = await GET(`${BASE_URL}/api/admin/dashbord`);
 
-      console.log(response?.data?.data)
-      setDashBoardData(response?.data?.data)
+      console.log(response?.data?.data);
+      setDashBoardData(response?.data?.data);
+      setLineChart(response?.data?.data?.lineChart);
 
+      setDonut(response?.data?.data?.donutChart);
+      const dynamicCategories = response?.data?.data?.months || [];
+      const xaxis = {
+        categories: dynamicCategories,
+      };
+      console.log("xaxis", xaxis);
+      // setLineOptions((prevOptions) => ({
+      //   ...prevOptions,
+      //   xaxis: xaxis,
+      // }));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-
+  // console.log("lineChartOptions", lineChartOptions);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
 
-
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
+  }, []);
 
   return (
     <>
@@ -132,15 +155,19 @@ const page = () => {
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
-            <Link href={"/"}>
+            <input type='text' />
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -209,12 +236,11 @@ const page = () => {
         <div className='row'>
           <div className='col-md-8'>
             <div className='grph-crd'>
-              {/* <img className='img-fluid' src="/images/sales-ananst.png" /> */}
               <div id='chart'>
                 <h3>Sales Analytics</h3>
                 <ApexCharts
-                  options={state.options}
-                  series={state.series}
+                  options={lineChartOptions}
+                  series={lineChart}
                   type='line'
                   height={300}
                 />
@@ -228,7 +254,7 @@ const page = () => {
               <div id='chart'>
                 <ApexCharts
                   options={state1.options}
-                  series={state1.series}
+                  series={donutChart}
                   type='donut'
                   height={315}
                 />
@@ -251,7 +277,6 @@ const page = () => {
                 </tr>
               </thead>
 
-
               <tbody>
                 {dashBoardData?.group.map((item, index) => (
                   <tr key={index}>
@@ -271,18 +296,26 @@ const page = () => {
                   </td>
                   <td>
                     <b>
-                      {dashBoardData?.group.reduce((sum, item) => sum + (item?.total_items || 0), 0)} stk
+                      {dashBoardData?.group.reduce(
+                        (sum, item) => sum + (item?.total_items || 0),
+                        0
+                      )}{" "}
+                      stk
                     </b>
                   </td>
                   <td>
                     <b>
-                      kr {dashBoardData?.group.reduce((sum, item) => sum + (item?.total_amount || 0), 0)},-
+                      kr{" "}
+                      {dashBoardData?.group.reduce(
+                        (sum, item) => sum + (item?.total_amount || 0),
+                        0
+                      )}
+                      ,-
                     </b>
                   </td>
                   <td></td>
                 </tr>
               </tbody>
-
             </table>
           </div>
         </div>

@@ -18,7 +18,9 @@ const Page = ({ param }) => {
   const [profileImage, setProfileImage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [fetchSellerById, setFetchSellerById] = useState(null);
-  const router = useRouter()
+  const [pending, setPending] = useState(false);
+  const [roles, setRoles] = useState([]);
+  const router = useRouter();
 
   const {
     register,
@@ -29,7 +31,7 @@ const Page = ({ param }) => {
 
   // const { sellerId } = useSearchParams();
 
-  const params = useParams()
+  const params = useParams();
 
   const radios = [
     { name: "Light", value: "1" },
@@ -48,7 +50,7 @@ const Page = ({ param }) => {
         // Update form state with fetched data
         setValue("name", seller.name || "");
         setValue("email", seller.email || "");
-        setValue("userType", seller.role_id === 2 ? "Seller" : "Unknown");
+        setValue("userType", seller.role_id || ""); // Dynamically set userType
         setValue("status", seller.status === 1 ? "Active" : "Inactive");
         setValue("language", seller.language_id === 1 ? "English" : "Hindi");
         setProfileImage(seller?.profile_image || "");
@@ -58,9 +60,27 @@ const Page = ({ param }) => {
     }
   };
 
+  const fetchRoles = async () => {
+    try {
+      setPending(true);
+      const response = await GET(`${BASE_URL}/api/admin/role`);
+      if (response?.data?.status === true) {
+        setRoles(response?.data?.data || []);
+      } else {
+        toast.error("Error submitting form.");
+      }
+    } catch (error) {
+      toast.error("Error submitting form.");
+      console.error(error);
+    } finally {
+      setPending(false);
+    }
+  };
+
   useEffect(() => {
     if (params?.id) {
       fetchSellerList();
+      fetchRoles();
     }
   }, [params]);
 
@@ -69,28 +89,30 @@ const Page = ({ param }) => {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
-      formData.append("role_id", data.userType === "seller" ? 2 : 1);
+      formData.append("role_id", data.userType);
       formData.append("status", data.status === "Active" ? 1 : 0);
       formData.append("language_id", data.language === "English" ? 1 : 1);
       formData.append("appearance", radioValue);
-      formData.append("profile_image", selectedImage);
+
+      if (selectedImage) {
+        formData.append("profile_image", selectedImage);
+      } else {
+        formData.append("profile_image", profileImage);
+      }
 
       const response = await POST(
         `${BASE_URL}/api/admin/sellerUpdate?id=${params?.id}`,
         formData
       );
 
-      console.log({ response })
-
       if (response?.data?.status === true) {
-
         toast.success("Seller updated successfully!");
         fetchSellerList();
-        router.push("/settings")
+        router.push("/settings");
       }
     } catch (error) {
       console.log(error);
-      toast.error("An ", error);
+      toast.error("An error occurred while updating.");
     }
   };
 
@@ -123,9 +145,9 @@ const Page = ({ param }) => {
                         src={profileImage || "/images/user-edt.png"}
                         alt='Profile'
                       />
-                      <Form.Group className="UploadPhoto_file">
+                      <Form.Group className='UploadPhoto_file'>
                         <Form.Control
-                          className="UploadPhoto"
+                          className='UploadPhoto'
                           type='file'
                           accept='image/*'
                           onChange={handleImageChange}
@@ -140,7 +162,6 @@ const Page = ({ param }) => {
                             {...register("name", {
                               required: "Name is required",
                             })}
-                            placeholder='Name'
                           />
                           {errors.name && (
                             <p className='text-danger'>{errors.name.message}</p>
@@ -159,7 +180,6 @@ const Page = ({ param }) => {
                                 message: "Invalid email address",
                               },
                             })}
-                            placeholder='Email'
                           />
                           {errors.email && (
                             <p className='text-danger'>
@@ -172,12 +192,26 @@ const Page = ({ param }) => {
                         <Form.Group className='mb-3'>
                           <Form.Label>User Type</Form.Label>
                           <Form.Select
-                            {...register("userType")}
-                            defaultValue='Seller'
+                            {...register("userType", {
+                              required: "User Type is required",
+                            })}
+                            defaultValue={fetchSellerById?.role_id || ""}
                           >
-                            <option value='Seller'>Seller</option>
-                            <option value='Unknown'>Unknown</option>
+                            <option value=''>Select User Type</option>
+                            {roles?.map((role) => (
+                              <option
+                                key={role.id}
+                                value={role.id}
+                              >
+                                {role.name}
+                              </option>
+                            ))}
                           </Form.Select>
+                          {errors.userType && (
+                            <p className='text-danger'>
+                              {errors.userType.message}
+                            </p>
+                          )}
                         </Form.Group>
                       </div>
                       <div className='col-md-6'>
@@ -234,21 +268,21 @@ const Page = ({ param }) => {
                         </Form.Group>
                       </div>
                     </div>
-                    <div className="row mt-3 mb-5">
-                      <div className="col-md-6">
+                    <div className='row mt-3 mb-5'>
+                      <div className='col-md-6'>
                         <button
-                          className="createorder_top_right w-100 btn_bg_delt"
-                          type="submit"
+                          className='createorder_top_right w-100 btn_bg_delt'
+                          type='submit'
                         >
                           Delete user
                         </button>
                       </div>
-                      <div className="col-md-6">
+                      <div className='col-md-6'>
                         <button
-                          className="createorder_top_right btn_bg_save w-100"
-                          type="submit"
+                          className='createorder_top_right btn_bg_save w-100'
+                          type='submit'
                         >
-                          Save
+                          Update
                         </button>
                       </div>
                     </div>

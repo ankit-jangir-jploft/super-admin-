@@ -1,11 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
+
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
+import Paginate from "../Utils/Paginate";
+import Cookies from "js-cookie";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -14,6 +17,13 @@ const page = () => {
   const [pagination, setPagination] = useState({});
   const [searchQuery, setSearch] = useState("");
   const [action, setAction] = useState("");
+  const [userData, setUserData] = useState({});
+  const [roleType, setRoleType] = useState();
+
+  useEffect(() => {
+    // Fetch roleType only on the client side
+    setRoleType(Cookies.get("roleType"));
+  }, []);
 
   const fetchCustomers = async () => {
     try {
@@ -33,12 +43,14 @@ const page = () => {
     }
   };
 
-  const onPageChange = ({ selected }) => {
-    setCurrent(selected + 1);
+  const onPageChange = (selected) => {
+    setCurrent(selected);
   };
 
   useEffect(() => {
     fetchCustomers();
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
   }, [searchQuery, currentPage]);
 
   const handleSelectCustomer = (customerId) => {
@@ -77,6 +89,7 @@ const page = () => {
         toast.success(res.data.message);
         setSelectedCustomers([]);
         fetchCustomers();
+        setAction("");
       } else {
         toast.dismiss();
         toast.error("Failed to perform the action!");
@@ -107,8 +120,15 @@ const page = () => {
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
+            <Link href={`/useredit/${userData?.id}`}>
+              <img
+                className='object-fit-cover rounded-circle'
+                style={{ width: "41px" }}
+                src={userData?.profile_image}
+                onError={(e) => {
+                  e.target.src = "/images/avatar-style.png";
+                }}
+              />
             </Link>
           </div>
         </div>
@@ -179,22 +199,31 @@ const page = () => {
           </div>
         </div>
         <div className='tablebruk'>
-          <select
-            value={action}
-            onChange={(e) => setAction(e.target.value)}
-          >
-            <option value=''>Mass action</option>
-            <option value='delete'>Delete</option>
-          </select>
-          {action && (
-            <button
-              className='btn btn-danger Confirm_btn'
-              onClick={handleMassAction}
-            >
-              Confirm
-            </button>
+          {roleType === "guest" ? (
+            ""
+          ) : (
+            <div className='tablebruk_left'>
+              <select
+                className='form-select'
+                value={action}
+                onChange={(e) => {
+                  setAction(e.target.value);
+                }}
+              >
+                <option value={""}>Mass action</option>
+                <option value={"delete"}>Delete</option>
+              </select>
+              {action && (
+                <button
+                  className='crte-userd Confirm_btn'
+                  onClick={handleMassAction}
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
           )}
-          <ReactPaginate
+          {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -204,6 +233,11 @@ const page = () => {
             onPageChange={onPageChange}
             containerClassName={"pagination"}
             activeClassName={"active"}
+          /> */}
+          <Paginate
+            currentPage={currentPage}
+            totalPages={pagination?.totalPages}
+            onPageChange={onPageChange}
           />
         </div>
       </div>
