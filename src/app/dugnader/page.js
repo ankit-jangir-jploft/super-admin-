@@ -54,7 +54,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px" }}
+                style={{ width: "41px", height:"41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";

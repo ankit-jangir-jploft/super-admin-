@@ -2339,3 +2339,19 @@ h2.hedingtext_top {
   font-weight: 600;
   margin-bottom: 20px;
 }
+
+.close_img_top {
+  position: relative;
+  left: -31px;
+  top: 6px;
+  background: #d54d4c;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 15px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
