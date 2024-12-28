@@ -187,12 +187,12 @@ const page = () => {
                       <td>
                         <button
                           className={`status ${
-                            product?.product_status === 1
+                            product?.product_status == 1
                               ? "green-clr"
                               : "yellow"
                           }`}
                         >
-                          {product?.product_status === 1
+                          {product?.product_status == 1
                             ? "Published"
                             : "Unpublished"}
                         </button>

@@ -262,8 +262,17 @@ const page = ({ params }) => {
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
                     <h2>Product description</h2>
-
-                    <p>{productDetails?.product_description}</p>
+                    <div
+                      style={{
+                        textAlign: "left",
+                        display: "flex",
+                        alignItems: "self-start",
+                        justifyContent: "flex-start",
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: productDetails?.product_description || "",
+                      }}
+                    />
                   </div>
                 </Col>
                 <Col md={12}>
@@ -283,9 +292,9 @@ const page = ({ params }) => {
                               {keyword}{" "}
                               <img
                                 src='/images/close-tag.svg'
-                              // onClick={() =>
-                              //   deleteKeywordHandler(keyword?.id)
-                              // }
+                                // onClick={() =>
+                                //   deleteKeywordHandler(keyword?.id)
+                                // }
                               />
                             </li>
                           );
@@ -325,25 +334,26 @@ const page = ({ params }) => {
                     );
                   })) || <div>No logs available</div>}
 
-                {roleType!=='guest' && 
-                <div className='logg-til-desc'>
-                  <div className='form-group'>
-                    <textarea
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      rows='4'
-                      placeholder=''
-                    ></textarea>
+                {roleType !== "guest" && (
+                  <div className='logg-til-desc'>
+                    <div className='form-group'>
+                      <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        rows='4'
+                        placeholder=''
+                      ></textarea>
+                    </div>
+                    <div className='text-end'>
+                      <button
+                        onClick={addLogsHandler}
+                        className='btn-primary px-3 py-1'
+                      >
+                        Legg til notat
+                      </button>
+                    </div>
                   </div>
-                  <div className='text-end'>
-                    <button
-                      onClick={addLogsHandler}
-                      className='btn-primary px-3 py-1'
-                    >
-                      Legg til notat
-                    </button>
-                  </div>
-                </div> }
+                )}
               </div>
             </Col>
           </Row>
