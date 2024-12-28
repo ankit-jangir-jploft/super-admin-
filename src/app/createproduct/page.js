@@ -211,7 +211,6 @@ const page = () => {
 
   const submitHandler = async () => {
     try {
-      console.log("errors", errors);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory);
@@ -265,6 +264,15 @@ const page = () => {
         }
       }
     } catch (error) {}
+  };
+
+  const removeFile = (indexToRemove) => {
+    setFile((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
+    setFiles((prevFiles) =>
+      prevFiles.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   return (
@@ -322,10 +330,21 @@ const page = () => {
                   <div className='crpr-im'>
                     {file.map((fl, i) => {
                       return (
-                        <img
-                          key={i}
-                          src={fl}
-                        />
+                        <>
+                          {" "}
+                          <img
+                            key={i}
+                            src={fl}
+                          />
+                          <div
+                            className='close_img_top'
+                            onClick={() => {
+                              removeFile(i, fl);
+                            }}
+                          >
+                            X
+                          </div>
+                        </>
                       );
                     })}
 
