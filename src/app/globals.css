@@ -2297,19 +2297,14 @@ button.crte-userd.Confirm_btn {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  border-radius: 20px;
+  border: none;
+  padding: 25px;
 }
-
-.modal-container {
-  background: #fff;
-  width: 90%;
-  max-width: 800px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  position: relative;
-  animation: slideIn 0.3s ease-out;
+form#customerForm .shdw-crd {
+  box-shadow: none;
+  padding: 0px;
 }
-
 @keyframes slideIn {
   from {
     transform: translateY(-50px);
@@ -2331,3 +2326,16 @@ button.crte-userd.Confirm_btn {
   cursor: pointer;
 }
 
+.modal-custmr-ad {
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+}
+.createcustomer_btn, .createcustomer_btncmf {
+  padding: 10px;
+}
+h2.hedingtext_top {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}

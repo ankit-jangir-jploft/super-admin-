@@ -445,7 +445,7 @@ const page = () => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                          {/* <Form.Label>Terms of Purchase</Form.Label> */}
                           {/* <Form.Control
                             placeholder='Terms of purchase'
                             {...register("title", {
@@ -464,7 +464,7 @@ const page = () => {
                     <div className='row'>
                       <div className='col-md-12'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Text</Form.Label>
+                          <Form.Label>Terms of Purchase</Form.Label>
                           <Controller
                             name='text'
                             control={control}
@@ -803,9 +803,7 @@ const page = () => {
                                 {row?.status === 1 ? "Active" : "Inactive"}
                               </Badge>
                             </td>
-                            <td>
-                              {row?.role_id === 2 ? "Seller" : "Customer"}
-                            </td>
+                            <td>{row?.role_type}</td>
                             <td>{row?.email}</td>
                             {roleType !== "guest" && (
                               <td>

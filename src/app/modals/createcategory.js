@@ -110,7 +110,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
         >
           ×
         </button>
-        <h2>Create Category</h2>
+        <h2 className="hedingtext_top">Create Category</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
