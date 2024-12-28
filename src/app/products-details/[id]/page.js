@@ -341,8 +341,18 @@ const page = ({ params }) => {
                     ></textarea>
                   </div>
                   <div className='text-end'>
-                    <button className='btn-primary px-3 py-1'>
+                    {/* <button className='btn-primary px-3 py-1'>
                       Legg til notat
+                    </button> */}
+                    <button
+                      className='send_chat_btn'
+                      onClick={handleLogSubmit}
+                    >
+                      {/* Legg til notat  */} 
+                      <img
+                        className=''
+                        src='/images/chat_arrow.svg'
+                      />
                     </button>
                   </div>
                 </div>

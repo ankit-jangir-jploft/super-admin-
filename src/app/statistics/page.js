@@ -29,7 +29,7 @@ const page = () => {
       enabled: false // Disable data labels inside bars
     },
     xaxis: {
-      categories: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14'],
+      categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
       labels: {
         style: {
           colors: '#000', // Apply text color to x-axis labels
@@ -65,247 +65,282 @@ const page = () => {
       data: [2, 5, 8, 7, 5, 4, 3, 5, 7, 8, 9, 10, 2, 3]
     }
   ])
-  
-  const Series= [{
+
+  const Series = [{
     name: 'Net Profit',
     data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
   }, {
     name: 'Revenue',
     data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-  }, 
+  },
   ]
   const options = {
-   
+
     chart: {
-    type: 'bar',
-    height: 350,
-    toolbar: {
-      show: false // Hides the toolbar including download icons
-    }
-  },
-  colors: ['#FFC3C2','#FD5A59'],
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '55%',
-      endingShape: 'rounded',
-      borderRadius: 2,
-      columnWidth: '80%',
+      type: 'bar',
+      height: 350,
+      toolbar: {
+        show: false // Hides the toolbar including download icons
+      }
     },
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ['transparent']
-  },
-  xaxis: {
-    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-  },
-  yaxis: {
-    show: false
-    // title: {
-    //   text: '$ (thousands)'
-    // }
-    
-  },
-  title: {
-    text: 'Completed Dugnader',
-    align: 'left',
-    style: {
-      fontSize: '20px',
-      fontWeight: '600',
-      color: '#000' // Apply text color to chart title
+    colors: ['#FFC3C2', '#FD5A59'],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        endingShape: 'rounded',
+        borderRadius: 2,
+        columnWidth: '80%',
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent']
+    },
+    xaxis: {
+      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+    },
+    yaxis: {
+      show: false
+      // title: {
+      //   text: '$ (thousands)'
+      // }
+
+    },
+    title: {
+      text: 'Completed Dugnader',
+      align: 'left',
+      style: {
+        fontSize: '20px',
+        fontWeight: '600',
+        color: '#000' // Apply text color to chart title
+      }
+    },
+    grid: {
+      show: false // Hide grid lines
+    },
+    legend: {
+      show: false
+    },
+    fill: {
+      opacity: 1
+    },
+    tooltip: {
+      // y: {
+      //   formatter: function (val) {
+      //     return "$ " + val + " thousands"
+      //   }
+      // }
     }
-  },
-  grid: {
-    show: false // Hide grid lines
-  },
-  legend:{
-    show: false
-  },
-  fill: {
-    opacity: 1
-  },
-  tooltip: {
-    // y: {
-    //   formatter: function (val) {
-    //     return "$ " + val + " thousands"
-    //   }
-    // }
-  }
   };
 
-  const seriess= [60, 40]
+  const seriess = [60, 40]
   const options1 = {
-    
+
     chart: {
-    width: 380,
-    type: 'pie',
-  },
-  legend:{
-    show: false
-  },
-  colors: ['#FFC3C2','#FD5A59'],
-  labels: ['Team A', 'Team B'],
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 200
-      },      
-    }
-  }]
+      width: 380,
+      type: 'pie',
+    },
+    legend: {
+      show: false
+    },
+    colors: ['#FFC3C2', '#FD5A59'],
+    labels: ['Team A', 'Team B'],
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200
+        },
+      }
+    }]
   };
 
 
-  const Series3= [{
+  const Series3 = [{
     name: 'Net Profit',
     data: [44, 55, 57, 56, 61, 58]
   }, {
     name: 'Revenue',
     data: [76, 85, 85, 48, 80, 55]
-  }, 
+  },
   ]
-  const options3 = {   
+  const options3 = {
     chart: {
-    type: 'bar',
-    height: 250,
-    toolbar: {
-      show: false // Hides the toolbar including download icons
-    }
-  },
-  colors: ['#FFC3C2','#FD5A59'],
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      columnWidth: '55%',
-      endingShape: 'rounded',
-      borderRadius: 2,
-      columnWidth: '80%',
+      type: 'bar',
+      height: 250,
+      toolbar: {
+        show: false // Hides the toolbar including download icons
+      }
     },
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    show: true,
-    width: 2,
-    colors: ['transparent']
-  },
-  xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-  },
-  yaxis: {
-    show: false
-    // title: {
-    //   text: '$ (thousands)'
-    // }
-    
-  },
-  title: {
-    align: 'left',
-    style: {
-      fontSize: '20px',
-      fontWeight: '600',
-      color: '#000' // Apply text color to chart title
+    colors: ['#FFC3C2', '#FD5A59'],
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        endingShape: 'rounded',
+        borderRadius: 2,
+        columnWidth: '80%',
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent']
+    },
+    xaxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    },
+    yaxis: {
+      show: false
+      // title: {
+      //   text: '$ (thousands)'
+      // }
+
+    },
+    title: {
+      align: 'left',
+      style: {
+        fontSize: '20px',
+        fontWeight: '600',
+        color: '#000' // Apply text color to chart title
+      }
+    },
+    grid: {
+      show: false // Hide grid lines
+    },
+    legend: {
+      show: false
+    },
+    fill: {
+      opacity: 1
+    },
+    tooltip: {
+      // y: {
+      //   formatter: function (val) {
+      //     return "$ " + val + " thousands"
+      //   }
+      // }
     }
-  },
-  grid: {
-    show: false // Hide grid lines
-  },
-  legend:{
-    show: false
-  },
-  fill: {
-    opacity: 1
-  },
-  tooltip: {
-    // y: {
-    //   formatter: function (val) {
-    //     return "$ " + val + " thousands"
-    //   }
-    // }
-  }
   };
   return (
     <>
       <Sidebar />
       <div className='detail-admin-main statistics-mne'>
         <div className='admin-header'>
-          <h2>Statistics </h2>
+          <h2>Statistics  <Link href={'/'}><img src="/images/linkhed.svg" /></Link></h2>
+          <div className='filter_date'>
+            From <input type='Date' placeholder='Year to date'></input> To <input type='Date' placeholder='Year to date'></input>
+          </div>
           <div className='search-frm'>
             <input type='text' placeholder='Sok i order' />
-            <Link href={'/'}><img src="/images/notifications_none.svg" /></Link> 
-            <Link href={'/'}><img src="/images/avatar-style.png" /></Link>              
+            <Link href={'/'}><img src="/images/notifications_none.svg" /></Link>
+            <Link href={'/'}><img src="/images/avatar-style.png" /></Link>
           </div>
+
         </div>
         <div className='row'>
-          <div className='col-md-3'>
-             <div className='dash-crde pinks-cr'>
+          <div className='col'>
+            <div className='dash-crde pinks-cr'>
               <p>Number of active groups</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>26</h2>
                 <span>+11.02%  <img className='' src="/images/ArrowRise.svg" /></span>
               </div>
-             </div>
+            </div>
           </div>
-          <div className='col-md-3'>
-             <div className='dash-crde'>
+          <div className='col'>
+            <div className='dash-crde'>
               <p>Number of active sellers</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>409</h2>
                 <span>+0.03% <img className='' src="/images/ArrowRise.svg" /></span>
               </div>
-             </div>
+            </div>
           </div>
-          <div className='col-md-2'>
-             <div className='dash-crde blue-cr'>
+          <div className='col'>
+            <div className='dash-crde blue-cr'>
               <p>Number of Packages Sold</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>495</h2>
                 <span>+15.03%  <img className='' src="/images/ArrowRise.svg" /></span>
               </div>
-             </div>
+            </div>
           </div>
-          <div className='col-md-2'>
-             <div className='dash-crde rde-cr'>
+          <div className='col'>
+            <div className='dash-crde rde-cr'>
               <p>Number of Packages Not Delivered</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>375</h2>
                 <span>+6.08%  <img className='' src="/images/ArrowRise.svg" /></span>
               </div>
-             </div>
+            </div>
           </div>
-          <div className='col-md-2'>
-             <div className='dash-crde rde-cr'>
+          <div className='col'>
+            <div className='dash-crde rde-cr'>
               <p>New orders</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>4</h2>
-                
+
               </div>
-             </div>
+            </div>
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-6'>
-          <div className='grph-crd'>
-          <Form.Select aria-label="Default select example">
-      <option>14 Days</option>
-      <option value="1">7 Days</option>
-      <option value="2">10 Days</option>
-      <option value="3">10 Days</option>
-    </Form.Select>
-            <ApexCharts options={verticalBarChartOptions()} series={verticalBarChartSeries} type="bar" height={300} />
+          <div className='col-md-6  mb-4'>
+            <div className='grph-crd'>
+              <Form.Select aria-label="Default select example">
+                <option>14 Days</option>
+                <option value="1">7 Days</option>
+                <option value="2">10 Days</option>
+                <option value="3">10 Days</option>
+              </Form.Select>
+              <ApexCharts options={verticalBarChartOptions()} series={verticalBarChartSeries} type="bar"  />
+            </div>
           </div>
-          </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
               <input type='Date' placeholder='Year to date'></input>
-            <ApexCharts options={options} series={Series} type="bar" height={300} />
+              <ApexCharts options={options} series={Series} type="bar" /> 
+              <div className='grafh_footer'>
+
+               <div className='grafph_btm'>
+                <div className='leftSalesperson'>
+                  <div className='left_side'>
+                    <div className='iocn_bx'>
+                        <img src="/images/SalespersonAvatar.svg" />
+                    </div>
+                    <div className='text_bx'>
+                        <h3>Salesperson</h3>
+                        <p>Number of completed dugnader</p>
+                    </div>
+                  </div>
+                  <span className='count_num'>15</span>
+                </div>
               </div>
+              <div className='grafph_btm'>
+                <div className='leftSalesperson'>
+                  <div className='left_side'>
+                    <div className='iocn_bx'>
+                        <img src="/images/GroupAvatar.svg" />
+                    </div>
+                    <div className='text_bx'>
+                        <h3>Group</h3>
+                        <p>Number of completed dugnader</p>
+                    </div>
+                  </div>
+                  <span className='count_num'>89</span>
+                </div>
+              </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -329,57 +364,57 @@ const page = () => {
                       <td>BIRTHDAY CARDS</td>
                       <td>
                         <div className="progress progress-ble">
-                        <div className="progress-bar w-75 bdy-crd"
+                          <div className="progress-bar w-75 bdy-crd"
                             role="progressbar"
                             aria-valuenow="75"
                             aria-valuemin="0"
-                            aria-valuemax="100"></div> 
-                      </div>
+                            aria-valuemax="100"></div>
+                        </div>
                       </td>
-                      <td className='text-end'><div className='bdy-sale'>45%</div></td>         
+                      <td className='text-end'><div className='bdy-sale'>45%</div></td>
                     </tr>
                     <tr>
                       <td>2</td>
                       <td>ANLEDNINGSKORT</td>
                       <td>
                         <div className="progress progress-grn">
-                        <div className="progress-bar w-50 all-endys"
+                          <div className="progress-bar w-50 all-endys"
                             role="progressbar"
                             aria-valuenow="40"
                             aria-valuemin="0"
-                            aria-valuemax="100"></div> 
-                      </div>
+                            aria-valuemax="100"></div>
+                        </div>
                       </td>
-                      <td className='text-end'><div className='allend-sale'>29%</div></td>         
+                      <td className='text-end'><div className='allend-sale'>29%</div></td>
                     </tr>
                     <tr>
                       <td>3</td>
                       <td>EVENT CARDS #2</td>
                       <td>
                         <div className="progress progress-prpl">
-                        <div className="progress-bar w-25 evnt-crds"
+                          <div className="progress-bar w-25 evnt-crds"
                             role="progressbar"
                             aria-valuenow="25"
                             aria-valuemin="0"
-                            aria-valuemax="100"></div> 
-                      </div>
+                            aria-valuemax="100"></div>
+                        </div>
                       </td>
-                      <td className='text-end'><div className='evnt-crds-sale'>18%</div></td>         
+                      <td className='text-end'><div className='evnt-crds-sale'>18%</div></td>
                     </tr>
                     <tr>
                       <td>4</td>
                       <td>EVENT CARDS #2</td>
                       <td>
                         <div className="progress progress-rde">
-                        <div className="progress-bar w-25 till-fra"
+                          <div className="progress-bar w-25 till-fra"
                             role="progressbar"
                             aria-valuenow="25"
                             aria-valuemin="0"
-                            aria-valuemax="100"></div> 
-                      </div>
+                            aria-valuemax="100"></div>
+                        </div>
                       </td>
-                      <td className='text-end'><div className='till-fra-sale'>18%</div></td>         
-                    </tr>                     
+                      <td className='text-end'><div className='till-fra-sale'>18%</div></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -387,7 +422,7 @@ const page = () => {
           </div>
           <div className='col-md-3'>
             <div className='grph-crd'>
-            <input type='Date' placeholder='Year to date'></input>
+              <input type='Date' placeholder='Year to date'></input>
               <h3>Budget</h3>
               <ApexCharts options={options1} series={seriess} type='pie' height={250} />
             </div>
@@ -395,7 +430,7 @@ const page = () => {
           <div className='col-md-4'>
             <div className='grph-crd'>
               <h3>Sales Against Budget <Link href='/'><img src="/images/question-mark.svg" /></Link></h3>
-              <ApexCharts options={options3} series={Series3} type="bar" height={250} /> 
+              <ApexCharts options={options3} series={Series3} type="bar" height={250} />
             </div>
           </div>
         </div>
