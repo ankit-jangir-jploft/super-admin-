@@ -14,6 +14,7 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 import { useRouter } from "next/navigation";
+import CreateCategoryModal from "../modals/createcategory";
 
 const page = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const page = () => {
 
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
   function handleChange(e) {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
@@ -28,9 +30,9 @@ const page = () => {
   const [value, setValue] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [chosendCategory, setChosendCategory] = useState();
+  const [chosendCategory, setChosendCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
-  const [chosendSubCategory, setChosendSubCategory] = useState();
+  const [chosendSubCategory, setChosendSubCategory] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [reletedProducts, setReleted] = useState([]);
@@ -128,7 +130,6 @@ const page = () => {
   const validateForm = () => {
     let isValid = true;
     const tempErrors = {};
-    console.log("files", files);
 
     if (!productForm.ProductNumber) {
       tempErrors.ProductNumber = "Product number is required.";
@@ -150,10 +151,15 @@ const page = () => {
       isValid = false;
     }
 
-    if (!productForm.SpecialPrice) {
-      tempErrors.SpecialPrice = "Special price is required.";
+    if (!productForm.quantity) {
+      tempErrors.quantity = "Quantity in stock required";
       isValid = false;
     }
+
+    // if (!productForm.SpecialPrice) {
+    //   tempErrors.SpecialPrice = "Special price is required.";
+    //   isValid = false;
+    // }
 
     if (!productForm.Length) {
       tempErrors.Length = "Length is required.";
@@ -174,14 +180,19 @@ const page = () => {
       tempErrors.Weight = "Weight is required.";
       isValid = false;
     }
-    if (!productForm.gtin) {
-      tempErrors.gtin = "Gtin is required.";
+
+    if (!files.length) {
+      tempErrors.files = "Product image is required.";
       isValid = false;
     }
-    if (!productForm.menuOrder) {
-      tempErrors.menuOrder = "Menu Order is required.";
-      isValid = false;
-    }
+    // if (!productForm.gtin) {
+    //   tempErrors.gtin = "Gtin is required.";
+    //   isValid = false;
+    // }
+    // if (!productForm.menuOrder) {
+    //   tempErrors.menuOrder = "Menu Order is required.";
+    //   isValid = false;
+    // }
 
     // if (!productForm.quantity) {
     //   tempErrors.quantity = "Quantity is required.";
@@ -200,6 +211,7 @@ const page = () => {
 
   const submitHandler = async () => {
     try {
+      console.log("errors", errors);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory);
@@ -327,6 +339,15 @@ const page = () => {
                       </span>
                     </div>
                   </div>
+                  {errors?.files ? (
+                    <>
+                      <p style={{ color: "#dc3545", fontSize: ".875em" }}>
+                        {errors?.files}
+                      </p>
+                    </>
+                  ) : (
+                    <></>
+                  )}
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
@@ -349,12 +370,15 @@ const page = () => {
                           })) || <option>Not Available</option>}
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
+                    <button
+                      onClick={() => {
+                        setShowCreateCategory(true);
+                        fetchCategory();
+                      }}
                       className='add-btne btn-borderbl'
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <Form.Group className='mb-3 cstmr-ad'>
@@ -729,7 +753,11 @@ const page = () => {
                               quantity: e.target.value,
                             }))
                           }
+                          isInvalid={!!errors?.quantity}
                         />
+                        <Form.Control.Feedback type='invalid'>
+                          {errors?.quantity}
+                        </Form.Control.Feedback>
                       </Form.Group>
                     </div>
                     <div className='col-md-4 cstm-chk'>
@@ -857,6 +885,13 @@ const page = () => {
           </div>
         </div>
       </div>
+      <CreateCategoryModal
+        isOpen={showCreateCategory}
+        onClose={() => {
+          setShowCreateCategory(false);
+          fetchCategory();
+        }}
+      />
     </>
   );
 };

@@ -187,7 +187,7 @@ const page = () => {
                             {orders[+order.order_status]?.name}
                           </button>
                         </td>
-                        <td>{order.type}</td>
+                        <td>{order.origin}</td>
                         <td>{order.order_details_count}</td>
                         <td>{order.order_details_price_sum}</td>
                         <td>
@@ -210,8 +210,8 @@ const page = () => {
                           </div>
                         </td>
                         <td>
-                          <Link href='/'>
-                            <img src={order.addContactIcon} />
+                          <Link href={`/kunderdetail/${order?.user_id}`}>
+                            <img src='/images/prdctes.svg' />
                           </Link>
                         </td>
                       </tr>

@@ -18,6 +18,8 @@ const Page = ({ param }) => {
   const [profileImage, setProfileImage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [fetchSellerById, setFetchSellerById] = useState(null);
+  const [pending, setPending] = useState(false);
+  const [roles, setRoles] = useState([]);
   const router = useRouter();
 
   const {
@@ -48,7 +50,7 @@ const Page = ({ param }) => {
         // Update form state with fetched data
         setValue("name", seller.name || "");
         setValue("email", seller.email || "");
-        setValue("userType", seller.role_id === 2 ? "Seller" : "Unknown");
+        setValue("userType", seller.role_id || ""); // Dynamically set userType
         setValue("status", seller.status === 1 ? "Active" : "Inactive");
         setValue("language", seller.language_id === 1 ? "English" : "Hindi");
         setProfileImage(seller?.profile_image || "");
@@ -58,9 +60,27 @@ const Page = ({ param }) => {
     }
   };
 
+  const fetchRoles = async () => {
+    try {
+      setPending(true);
+      const response = await GET(`${BASE_URL}/api/admin/role`);
+      if (response?.data?.status === true) {
+        setRoles(response?.data?.data || []);
+      } else {
+        toast.error("Error submitting form.");
+      }
+    } catch (error) {
+      toast.error("Error submitting form.");
+      console.error(error);
+    } finally {
+      setPending(false);
+    }
+  };
+
   useEffect(() => {
     if (params?.id) {
       fetchSellerList();
+      fetchRoles();
     }
   }, [params]);
 
@@ -69,18 +89,21 @@ const Page = ({ param }) => {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("email", data.email);
-      formData.append("role_id", data.userType === "seller" ? 2 : 1);
+      formData.append("role_id", data.userType);
       formData.append("status", data.status === "Active" ? 1 : 0);
       formData.append("language_id", data.language === "English" ? 1 : 1);
       formData.append("appearance", radioValue);
-      formData.append("profile_image", selectedImage);
+
+      if (selectedImage) {
+        formData.append("profile_image", selectedImage);
+      } else {
+        formData.append("profile_image", profileImage);
+      }
 
       const response = await POST(
         `${BASE_URL}/api/admin/sellerUpdate?id=${params?.id}`,
         formData
       );
-
-      console.log({ response });
 
       if (response?.data?.status === true) {
         toast.success("Seller updated successfully!");
@@ -89,7 +112,7 @@ const Page = ({ param }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("An ", error);
+      toast.error("An error occurred while updating.");
     }
   };
 
@@ -169,12 +192,26 @@ const Page = ({ param }) => {
                         <Form.Group className='mb-3'>
                           <Form.Label>User Type</Form.Label>
                           <Form.Select
-                            {...register("userType")}
-                            defaultValue='Seller'
+                            {...register("userType", {
+                              required: "User Type is required",
+                            })}
+                            defaultValue={fetchSellerById?.role_id || ""}
                           >
-                            <option value='Seller'>Seller</option>
-                            <option value='Unknown'>Unknown</option>
+                            <option value=''>Select User Type</option>
+                            {roles?.map((role) => (
+                              <option
+                                key={role.id}
+                                value={role.id}
+                              >
+                                {role.name}
+                              </option>
+                            ))}
                           </Form.Select>
+                          {errors.userType && (
+                            <p className='text-danger'>
+                              {errors.userType.message}
+                            </p>
+                          )}
                         </Form.Group>
                       </div>
                       <div className='col-md-6'>
@@ -245,7 +282,7 @@ const Page = ({ param }) => {
                           className='createorder_top_right btn_bg_save w-100'
                           type='submit'
                         >
-                          Save
+                          Update
                         </button>
                       </div>
                     </div>
