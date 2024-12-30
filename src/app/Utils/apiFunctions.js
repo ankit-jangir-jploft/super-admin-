@@ -12,9 +12,8 @@ export const GET = async (Url, data) => {
   };
   try {
     const res = await axios.get(Url, config);
-    if (res.status == 200) {
-      return res;
-    }
+
+    return res;
   } catch (error) {
     toast.dismiss();
     console.log(error);
@@ -34,7 +33,7 @@ export const POST = async (Url, data) => {
   } catch (error) {
     toast.dismiss();
     console.log("error", error);
-    
+
     return toast.error(
       error.response.data.message ? error.response.data.message : error.message
     );

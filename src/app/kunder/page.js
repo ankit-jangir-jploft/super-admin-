@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import Cookies from "js-cookie";
+import CreateLeadModal from "../modals/leadChange";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -19,6 +20,8 @@ const page = () => {
   const [action, setAction] = useState("");
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
+  const [showCreateLead, setShowLead] = useState(false);
+  const [leadUserId, setLeadUserId] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -35,6 +38,7 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
 
       if (res?.data?.status) {
+        console.log({res})
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
       }
@@ -42,6 +46,10 @@ const page = () => {
       console.log("Error fetching customers:", error);
     }
   };
+
+
+
+  console.log({customers})
 
   const onPageChange = (selected) => {
     setCurrent(selected);
@@ -123,7 +131,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -173,19 +181,28 @@ const page = () => {
                         <td>{customer?.id || "N/A"}</td>
                         <td>{customer?.name || "N/A"}</td>
                         <td>{customer?.createdAt || "N/A"}</td>
-                        <td>{customer?.DugnadsGroup || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.group_name || "N/A"}</td>
                         <td>{customer?.contactPerson || "N/A"}</td>
                         <td>{customer?.email || "N/A"}</td>
                         <td>{customer?.phone || "N/A"}</td>
                         <td>
                           <button className='status'>Created</button>
                         </td>
-                        <td>
-                          <button className='status cold'>Cold</button>
+                        <td
+                          onClick={() => {
+                            setShowLead(true);
+                            setLeadUserId(customer.id);
+                          }}
+                        >
+                          <button
+                            className={`status ${customers?.lead_status}`}
+                          >
+                            {customer?.lead_status}
+                          </button>
                         </td>
                         <td>{customer?.lastLog || "N/A"}</td>
-                        <td>{customer?.lastContact || "N/A"}</td>
-                        <td>{customer?.sellerName || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.phone || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.seller_name || "N/A"}</td>
                         <td>
                           <Link href={`/kunderdetail/${customer?.id}`}>
                             <img src='/images/added-us.svg' />
@@ -238,9 +255,18 @@ const page = () => {
             currentPage={currentPage}
             totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
+            paginationData={pagination}
           />
         </div>
       </div>
+      <CreateLeadModal
+        id={leadUserId}
+        isOpen={showCreateLead}
+        onClose={() => {
+          setShowLead(false);
+          fetchCustomers();
+        }}
+      />
     </>
   );
 };
