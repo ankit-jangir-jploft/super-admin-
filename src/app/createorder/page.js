@@ -341,7 +341,7 @@ const page = () => {
                     return (
                       <div
                         key={i}
-                        className='col'
+                        className='col-lg-3'
                       >
                         <div className='prodct-crd'>
                           <img

@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         <img
                     src=
-                    "/images/button_left_singl.svg" 
+                    "/images/button_left_dub.svg" 
                     alt='product'
                 />
       </button>
@@ -28,7 +28,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       >
          <img
                     src=
-                    "/images/button_left_dub.svg" 
+                    "/images/button_left_singl.svg" 
                     alt='product'
                 />
       </button>

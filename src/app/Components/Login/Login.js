@@ -169,6 +169,16 @@ const Login = () => {
             </Col>
           </Row>
         </Container>
+        <Container>
+        <Row className='justify-content-center mt-5 text-center'>
+            <Col
+              lg={12}
+              md={12}
+            >
+              <p className="copyright">2024 © Dugnadstid.no - All rights reserved</p>
+              </Col>
+              </Row>
+        </Container>
       </section>
     </>
   );

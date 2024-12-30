@@ -3,11 +3,11 @@
   --foreground: #171717;
 }
 
-html,
+/* html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-}
+} */
 
 a {
   color: rgb(253 90 89);
@@ -106,8 +106,8 @@ a {
 
 .input-icon {
   position: absolute;
-  top: 45px;
-  right: 20px;
+  top: 47px;
+  right: 31px;
 }
 
 .pass-for a {
@@ -161,8 +161,8 @@ a {
 
 .mune-tgl {
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 10px;
+  top: 8px;
   cursor: pointer;
   z-index: 2;
 }
@@ -242,7 +242,7 @@ a {
 }
 
 .side-logo {
-  padding: 30px 20px 0;
+  padding: 40px 20px 0;
   filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
     hue-rotate(291deg) brightness(104%) contrast(102%);
   height: 60px;
@@ -822,8 +822,7 @@ table th {
   border-radius: 20px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   border: none;
-  position: relative;
-  height: 100%;
+  position: relative; 
 }
 
 .statistics-mne tr td {
@@ -947,8 +946,11 @@ table th {
   border-color: #cacaca;
   border-radius: 40px;
   height: 50px;
+  font-size: 14px;
 }
-
+.css-13cymwt-control {
+  border-radius: 40px;
+}
 .form-label {
   margin-bottom: 4px !important;
   font-size: 14px;
@@ -1248,6 +1250,8 @@ textarea.form-control {
   border: none;
   padding: 10px 0;
   margin-right: 50px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .stng-pge .nav-tabs .nav-link.active {
@@ -1337,7 +1341,7 @@ ul.nvbre-txt li {
 
 .filr-setng1 {
   min-height: 300px;
-  padding-top: 90px;
+  /* padding-top: 90px; */
 }
 
 .badge.bg-success {
@@ -2025,7 +2029,10 @@ ul.pgnatne li {
 .CreateUserCustom {
   position: absolute;
   right: 10px;
-  top: 16px;
+  top: 6px;
+}
+.user-tbls td, .user-tbls th {
+  border: none;
 }
 .UploadPhoto_file {
   position: absolute;
@@ -2255,9 +2262,9 @@ button.crte-userd.Confirm_btn {
   font-size: 14px;
   font-weight: 600;
 }
-.shdw-crd th, .shdw-crd td {
+/* .shdw-crd th, .shdw-crd td {
   border: none;
-}
+} */
 
 .order-dtl-box .logg-til-desc {
   background: #F7F4F1;
@@ -2301,10 +2308,7 @@ button.crte-userd.Confirm_btn {
   border: none;
   padding: 25px;
 }
-form#customerForm .shdw-crd {
-  box-shadow: none;
-  padding: 0px;
-}
+ 
 @keyframes slideIn {
   from {
     transform: translateY(-50px);
@@ -2354,4 +2358,83 @@ h2.hedingtext_top {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+}
+.apexcharts-text tspan {
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 16px;
+}
+.left-sal {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.left-sal h2 {
+  font-size: 16px;
+  color: #96A5B8;
+  margin-bottom: 0px;
+}
+
+.left-sal p {
+  font-size: 13px;
+  color: #222B45;
+}
+
+span.dout-inc {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #FD5A59;
+  border-radius: 50%;
+}
+.botm-box-slas-bug {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.left-sal.right-disx {
+  opacity: 0.5;
+}
+.Cold {
+  background: #D6ECFF;
+  border-color: #96DCFF;
+  color: 1283B4;
+}
+.Warm {
+  background: #FFD6D6;
+  border-color: #FF9696;
+  color: #B41212;
+}
+.Luke {
+  background: #FFEAD6;
+  border-color: #FFD396;
+  color: #B47612;
+}
+.admin-header h2 b {
+  font-weight: 400;
+  font-size: 16px;
+  opacity: 0.5;
+}
+.select_arrow_input:before{
+  content:"d"; 
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%); 
+}
+.shdw-crd h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.no_data_found{
+  text-align: center;
+}
+.slg-btm span {
+  display: inline-block !important;
+  color: #FD5A59 !important;
+  font-size: 14px;
+}
+.cstm-chk span {
+  font-size: 15px;
 }
