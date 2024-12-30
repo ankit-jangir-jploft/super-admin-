@@ -141,6 +141,24 @@ const page = () => {
 
   // console.log("lineChartOptions", lineChartOptions);
 
+  const [query, setQuery] = useState("");
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+
+    // Filter suggestions based on the input
+    if (value) {
+      const filtered = suggestions.filter((item) =>
+        item.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
+  };
+
   useEffect(() => {
     fetchData();
 
@@ -155,20 +173,61 @@ const page = () => {
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
           <div className='search-frm'>
-            <input type='text' />
-            <Link href={""}>
-              <img src='/images/notifications_none.svg' />
+            <input
+              type='text'
+              value={query}
+              onChange={handleInputChange}
+              placeholder='Search...'
+            />
+            {filteredSuggestions.length > 0 && (
+              <ul className='autocomplete-suggestions'>
+                {filteredSuggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    onClick={() => setQuery(suggestion)}
+                    className='autocomplete-item'
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link href=''>
+              <img
+                src='/images/notifications_none.svg'
+                alt='Notifications'
+              />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
+                alt='Profile'
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
                 }}
               />
             </Link>
+            <style jsx>{`
+              .autocomplete-suggestions {
+                position: absolute;
+                background-color: white;
+                border: 1px solid #ddd;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                z-index: 1000;
+              }
+              .autocomplete-item {
+                padding: 8px 12px;
+                cursor: pointer;
+              }
+              .autocomplete-item:hover {
+                background-color: #f0f0f0;
+              }
+            `}</style>
           </div>
         </div>
         <div className='row'>

@@ -39,9 +39,9 @@ const page = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     // company_id: Yup.string().required("Company is required"),
-    orgnizationNumber: Yup.string()
-      .matches(/^\d+$/, "Must be a number")
-      .required("Organisation number is required"),
+    // orgnizationNumber: Yup.string()
+    //   .matches(/^\d+$/, "Must be a number")
+    //   .required("Organisation number is required"),
     address: Yup.string().required("Address is required"),
     zip: Yup.string()
       .matches(/^\d+$/, "Zip must be a number")
@@ -61,7 +61,7 @@ const page = () => {
   const initialValues = {
     name: "",
     // company_id: "",
-    orgnizationNumber: "",
+    // orgnizationNumber: "",
     address: "",
     zip: "",
     city: "",
@@ -170,7 +170,7 @@ const page = () => {
                         />
                       </div> */}
 
-                      <div className='form-group'>
+                      {/* <div className='form-group'>
                         <label htmlFor='orgnizationNumber'>
                           Organisation number
                         </label>
@@ -185,7 +185,7 @@ const page = () => {
                           component='div'
                           className='text-danger'
                         />
-                      </div>
+                      </div> */}
 
                       <div className='form-group'>
                         <label htmlFor='address'>Address</label>
