@@ -412,14 +412,14 @@ const page = () => {
         <div className='row'>
           <div className='col-md-5'>
             <div className='grph-crd'>
-              <div className='table-responsive order-table'>
+              <div className='table-responsive order-table '>
                 <h3>Top Products</h3>
                 <table>
                   <thead>
                     <tr>
                       <th>#</th>
                       <th>Name</th>
-                      <th>Popularity</th>
+                      <th>Of available stock</th>
                       <th className='text-end'>Sales</th>
                     </tr>
                   </thead>
@@ -552,6 +552,22 @@ const page = () => {
                 type='bar'
                 height={250}
               />
+              <div className="botm-box-slas-bug">
+                <div className="left-sal">
+                  <span className="dout-inc"></span>
+                 <div>
+                  <h2>Sales</h2>
+                  <p>330 000</p>
+                  </div>
+                </div>
+                <div className="left-sal right-disx">
+                  <span className="dout-inc"></span>
+                 <div>
+                  <h2>Budget</h2>
+                  <p>550 000</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

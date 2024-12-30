@@ -8,11 +8,13 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 
 const page = () => {
   const router = useRouter();
   const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
+   const [orderConfirm, setOrderConfirm] = useState(0);
 
   // const fetchCompanies = async () => {
   //   try {
@@ -29,7 +31,7 @@ const page = () => {
       if (res?.data?.status) {
         setSeller(res?.data?.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     fetchSellers();
@@ -71,7 +73,10 @@ const page = () => {
     email: "",
     DeliveryAddress: "",
   };
-
+  const radios = [
+    { name: "No", value: 0 },
+    { name: "Yes", value: 1 },
+    ];
   const submitHandler = async (values) => {
     const res = await POST(`${BASE_URL}/api/admin/customerCreate`, values);
     if (res?.data?.status) {
@@ -123,7 +128,36 @@ const page = () => {
                 <div className='shdw-crd crte-ordr'>
                   <h3>#1391</h3>
                   <div className='row'>
+                   
                     <div className='col-md-6'>
+                  
+                    <div className='form-group swtch-bt'>
+                        
+                        <label htmlFor='address'>Address</label>
+                          <ButtonGroup>
+  
+                            {radios.map((radio, idx) => (
+                              <ToggleButton
+                                key={idx}
+                                id={`radio-${idx}`}
+                                type='radio'
+                                variant={
+                                  idx % 2 ? "outline-success" : "outline-danger"
+                                }
+                                name='radio'
+                                value={radio.value}
+                                checked={orderConfirm === radio.value}
+                                onChange={(e) =>
+                                  setOrderConfirm(Number(e.currentTarget.value))
+                                }
+                              
+                              >
+                                {radio.name}
+                              </ToggleButton>
+                            ))}
+                            
+                          </ButtonGroup>
+                        </div>
                       <div className='form-group'>
                         <label htmlFor='name'>Name</label>
                         <Field

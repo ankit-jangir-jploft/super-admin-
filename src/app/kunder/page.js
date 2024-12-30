@@ -38,6 +38,7 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
 
       if (res?.data?.status) {
+        console.log({res})
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
       }
@@ -45,6 +46,10 @@ const page = () => {
       console.log("Error fetching customers:", error);
     }
   };
+
+
+
+  console.log({customers})
 
   const onPageChange = (selected) => {
     setCurrent(selected);
@@ -176,7 +181,7 @@ const page = () => {
                         <td>{customer?.id || "N/A"}</td>
                         <td>{customer?.name || "N/A"}</td>
                         <td>{customer?.createdAt || "N/A"}</td>
-                        <td>{customer?.DugnadsGroup || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.group_name || "N/A"}</td>
                         <td>{customer?.contactPerson || "N/A"}</td>
                         <td>{customer?.email || "N/A"}</td>
                         <td>{customer?.phone || "N/A"}</td>
@@ -196,8 +201,8 @@ const page = () => {
                           </button>
                         </td>
                         <td>{customer?.lastLog || "N/A"}</td>
-                        <td>{customer?.lastContact || "N/A"}</td>
-                        <td>{customer?.sellerName || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.phone || "N/A"}</td>
+                        <td>{customer?.lastPurchaseDetails?.seller_name || "N/A"}</td>
                         <td>
                           <Link href={`/kunderdetail/${customer?.id}`}>
                             <img src='/images/added-us.svg' />
@@ -250,6 +255,7 @@ const page = () => {
             currentPage={currentPage}
             totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
+            paginationData={pagination}
           />
         </div>
       </div>

@@ -189,7 +189,7 @@ const page = () => {
                         </td>
                         <td>{order.origin}</td>
                         <td>{order.order_details_count}</td>
-                        <td>{order.order_details_price_sum}</td>
+                        <td>kr {order.order_details_price_sum}</td>
                         <td>
                           <div className='action-btn-table'>
                             <img
@@ -204,7 +204,7 @@ const page = () => {
                             <Link href={`/shipping/${order.id}`}>
                               <img src='/images/checklist.svg' />
                             </Link>
-                            <Link href='/package'>
+                            <Link href={`/package/${order.id}`}>
                               <img src='/images/save.svg' />
                             </Link>
                           </div>
@@ -253,9 +253,9 @@ const page = () => {
                                         </div>
                                       </td>
                                       <td>{product.seller_name}</td>
-                                      <td>{product.price}</td>
+                                      <td>kr {product.price}</td>
                                       <td>{product.qty}</td>
-                                      <td>{product.total}</td>
+                                      <td>kr {product.total}</td>
                                     </tr>
                                   )
                                 )}
@@ -306,6 +306,7 @@ const page = () => {
             currentPage={currentPage}
             totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
+            paginationData={pagination}
           />
         </div>
       </div>

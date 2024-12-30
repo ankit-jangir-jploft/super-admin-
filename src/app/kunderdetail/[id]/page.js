@@ -31,6 +31,8 @@ const page = ({ params }) => {
   const [tagContent, setTagContent] = useState("");
   const [logsData, setLogsData] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
+  const [groupList, setGroupList] = useState([]);
+  const [lastPurchaseOrder, setLastPurchaseOrder] = useState([]);
   const [roleType, setRoleType] = useState();
 
   useEffect(() => {
@@ -48,15 +50,19 @@ const page = ({ params }) => {
         id: id,
       };
       const res = await GET(`${BASE_URL}/api/admin/customerDetail`, options);
-      console.log(res.data);
+      console.log({ res });
       if (res?.data?.status) {
         setCustomers(res?.data?.data[0]);
         setOrderDetails(res.data?.orderList || []);
+        setGroupList(res.data?.groupLists || []);
+        setLastPurchaseOrder(res.data?.lastPurchaseDetails || []);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+
 
   const sendMailHandler = async () => {
     try {
@@ -188,17 +194,21 @@ const page = ({ params }) => {
     fetchLogs();
   }, []);
 
+
+  console.log({ groupList })
+
   return (
     <>
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {customer?.name}{" "}
+            {customer?.name}{" "} <b>NO</b>
             <span>
               #{customer?.id} |{" "}
               {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
             </span>
+
           </h2>
         </div>
         {roleType === "guest" ? (
@@ -248,7 +258,12 @@ const page = ({ params }) => {
           <Row>
             <Col md={3}>
               <div className='order-dtl-box'>
-                <h2>Kunde </h2>
+   
+                
+                <h2>Kunde <b className="text-right">{customer?.lead_status}</b> </h2>  
+              
+                {/* <h2>{customer?.origin} </h2> */}
+           
                 <p>#{customer?.id}</p>
                 <p>
                   {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
@@ -264,26 +279,26 @@ const page = ({ params }) => {
               <div className='order-dtl-box'>
                 <h2>Aktiv dugnad </h2>
                 <p>
-                  Dugnadsgruppe: <span>Q ldrettslag J14</span>
+                  Dugnadsgruppe: <span>{lastPurchaseOrder?.group_name}</span>
                 </p>
                 <p>
-                  Dugnadsstart: <span>02.09.2024</span>
+                  Dugnadsstart: <span>{formatDateToCustom(lastPurchaseOrder?.start_date)}</span>
                 </p>
                 <p>
-                  Dugnadsslutt: <span>16.09.2024</span>
+                  Dugnadsslutt: <span>{formatDateToCustom(lastPurchaseOrder?.end_date)}</span>
                 </p>
                 <p>
-                  Antall selgere: <span>14</span>
+                  Antall selgere: <span>{lastPurchaseOrder?.number_of_seller}</span>
                 </p>
                 <p>
-                  Solgt til na: <span>0</span>
+                  Solgt til na: <span>{lastPurchaseOrder?.user_count}</span>
                 </p>
                 <p>
-                  Selgere registrert: <span>4</span>
+                  Selgere registrert: <span>{lastPurchaseOrder?.total_qty_sold}</span>
                 </p>
               </div>
             </Col>
-            <Col md={3}>
+            {/* <Col md={3}>
               <div className='order-dtl-box'>
                 <h2>Gruppe informasjon </h2>
                 <p>
@@ -302,7 +317,7 @@ const page = ({ params }) => {
                   Antall dugnader: <span>4</span>
                 </p>
               </div>
-            </Col>
+            </Col> */}
             <Col md={3}>
               <div className='order-dtl-box'>
                 <h2>Adresse </h2>
@@ -315,11 +330,9 @@ const page = ({ params }) => {
                 <p>Norge</p>
               </div>
               <div className='order-dtl-box'>
-                <h2>Leveringsadresse </h2>
-                <p>Kari Nordmann</p>
-                <p>Snarveien 33</p>
-                <p>2133 Storbyasen</p>
-                <p>Norge</p>
+                <h2> Delivery address</h2>
+
+                <p>Same as address</p>
               </div>
             </Col>
           </Row>
@@ -353,16 +366,61 @@ const page = ({ params }) => {
                           </tr>
                         );
                       })) || (
-                      <tr>
-                        <td
-                          colSpan={6}
-                          className='text-center'
-                        >
-                          No data
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className='text-center'
+                          >
+                            No data
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
+                </table>
+              </div>
+              <div className='table-responsive order-table w-100 order-dtl-tbl' style={{ marginTop: "20px" }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Start date</th>
+                      <th>End date</th>
+                      <th>Dugnadsgroup</th>
+                      <th>Sellers</th>
+                      <th>Active</th>
+                      <th>Packs</th>
+                      {/* <th>APS</th> */}
+                      <th>Turnover</th>
+                      <th>Profit</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(groupList?.length &&
+                      groupList
+                        ?.filter((group) => group?.group_name?.trim()) // Filter out rows with empty group_name
+                        .map((group, index) => (
+                          <tr key={index}>
+                            <td>{formatDateToCustom(group?.start_date)}</td>
+                            <td>{formatDateToCustom(group?.end_date)}</td>
+                            <td>{group?.group_name}</td>
+                            <td>{group?.user_count}</td>
+                            <td>
+                              {group?.user_count}/{group?.number_of_seller}
+                            </td>
+                            <td>{group?.total_qty_sold}</td>
+                            <td>kr {group?.total_sale_price}</td>
+                            <td>kr {group?.total_profit}</td>
+                            <td>{group?.group_status === 1 ? "Completed" : ""}</td>
+                          </tr>
+                        ))) || (
+                        <tr>
+                          <td colSpan={9} className="text-center">
+                            No data
+                          </td>
+                        </tr>
+                      )}
+                  </tbody>
+
                 </table>
               </div>
               <div className='order-dtl-box mt-4'>
@@ -428,11 +486,21 @@ const page = ({ params }) => {
                       ></textarea>
                     </div>
                     <div className='text-end'>
-                      <button
+                      {/* <button
                         className='btn-primary px-3 py-1'
                         onClick={handleAddLog}
                       >
                         Legg til notat
+                      </button> */}
+                      <button
+                        className='send_chat_btn'
+                        onClick={handleAddLog}
+                      >
+                        {/* Legg til notat  */}
+                        <img
+                          className=''
+                          src='/images/chat_arrow.svg'
+                        />
                       </button>
                     </div>
                   </div>
