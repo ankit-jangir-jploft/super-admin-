@@ -1,6 +1,8 @@
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) => {
+
+  console.log({ paginationData })
   const handleFirstPage = () => onPageChange(1);
   const handleLastPage = () => onPageChange(totalPages);
   const handlePreviousPage = () => onPageChange(Math.max(currentPage - 1, 1));
@@ -9,28 +11,29 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <div style={styles.paginationContainer}>
-      <p className="mb-0">Showing 15 of 354 elements</p>
+      <p className="mb-0">{`Showing ${parseInt(paginationData?.to) + parseInt(paginationData?.from)} of ${paginationData?.total_items} elements`}</p>
+
       <button
         onClick={handleFirstPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-                    src=
-                    "/images/button_left_dub.svg" 
-                    alt='product'
-                />
+          src=
+          "/images/button_left_dub.svg"
+          alt='product'
+        />
       </button>
       <button
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
-         <img
-                    src=
-                    "/images/button_left_singl.svg" 
-                    alt='product'
-                />
+        <img
+          src=
+          "/images/button_left_singl.svg"
+          alt='product'
+        />
       </button>
       <span style={styles.pageInfo}>
         {currentPage} of {totalPages}
@@ -42,11 +45,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           currentPage === totalPages ? styles.disabledButton : styles.button
         }
       >
-        <img  
-                    src=
-                    "/images/right-singlarrow.svg" 
-                    alt='product'
-                />
+        <img
+          src=
+          "/images/right-singlarrow.svg"
+          alt='product'
+        />
       </button>
       <button
         onClick={handleLastPage}
@@ -55,11 +58,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           currentPage === totalPages ? styles.disabledButton : styles.button
         }
       >
-         <img 
-                    src=
-                    "/images/right-dublarrow1.svg" 
-                    alt='product'
-                />
+        <img
+          src=
+          "/images/right-dublarrow1.svg"
+          alt='product'
+        />
       </button>
     </div>
   );
@@ -74,7 +77,7 @@ const styles = {
     fontSize: "14px",
   },
   button: {
-    
+
     border: "0",
     background: "#fff",
     cursor: "pointer",
@@ -84,7 +87,7 @@ const styles = {
   },
   disabledButton: {
     border: "0",
-    borderRadius: "50%", 
+    borderRadius: "50%",
     color: "#aaa",
     cursor: "not-allowed",
     display: "flex",

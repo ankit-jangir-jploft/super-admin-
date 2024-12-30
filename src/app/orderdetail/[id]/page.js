@@ -31,6 +31,9 @@ const page = () => {
     }
   };
 
+
+  console.log("dddd",{orderDetails})
+
   const fetchLogs = async () => {
     try {
       const option = {
@@ -106,9 +109,8 @@ const page = () => {
           <div className=''>
             {console.log("dffdf ds", orderDetails)}
             <button
-              className={`status ${
-                orders[+orderDetails?.order_status]?.style
-              } w-auto me-2`}
+              className={`status ${orders[+orderDetails?.order_status]?.style
+                } w-auto me-2`}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -175,11 +177,14 @@ const page = () => {
                     <h2>
                       Invoice <span className='disssbl'>Not invoiced</span>
                     </h2>
-                    <p>Q ldrettslag AS (998778687)</p>
-                    <p>Kari Nordmann</p>
-                    <p>Snarveien 33</p>
-                    <p>2133 Storbyasen</p>
-                    <p>Kari.Nordmann@firmanavn.no</p>
+                    <p>{orderDetails?.delivery_address?.name}</p>
+                    {/* <p>Snarveien 33</p> */}
+                    <p>
+                      {orderDetails?.delivery_address?.post_code}{" "}
+                      {orderDetails?.delivery_address?.city}
+                    </p>
+                    <p>{orderDetails?.delivery_address?.email_address}</p>
+                    <p>{orderDetails?.delivery_address?.phone_no}</p>
                   </div>
                 </Col>
                 <Col md={3}>
@@ -237,16 +242,41 @@ const page = () => {
                             </tr>
                           );
                         })) || (
-                        <tr>
-                          <td
-                            colSpan={5}
-                            className='text-center'
-                          >
-                            No Products
-                          </td>
-                        </tr>
-                      )}
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className='text-center'
+                            >
+                              No Products
+                            </td>
+                          </tr>
+                        )}
+
                     </tbody>
+                    <tfoot
+                      style={{
+                        background: "#F7F4F1",
+                        width: "100%",
+                        padding: "15px 20px", // Adjusted padding for better spacing
+                        borderRadius: "15px", // More subtle border radius
+                        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+                        textAlign: "center", // Centering content within the footer
+                        fontWeight: "bold", // Make the text bold for emphasis
+                        color: "#333", // Darker text for better contrast
+                      }}
+                    >
+                      <tr>
+                        <td colSpan="5" style={{ padding: "10px 10px", fontSize: "16px" }}>
+                          <div className="biling-details">
+                            <p>Products sum: <span>kr {orderDetails?.total_final_amount}</span></p>
+                            <p>Shipping & Handling: <span>{orderDetails?.shipping_charge}</span></p>
+                            <p><b>Order total: </b> <b>kr {parseInt(orderDetails?.total_final_amount) + parseInt(orderDetails?.shipping_charge) }</b></p>
+                          </div>
+                        </td>
+
+                      </tr>
+                    </tfoot>
+
                   </table>
                 </div>
               </div>
@@ -281,7 +311,7 @@ const page = () => {
                       className='send_chat_btn'
                       onClick={handleLogSubmit}
                     >
-                      {/* Legg til notat  */} 
+                      {/* Legg til notat  */}
                       <img
                         className=''
                         src='/images/chat_arrow.svg'

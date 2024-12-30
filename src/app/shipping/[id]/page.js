@@ -30,6 +30,9 @@ const page = ({ params }) => {
     fetchOrderDetails();
   }, []);
 
+
+  console.log({ orderDetails })
+
   return (
     <>
       <section className='shipping-cart'>
@@ -60,7 +63,7 @@ const page = ({ params }) => {
                   {orderDetails?.billing_address?.name} <br />
                   {orderDetails?.billing_address?.address}
                   <br />
-                  {orderDetails?.billing_address?.post_code || "342344"}{" "}
+                  {orderDetails?.billing_address?.post_code}{" "}
                   {orderDetails?.billing_address?.city}
                   <br />
                   {orderDetails?.billing_address?.state}
@@ -84,7 +87,7 @@ const page = ({ params }) => {
                   <strong>Ordrenummer:</strong> {orderDetails?.order_number}{" "}
                 </li>
                 <li>
-                  <strong>Leveringsmate:</strong> Gratis Frakt{" "}
+                  <strong>Leveringsmate:</strong> {orderDetails?.order_status === 1 ? "Completed" : "Pending"}
                 </li>
                 <li>
                   <strong>Ordredato:</strong>{" "}
@@ -97,14 +100,14 @@ const page = ({ params }) => {
             <Col md={6}>
               <ul className='pin-personal-dtl'>
                 <li>
-                  <strong>Kunde.nr:</strong> {orderDetails?.user?.id}{" "}
+                  <strong>Kunde.nr:</strong> {orderDetails?.customer?.id}{" "}
                 </li>
                 <li>
                   <strong>Telefon:</strong>{" "}
-                  {orderDetails?.user?.phone || "99 88 77 66"}{" "}
+                  {orderDetails?.customer?.phone }
                 </li>
                 <li>
-                  <strong>E-post:</strong> {orderDetails?.user?.email}{" "}
+                  <strong>E-post:</strong>  {orderDetails?.customer?.email}
                 </li>
                 <li>
                   <strong>Selger: </strong> Robert{" "}
@@ -125,7 +128,7 @@ const page = ({ params }) => {
                   <th>Produkt</th>
                   <th>Art. nr</th>
                   <th>Lokasjon</th>
-                  <th className='text-end'>Pris</th>
+                  {/* <th className='text-end'>Pris</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -140,9 +143,9 @@ const page = ({ params }) => {
                         <td>
                           {product?.product_name} - {product?.qty} stk
                         </td>
-                        <td>{product?.id}</td>
-                        <td>A1</td>
-                        <td className='text-end'>{product?.price}</td>
+                        <td>{product?.product_number  }</td>
+                        <td>-</td>
+                        {/* <td className='text-end'>{product?.price}</td> */}
                       </tr>
                     );
                   })}
