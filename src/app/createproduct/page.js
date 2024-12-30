@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 import { useRouter } from "next/navigation";
 import CreateCategoryModal from "../modals/createcategory";
+import CreateSubCategoryModal from "../modals/createsubcategory";
 
 const page = () => {
   const router = useRouter();
@@ -23,6 +24,8 @@ const page = () => {
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const [showCreateSubCategory, setShowCreateSubCategory] = useState(false);
+
   function handleChange(e) {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
@@ -421,12 +424,15 @@ const page = () => {
                           })) || <option>Not Available</option>}
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
+                    <button
                       className='add-btne btn-borderbl'
+                      onClick={() => {
+                        setShowCreateSubCategory(true);
+                        fetchSubCategory();
+                      }}
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <div className='row'>
@@ -910,6 +916,10 @@ const page = () => {
           setShowCreateCategory(false);
           fetchCategory();
         }}
+      />
+      <CreateSubCategoryModal
+        isOpen={showCreateSubCategory}
+        onClose={() => setShowCreateSubCategory(false)}
       />
     </>
   );
