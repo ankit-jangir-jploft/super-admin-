@@ -11,7 +11,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
 
   return (
     <div style={styles.paginationContainer}>
-      <p className="mb-0">{`Showing ${parseInt(paginationData?.to) + parseInt(paginationData?.from)} of ${paginationData?.total_items} elements`}</p>
+      <p className="mb-0">{`Showing ${parseInt(paginationData?.items_in_range) } of ${paginationData?.total_items} elements`}</p>
 
       <button
         onClick={handleFirstPage}

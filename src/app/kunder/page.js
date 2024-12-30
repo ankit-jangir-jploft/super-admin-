@@ -255,6 +255,7 @@ const page = () => {
             currentPage={currentPage}
             totalPages={pagination?.totalPages}
             onPageChange={onPageChange}
+            paginationData={pagination}
           />
         </div>
       </div>
