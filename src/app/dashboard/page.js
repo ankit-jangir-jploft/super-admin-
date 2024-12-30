@@ -141,24 +141,6 @@ const page = () => {
 
   // console.log("lineChartOptions", lineChartOptions);
 
-  const [query, setQuery] = useState("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-
-    // Filter suggestions based on the input
-    if (value) {
-      const filtered = suggestions.filter((item) =>
-        item.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-    } else {
-      setFilteredSuggestions([]);
-    }
-  };
-
   useEffect(() => {
     fetchData();
 
@@ -166,68 +148,112 @@ const page = () => {
     setUserData(userDetails);
   }, []);
 
+  // check
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const handleSearchChange = async (e) => {
+    const query = e.target.value;
+    setSearchTerm(query);
+
+    if (query.length > 2) {
+      try {
+        const payload = {
+          query: query,
+        };
+        const res = await GET(`${BASE_URL}/api/admin/globalFilter`, payload);
+
+        if (res?.data?.status) {
+          setSuggestions(res?.data?.data || []);
+          setDropdownVisible(true);
+        } else {
+          setSuggestions([]);
+          setDropdownVisible(false);
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setSuggestions([]);
+        setDropdownVisible(false);
+      }
+    } else {
+      setSuggestions([]);
+      setDropdownVisible(false);
+    }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    const route = {
+      customer: "kunderdetail",
+      order: "orderdetail",
+      product: "products-details",
+    };
+    window.location.href = `/${route[suggestion?.type]}/${suggestion?.id}`;
+    setDropdownVisible(false);
+  };
+
   return (
     <>
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
-          <div className='search-frm'>
+          <div
+            className='search-frm'
+            style={{ position: "relative" }}
+          >
             <input
               type='text'
-              value={query}
-              onChange={handleInputChange}
+              value={searchTerm}
+              onChange={handleSearchChange}
               placeholder='Search...'
             />
-            {filteredSuggestions.length > 0 && (
-              <ul className='autocomplete-suggestions'>
-                {filteredSuggestions.map((suggestion, index) => (
+            {suggestions.length > 0 && (
+              <ul
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  width: "100%",
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  backgroundColor: "#fff",
+                  border: "1px solid #ced4da",
+                  borderRadius: "4px",
+                  zIndex: 1000,
+                  listStyle: "none",
+                  padding: "0",
+                  margin: "0",
+                }}
+              >
+                {suggestions.map((suggestion, index) => (
                   <li
                     key={index}
-                    onClick={() => setQuery(suggestion)}
-                    className='autocomplete-item'
+                    style={{
+                      padding: "8px",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #eee",
+                    }}
+                    onClick={() => handleSelectSuggestion(suggestion)}
                   >
-                    {suggestion}
+                    {suggestion.title}
                   </li>
                 ))}
               </ul>
             )}
             <Link href=''>
-              <img
-                src='/images/notifications_none.svg'
-                alt='Notifications'
-              />
+              <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height: "41px" }}
+                style={{ width: "41px" }}
                 src={userData?.profile_image}
-                alt='Profile'
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
                 }}
               />
             </Link>
-            <style jsx>{`
-              .autocomplete-suggestions {
-                position: absolute;
-                background-color: white;
-                border: 1px solid #ddd;
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                z-index: 1000;
-              }
-              .autocomplete-item {
-                padding: 8px 12px;
-                cursor: pointer;
-              }
-              .autocomplete-item:hover {
-                background-color: #f0f0f0;
-              }
-            `}</style>
           </div>
         </div>
         <div className='row'>

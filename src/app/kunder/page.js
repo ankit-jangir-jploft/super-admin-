@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import Cookies from "js-cookie";
+import CreateLeadModal from "../modals/leadChange";
 
 const page = () => {
   const [customers, setCustomers] = useState([]);
@@ -19,6 +20,8 @@ const page = () => {
   const [action, setAction] = useState("");
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
+  const [showCreateLead, setShowLead] = useState(false);
+  const [leadUserId, setLeadUserId] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -123,7 +126,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -180,8 +183,17 @@ const page = () => {
                         <td>
                           <button className='status'>Created</button>
                         </td>
-                        <td>
-                          <button className='status cold'>Cold</button>
+                        <td
+                          onClick={() => {
+                            setShowLead(true);
+                            setLeadUserId(customer.id);
+                          }}
+                        >
+                          <button
+                            className={`status ${customers?.lead_status}`}
+                          >
+                            {customer?.lead_status}
+                          </button>
                         </td>
                         <td>{customer?.lastLog || "N/A"}</td>
                         <td>{customer?.lastContact || "N/A"}</td>
@@ -241,6 +253,14 @@ const page = () => {
           />
         </div>
       </div>
+      <CreateLeadModal
+        id={leadUserId}
+        isOpen={showCreateLead}
+        onClose={() => {
+          setShowLead(false);
+          fetchCustomers();
+        }}
+      />
     </>
   );
 };
