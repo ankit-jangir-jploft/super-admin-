@@ -403,7 +403,7 @@ const page = () => {
                           <div className='bot-btn justify-content-end'>
                             <button
                               type='submit'
-                              className='btn btn-primary w-25 p-2'
+                              className='btn btn-primary px-3 p-2'
                             >
                               {isEditMode
                                 ? "Update Settings"
@@ -657,7 +657,7 @@ const page = () => {
                             <p className='text-danger'>{headerLogoFileError}</p>
                           )} */}
 
-                          <Form.Group className='mt-4'>
+                          <Form.Group className='mb-4'>
                             <Form.Label>Header Title</Form.Label>
                             <Form.Control
                               placeholder='Lorem Ipsum is simply dummy text of the printing and typesetting'
@@ -712,7 +712,7 @@ const page = () => {
                             <Image
                               src={headerImage || "/images/image-upload1.svg"}
                               alt='Header Image Preview'
-                              className='rounded-circle m-4'
+                              className='rounded-circle m-0'
                               width={100}
                               height={100}
                             />
@@ -740,14 +740,15 @@ const page = () => {
                           )}
                         </div>
                       </div>
+                      <hr/>
                       {roleType !== "guest" && (
-                        <div className='d-flex justify-content-center mt-20'>
+                        <div className='d-flex justify-content-center my-5'>
                           <button
                             className='btn btn-primary w-25'
                             type='submit'
                             onClick={handleSubmit3(onSubmit3)}
                           >
-                            Submit
+                            Save
                           </button>
                         </div>
                       )}
@@ -772,7 +773,7 @@ const page = () => {
                     </div>
                   )}
 
-                  <div className='table-responsive order-table'>
+                  <div className='table-responsive order-table user-tbls'>
                     <table>
                       <thead>
                         <tr>

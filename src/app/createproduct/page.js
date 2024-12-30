@@ -695,7 +695,7 @@ const page = () => {
                   <div className='row mt-5'>
                     <div className='col-md-6 cstm-chk'>
                       <Form.Group
-                        className='mb-3'
+                        className=''
                         controlId='formBasicCheckbox'
                       >
                         <input
@@ -709,12 +709,33 @@ const page = () => {
                             }));
                           }}
                         />{" "}
-                        <span className='mt-2 d-inline-block'>
+                        <span className='d-inline-block'>
                           Visible in online store
                         </span>
                       </Form.Group>
                     </div>
                     <div className='col-md-6 cstm-chk'>
+                      <Form.Group
+                        className=''
+                        controlId='formBasicCheckbox'
+                      >
+                        <input
+                          type='checkbox'
+                          name='VisibleInProductGallery'
+                          checked={productForm.VisibleInProductGallery}
+                          onChange={(e) => {
+                            setForm((prev) => ({
+                              ...prev,
+                              VisibleInProductGallery: e.target.checked,
+                            }));
+                          }}
+                        />{" "}
+                        <span className='d-inline-block'>
+                          Visible in productgallery (landing page)
+                        </span>
+                      </Form.Group>
+                    </div>
+                    <div className='col-md-12 cstm-chk'>
                       <Form.Group
                         className='mb-3'
                         controlId='formBasicCheckbox'
@@ -730,8 +751,8 @@ const page = () => {
                             }));
                           }}
                         />{" "}
-                        <span className='mt-2 d-inline-block'>
-                          Visible in productgallery (landing page)
+                        <span className='d-inline-block'>
+                        Visible in shop-direkte
                         </span>
                       </Form.Group>
                     </div>

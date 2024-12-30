@@ -40,7 +40,30 @@ const page = ({ params }) => {
       console.log(error);
     }
   };
+const handleAddLog = async () => {
+    try {
+      const options = {
+        user_id: id,
+        content: logsData,
+      };
 
+      const res = await POST(
+        `${BASE_URL}/api/admin/customerLogCreate`,
+        options
+      );
+      if (res?.data?.status) {
+        toast.dismiss();
+        toast.success(res.data?.message);
+        fetchLogs();
+        setLogsData("");
+      } else {
+        toast.dismiss();
+        toast.error(res.data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchProductLogs = async () => {
     try {
       const options = {
@@ -115,11 +138,16 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {productDetails?.name}{" "}
+            {productDetails?.name}{" "} <b>DUG40GULL</b>
             <span>
-              {productDetails?.product_number}{" "}
-              {/* {productDetails?.userDetail?.delivery_address ||
-                "Q ldrettslag J14"} */}
+              
+             <div className="slg-btm">
+             {productDetails?.product_number}{" "}
+             <span>
+             {productDetails?.userDetail?.delivery_address ||
+                "Q ldrettslag J14"}
+              </span>
+              </div> 
             </span>
           </h2>
           <div className='search-frm'>
@@ -332,7 +360,7 @@ const page = ({ params }) => {
                         <label>{log?.name}</label>
                       </div>
                     );
-                  })) || <div>No logs available</div>}
+                  })) || <div className="no_data_found">No logs available</div>}
 
                 {roleType !== "guest" && (
                   <div className='logg-til-desc'>
@@ -345,12 +373,22 @@ const page = ({ params }) => {
                       ></textarea>
                     </div>
                     <div className='text-end'>
-                      <button
+                      {/* <button
                         onClick={addLogsHandler}
                         className='btn-primary px-3 py-1'
                       >
                         Legg til notat
-                      </button>
+                      </button> */}
+                       <button
+                      className='send_chat_btn'
+                      onClick={handleAddLog}
+                    >
+                      {/* Legg til notat  */} 
+                      <img
+                        className=''
+                        src='/images/chat_arrow.svg'
+                      />
+                    </button>
                     </div>
                   </div>
                 )}

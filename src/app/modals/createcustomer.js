@@ -325,7 +325,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           as='select'
                           id='DeliveryAddress'
                           name='DeliveryAddress'
-                          className='form-control'
+                          className='form-control select_arrow_input'
                         >
                           <option value='Same as address'>
                             Same as address
