@@ -3,7 +3,7 @@ import Sidebar from "../Components/Sidebar/Sidebar";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -693,7 +693,7 @@ const page = () => {
                   </Form.Group>
 
                   <div className='row mt-5'>
-                    <div className='col-md-6 cstm-chk'>
+                    <div className='col-md-6 cstm-chk mb-3'>
                       <Form.Group
                         className=''
                         controlId='formBasicCheckbox'
