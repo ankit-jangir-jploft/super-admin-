@@ -108,10 +108,10 @@ const Page = () => {
               type='text'
               placeholder='Sok i order'
             />
-            <img
+            {/* <img
               className='input-right-icon'
               src='/images/search-interface.svg'
-            />
+            /> */}
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>

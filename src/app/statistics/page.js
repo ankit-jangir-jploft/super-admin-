@@ -285,6 +285,8 @@ const page = () => {
       <div className='detail-admin-main statistics-mne'>
         <div className='admin-header'>
           <h2>Statistics  <Link href={'/'}><img src="/images/linkhed.svg" /></Link></h2>
+          <div className="right_side_top_ser">
+
           <div className='filter_date'>
             From <input type='Date' placeholder='Year to date'></input> To <input type='Date' placeholder='Year to date'></input>
           </div>
@@ -299,7 +301,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -307,10 +309,11 @@ const page = () => {
               />
             </Link>
           </div>
+          </div>
 
         </div>
         <div className='row'>
-          <div className='col-md-3'>
+          <div className='col-md-3 '>
             <div className='dash-crde pinks-cr'>
               <p>Number of active groups</p>
               <div className='d-flex justify-content-between align-items-center'>
@@ -380,7 +383,7 @@ const page = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-6'>
+          <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
               <Form.Select aria-label='Default select example'>
                 <option>14 Days</option>
@@ -396,7 +399,7 @@ const page = () => {
               />
             </div>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
               <input type='Date'></input>
               <ApexCharts
@@ -405,12 +408,39 @@ const page = () => {
                 type='bar'
                 height={300}
               />
+              <div className="grafh_footer">
+                <div className="leftSalesperson">
+                  <div className="left_side"> 
+                  <span className=""><img src='/images/Avatar-sing.svg' /></span>
+                  <div className="text_bx">
+                    <h3>Salesperson</h3>
+                    <p>Number of completed dugnader</p>
+                  </div>
+                  </div>
+                  <div className="count_num">
+                    15 
+                  </div>
+                </div>
+                <div className="leftSalesperson">
+                <div className="left_side"> 
+
+                  <span className=""><img src='/images/Avatargrup.svg' /></span>
+                  <div className="text_bx">
+                    <h3>Group</h3>
+                    <p>Number of completed dugnader</p>
+                  </div>
+                  </div>
+                  <div className="count_num">
+                    89
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div className='row'>
-          <div className='col-md-5'>
+          <div className='col-md-5 mb-4'>
             <div className='grph-crd'>
               <div className='table-responsive order-table '>
                 <h3>Top Products</h3>
@@ -526,11 +556,11 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-3'>
-            <div className='grph-crd'>
+          <div className='col-md-3 mb-4'>
+            <div className='grph-crd '>
               <input type='Date'></input>
               <h3>Budget</h3>
-              <ApexCharts
+              <ApexCharts className="mt-4"
                 options={options1}
                 series={seriess}
                 type='pie'
@@ -538,7 +568,7 @@ const page = () => {
               />
             </div>
           </div>
-          <div className='col-md-4'>
+          <div className='col-md-4  mb-4'>
             <div className='grph-crd'>
               <h3>
                 Sales Against Budget{" "}
@@ -555,16 +585,17 @@ const page = () => {
               <div className="botm-box-slas-bug">
                 <div className="left-sal">
                   <span className="dout-inc"></span>
-                 <div>
-                  <h2>Sales</h2>
-                  <p>330 000</p>
+                  <div>
+                    <h2>Sales</h2>
+                    <p>330 000</p>
                   </div>
                 </div>
+                <div className="shape-arrow"></div>
                 <div className="left-sal right-disx">
                   <span className="dout-inc"></span>
-                 <div>
-                  <h2>Budget</h2>
-                  <p>550 000</p>
+                  <div>
+                    <h2>Budget</h2>
+                    <p>550 000</p>
                   </div>
                 </div>
               </div>

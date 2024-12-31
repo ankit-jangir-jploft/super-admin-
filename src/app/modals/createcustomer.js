@@ -94,12 +94,12 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
     <div className='modal-overlay'>
       <div className="modal-custmr-ad">
       <div className='modal-container'>
-        <button
+        {/* <button
           className='modal-close'
           onClick={onClose}
         >
           ×
-        </button>
+        </button> */}
 
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
@@ -107,14 +107,14 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
             <div className='bot-btn'>
               <button
                 onClick={onClose}
-                className='can-btn btn Createcustomer_btncmf'
+                className='can-btn btn createcustomer_btncmf px-5'
               >
                 Cancel
               </button>
               <button
                 type='submit'
                 form='customerForm'
-                className='cr-btn btn Createcustomer_btn'
+                className='cr-btn btn createcustomer_btn px-3'
               >
                 Create customer
               </button>
@@ -132,7 +132,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
               className='form-content'
             >
               <div className='col-md-12'>
-                <div className='shdw-crd crte-ordr'>
+                <div className='crte-ordr'>
                   <h3>#1391</h3>
                   <div className='row'>
                     <div className='col-md-6'>

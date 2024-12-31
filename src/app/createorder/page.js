@@ -350,9 +350,9 @@ const page = () => {
                               e.target.src = "/images/product1.png";
                             }}
                             style={{
-                              width: "150px",
+                              width: "100%",
                               height: "150px",
-                              objectFit: "cover",
+                              objectFit: "contain",
                             }}
                           />
 

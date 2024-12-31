@@ -150,7 +150,7 @@ const handleAddLog = async () => {
               </div> 
             </span>
           </h2>
-          <div className='search-frm'>
+          <div className='search-frm '>
             <input
               type='text'
               placeholder='Sok i order'
@@ -381,7 +381,7 @@ const handleAddLog = async () => {
                       </button> */}
                        <button
                       className='send_chat_btn'
-                      onClick={handleAddLog}
+                       onClick={addLogsHandler}
                     >
                       {/* Legg til notat  */} 
                       <img

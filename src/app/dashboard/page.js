@@ -6,6 +6,8 @@ import dynamic from "next/dynamic";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET } from "../Utils/apiFunctions";
 import Cookies from "js-cookie";
+import RevenueChart from "../Components/RevenueChart";
+import SalesAnalyticsChart from "../Components/SalesAnalytics";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -195,7 +197,7 @@ const page = () => {
   return (
     <>
       <Sidebar />
-      <div className='detail-admin-main'>
+      <div className='detail-admin-main main-dashbord-grph'>
         <div className='admin-header'>
           <h2>Main Dashboard</h2>
           <div
@@ -295,30 +297,32 @@ const page = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-8'>
+          <div className='col-md-7 mb-4'>
             <div className='grph-crd'>
               <div id='chart'>
-                <h3>Sales Analytics</h3>
-                <ApexCharts
+                {/* <h3>Sales Analytics</h3> */}
+                {/* <ApexCharts
                   options={lineChartOptions}
                   series={lineChart}
                   type='line'
                   height={300}
-                />
+                /> */}
+                <SalesAnalyticsChart/>
               </div>
             </div>
           </div>
-          <div className='col-md-4'>
+          <div className='col-md-5  mb-4'>
             <div className='grph-crd'>
               {/* <img className='img-fluid' src="/images/revenue-ananst.png" /> */}
               <h3>Revenue</h3>
               <div id='chart'>
-                <ApexCharts
+                {/* <ApexCharts
                   options={state1.options}
                   series={donutChart}
                   type='donut'
                   height={315}
-                />
+                /> */}
+                <RevenueChart  />
               </div>
             </div>
           </div>

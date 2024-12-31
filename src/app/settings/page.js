@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import CustomRadioButton from "../Components/CustomRadioButton";
 import Image from "next/image";
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
+  ssr: false, // Disable SSR for this component
 });
 import "react-quill/dist/quill.snow.css";
 import { Badge, Tab, Tabs } from "react-bootstrap";
@@ -445,10 +445,13 @@ const page = () => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Terms of Purchase</Form.Label> */}
-                          {/* <Form.Control
-                            placeholder='Terms of purchase'
-                            {...register("title", {
+                          <Form.Label>Terms of Purchase</Form.Label> 
+                        </Form.Group>
+                        <Form.Group className='mb-3'>
+                          <Form.Label>Title</Form.Label>
+                          <Form.Control
+                            placeholder='Title'
+                            {...register("Terms of purchase", {
                               required: "Terms is required",
                             })}
                           />
@@ -456,7 +459,7 @@ const page = () => {
                             <p className='text-danger'>
                               {errorsGenralSetting.title.message}
                             </p>
-                          )} */}
+                          )}
                         </Form.Group>
                       </div>
                     </div>
@@ -464,7 +467,7 @@ const page = () => {
                     <div className='row'>
                       <div className='col-md-12'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                          <Form.Label>Text</Form.Label>
                           <Controller
                             name='text'
                             control={control}
@@ -564,7 +567,7 @@ const page = () => {
                         <div className='bot-btn add-quet'>
                           <button
                             type='button'
-                            className='btn btn-primary w-50 p-2'
+                            className='btn btn-primary w-50 p-2 bnt-borderquc'
                             onClick={handleAddQuestion}
                           >
                             Add question and answer
@@ -807,7 +810,7 @@ const page = () => {
                             <td>{row?.role_type}</td>
                             <td>{row?.email}</td>
                             {roleType !== "guest" && (
-                              <td>
+                              <td className="actionbtn-right">
                                 <Link href={`/useredit/${row?.id}`}>
                                   <img
                                     src='/images/edit-icn.svg'

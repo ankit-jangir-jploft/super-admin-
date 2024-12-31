@@ -355,7 +355,7 @@ const page = ({ params }) => {
                 Cancel
               </Link>
               <button
-                className='cr-btn btn'
+                className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
                 Update product
