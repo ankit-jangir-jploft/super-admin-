@@ -9,12 +9,14 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
-   const [orderConfirm, setOrderConfirm] = useState(0);
+  const [orderConfirm, setOrderConfirm] = useState(0);
 
   // const fetchCompanies = async () => {
   //   try {
@@ -31,7 +33,7 @@ const page = () => {
       if (res?.data?.status) {
         setSeller(res?.data?.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     fetchSellers();
@@ -76,7 +78,7 @@ const page = () => {
   const radios = [
     { name: "No", value: 0 },
     { name: "Yes", value: 1 },
-    ];
+  ];
   const submitHandler = async (values) => {
     const res = await POST(`${BASE_URL}/api/admin/customerCreate`, values);
     if (res?.data?.status) {
@@ -95,20 +97,21 @@ const page = () => {
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
-            <h2>Create customer</h2>
+            {/* <h2>Create customer</h2> */}
+            <h2>{t("customers_create.create_customer")}</h2>
             <div className='bot-btn'>
               <Link
                 href={"/kunder"}
                 className='can-btn'
               >
-                Cancel
+                {t("customers_create.cancel")}
               </Link>
               <button
                 type='submit'
                 form='customerForm'
                 className='cr-btn btn createorder_top_right'
               >
-                Create customer
+                {t("customers_create.create_customer")}
               </button>
             </div>
           </div>
@@ -128,38 +131,38 @@ const page = () => {
                 <div className='shdw-crd crte-ordr'>
                   <h3>#1391</h3>
                   <div className='row'>
-                   
                     <div className='col-md-6'>
-                  
-                    <div className='form-group swtch-bt'>
-                        
-                        <label htmlFor='address'>Address</label>
-                          <ButtonGroup>
-  
-                            {radios.map((radio, idx) => (
-                              <ToggleButton
-                                key={idx}
-                                id={`radio-${idx}`}
-                                type='radio'
-                                variant={
-                                  idx % 2 ? "outline-success" : "outline-danger"
-                                }
-                                name='radio'
-                                value={radio.value}
-                                checked={orderConfirm === radio.value}
-                                onChange={(e) =>
-                                  setOrderConfirm(Number(e.currentTarget.value))
-                                }
-                              
-                              >
-                                {radio.name}
-                              </ToggleButton>
-                            ))}
-                            
-                          </ButtonGroup>
-                        </div>
+                      <div className='form-group swtch-bt'>
+                        {/* <label htmlFor='address'>Address</label> */}
+                        <label htmlFor='name'>
+                          {t("customers_create.address")}
+                        </label>
+                        <ButtonGroup>
+                          {radios.map((radio, idx) => (
+                            <ToggleButton
+                              key={idx}
+                              id={`radio-${idx}`}
+                              type='radio'
+                              variant={
+                                idx % 2 ? "outline-success" : "outline-danger"
+                              }
+                              name='radio'
+                              value={radio.value}
+                              checked={orderConfirm === radio.value}
+                              onChange={(e) =>
+                                setOrderConfirm(Number(e.currentTarget.value))
+                              }
+                            >
+                              {radio.name}
+                            </ToggleButton>
+                          ))}
+                        </ButtonGroup>
+                      </div>
                       <div className='form-group'>
-                        <label htmlFor='name'>Name</label>
+                        {/* <label htmlFor='name'>Name</label> */}
+                        <label htmlFor='name'>
+                          {t("customers_create.name")}
+                        </label>
                         <Field
                           type='text'
                           id='name'
@@ -222,7 +225,10 @@ const page = () => {
                       </div> */}
 
                       <div className='form-group'>
-                        <label htmlFor='address'>Address</label>
+                        {/* <label htmlFor='address'>Address</label> */}
+                        <label htmlFor='address'>
+                          {t("customers_create.address")}
+                        </label>
                         <Field
                           type='text'
                           id='address'
@@ -238,7 +244,8 @@ const page = () => {
 
                       <div className='form-group row'>
                         <div className='col-md-2'>
-                          <label htmlFor='zip'>Zip</label>
+                          {/* <label htmlFor='zip'>Zip</label> */}
+                          <label>{t("customers_create.zip")}</label>
                           <Field
                             type='text'
                             id='zip'
@@ -252,7 +259,8 @@ const page = () => {
                           />
                         </div>
                         <div className='col-md-10'>
-                          <label htmlFor='city'>City</label>
+                          {/* <label htmlFor='city'>City</label> */}
+                          <label>{t("customers_create.city")}</label>
                           <Field
                             type='text'
                             id='city'
@@ -270,14 +278,18 @@ const page = () => {
 
                     <div className='col-md-6'>
                       <div className='form-group'>
-                        <label htmlFor='seller'>Seller</label>
+                        {/* <label htmlFor='seller'>Seller</label> */}
+                        <label>{t("customers_create.seller")}</label>
                         <Field
                           as='select'
                           id='seller'
                           name='seller_id'
                           className='form-control'
                         >
-                          <option value=''>Select seller</option>
+                          {/* <option value=''>Select seller</option> */}
+                          <option value=''>
+                            {t("customers_create.select_seller")}
+                          </option>
                           {(sellers.length &&
                             sellers.map((seller, i) => {
                               return (
@@ -298,7 +310,8 @@ const page = () => {
                       </div>
 
                       <div className='form-group'>
-                        <label htmlFor='contactPerson'>Contact person</label>
+                        {/* <label htmlFor='contactPerson'>Contact person</label> */}
+                        <label>{t("customers_create.contact_person")}</label>
                         <Field
                           type='text'
                           id='ContactPerson'
@@ -313,7 +326,8 @@ const page = () => {
                       </div>
 
                       <div className='form-group'>
-                        <label htmlFor='phone'>Telephone number</label>
+                        {/* <label htmlFor='phone'>Telephone number</label> */}
+                        <label>{t("customers_create.telephone_number")}</label>
                         <Field
                           type='text'
                           id='phone'
@@ -328,7 +342,8 @@ const page = () => {
                       </div>
 
                       <div className='form-group'>
-                        <label htmlFor='email'>Email address</label>
+                        {/* <label htmlFor='email'>Email address</label> */}
+                        <label>{t("customers_create.email_address")}</label>
                         <Field
                           type='email'
                           id='email'
@@ -343,9 +358,10 @@ const page = () => {
                       </div>
 
                       <div className='form-group'>
-                        <label htmlFor='DeliveryAddress'>
+                        {/* <label htmlFor='DeliveryAddress'>
                           Delivery address
-                        </label>
+                        </label> */}
+                        <label>{t("customers_create.delivery_address")}</label>
                         <Field
                           as='select'
                           id='DeliveryAddress'

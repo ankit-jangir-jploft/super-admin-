@@ -12,8 +12,10 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CreateCustomerModal from "../modals/createcustomer";
 import { Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
@@ -32,8 +34,8 @@ const page = () => {
   const [showCreateCustomer, setCreate] = useState(false);
 
   const radios = [
-    { name: "No", value: 0 },
-    { name: "Yes", value: 1 },
+    { name: t("order_create.no"), value: 0 },
+    { name: t("order_create.yes"), value: 1 },
   ];
 
   const validateFields = () => {
@@ -176,19 +178,20 @@ const page = () => {
         <div className='admin-header'>
           {/* <h2>Create order</h2> */}
           <div className='d-flex justify-content-between w-100 align-items-center flex-wrap'>
-            <h2>Create order</h2>
+            {/* <h2>Create order</h2> */}
+            <h2>{t("order_create.create_order")}</h2>
             <div className='bot-btn'>
               <Link
                 href={"/order"}
                 className='can-btn'
               >
-                Cancel
+                {t("order_create.cancel")}
               </Link>
               <button
                 className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
-                Create order
+                {t("order_create.create_order")}
               </button>
             </div>
           </div>
@@ -202,7 +205,8 @@ const page = () => {
                 <div className='col-md-6'>
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Customer</Form.Label>
+                      {/* <Form.Label>Customer</Form.Label> */}
+                      <Form.Label>{t("order_create.customer")}</Form.Label>
                       <Form.Select
                         value={selectedCustomer.id || ""}
                         onChange={(e) => {
@@ -217,6 +221,9 @@ const page = () => {
                         isInvalid={!!errors.selectedCustomer}
                       >
                         <option value=''>Select customer</option>
+                        {/* <option value=''>
+                          {t("order_create.select_customer")}
+                        </option> */}
                         {customers.length > 0 ? (
                           customers.map((custm) => (
                             <option
@@ -243,7 +250,8 @@ const page = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Ordered by</Form.Label>
+                    {/* <Form.Label>Ordered by</Form.Label> */}
+                    <Form.Label>{t("order_create.ordered_by")}</Form.Label>
                     <Form.Select
                       value={orderedBy}
                       onChange={(e) => {
@@ -252,6 +260,7 @@ const page = () => {
                       isInvalid={!!errors.orderedBy}
                     >
                       <option value=''>Select ordered by</option>
+
                       {adminManagers?.length &&
                         adminManagers?.map((admin) => {
                           return (
@@ -269,7 +278,10 @@ const page = () => {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Delivery address</Form.Label>
+                    {/* <Form.Label>Delivery address</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.delivery_address")}
+                    </Form.Label>
                     <Form.Select
                       value={selectedAddress}
                       onChange={(e) => setSelectedAddress(e.target.value)}
@@ -296,7 +308,10 @@ const page = () => {
                 </div>
                 <div className='col-md-6'>
                   <div className='swtch-bt'>
-                    <Form.Label>Order confirmation</Form.Label>
+                    {/* <Form.Label>Order confirmation</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.order_confirmation")}
+                    </Form.Label>
                     <ButtonGroup>
                       {radios.map((radio, idx) => (
                         <ToggleButton
@@ -319,13 +334,17 @@ const page = () => {
                     </ButtonGroup>
                   </div>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Send order confirmation to</Form.Label>
+                    {/* <Form.Label>Send order confirmation to</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.send_order_confirmation_to")}
+                    </Form.Label>
                     <Form.Control value={selectedCustomer.email}>
                       {/* <option>kari.nordmann@mail.com</option> */}
                     </Form.Control>
                   </Form.Group>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Comment</Form.Label>
+                    {/* <Form.Label>Comment</Form.Label> */}
+                    <Form.Label>{t("order_create.comment")}</Form.Label>
                     <Form.Control
                       value={comments}
                       onChange={(e) => setComments(e.target.value)}
@@ -333,7 +352,8 @@ const page = () => {
                   </Form.Group>
                 </div>
               </div>
-              <h5 className='mt-3'>Products</h5>
+              {/* <h5 className='mt-3'>Products</h5> */}
+              <h5>{t("order_create.products")}</h5>
               <div className='row'>
                 {products.length > 0 &&
                   products.map((prod, i) => {
@@ -379,7 +399,7 @@ const page = () => {
                                 src='/images/bag.svg'
                                 alt='Add to cart'
                               />{" "}
-                              ADD
+                              {t("order_create.add")}
                             </button>
                           )}
                         </div>

@@ -1,8 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) => {
-
-  console.log({ paginationData })
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  paginationData,
+}) => {
+  const { t } = useTranslation();
   const handleFirstPage = () => onPageChange(1);
   const handleLastPage = () => onPageChange(totalPages);
   const handlePreviousPage = () => onPageChange(Math.max(currentPage - 1, 1));
@@ -11,7 +16,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
 
   return (
     <div style={styles.paginationContainer}>
-      <p className="mb-0">{`Showing ${parseInt(paginationData?.items_in_range) } of ${paginationData?.total_items} elements`}</p>
+      <p className='mb-0'>{`${t("paginate.showing")} ${parseInt(
+        paginationData?.items_in_range
+      )} ${t("paginate.of")} ${paginationData?.total_items} ${t(
+        "paginate.elements"
+      )}`}</p>
 
       <button
         onClick={handleFirstPage}
@@ -19,8 +28,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src=
-          "/images/button_left_dub.svg"
+          src='/images/button_left_dub.svg'
           alt='product'
         />
       </button>
@@ -30,13 +38,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src=
-          "/images/button_left_singl.svg"
+          src='/images/button_left_singl.svg'
           alt='product'
         />
       </button>
       <span style={styles.pageInfo}>
-        {currentPage} of {totalPages}
+        {currentPage} {t("paginate.of")} {totalPages}
       </span>
       <button
         onClick={handleNextPage}
@@ -46,8 +53,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
         }
       >
         <img
-          src=
-          "/images/right-singlarrow.svg"
+          src='/images/right-singlarrow.svg'
           alt='product'
         />
       </button>
@@ -59,8 +65,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, paginationData }) =
         }
       >
         <img
-          src=
-          "/images/right-dublarrow1.svg"
+          src='/images/right-dublarrow1.svg'
           alt='product'
         />
       </button>
@@ -77,7 +82,6 @@ const styles = {
     fontSize: "14px",
   },
   button: {
-
     border: "0",
     background: "#fff",
     cursor: "pointer",

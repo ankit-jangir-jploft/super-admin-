@@ -8,8 +8,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [currentPage, setCurrent] = useState(1);
   const [pagination, setPagination] = useState();
   const [products, setProducts] = useState([]);
@@ -103,14 +105,14 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
-          <h2>Products</h2>
+          {/* <h2>Products</h2> */}
+          <h2>{t("products.product")}</h2>
           <div className='search-frm'>
             <Link href={"/createproduct"}>
               <img src='/images/add-plus.svg' />
             </Link>
             <input
               type='text'
-              placeholder='Search'
               value={searchQuery}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -122,7 +124,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -143,17 +145,28 @@ const page = () => {
                       onChange={handleSelectAll}
                     />
                   </th>
-                  <th>Product #</th>
-                  <th>Image</th>
-                  <th>Product name</th>
-                  <th>Location</th>
-                  <th>Stock</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Category</th>
-                  <th>Sub category</th>
-                  <th>Created</th>
-                  <th>View</th>
+                  {/* <th>Product #</th> */}
+                  <th>{t("products.product")}</th>
+                  {/* <th>Image</th> */}
+                  <th>{t("products.image")}</th>
+                  {/* <th>Product name</th> */}
+                  <th>{t("products.product_name")}</th>
+                  {/* <th>Location</th> */}
+                  <th>{t("products.location")}</th>
+                  {/* <th>Stock</th> */}
+                  <th>{t("products.stock")}</th>
+                  {/* <th>Price</th> */}
+                  <th>{t("products.price")}</th>
+                  {/* <th>Status</th> */}
+                  <th>{t("products.status")}</th>
+                  {/* <th>Category</th> */}
+                  <th>{t("products.category")}</th>
+                  {/* <th>Sub category</th> */}
+                  <th>{t("products.sub_category")}</th>
+                  {/* <th>Created</th> */}
+                  <th>{t("products.created")}</th>
+                  {/* <th>View</th> */}
+                  <th>{t("products.view")}</th>
                   {roleType !== "guest" && <th>Edit</th>}
                 </tr>
               </thead>
@@ -240,8 +253,10 @@ const page = () => {
                   setAction(e.target.value);
                 }}
               >
-                <option value={""}>Mass action</option>
-                <option value={"delete"}>Delete</option>
+                {/* <option value={""}>Mass action</option> */}
+                <option value={""}>{t("products.mass_action")}</option>
+                {/* <option value={"delete"}>Delete</option> */}
+                <option value={"delete"}>{t("products.delete")}</option>
               </select>
               {action && (
                 <button

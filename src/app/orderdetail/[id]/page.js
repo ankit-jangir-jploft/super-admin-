@@ -7,9 +7,11 @@ import { useParams } from "next/navigation";
 import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
   const { id } = useParams();
+  const { t } = useTranslation();
 
   const [orderDetails, setOrderDetails] = useState({});
   const [logs, setLogs] = useState([]);
@@ -31,8 +33,7 @@ const page = () => {
     }
   };
 
-
-  console.log("dddd",{orderDetails})
+  console.log("dddd", { orderDetails });
 
   const fetchLogs = async () => {
     try {
@@ -91,7 +92,9 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
-          <h2>Ordre #{orderDetails?.id}</h2>
+          <h2>
+            {t("order_details.orders")} #{orderDetails?.id}
+          </h2>
           {/* <div className='search-frm'>
             <input
               type='text'
@@ -107,10 +110,10 @@ const page = () => {
         </div>
         <div className='filter-manage'>
           <div className=''>
-            {console.log("dffdf ds", orderDetails)}
             <button
-              className={`status ${orders[+orderDetails?.order_status]?.style
-                } w-auto me-2`}
+              className={`status ${
+                orders[+orderDetails?.order_status]?.style
+              } w-auto me-2`}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -122,19 +125,22 @@ const page = () => {
               }}
               className='bold-btn w-auto me-2'
             >
-              <img src='/images/pick-list.svg' /> Pick list
+              <img src='/images/pick-list.svg' /> {t("order_details.pick_list")}
             </button>
             <button className='bold-btn w-auto me-2'>
-              <img src='/images/sales-ovr.svg' /> Salesoverview
+              <img src='/images/sales-ovr.svg' />{" "}
+              {t("order_details.salesoverview")}
             </button>
             <button className='bold-btn w-auto me-2'>
-              <img src='/images/pkg-slip.svg' /> Package slip
+              <img src='/images/pkg-slip.svg' />{" "}
+              {t("order_details.package_slip")}
             </button>
             <button className='bold-btn w-auto me-2'>
-              <img src='/images/invce.svg' /> Opprett fraktlapp
+              <img src='/images/invce.svg' />{" "}
+              {t("order_details.create_shipping_label")}
             </button>
             <button className='bold-btn w-auto me-2'>
-              <img src='/images/pick-list.svg' /> Invoice
+              <img src='/images/pick-list.svg' /> {t("order_details.invoice")}
             </button>
             {/* <button className='status w-auto me-2'>Opprett retur</button> */}
             <Link href={"/"}>
@@ -151,14 +157,17 @@ const page = () => {
                 <input type='text' placeholder='Send ordrebekreftelse ' /><span><img src="/images/send.svg" /></span>
               </div> */}
                   <div className='order-dtl-box'>
-                    <h2>Note</h2>
+                    {/* <h2>Note</h2> */}
+                    <h2>{t("order_details.note")}</h2>
                     <p>{orderDetails?.comment}</p>
                   </div>
                 </Col>
                 <Col md={3}>
                   <div className='order-dtl-box'>
                     <h2>
-                      Customer <span className=''>See contact</span>
+                      {t("order_details.customer")}{" "}
+                      {/* <span className=''>See contact</span> */}
+                      <span>{t("order_details.see_contact")}</span>
                     </h2>
                     <p>{orderDetails?.customer?.name}</p>
                     <p>
@@ -167,15 +176,27 @@ const page = () => {
                     <p>
                       <Link href='#'>{orderDetails?.customer?.phone}</Link>
                     </p>
-                    <p>Selger: {orderDetails?.customer?.seller_name}</p>
-                    <p>Ordre: {orderDetails?.customer?.no_orders}</p>
-                    <p>Totalt: kr {orderDetails?.customer?.total_price}</p>
+                    <p>
+                      {t("order_details.seller")}:{" "}
+                      {orderDetails?.customer?.seller_name}
+                    </p>
+                    <p>
+                      {t("order_details.order")}:{" "}
+                      {orderDetails?.customer?.no_orders}
+                    </p>
+                    <p>
+                      {t("order_details.total")}: kr{" "}
+                      {orderDetails?.customer?.total_price}
+                    </p>
                   </div>
                 </Col>
                 <Col md={3}>
                   <div className='order-dtl-box'>
                     <h2>
-                      Invoice <span className='disssbl'>Not invoiced</span>
+                      {t("order_details.invoice")}{" "}
+                      <span className='disssbl'>
+                        {t("order_details.not_invoiced")}
+                      </span>
                     </h2>
                     <p>{orderDetails?.delivery_address?.name}</p>
                     {/* <p>Snarveien 33</p> */}
@@ -190,8 +211,11 @@ const page = () => {
                 <Col md={3}>
                   <div className='order-dtl-box'>
                     <h2>
-                      Shipping{" "}
-                      <span className='disssbl'>Packageslip not created</span>
+                      {t("order_details.shipping")}{" "}
+                      {/* <span className='disssbl'>Packageslip not created</span> */}
+                      <span className='disssbl'>
+                        {t("order_details.packageslip_not_created")}
+                      </span>
                     </h2>
                     <p>{orderDetails?.delivery_address?.name}</p>
                     {/* <p>Snarveien 33</p> */}
@@ -210,10 +234,14 @@ const page = () => {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Product </th>
-                        <th>Cost</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
+                        {/* <th>Product </th> */}
+                        <th>{t("order_details.product")}</th>
+                        {/* <th>Cost</th> */}
+                        <th>{t("order_details.cost")}</th>
+                        {/* <th>Quantity</th> */}
+                        <th>{t("order_details.quantity")}</th>
+                        {/* <th>Total</th> */}
+                        <th>{t("order_details.total")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -242,16 +270,15 @@ const page = () => {
                             </tr>
                           );
                         })) || (
-                          <tr>
-                            <td
-                              colSpan={5}
-                              className='text-center'
-                            >
-                              No Products
-                            </td>
-                          </tr>
-                        )}
-
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className='text-center'
+                          >
+                            No Products
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                     <tfoot
                       style={{
@@ -266,24 +293,38 @@ const page = () => {
                       }}
                     >
                       <tr>
-                        <td colSpan="5" style={{ padding: "10px 10px", fontSize: "16px" }}>
-                          <div className="biling-details">
-                            <p>Products sum: <span>kr {orderDetails?.total_final_amount}</span></p>
-                            <p>Shipping & Handling: <span>{orderDetails?.shipping_charge}</span></p>
-                            <p><b>Order total: </b> <b>kr {parseInt(orderDetails?.total_final_amount) + parseInt(orderDetails?.shipping_charge) }</b></p>
+                        <td
+                          colSpan='5'
+                          style={{ padding: "10px 10px", fontSize: "16px" }}
+                        >
+                          <div className='biling-details'>
+                            <p>
+                              {t("order_details.products_sum")}:{" "}
+                              <span>kr {orderDetails?.total_final_amount}</span>
+                            </p>
+                            <p>
+                              {t("order_details.shipping_&_Handling")}:{" "}
+                              <span>{orderDetails?.shipping_charge}</span>
+                            </p>
+                            <p>
+                              <b>{t("order_details.shipping_&_Handling")}: </b>{" "}
+                              <b>
+                                kr{" "}
+                                {parseInt(orderDetails?.total_final_amount) +
+                                  parseInt(orderDetails?.shipping_charge)}
+                              </b>
+                            </p>
                           </div>
                         </td>
-
                       </tr>
                     </tfoot>
-
                   </table>
                 </div>
               </div>
             </Col>
             <Col lg={3}>
               <div className='order-dtl-box'>
-                <h2>Logg </h2>
+                <h2>{t("order_details.log")}</h2>
                 {(logs?.length &&
                   logs?.map((log) => {
                     return (
@@ -303,7 +344,7 @@ const page = () => {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       rows='4'
-                      placeholder="Add an internal note"
+                      placeholder={t("order_details.add_an_internal_note")}
                     ></textarea>
                   </div>
                   <div className='text-end'>

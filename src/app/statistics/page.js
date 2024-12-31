@@ -7,11 +7,13 @@ import Link from "next/link";
 import { GET } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 const page = () => {
+  const { t } = useTranslation();
   const [statistics, setStatistics] = useState({});
   const [userData, setUserData] = useState({});
 
@@ -284,14 +286,28 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main statistics-mne'>
         <div className='admin-header'>
-          <h2>Statistics  <Link href={'/'}><img src="/images/linkhed.svg" /></Link></h2>
+          <h2>
+            {t("statistics.statistics")}{" "}
+            <Link href={"/"}>
+              <img src='/images/linkhed.svg' />
+            </Link>
+          </h2>
           <div className='filter_date'>
-            From <input type='Date' placeholder='Year to date'></input> To <input type='Date' placeholder='Year to date'></input>
+            {t("statistics.from")}{" "}
+            <input
+              type='Date'
+              placeholder='Year to date'
+            ></input>{" "}
+            {t("statistics.to")}{" "}
+            <input
+              type='Date'
+              placeholder='Year to date'
+            ></input>
           </div>
           <div className='search-frm'>
             <input
               type='text'
-              placeholder='Sok i order'
+              // placeholder='Sok i order'
             />
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
@@ -299,7 +315,7 @@ const page = () => {
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -307,12 +323,12 @@ const page = () => {
               />
             </Link>
           </div>
-
         </div>
         <div className='row'>
           <div className='col-md-3'>
             <div className='dash-crde pinks-cr'>
-              <p>Number of active groups</p>
+              {/* <p>Number of active groups</p> */}
+              <p>{t("statistics.number_of_active_groups")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{statistics?.number_of_group}</h2>
                 <span>
@@ -327,7 +343,8 @@ const page = () => {
           </div>
           <div className='col-md-3'>
             <div className='dash-crde'>
-              <p>Number of active sellers</p>
+              {/* <p>Number of active sellers</p> */}
+              <p>{t("statistics.number_of_active_sellers")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{statistics?.number_of_active_seller}</h2>
                 <span>
@@ -342,7 +359,8 @@ const page = () => {
           </div>
           <div className='col-md-2'>
             <div className='dash-crde blue-cr'>
-              <p>Number of Packages Sold</p>
+              {/* <p>Number of Packages Sold</p> */}
+              <p>{t("statistics.number_of_packages_sold")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{statistics?.number_of_packages_sold}</h2>
                 <span>
@@ -357,7 +375,8 @@ const page = () => {
           </div>
           <div className='col-md-2'>
             <div className='dash-crde rde-cr'>
-              <p>Number of Packages Not Delivered</p>
+              {/* <p>Number of Packages Not Delivered</p> */}
+              <p>{t("statistics.number_of_packages_not_delivered")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{statistics?.number_of_packages_not_delivered}</h2>
                 <span>
@@ -372,7 +391,8 @@ const page = () => {
           </div>
           <div className='col-md-2'>
             <div className='dash-crde rde-cr'>
-              <p>New orders</p>
+              {/* <p>New orders</p> */}
+              <p>{t("statistics.new_orders")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{statistics?.new_order}</h2>
               </div>
@@ -413,14 +433,18 @@ const page = () => {
           <div className='col-md-5'>
             <div className='grph-crd'>
               <div className='table-responsive order-table '>
-                <h3>Top Products</h3>
+                {/* <h3>Top Products</h3> */}
+                <h3>{t("statistics.top_products")}</h3>
                 <table>
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Name</th>
-                      <th>Of available stock</th>
-                      <th className='text-end'>Sales</th>
+                      {/* <th>Name</th> */}
+                      <th>{t("statistics.name")}</th>
+                      {/* <th>Of available stock</th> */}
+                      <th>{t("statistics.of_available_stock")}</th>
+                      {/* <th className='text-end'>Sales</th> */}
+                      <th className='text-end'>{t("statistics.sales")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -529,7 +553,8 @@ const page = () => {
           <div className='col-md-3'>
             <div className='grph-crd'>
               <input type='Date'></input>
-              <h3>Budget</h3>
+              {/* <h3>Budget</h3> */}
+              <h3>{t("statistics.budget")}</h3>
               <ApexCharts
                 options={options1}
                 series={seriess}
@@ -541,7 +566,7 @@ const page = () => {
           <div className='col-md-4'>
             <div className='grph-crd'>
               <h3>
-                Sales Against Budget{" "}
+                {t("statistics.sales_against_budget")}{" "}
                 <Link href='/'>
                   <img src='/images/question-mark.svg' />
                 </Link>
@@ -552,19 +577,19 @@ const page = () => {
                 type='bar'
                 height={250}
               />
-              <div className="botm-box-slas-bug">
-                <div className="left-sal">
-                  <span className="dout-inc"></span>
-                 <div>
-                  <h2>Sales</h2>
-                  <p>330 000</p>
+              <div className='botm-box-slas-bug'>
+                <div className='left-sal'>
+                  <span className='dout-inc'></span>
+                  <div>
+                    <h2>Sales</h2>
+                    <p>330 000</p>
                   </div>
                 </div>
-                <div className="left-sal right-disx">
-                  <span className="dout-inc"></span>
-                 <div>
-                  <h2>Budget</h2>
-                  <p>550 000</p>
+                <div className='left-sal right-disx'>
+                  <span className='dout-inc'></span>
+                  <div>
+                    <h2>Budget</h2>
+                    <p>550 000</p>
                   </div>
                 </div>
               </div>

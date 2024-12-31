@@ -6,6 +6,7 @@ import axios from "axios";
 import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const CreateTask = (props) => {
   const formik = useFormik({
@@ -56,7 +57,7 @@ const CreateTask = (props) => {
       }
     },
   });
-
+  const { t } = useTranslation();
   return (
     <Modal
       className='prodct-viewp createtask'
@@ -64,7 +65,8 @@ const CreateTask = (props) => {
       size='lg'
     >
       <Modal.Header>
-        <Modal.Title>Create a task</Modal.Title>
+        {/* <Modal.Title>Create a task</Modal.Title> */}
+        <Modal.Title>{t("create_task.create_a_task")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
@@ -94,7 +96,8 @@ const CreateTask = (props) => {
             controlId='startDateTime'
           >
             <div className='inputtime'>
-              <Form.Label>Start time:</Form.Label>
+              {/* <Form.Label>Start time:</Form.Label> */}
+              <Form.Label>{t("create_task.start_time")}</Form.Label>
               <div className='d-flex gap-4'>
                 <Form.Control
                   type='date'
@@ -129,7 +132,8 @@ const CreateTask = (props) => {
             controlId='endDateTime'
           >
             <div className='inputtime'>
-              <Form.Label>End time:</Form.Label>
+              {/* <Form.Label>End time:</Form.Label> */}
+              <Form.Label>{t("create_task.end_time")}</Form.Label>
               <div className='d-flex gap-4 align-items-center'>
                 <Form.Control
                   type='date'
@@ -159,7 +163,8 @@ const CreateTask = (props) => {
             className='form-group'
             controlId='createdBy'
           >
-            <Form.Label>Created by</Form.Label>
+            {/* <Form.Label>Created by</Form.Label> */}
+            <Form.Label>{t("create_task.created_by")}</Form.Label>
             <Form.Control
               type='text'
               name='createdBy'
@@ -177,7 +182,8 @@ const CreateTask = (props) => {
             className='form-group'
             controlId='description'
           >
-            <Form.Label>Task description</Form.Label>
+            {/* <Form.Label>Task description</Form.Label> */}
+            <Form.Label>{t("create_task.task_description")}</Form.Label>
             <Form.Control
               as='textarea'
               rows={3}
@@ -198,7 +204,7 @@ const CreateTask = (props) => {
             type='submit'
             className='bold-btn w-50 p-3'
           >
-            Create a task
+            {t("create_task.create_a_task")}
           </button>
         </Form>
       </Modal.Body>

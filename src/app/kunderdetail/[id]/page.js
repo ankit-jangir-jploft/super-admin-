@@ -8,6 +8,7 @@ import CreateTask from "@/app/Components/CreateTask";
 import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 function formatDateToCustom(dateString) {
   if (!dateString) return "";
@@ -23,6 +24,7 @@ function formatDateToCustom(dateString) {
 }
 
 const page = ({ params }) => {
+  const { t } = useTranslation();
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
   const [customer, setCustomers] = useState({});
@@ -61,8 +63,6 @@ const page = ({ params }) => {
       console.log(error);
     }
   };
-
-
 
   const sendMailHandler = async () => {
     try {
@@ -194,8 +194,7 @@ const page = ({ params }) => {
     fetchLogs();
   }, []);
 
-
-  console.log({ groupList })
+  console.log({ groupList });
 
   return (
     <>
@@ -203,12 +202,11 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {customer?.name}{" "} <b>NO</b>
+            {customer?.name} <b>NO</b>
             <span>
               #{customer?.id} |{" "}
               {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
             </span>
-
           </h2>
         </div>
         {roleType === "guest" ? (
@@ -223,14 +221,14 @@ const page = ({ params }) => {
                 className='bold-btn w-auto me-2'
                 onClick={sendMailHandler}
               >
-                Send Epost
+                {t("customer_details.send_email")}
               </button>
               {/* <button className='bold-btn w-auto me-2'> */}
               <a
                 className='bold-btn w-auto me-2'
                 href={`tel:+${customer?.phone}`}
               >
-                Ring
+                {t("customer_details.call")}
               </a>
               {/* </button> */}
               <button
@@ -240,7 +238,7 @@ const page = ({ params }) => {
                   handlePopup();
                 }}
               >
-                Legg til oppgave
+                {t("customer_details.create_a_task")}
               </button>
               <button
                 className='add-icon'
@@ -258,12 +256,13 @@ const page = ({ params }) => {
           <Row>
             <Col md={3}>
               <div className='order-dtl-box'>
-   
-                
-                <h2>Kunde <b className="text-right">{customer?.lead_status}</b> </h2>  
-              
+                <h2>
+                  {t("customer_details.customer")}{" "}
+                  <b className='text-right'>{customer?.lead_status}</b>{" "}
+                </h2>
+
                 {/* <h2>{customer?.origin} </h2> */}
-           
+
                 <p>#{customer?.id}</p>
                 <p>
                   {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
@@ -271,30 +270,41 @@ const page = ({ params }) => {
                 <p>{customer?.name}</p>
                 <p>{customer?.email}</p>
                 <p>{customer?.phone}</p>
-                <p>Opprettet: {customer?.createdAt}</p>
+                <p>
+                  {t("customer_details.created")}: {customer?.createdAt}
+                </p>
                 <p>Antall dugnader: 1</p>
               </div>
             </Col>
             <Col md={3}>
               <div className='order-dtl-box'>
-                <h2>Aktiv dugnad </h2>
+                {/* <h2>Aktiv dugnad </h2> */}
+                <h2>{t("customer_details.active_dugnad")}</h2>
                 <p>
-                  Dugnadsgruppe: <span>{lastPurchaseOrder?.group_name}</span>
+                  {t("customer_details.dugnadsgroup")}:{" "}
+                  <span>{lastPurchaseOrder?.group_name}</span>
                 </p>
                 <p>
-                  Dugnadsstart: <span>{formatDateToCustom(lastPurchaseOrder?.start_date)}</span>
+                  {t("customer_details.start_date")}:{" "}
+                  <span>
+                    {formatDateToCustom(lastPurchaseOrder?.start_date)}
+                  </span>
                 </p>
                 <p>
-                  Dugnadsslutt: <span>{formatDateToCustom(lastPurchaseOrder?.end_date)}</span>
+                  {t("customer_details.end_date")}:{" "}
+                  <span>{formatDateToCustom(lastPurchaseOrder?.end_date)}</span>
                 </p>
                 <p>
-                  Antall selgere: <span>{lastPurchaseOrder?.number_of_seller}</span>
+                  {t("customer_details.sellers")}:{" "}
+                  <span>{lastPurchaseOrder?.number_of_seller}</span>
                 </p>
                 <p>
-                  Solgt til na: <span>{lastPurchaseOrder?.user_count}</span>
+                  {t("customer_details.sold_till_now")}:{" "}
+                  <span>{lastPurchaseOrder?.user_count}</span>
                 </p>
                 <p>
-                  Selgere registrert: <span>{lastPurchaseOrder?.total_qty_sold}</span>
+                  {t("customer_details.sellers_registered")}:{" "}
+                  <span>{lastPurchaseOrder?.total_qty_sold}</span>
                 </p>
               </div>
             </Col>
@@ -320,7 +330,8 @@ const page = ({ params }) => {
             </Col> */}
             <Col md={3}>
               <div className='order-dtl-box'>
-                <h2>Adresse </h2>
+                {/* <h2>Adresse </h2> */}
+                <h2>{t("customer_details.address")}</h2>
                 <p>{customer?.name}</p>
                 <p>Snarveien 33</p>
                 <p>
@@ -329,8 +340,11 @@ const page = ({ params }) => {
                 </p>
                 <p>Norge</p>
               </div>
+            </Col>
+            <Col md={3}>
               <div className='order-dtl-box'>
-                <h2> Delivery address</h2>
+                {/* <h2> Delivery address</h2> */}
+                <h2>{t("customer_details.delivery_address")}</h2>
 
                 <p>Same as address</p>
               </div>
@@ -342,11 +356,16 @@ const page = ({ params }) => {
                 <table>
                   <thead>
                     <tr>
-                      <th>Tidligere ordre</th>
-                      <th>Dato</th>
-                      <th>Status</th>
-                      <th>Antall varer</th>
-                      <th>Totalt</th>
+                      {/* <th>Tidligere ordre</th> */}
+                      <th>{t("customer_details.past_orders")}</th>
+                      {/* <th>Dato</th> */}
+                      <th>{t("customer_details.date")}</th>
+                      {/* <th>Status</th> */}
+                      <th>{t("customer_details.status")}</th>
+                      {/* <th>Antall varer</th> */}
+                      <th>{t("customer_details.no_of_items")}</th>
+                      {/* <th>Totalt</th> */}
+                      <th>{t("customer_details.total")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -366,32 +385,44 @@ const page = ({ params }) => {
                           </tr>
                         );
                       })) || (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            className='text-center'
-                          >
-                            No data
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className='text-center'
+                        >
+                          No data
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
-              <div className='table-responsive order-table w-100 order-dtl-tbl' style={{ marginTop: "20px" }}>
+              <div
+                className='table-responsive order-table w-100 order-dtl-tbl'
+                style={{ marginTop: "20px" }}
+              >
                 <table>
                   <thead>
                     <tr>
-                      <th>Start date</th>
-                      <th>End date</th>
-                      <th>Dugnadsgroup</th>
-                      <th>Sellers</th>
-                      <th>Active</th>
-                      <th>Packs</th>
+                      {/* <th>Start date</th> */}
+                      <th>{t("customer_details.start_date")}</th>
+                      {/* <th>End date</th> */}
+                      <th>{t("customer_details.end_date")}</th>
+                      {/* <th>Dugnadsgroup</th> */}
+                      <th>{t("customer_details.dugnadsgroup")}</th>
+                      {/* <th>Sellers</th> */}
+                      <th>{t("customer_details.sellers")}</th>
+                      {/* <th>Active</th> */}
+                      <th>{t("customer_details.active")}</th>
+                      {/* <th>Packs</th> */}
+                      <th>{t("customer_details.packs")}</th>
                       {/* <th>APS</th> */}
-                      <th>Turnover</th>
-                      <th>Profit</th>
-                      <th>Status</th>
+                      {/* <th>Turnover</th> */}
+                      <th>{t("customer_details.turnover")}</th>
+                      {/* <th>Profit</th> */}
+                      <th>{t("customer_details.profit")}</th>
+                      {/* <th>Status</th> */}
+                      <th>{t("customer_details.status")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -410,21 +441,26 @@ const page = ({ params }) => {
                             <td>{group?.total_qty_sold}</td>
                             <td>kr {group?.total_sale_price}</td>
                             <td>kr {group?.total_profit}</td>
-                            <td>{group?.group_status === 1 ? "Completed" : ""}</td>
+                            <td>
+                              {group?.group_status === 1 ? "Completed" : ""}
+                            </td>
                           </tr>
                         ))) || (
-                        <tr>
-                          <td colSpan={9} className="text-center">
-                            No data
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td
+                          colSpan={9}
+                          className='text-center'
+                        >
+                          No data
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
-
                 </table>
               </div>
               <div className='order-dtl-box mt-4'>
-                <h2>Tags</h2>
+                {/* <h2>Tags</h2> */}
+                <h2>{t("customer_details.tags")}</h2>
                 <div className='p-2'>
                   {(tags.length &&
                     tags.map((tag) => {
@@ -462,7 +498,8 @@ const page = ({ params }) => {
             </Col>
             <Col lg={4}>
               <div className='order-dtl-box'>
-                <h2>Logg</h2>
+                {/* <h2>Logg</h2> */}
+                <h2>{t("customer_details.log")}</h2>
                 {logs.length > 0 ? (
                   logs.map((log, index) => (
                     <div

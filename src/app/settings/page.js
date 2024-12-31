@@ -16,8 +16,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [fetchSeller, setFetchSeller] = useState();
   const [userData, setUserData] = useState({});
 
@@ -336,19 +338,17 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main stng-pge'>
         <div className='admin-header'>
-          <h2>Settings</h2>
+          {/* <h2>Settings</h2> */}
+          <h2>{t("settings.settings")}</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
+            <input type='text' />
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -368,7 +368,7 @@ const page = () => {
               >
                 <Tab
                   eventKey='general'
-                  title='General'
+                  title={t("settings.generals")}
                 >
                   <Form onSubmit={handleSubmit(onSubmit)}>
                     <div className='row mt-5'>
@@ -381,7 +381,10 @@ const page = () => {
                             <Form.Check
                               className='form_checkbox_top'
                               type='checkbox'
-                              label='Automatically unpublish items in the online store with less than 100 pieces in stock'
+                              // label='Automatically unpublish items in the online store with less than 100 pieces in stock'
+                              label={t(
+                                "settings.general.automatically_unpublish"
+                              )}
                               {...register("status")}
                               value='1'
                               onChange={(e) =>
@@ -406,15 +409,18 @@ const page = () => {
                               className='btn btn-primary px-3 p-2'
                             >
                               {isEditMode
-                                ? "Update Settings"
-                                : "Create Settings"}
+                                ? t("settings.general.update_settings")
+                                : t("settings.general.create_settings")}
                             </button>
                           </div>
                         )}
                       </div>
                       <div className='row'>
                         <div className='col-md-12'>
-                          <Form.Label>Budget</Form.Label>
+                          {/* <Form.Label>Budget</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.general.budget")}
+                          </Form.Label>
                           <CustomRadioButton />
                         </div>
                       </div>
@@ -422,7 +428,10 @@ const page = () => {
                         <div className='row'>
                           <div className='col-md-12'>
                             <Form.Group className='mb-3'>
-                              <Form.Label>Default VAT class</Form.Label>
+                              {/* <Form.Label>Default VAT class</Form.Label> */}
+                              <Form.Label>
+                                {t("settings.general.default_vat_class")}
+                              </Form.Label>
                               <Form.Select {...register("default_vat_class")}>
                                 <option value='0'>0%</option>
                                 <option value='12'>12%</option>
@@ -434,7 +443,10 @@ const page = () => {
                         </div>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Language</Form.Label>
+                          {/* <Form.Label>Language</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.general.language")}
+                          </Form.Label>
                           <Form.Select
                             {...register("language_id")}
                             className='LanguageBox'
@@ -464,7 +476,10 @@ const page = () => {
                     <div className='row'>
                       <div className='col-md-12'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                          {/* <Form.Label>Terms of Purchase</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.general.terms_of_purchase")}
+                          </Form.Label>
                           <Controller
                             name='text'
                             control={control}
@@ -483,10 +498,11 @@ const page = () => {
                 </Tab>
                 <Tab
                   eventKey='dugnadssettings'
-                  title='Dugnadssettings'
+                  title={t("settings.dugnads_setting")}
                 >
                   <h5 className='ad-prdtse mt-4 mb-3'>
-                    Dugnadssettings
+                    {/* Dugnadssettings */}
+                    {t("settings.dugnads_setting")}
                     <Form.Select className='ms-3'>
                       <option>English</option>
                     </Form.Select>
@@ -494,15 +510,21 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-6'>
                       <Form.Label className='d-block'>
-                        Default text when sharing on social media
+                        {/* Default text when sharing on social media */}
+                        {t(
+                          "settings.dugnadssettings.default_text_when_sahring_in_social_media"
+                        )}
                       </Form.Label>
                       <Form.Label className='d-block mt-4'>
-                        Default image when sharing on social media
+                        {/* Default image when sharing on social media */}
+                        {t(
+                          "settings.dugnadssettings.default_image_when_sharing_in_social_media"
+                        )}
                       </Form.Label>
                     </div>
                     <div className='col-md-6 text-end'>
                       <Form.Group className='mb-3'>
-                        <Form.Control placeholder='Thank you for your support!' />
+                        <Form.Control />
                       </Form.Group>
                       <img
                         className='strimg'
@@ -510,7 +532,10 @@ const page = () => {
                       />
                     </div>
                   </div>
-                  <Form.Label>Frequently asked questions</Form.Label>
+                  {/* <Form.Label>Frequently asked questions</Form.Label> */}
+                  <Form.Label>
+                    {t("settings.dugnadssettings.frequently_asked_questions")}
+                  </Form.Label>
                   <div className='row'>
                     {faqList.map((faq, index) => (
                       <React.Fragment key={index}>
@@ -536,13 +561,15 @@ const page = () => {
                         </div>
                         <div className='col-md-6'>
                           <Form.Group className='mb-3'>
-                            <Form.Label>Answer</Form.Label>
+                            {/* <Form.Label>Answer</Form.Label> */}
+                            <Form.Label>
+                              {t("settings.dugnadssettings.answer")}
+                            </Form.Label>
                             <Form.Control
                               value={faq.answer}
                               onChange={(e) =>
                                 handleChange(index, "answer", e.target.value)
                               }
-                              placeholder='Lorem ipsum dolor sit amet'
                             />
                             {errorMessages[index] && (
                               <div
@@ -567,7 +594,9 @@ const page = () => {
                             className='btn btn-primary w-50 p-2'
                             onClick={handleAddQuestion}
                           >
-                            Add question and answer
+                            {t(
+                              "settings.dugnadssettings.add_question_and_answer"
+                            )}
                           </button>
                         </div>
                       )}
@@ -579,7 +608,8 @@ const page = () => {
                           onClick={handleSave}
                         >
                           <button className='btn btn-primary w-25 p-2'>
-                            Save
+                            {/* Save */}
+                            {t("settings.dugnadssettings.save")}
                           </button>
                         </div>
                       )}
@@ -588,12 +618,14 @@ const page = () => {
                 </Tab>
                 <Tab
                   eventKey='Frontpagesettings'
-                  title='Frontpage settings'
+                  // title='Frontpage settings'
+                  title={t("settings.frontpage_setting")}
                 >
                   <div className='row'>
                     <div className='col-md-8 mx-auto'>
                       <Form.Label className='ad-prdtse mt-4 mb-3'>
-                        Language
+                        {/* Language */}
+                        {t("settings.frontpage_settings.language")}
                         <Form.Select
                           className='ms-3 p-1'
                           {...register3("navbarLanguage", {
@@ -601,7 +633,7 @@ const page = () => {
                           })}
                         >
                           <option value='1'>Norwegian</option>
-                          <option value='1'>Sweden</option>
+                          <option value='2'>English</option>
                         </Form.Select>
                         {errors.navbarLanguage && (
                           <p className='text-danger block'>
@@ -658,7 +690,10 @@ const page = () => {
                           )} */}
 
                           <Form.Group className='mb-4'>
-                            <Form.Label>Header Title</Form.Label>
+                            {/* <Form.Label>Header Title</Form.Label> */}
+                            <Form.Label>
+                              {t("settings.frontpage_settings.header_title")}
+                            </Form.Label>
                             <Form.Control
                               placeholder='Lorem Ipsum is simply dummy text of the printing and typesetting'
                               {...register3("headerTitle", {
@@ -673,7 +708,12 @@ const page = () => {
                           </Form.Group>
 
                           <Form.Group className='mb-3'>
-                            <Form.Label>Header Description</Form.Label>
+                            {/* <Form.Label>Header Description</Form.Label> */}
+                            <Form.Label>
+                              {t(
+                                "settings.frontpage_settings.header_description"
+                              )}
+                            </Form.Label>
                             <Form.Control
                               placeholder='It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
                               {...register3("headerDescription", {
@@ -688,7 +728,12 @@ const page = () => {
                           </Form.Group>
 
                           <Form.Group className='mb-3'>
-                            <Form.Label>Header Button Label</Form.Label>
+                            {/* <Form.Label>Header Button Label</Form.Label> */}
+                            <Form.Label>
+                              {t(
+                                "settings.frontpage_settings.header_button_label"
+                              )}
+                            </Form.Label>
                             <Form.Control
                               placeholder='Header Button Label'
                               {...register3("headerButtonLabel", {
@@ -707,7 +752,10 @@ const page = () => {
                           className='col-md-6'
                           style={{ marginTop: "-33px" }}
                         >
-                          <Form.Label className='mt-4'>Header Image</Form.Label>
+                          {/* <Form.Label className='mt-4'>Header Image</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.frontpage_settings.header_image")}
+                          </Form.Label>
                           <div className='crpr-im filr-setng filr-setng1'>
                             <Image
                               src={headerImage || "/images/image-upload1.svg"}
@@ -727,8 +775,13 @@ const page = () => {
                                 alt='Upload icon'
                               />
                               <p className='m-0'>
-                                Drag & Drop or <span>choose file</span> to
-                                upload
+                                {/* Drag & Drop or <span>choose file</span> to
+                                upload */}
+                                {t("settings.frontpage_settings.drag_drop_or")}{" "}
+                                <span>
+                                  {t("settings.frontpage_settings.choose_file")}
+                                </span>{" "}
+                                {t("settings.frontpage_settings.to_upload")}
                               </p>
                               <small>Supported formats: Jpeg, png</small>
                             </div>
@@ -740,7 +793,7 @@ const page = () => {
                           )}
                         </div>
                       </div>
-                      <hr/>
+                      <hr />
                       {roleType !== "guest" && (
                         <div className='d-flex justify-content-center my-5'>
                           <button
@@ -748,7 +801,8 @@ const page = () => {
                             type='submit'
                             onClick={handleSubmit3(onSubmit3)}
                           >
-                            Save
+                            {/* Save */}
+                            {t("settings.frontpage_settings.save")}
                           </button>
                         </div>
                       )}
@@ -757,7 +811,8 @@ const page = () => {
                 </Tab>
                 <Tab
                   eventKey='users'
-                  title='Users'
+                  // title='Users'
+                  title={t("settings.userss")}
                 >
                   {roleType !== "guest" && (
                     <div
@@ -768,7 +823,8 @@ const page = () => {
                         href='/createuser'
                         className='crte-userd CreateUserCustom'
                       >
-                        Create User
+                        {/* Create User */}
+                        {t("settings.users.list.create_user")}
                       </Link>
                     </div>
                   )}
@@ -777,11 +833,16 @@ const page = () => {
                     <table>
                       <thead>
                         <tr>
-                          <th>Profile</th>
-                          <th>Name</th>
-                          <th>Status</th>
-                          <th>Type</th>
-                          <th>Email</th>
+                          {/* <th>Profile</th> */}
+                          <th>{t("settings.users.list.profile")}</th>
+                          {/* <th>Name</th> */}
+                          <th>{t("settings.users.list.name")}</th>
+                          {/* <th>Status</th> */}
+                          <th>{t("settings.users.list.status")}</th>
+                          {/* <th>Type</th> */}
+                          <th>{t("settings.users.list.type")}</th>
+                          {/* <th>Email</th> */}
+                          <th>{t("settings.users.list.email")}</th>
                           {roleType !== "guest" && <th></th>}
                         </tr>
                       </thead>

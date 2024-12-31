@@ -12,8 +12,10 @@ import { BASE_URL } from "../../Utils/apiHelper";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 const Page = ({ param }) => {
+  const { t } = useTranslation();
   const [radioValue, setRadioValue] = useState("1");
   const [profileImage, setProfileImage] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -25,8 +27,8 @@ const Page = ({ param }) => {
   const params = useParams();
 
   const radios = [
-    { name: "Light", value: "1" },
-    { name: "Dark", value: "2" },
+    { name: t("settings.users.create.light"), value: "1" },
+    { name: t("settings.users.create.dark"), value: "2" },
   ];
 
   const fetchSellerList = async () => {
@@ -129,7 +131,8 @@ const Page = ({ param }) => {
       <Sidebar />
       <div className='detail-admin-main stng-pge'>
         <div className='admin-header'>
-          <h2>Settings</h2>
+          {/* <h2>Settings</h2> */}
+          <h2>{t("settings.settings")}</h2>
         </div>
         <div className='row'>
           <div className='col-md-12'>
@@ -170,7 +173,8 @@ const Page = ({ param }) => {
                         <div className='row'>
                           <div className='col-md-6'>
                             <div className='mb-3'>
-                              <label>Name</label>
+                              {/* <label>Name</label> */}
+                              <label>{t("settings.users.create.name")}</label>
                               <Field
                                 name='name'
                                 className='form-control'
@@ -184,7 +188,8 @@ const Page = ({ param }) => {
                           </div>
                           <div className='col-md-6'>
                             <div className='mb-3'>
-                              <label>Email</label>
+                              {/* <label>Email</label> */}
+                              <label>{t("settings.users.create.email")}</label>
                               <Field
                                 name='email'
                                 className='form-control'
@@ -198,7 +203,10 @@ const Page = ({ param }) => {
                           </div>
                           <div className='col-md-6'>
                             <div className='mb-3'>
-                              <label>User Type</label>
+                              {/* <label>User Type</label> */}
+                              <label>
+                                {t("settings.users.create.user_type")}
+                              </label>
                               <Field
                                 as='select'
                                 name='userType'
@@ -241,7 +249,10 @@ const Page = ({ param }) => {
                           </div>
                           <div className='col-md-6'>
                             <div className='mb-3'>
-                              <label>Language</label>
+                              {/* <label>Language</label> */}
+                              <label>
+                                {t("settings.users.create.language")}
+                              </label>
                               <Field
                                 as='select'
                                 name='language'
@@ -259,7 +270,10 @@ const Page = ({ param }) => {
                           <div className='col-md-6'>
                             <div className='mb-3'>
                               <div className='swtch-bt'>
-                                <label>Appearance</label>
+                                {/* <label>Appearance</label> */}
+                                <label>
+                                  {t("settings.users.create.appearance")}
+                                </label>
                                 <ButtonGroup>
                                   {radios.map((radio, idx) => (
                                     <ToggleButton
@@ -292,7 +306,8 @@ const Page = ({ param }) => {
                               className='createorder_top_right w-100 btn_bg_delt'
                               type='button'
                             >
-                              Delete user
+                              {/* Delete user */}
+                              {t("settings.users.create.delete_user")}
                             </button>
                           </div>
                           <div className='col-md-6'>
@@ -300,7 +315,8 @@ const Page = ({ param }) => {
                               className='createorder_top_right btn_bg_save w-100'
                               type='submit'
                             >
-                              Update
+                              {/* Update */}
+                              {t("settings.users.create.update")}
                             </button>
                           </div>
                         </div>

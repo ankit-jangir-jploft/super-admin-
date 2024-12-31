@@ -6,7 +6,8 @@
     "forgot_password": "Forgot password?",
     "log_in": "Log in",
     "or": "or",
-    "continue_with_vipps": "Continue with Vipps"
+    "continue_with_vipps": "Continue with Vipps",
+    "all_rights_reserved": "All rights reserved"
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -85,28 +86,29 @@
     "sales": "Sales"
   },
   "picklist": {
-    "plukkliste": "PICKLIST",
-    "leveringadresse": "Delivery address",
+    "picking_list": "PICKLIST",
+    "delivery_address": "Delivery address",
     "faktureringsadresse": "Billing address",
-    "ordrenummer:": "Order number:",
-    "leveringsmåte:": "Delivery method:",
-    "ordredato:": "Order date:",
-    "kunde.nr:": "Customer no.:",
-    "telefon:": "Phone:",
-    "e-post:": "Email:",
-    "selger:": "Seller:",
+    "ordrenummer": "Order number",
+    "leveringsmate": "Delivery method",
+    "ordredato": "Order date",
+    "kunde_nr": "Customer no",
+    "telefon": "Phone",
+    "e_post": "Email",
+    "selger": "Seller",
     "pakket": "Packed",
     "antall": "Quantity",
     "produkt": "Product",
-    "art. nr": "Item no.",
+    "art_nr": "Item no.",
     "lokasjon": "Location"
   },
   "orders": {
+    "orders": "Order",
     "mark": "Note",
     "ordernumber": "Order number",
     "date": "Date",
     "ordered_by": "Ordered by",
-    "ordered_for/from": "Ordered for",
+    "ordered_for": "Ordered for",
     "status": "Status",
     "origin": "Origin",
     "items": "Items",
@@ -123,16 +125,18 @@
     "delete": "Delete"
   },
   "order_details": {
+    "orders": "Order",
     "search": "Search",
     "pick_list": "Pick list",
     "salesoverview": "Sales overview",
     "package_slip": "Packing slip",
     "ready_to_picking": "Ready for picking",
+    "create_shipping_label": "Create shipping label",
     "note": "Note",
     "customer": "Customer",
     "kari_nordmann": "Kari Nordmann",
-    "seiger": "Seiger",
-    "ordre": "Order",
+    "seller": "Seiger",
+    "order": "Order",
     "total": "Total",
     "see_contact": "See customer",
     "invoice": "Invoice",
@@ -147,9 +151,9 @@
     "cost": "Cost",
     "quantity": "Quantity",
     "gratis_frakt": "Free shipping",
-    "products_sum:": "Product sum:",
-    "shipping_&_Handling": "Shipping & Handling:",
-    "order_total": "Order total:"
+    "products_sum": "Product sum",
+    "shipping_&_Handling": "Shipping & Handling",
+    "order_total": "Order total"
   },
   "order_create": {
     "create_order": "Create order",
@@ -242,7 +246,12 @@
     "turnover": "Turnover ",
     "profit": "Profit",
     "total_sum:": "Total sum:",
-    "tags": "Tags"
+    "tags": "Tags",
+    "created": "Created",
+    "sold_till_now": "Sold till now",
+    "sellers_registered": "Sellers registered",
+    "past_orders": "Past Orders",
+    "no_of_items": "No of items"
   },
   "customers_create": {
     "create_customer": "Create customer",
@@ -260,7 +269,8 @@
     "address": "Address",
     "delivery_address": "Delivery address",
     "zip": "Postal code",
-    "city": "City"
+    "city": "City",
+    "select_seller": "Select Seller"
   },
   "create_task": {
     "create_a_task": "Create a task",
@@ -292,7 +302,7 @@
     "confirm": "Confirm",
     "delete": "Delete"
   },
-  "products-detail": {
+  "products_detail": {
     "general": "General",
     "pricing": "Pricing",
     "dimensions": "Dimensions",
@@ -303,7 +313,30 @@
     "meta_description": "Meta description",
     "keywords": "Keywords",
     "related_products": "Related products",
-    "add_an_internal_note": "Add an internal note"
+    "add_an_internal_note": "Add an internal note",
+    "display": "Display",
+    "visible_in_online_stores": "Visible in online stores",
+    "visible_in_product_gallery": "Visible in product gallery",
+    "warehouse_location": "Warehouse location",
+    "stock_keep": "Stock keep",
+    "quantity_in_stock": "Quantity in stock",
+    "category": "Category",
+    "sub_category": "Sub category",
+    "gtin_ean": "GTIN / EAN",
+    "menu_order": "Menu order",
+    "created_at": "Created at",
+    "updated_at": "Updated at",
+    "yes": "Yes",
+    "no": "No",
+    "price": "Price",
+    "sales_price": "Sales price",
+    "special_price": "Special price",
+    "vat": "VAT",
+    "vat_class": "VAT class",
+    "length": "Length",
+    "width": "Width",
+    "depth": "Depth",
+    "weight": "Weight"
   },
   "create_product": {
     "english": "English",
@@ -312,7 +345,7 @@
     "productnumber": "Product number",
     "product_name": "Product name",
     "visible_in_online_store": "Visible in online store",
-    "visible_in_productgallery (landing page)": "Visible in product gallery (landing page)",
+    "visible_in_productgallery_landing_page)": "Visible in product gallery (landing page)",
     "visible_in_shop_direkte": "Visible for direct sales",
     "category": "Category",
     "display": "Display",
@@ -330,13 +363,14 @@
     "depth": "Depth (cm)",
     "short_description": "Short description",
     "weight": "Weight (g)",
-    "gtin/ean": "GTIN / EAN",
+    "gtin_ean": "GTIN / EAN",
     "menu_order": "Menu order",
     "keywords": "Keywords",
     "related_products": "Related products",
     "product_description": "Product description",
     "my_page_description": "My pages description",
-    "meta_description": "Meta description"
+    "meta_description": "Meta description",
+    "categories": "Categories"
   },
   "update_product": {
     "english": "English",
@@ -347,7 +381,7 @@
     "cancel": "Cancel",
     "update_product": "Update product",
     "visible_in_online_store": "Visible in online store",
-    "visible_in_productgallery (landing page)": "Visible in product gallery (landing page)",
+    "visible_in_productgallery_landing_page": "Visible in product gallery (landing page)",
     "display": "Display",
     "shown_for_group": "Shown for group",
     "warehouse_location": "Warehouse location",
@@ -363,7 +397,7 @@
     "depth": "Depth (cm)",
     "short_description": "Short description",
     "weight": "Weight (g)",
-    "gtin_/_ean": "GTIN / EAN",
+    "gtin_ean": "GTIN / EAN",
     "menu_order": "Menu order",
     "product_description": "Product description",
     "keywords": "Keywords",
@@ -372,6 +406,7 @@
     "meta_description": "Meta description"
   },
   "dugnader": {
+    "dugnader": "Dugnader",
     "search": "Search",
     "start_date": "Start date",
     "end_date": "End date",
@@ -391,20 +426,28 @@
     "of": "of"
   },
   "settings": {
+    "settings": "Settings",
+    "generals": "General",
+    "dugnads_setting": "Dugnad settings",
+    "frontpage_setting": "Frontpage settings",
+    "userss": "Users",
     "general": {
       "search": "Search",
       "general": "General",
       "dugnadsettings": "Fundraising settings",
       "frontpage_settings": "Homepage settings",
       "users": "Users",
-      "automatically_unpublish_items_in_the_online_store_with_less_than_100_pieces_in_stock": "Automatically unpublish items in the online store with less than 100 pieces in stock",
+      "automatically_unpublish": "Automatically unpublish items in the online store with less than 100 pieces in stock",
       "budget": "Budget",
       "create_product": "Create product",
       "default_vat_class": "Default VAT class",
       "english": "English",
       "terms_of_purchase": "Terms of purchase",
       "title": "Title",
-      "text": "Text"
+      "text": "Text",
+      "language": "Language",
+      "update_settings": "Update settings",
+      "create_settings": "Create settings"
     },
     "dugnadssettings": {
       "search": "Search",
@@ -434,20 +477,22 @@
         "status": "Status",
         "type": "Type",
         "email": "Email",
-        "create_user": "Create user"
+        "create_user": "Create user",
+        "profile": "Profile"
       },
       "create": {
         "users": "Users",
-        "edit_photo": "Edit photo",
+        "add_photo": "Legg til bilde",
         "name": "Name",
         "email": "Email",
         "user_type": "User  type",
         "status": "Status",
         "language": "Language",
-        "appeearance": "Appearance",
+        "appearance": "Appearance",
         "light": "Light",
         "dark": "Dark",
         "delete_user": "Delete user",
+        "update": "Update",
         "save": "Save"
       }
     },
@@ -461,7 +506,22 @@
       "header_description": "Header description",
       "header_button_label": "Header button text",
       "header_button_link": "Header button link",
-      "save": "Save"
+      "save": "Save",
+      "drag_drop_or": "Drag & Drop or",
+      "choose_file": "choose file",
+      "to_upload": "to upload"
     }
+  },
+  "order_more": {
+    "product": "Product",
+    "seller": "Seller",
+    "cost": "Cost",
+    "quantity": "Quantity",
+    "total": "Total"
+  },
+  "paginate": {
+    "showing": "Showing",
+    "elements": "elements",
+    "of": "of"
   }
 }
