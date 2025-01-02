@@ -9,9 +9,12 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
+import { changeLanguage } from "../../../i18n";
 
 const Login = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const [eyeToggle, setToggle] = useState(false);
 
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -49,6 +52,12 @@ const Login = () => {
           console.log("login response", res?.data?.data);
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
           Cookies.set("user", JSON.stringify(res.data.data?.user));
+          const language = res.data?.data?.user?.language_id || "en";
+          Cookies.set("i18next", language, {
+            expires: 365,
+            path: "/dashboard",
+          });
+          changeLanguage(language);
           window.location.href = "/";
           Cookies.set("roleType", res.data?.data?.user?.role_type);
           if (res.data?.data?.user?.role_type === "warehouse") {
@@ -83,7 +92,8 @@ const Login = () => {
                 />
               </div>
               <div className='title-login text-center'>
-                <h1>Velkommen tilbake!</h1>
+                {/* <h1>Velkommen tilbake!</h1> */}
+                <h1>{t("loginpage.welcome_back")}</h1>
               </div>
               <Form
                 onSubmit={formik.handleSubmit}
@@ -93,7 +103,8 @@ const Login = () => {
                   className='form-group'
                   controlId='formBasicEmail'
                 >
-                  <Form.Label>Epostadresse</Form.Label>
+                  {/* <Form.Label>Epostadresse</Form.Label> */}
+                  <Form.Label>{t("loginpage.username")}</Form.Label>
                   <Form.Control
                     type='email'
                     name='email'
@@ -112,7 +123,8 @@ const Login = () => {
                   className='form-group'
                   controlId='formBasicPassword'
                 >
-                  <Form.Label>Password</Form.Label>
+                  {/* <Form.Label>Password</Form.Label> */}
+                  <Form.Label>{t("loginpage.password")}</Form.Label>
                   <Form.Control
                     className='pe-5'
                     type={!eyeToggle ? "password" : "text"}
@@ -143,14 +155,18 @@ const Login = () => {
                     className='btn-primary px-5 py-2'
                     type='submit'
                   >
-                    LOGG INN
+                    {t("loginpage.log_in")}
                   </Button>
                 </div>
                 <div className='pass-for text-center'>
-                  <Link href='/forgot-password'>Glemt passord?</Link>
+                  {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
+                  <Link href='/forgot-password'>
+                    {t("loginpage.forgot_password")}
+                  </Link>
                 </div>
                 <p className='other-option'>
-                  <span>eller</span>
+                  {/* <span>eller</span> */}
+                  <span>{t("loginpage.or")}</span>
                 </p>
 
                 <div className='text-center mt-5'>
@@ -162,7 +178,7 @@ const Login = () => {
                       src='/images/smile-icon.png'
                       className='img-fluid'
                     />{" "}
-                    Fortsett med Vipps
+                    {t("loginpage.continue_with_vipps")}
                   </Link>
                 </div>
               </Form>
@@ -170,14 +186,16 @@ const Login = () => {
           </Row>
         </Container>
         <Container>
-        <Row className='justify-content-center mt-5 text-center'>
+          <Row className='justify-content-center mt-5 text-center'>
             <Col
               lg={12}
               md={12}
             >
-              <p className="copyright">2024 © Dugnadstid.no - All rights reserved</p>
-              </Col>
-              </Row>
+              <p className='copyright'>
+                2024 © Dugnadstid.no - {t("loginpage.all_rights_reserved")}
+              </p>
+            </Col>
+          </Row>
         </Container>
       </section>
     </>

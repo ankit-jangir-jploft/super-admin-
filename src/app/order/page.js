@@ -8,8 +8,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [openRowId, setOpenRowId] = useState(null);
   const [allOrders, setOrders] = useState([]);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -106,24 +108,27 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
-          <h2>Orders</h2>
+          {/* <h2>Orders</h2> */}
+          <h2>{t("orders.orders")}</h2>
           <div className='search-frm'>
-            <Link href={"/createorder"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createorder"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
               value={searchOuery}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder='Sok i order'
+              // placeholder='Sok i order'
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -137,17 +142,29 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Mark</th>
-                  <th>Ordernumber</th>
-                  <th>Date</th>
-                  <th>Ordered by</th>
-                  <th>Ordered for/from</th>
-                  <th>Status</th>
-                  <th>Origin</th>
-                  <th>Items</th>
-                  <th>Sum</th>
-                  <th>Options</th>
-                  <th>Contact</th>
+                  {/* <th>Mark</th> */}
+                  <th>{t("orders.mark")}</th>
+                  {/* <th>Ordernumber</th> */}
+                  <th>{t("orders.ordernumber")}</th>
+                  {/* <th>Date</th> */}
+                  <th>{t("orders.date")}</th>
+                  {/* <th>Ordered by</th> */}
+                  <th>{t("orders.ordered_by")}</th>
+                  {/* <th>Ordered for/from</th> */}
+                  <th>{t("orders.ordered_for")}</th>
+                  {/* <th>Status</th> */}
+                  <th>{t("orders.status")}</th>
+                  {/* <th>Origin</th> */}
+                  <th>{t("orders.origin")}</th>
+                  {/* <th>Items</th> */}
+                  <th>{t("orders.items")}</th>
+                  {/* <th>Sum</th> */}
+                  <th>{t("orders.sum")}</th>
+                  {/* <th>Options</th> */}
+                  <th>{t("orders.options")}</th>
+                  {/* <th>Contact</th> */}
+                  <th>{t("order_more.seller")}</th>
+                  <th>{t("orders.contact")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,6 +226,13 @@ const page = () => {
                             </Link>
                           </div>
                         </td>
+                        <td
+                          onClick={() =>
+                            (window.location.href = `/settings?type=seller`)
+                          }
+                        >
+                          {order?.seller_name}
+                        </td>
                         <td>
                           <Link href={`/kunderdetail/${order?.user_id}`}>
                             <img src='/images/prdctes.svg' />
@@ -225,11 +249,15 @@ const page = () => {
                               <thead>
                                 <tr>
                                   <th>#</th>
-                                  <th>Product</th>
-                                  <th>Seller</th>
-                                  <th>Cost</th>
-                                  <th>Quantity</th>
-                                  <th>Total</th>
+                                  {/* <th>Product</th> */}
+                                  <th>{t("order_more.product")}</th>
+
+                                  {/* <th>Cost</th> */}
+                                  <th>{t("order_more.cost")}</th>
+                                  {/* <th>Quantity</th> */}
+                                  <th>{t("order_more.quantity")}</th>
+                                  {/* <th>Total</th> */}
+                                  <th>{t("order_more.total")}</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -237,7 +265,7 @@ const page = () => {
                                   (product, productIndex) => (
                                     <tr key={productIndex}>
                                       <td className='productId'>
-                                        {product?.id}
+                                        {product?.product_number}
                                       </td>
                                       <td>
                                         <div className='sub-row-img'>
@@ -249,10 +277,16 @@ const page = () => {
                                             }
                                             alt='product'
                                           />
-                                          <span>{product.product_name}</span>
+                                          <span
+                                            onClick={() =>
+                                              (window.location.href = `/products-details/${product?.product_id}`)
+                                            }
+                                          >
+                                            {product.product_name}
+                                          </span>
                                         </div>
                                       </td>
-                                      <td>{product.seller_name}</td>
+
                                       <td>kr {product.price}</td>
                                       <td>{product.qty}</td>
                                       <td>kr {product.total}</td>
@@ -289,8 +323,8 @@ const page = () => {
                   setAction(e.target.value);
                 }}
               >
-                <option value={""}>Mass action</option>
-                <option value={"delete"}>Delete</option>
+                <option value={""}>{t("orders.mass_action")}</option>
+                <option value={"delete"}>{t("orders.delete")}</option>
               </select>
               {action && (
                 <button

@@ -14,8 +14,10 @@ import { GET, POST } from "../../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 import CreateCategoryModal from "@/app/modals/createcategory";
+import { useTranslation } from "react-i18next";
 
 const page = ({ params }) => {
+  const { t } = useTranslation();
   const { id } = params;
   const fetchProductData = async () => {
     try {
@@ -32,8 +34,9 @@ const page = ({ params }) => {
           const id = product.id;
           return { value, label, id };
         });
-        console.log("related -- ", related);
+        setSlug(res.data?.data[0]?.product_slug);
         setSelected(related);
+        setID(res.data?.data[0]?.id);
         setForm({
           ProductNumber: res.data?.data[0]?.product_number || "",
           ProductName: res.data?.data[0]?.name || "",
@@ -41,6 +44,7 @@ const page = ({ params }) => {
           VisibleInProductGallery: res.data?.data[0]?.visible_in_productgallery
             ? true
             : false,
+
           Price: res.data?.data[0]?.price || 0,
           SalesPrice: res.data?.data[0]?.sale_price || 0,
           SpecialPrice: res.data?.data[0]?.speacial_price || "",
@@ -60,6 +64,9 @@ const page = ({ params }) => {
           ProductDescription: res.data?.data[0]?.product_description || "",
           PageDescription: res.data?.data[0]?.page_description || "",
           MetaDescription: res.data?.data[0]?.meta_description || "",
+          VisibleForDirectSales: res.data?.data[0]?.visible_for_direct_sale
+            ? true
+            : false,
         });
       }
     } catch (error) {}
@@ -75,7 +82,8 @@ const page = ({ params }) => {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
   }
-
+  const [productID, setID] = useState("");
+  const [productSlug, setSlug] = useState("");
   const [categories, setCategories] = useState([]);
   const [chosendCategory, setChosendCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
@@ -139,6 +147,7 @@ const page = ({ params }) => {
     const payload = {
       category_id: chosendCategory || "",
       sub_category_id: chosendSubCategory || "",
+      product_id: id,
     };
     const res = await GET(`${BASE_URL}/api/admin/relatedProductlist`, payload);
     if (res?.data?.status === "true") {
@@ -147,6 +156,11 @@ const page = ({ params }) => {
   };
 
   const handleAddKeyword = () => {
+    if (!keyword) {
+      toast.dismiss();
+      toast.error("Keyword cannot be empty");
+      return;
+    }
     if (!keywords.includes(keyword)) {
       setKeywords((prev) => [...prev, keyword]);
       setKeyword("");
@@ -255,7 +269,7 @@ const page = ({ params }) => {
 
   const submitHandler = async () => {
     try {
-      console.log("errors", errors);
+      console.log("selectedReletedProducts", selectedReletedProducts);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory ? chosendCategory : "");
@@ -292,6 +306,10 @@ const page = ({ params }) => {
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
         formData.append("menu_order", productForm.menuOrder);
+        formData.append(
+          "visible_for_direct_sale",
+          productForm.VisibleForDirectSales ? 1 : 0
+        );
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
@@ -305,6 +323,7 @@ const page = ({ params }) => {
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
+          setSelected([]);
           window.location.href = "/produkter";
         } else {
           toast.dismiss();
@@ -346,19 +365,22 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
-            <h2>Update product</h2>
+            {/* <h2>Update product</h2> */}
+            <h2>{t("update_product.update_product")}</h2>
             <div className='bot-btn'>
               <Link
                 href={"/produkter"}
                 className='can-btn'
               >
-                Cancel
+                {/* Cancel */}
+                <span>{t("update_product.cancel")}</span>
               </Link>
               <button
                 className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
-                Update product
+                {/* Update product */}
+                <span>{t("update_product.update_product")}</span>
               </button>
             </div>
           </div>
@@ -368,7 +390,7 @@ const page = ({ params }) => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
-                #123{" "}
+                #{productID}{" "}
                 <Form.Select>
                   <option>English</option>
                 </Form.Select>
@@ -376,7 +398,8 @@ const page = ({ params }) => {
               <div className='row'>
                 <div className='col-md-6'>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Productnumber</Form.Label>
+                    {/* <Form.Label>Productnumber</Form.Label> */}
+                    <Form.Label>{t("update_product.productnumber")}</Form.Label>
                     <Form.Control
                       value={productForm.ProductNumber}
                       onChange={(e) =>
@@ -426,7 +449,8 @@ const page = ({ params }) => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Category</Form.Label>
+                      {/* <Form.Label>Category</Form.Label> */}
+                      <Form.Label>{t("update_product.category")}</Form.Label>
                       <Form.Select
                         onChange={(e) => {
                           setChosendCategory(e.target.value);
@@ -459,7 +483,10 @@ const page = ({ params }) => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Sub category</Form.Label>
+                      {/* <Form.Label>Sub category</Form.Label> */}
+                      <Form.Label>
+                        {t("update_product.sub_category")}
+                      </Form.Label>
                       <Form.Select
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
@@ -489,7 +516,8 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Price</Form.Label>
+                        {/* <Form.Label>Price</Form.Label> */}
+                        <Form.Label>{t("update_product.price")}</Form.Label>
                         <Form.Control
                           value={productForm.Price}
                           onChange={(e) =>
@@ -507,7 +535,10 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Sales price</Form.Label>
+                        {/* <Form.Label>Sales price</Form.Label> */}
+                        <Form.Label>
+                          {t("update_product.sales_price")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.SalesPrice}
                           onChange={(e) =>
@@ -525,7 +556,10 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Special price</Form.Label>
+                        {/* <Form.Label>Special price</Form.Label> */}
+                        <Form.Label>
+                          {t("update_product.special_price")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.SpecialPrice}
                           onChange={(e) =>
@@ -547,7 +581,8 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Length (cm)</Form.Label>
+                        {/* <Form.Label>Length (cm)</Form.Label> */}
+                        <Form.Label>{t("update_product.length")}</Form.Label>
                         <Form.Control
                           value={productForm.Length}
                           onChange={(e) =>
@@ -565,7 +600,8 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Width (cm)</Form.Label>
+                        {/* <Form.Label>Width (cm)</Form.Label> */}
+                        <Form.Label>{t("update_product.width")}</Form.Label>
                         <Form.Control
                           value={productForm.Width}
                           onChange={(e) =>
@@ -583,7 +619,8 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Depth (cm)</Form.Label>
+                        {/* <Form.Label>Depth (cm)</Form.Label> */}
+                        <Form.Label>{t("update_product.depth")}</Form.Label>
                         <Form.Control
                           value={productForm.Depth}
                           onChange={(e) =>
@@ -604,7 +641,8 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Weight (g)</Form.Label>
+                        {/* <Form.Label>Weight (g)</Form.Label> */}
+                        <Form.Label>{t("update_product.weight")}</Form.Label>
                         <Form.Control
                           value={productForm.Weight}
                           onChange={(e) =>
@@ -622,7 +660,8 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>GTIN / EAN</Form.Label>
+                        {/* <Form.Label>GTIN / EAN</Form.Label> */}
+                        <Form.Label>{t("update_product.gtin_ean")}</Form.Label>
                         <Form.Control
                           value={productForm.gtin}
                           onChange={(e) =>
@@ -640,7 +679,10 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Menu order</Form.Label>
+                        {/* <Form.Label>Menu order</Form.Label> */}
+                        <Form.Label>
+                          {t("update_product.menu_order")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.menuOrder}
                           onChange={(e) =>
@@ -660,7 +702,8 @@ const page = ({ params }) => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Keywords</Form.Label>
+                      {/* <Form.Label>Keywords</Form.Label> */}
+                      <Form.Label>{t("update_product.keywords")}</Form.Label>
                       <Form.Control
                         placeholder=''
                         value={keyword}
@@ -691,7 +734,10 @@ const page = ({ params }) => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Related products</Form.Label>
+                      {/* <Form.Label>Related products</Form.Label> */}
+                      <Form.Label>
+                        {t("update_product.related_products")}
+                      </Form.Label>
                       {/* <Form.Control placeholder='Chose product' /> */}
                       <StateManagedSelect
                         isMulti
@@ -728,8 +774,9 @@ const page = ({ params }) => {
                 <div className='col-md-6'>
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
-                      Product name{" "}
-                      <Link href={""}>/julepakke-2-til-og-fra-lapper</Link>
+                      {/* Product name{" "} */}
+                      {t("update_product.product_name")}{" "}
+                      <Link href={""}>/{productSlug}</Link>
                     </Form.Label>
                     <Form.Control
                       value={productForm.ProductName}
@@ -764,7 +811,8 @@ const page = ({ params }) => {
                           }}
                         />{" "}
                         <span className='mt-2 d-inline-block'>
-                          Visible in online store
+                          {/* Visible in online store */}
+                          {t("update_product.visible_in_online_store")}
                         </span>
                       </Form.Group>
                     </div>
@@ -785,14 +833,40 @@ const page = ({ params }) => {
                           }}
                         />{" "}
                         <span className='mt-2 d-inline-block'>
-                          Visible in productgallery (landing page)
+                          {/* Visible in productgallery (landing page) */}
+                          {t(
+                            "update_product.visible_in_product_gallery_landing_page"
+                          )}
+                        </span>
+                      </Form.Group>
+                    </div>
+                    <div className='col-md-12 cstm-chk'>
+                      <Form.Group
+                        className='mb-3'
+                        controlId='formBasicCheckbox'
+                      >
+                        <input
+                          type='checkbox'
+                          name='VisibleForDirectSales'
+                          checked={productForm.VisibleForDirectSales}
+                          onChange={(e) => {
+                            setForm((prev) => ({
+                              ...prev,
+                              VisibleForDirectSales: e.target.checked,
+                            }));
+                          }}
+                        />{" "}
+                        <span className='d-inline-block'>
+                          {/* Visible in shop-direkte */}
+                          {t("create_product.visible_in_shop_direkte")}
                         </span>
                       </Form.Group>
                     </div>
                   </div>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Display</Form.Label>
+                    {/* <Form.Label>Display</Form.Label> */}
+                    {t("update_product.display")}
                     <Form.Select
                       onChange={(e) =>
                         setForm((prev) => ({
@@ -808,7 +882,8 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Warehouse location</Form.Label>
+                        {/* <Form.Label>Warehouse location</Form.Label> */}
+                        {t("update_product.warehouse_location")}
                         <Form.Control
                           value={productForm.warehouseAddress}
                           onChange={(e) =>
@@ -822,7 +897,8 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Quantity in stock</Form.Label>
+                        {/* <Form.Label>Quantity in stock</Form.Label> */}
+                        {t("update_product.quantity_in_stock")}
                         <Form.Control
                           value={productForm.quantity}
                           onChange={(e) =>
@@ -850,7 +926,10 @@ const page = ({ params }) => {
                             }));
                           }}
                         />{" "}
-                        <span className='mt-2 d-inline-block'>Stock keep</span>
+                        {/* <span className='mt-2 d-inline-block'>Stock keep</span> */}
+                        <span className='mt-2 d-inline-block'>
+                          {t("update_product.stock_keep")}
+                        </span>
                       </Form.Group>
                     </div>
                   </div>
@@ -874,7 +953,8 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-6'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>VAT class</Form.Label>
+                        {/* <Form.Label>VAT class</Form.Label> */}
+                        <Form.Label>{t("update_product.vat_class")}</Form.Label>
                         <Form.Select
                           value={productForm.vatClass}
                           onChange={(e) =>
@@ -891,7 +971,10 @@ const page = ({ params }) => {
                   </div>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Short description</Form.Label>
+                    {/* <Form.Label>Short description</Form.Label> */}
+                    <Form.Label>
+                      {t("update_product.short_description")}
+                    </Form.Label>
                     <Form.Control
                       as='textarea'
                       value={productForm.shortDescription}
@@ -906,7 +989,10 @@ const page = ({ params }) => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Product description</Form.Label>
+                    {/* <Form.Label>Product description</Form.Label> */}
+                    <Form.Label>
+                      {t("update_product.product_description")}
+                    </Form.Label>
                     <ReactQuill
                       theme='snow'
                       value={productForm.ProductDescription}
@@ -920,7 +1006,10 @@ const page = ({ params }) => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>My pages description</Form.Label>
+                    {/* <Form.Label>My pages description</Form.Label> */}
+                    <Form.Label>
+                      {t("update_product.my_page_description")}
+                    </Form.Label>
                     <Form.Control
                       value={productForm.PageDescription}
                       onChange={(e) =>
@@ -933,7 +1022,10 @@ const page = ({ params }) => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Meta description</Form.Label>
+                    {/* <Form.Label>Meta description</Form.Label> */}
+                    <Form.Label>
+                      {t("update_product.meta_description")}
+                    </Form.Label>
                     <Form.Control
                       as='textarea'
                       rows={3}
@@ -950,8 +1042,8 @@ const page = ({ params }) => {
               </div>
               <hr className='mt-5 mb-1'></hr>
               <div className='fotr-bot'>
-                <p>Created at: 03.11.2024</p>
-                <p>Updated at: 04.11.2024 17:11</p>
+                {/* <p>Created at: 03.11.2024</p>
+                <p>Updated at: 04.11.2024 17:11</p> */}
               </div>
             </div>
           </div>

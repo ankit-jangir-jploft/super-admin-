@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   LineChart,
   Line,
@@ -27,8 +28,14 @@ const data = [
 ];
 
 const SalesAnalyticsChart = () => {
+  const { t } = useTranslation();
   const [timeframe, setTimeframe] = useState("Yearly");
-
+  const filters = [
+    t("dashboard.daily"),
+    t("dashboard.weekly"),
+    t("dashboard.monthly"),
+    t("dashboard.yearly"),
+  ];
   return (
     <div>
       <div
@@ -38,9 +45,9 @@ const SalesAnalyticsChart = () => {
           alignItems: "center",
         }}
       >
-        <h3>Sales Analytics</h3>
+        <h3>{t("dashboard.sales_analytics")}</h3>
         <div>
-          {["Daily", "Weekly", "Monthly", "Yearly"].map((label) => (
+          {filters.map((label) => (
             <button
               key={label}
               style={{
@@ -59,23 +66,33 @@ const SalesAnalyticsChart = () => {
           ))}
         </div>
       </div>
-      <div className="SalesAnalyticsChart mt-5">
-
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="sales"
-            stroke="#C6C7F8"
-            strokeWidth={2}
-            dot={<Dot r={6} stroke="#000" />}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className='SalesAnalyticsChart mt-5'>
+        <ResponsiveContainer
+          width='100%'
+          height={300}
+        >
+          <LineChart
+            data={data}
+            margin={{ top: 20, right: 20, left: 0, bottom: 0 }}
+          >
+            <XAxis dataKey='name' />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type='monotone'
+              dataKey='sales'
+              stroke='#C6C7F8'
+              strokeWidth={2}
+              dot={
+                <Dot
+                  r={6}
+                  stroke='#000'
+                />
+              }
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

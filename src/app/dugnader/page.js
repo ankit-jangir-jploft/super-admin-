@@ -7,8 +7,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import Paginate from "../Utils/Paginate";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [currentPage, setCurrent] = useState(1);
   const [pagination, setPagination] = useState();
   const [groupDataListing, setGroupDataListing] = useState();
@@ -42,19 +44,17 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
-          <h2>Dugnader</h2>
+          {/* <h2>Dugnader</h2> */}
+          <h2>{t("dugnader.dugnader")}</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
-            <Link href={"/"}>
+            <input type='text' />
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -68,20 +68,32 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Dugnadsgroup</th>
-                  <th>Sellers</th>
-                  <th>Active</th>
-                  <th>Packs</th>
-                  <th>APS</th>
-                  <th>Turnover</th>
-                  <th>Profit</th>
-                  <th>Status</th>
-
-                  <th>Contact person</th>
-                  <th>Seller</th>
-                  <th>Contact</th>
+                  {/* <th>Start date</th> */}
+                  <th>{t("dugnader.start_date")}</th>
+                  {/* <th>End date</th> */}
+                  <th>{t("dugnader.end_date")}</th>
+                  {/* <th>Dugnadsgroup</th> */}
+                  <th>{t("dugnader.dugnadsgroup")}</th>
+                  {/* <th>Sellers</th> */}
+                  <th>{t("dugnader.sellers")}</th>
+                  {/* <th>Active</th> */}
+                  <th>{t("dugnader.active")}</th>
+                  {/* <th>Packs</th> */}
+                  <th>{t("dugnader.packs")}</th>
+                  {/* <th>APS</th> */}
+                  <th>{t("dugnader.aps")}</th>
+                  {/* <th>Turnover</th> */}
+                  <th>{t("dugnader.turnover")}</th>
+                  {/* <th>Profit</th> */}
+                  <th>{t("dugnader.profit")}</th>
+                  {/* <th>Status</th> */}
+                  <th>{t("dugnader.status")}</th>
+                  {/* <th>Contact person</th> */}
+                  <th>{t("dugnader.contact_person")}</th>
+                  {/* <th>Seller</th> */}
+                  <th>{t("dugnader.seller")}</th>
+                  {/* <th>Contact</th> */}
+                  <th>{t("dugnader.contact")}</th>
                   <th>
                     <Link href='/'>
                       <img src='/images/fltres.svg' />
@@ -101,8 +113,8 @@ const page = () => {
                     </td>
                     <td>{item?.packs}</td>
                     <td>{item?.aps}</td>
-                    <td>{item?.turnover}</td>
-                    <td>{item?.profit}</td>
+                    <td>kr {item?.turnover}</td>
+                    <td>kr {item?.profit}</td>
                     <td>
                       <button className='status green-clr'>
                         {item?.status === 1 ? "Active" : "Inactive"}

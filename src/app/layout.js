@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 import { ToastContainer } from "react-toastify";
-
+import { I18nProvider } from "./provider";
 import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,19 +32,21 @@ export default function RootLayout({ children }) {
         <title>Back-Office</title>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <main>{children}</main>
-        <ToastContainer
-          position='top-center'
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='colored'
-        />
+        <I18nProvider>
+          <main>{children}</main>
+          <ToastContainer
+            position='top-center'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='colored'
+          />
+        </I18nProvider>
       </body>
     </html>
   );

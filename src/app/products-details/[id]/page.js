@@ -9,8 +9,10 @@ import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import SlickSlider from "../../Components/SliderItem";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const page = ({ params }) => {
+  const { t } = useTranslation();
   const { id } = params;
   const [modalShow, setShowModal] = useState(false);
   const [productDetails, setProductDetails] = useState({});
@@ -40,7 +42,7 @@ const page = ({ params }) => {
       console.log(error);
     }
   };
-const handleAddLog = async () => {
+  const handleAddLog = async () => {
     try {
       const options = {
         user_id: id,
@@ -138,16 +140,12 @@ const handleAddLog = async () => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {productDetails?.name}{" "} <b>DUG40GULL</b>
+            {productDetails?.name} <b>{productDetails?.product_number}</b>
             <span>
-              
-             <div className="slg-btm">
-             {productDetails?.product_number}{" "}
-             <span>
-             {productDetails?.userDetail?.delivery_address ||
-                "Q ldrettslag J14"}
-              </span>
-              </div> 
+              <div className='slg-btm'>
+                {/* {productDetails?.product_number}{" "} */}
+                <span>{productDetails?.product_slug}</span>
+              </div>
             </span>
           </h2>
           <div className='search-frm '>
@@ -155,7 +153,7 @@ const handleAddLog = async () => {
               type='text'
               placeholder='Sok i order'
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={"/"}>
@@ -170,56 +168,77 @@ const handleAddLog = async () => {
               <Row>
                 <Col md={4}>
                   <div className='order-dtl-box'>
-                    <h2>General </h2>
+                    {/* <h2>General </h2> */}
+                    <h2>{t("products_detail.general")}</h2>
                     <div className=' content-box-left-right'>
                       <p>
-                        Display <span>{productDetails?.display}</span>
+                        {t("products_detail.display")}{" "}
+                        <span>{productDetails?.display}</span>
                       </p>
                       <p>
-                        Visible in online stores:{" "}
+                        {/* Visible in online stores:{" "} */}
+                        {t("products_detail.visible_in_online_stores")}{" "}
+                        <span>{productDetails?.visible}</span>
                         <span>
                           {productDetails?.product_status == 1 ? "Yes" : "No"}
                         </span>
                       </p>
                       <p>
-                        Visible in product gallery:{" "}
+                        {/* Visible in product gallery:{" "} */}
+                        {t("products_detail.visible_in_product_gallery")}{" "}
                         <span>
-                          {productDetails?.product_status == 1 ? "Yes" : "No"}
+                          {productDetails?.product_status == 1
+                            ? t("products_detail.yes")
+                            : t("products_detail.no")}
                         </span>
                       </p>
                       <p>
-                        Warehouse location:{" "}
+                        {/* Warehouse location:{" "} */}
+                        {t("products_detail.warehouse_location")}{" "}
                         <span>{productDetails?.warehouse_address}</span>
                       </p>
                       <p>
-                        Stock keep:{" "}
+                        {/* Stock keep:{" "} */}
+                        {t("products_detail.stock_keep")}{" "}
                         <span>
                           {productDetails?.stock_keep == 1 ? "Yes" : "No"}
                         </span>
                       </p>
                       <p>
-                        Quantity in stock:{" "}
+                        {/* Quantity in stock:{" "} */}
+                        {t("products_detail.quantity_in_stock")}{" "}
                         <span>{productDetails?.quantity}</span>
                       </p>
                       <p>
-                        Category: <span>{productDetails?.category_name}</span>
+                        {/* Category: */}
+                        {t("products_detail.category")}:
+                        <span>{productDetails?.category_name}</span>
                       </p>
                       <p>
-                        Sub category:{" "}
+                        {/* Sub category:{" "} */}
+                        {t("products_detail.sub_category")}{" "}
                         <span>{productDetails?.sub_category}</span>
                       </p>
                       <p>
-                        GTIN / EAN: <span>{productDetails?.gtin}</span>
+                        {/* GTIN / EAN:  */}
+                        {t("products_detail.gtin_ean")}:
+                        <span>{productDetails?.gtin}</span>
                       </p>
                       <p>
-                        Menu order: <span>{productDetails?.menu_order}</span>
+                        {/* Menu order:  */}
+                        {t("products_detail.menu_order")}:
+                        <span>{productDetails?.menu_order}</span>
                       </p>
                       <div className='mt-2'></div>
                       <p>
-                        Created at: <span>03.11.2024 - 14:12</span>
+                        {/* Created at: */}
+                        {t("products_detail.created_at")}:
+                        <span>03.11.2024 - 14:12</span>
                       </p>
                       <p>
-                        Updated at: <span>04.11.2024 - 17:11</span>
+                        {/* Updated at: */}
+                        {t("products_detail.updated_at")}:
+                        <span>04.11.2024 - 17:11</span>
                       </p>
                     </div>
                   </div>
@@ -229,39 +248,49 @@ const handleAddLog = async () => {
                   <Row>
                     <Col md={6}>
                       <div className='order-dtl-box'>
-                        <h2>Pricing </h2>
+                        {/* <h2>Pricing </h2> */}
+                        <h2>{t("products_detail.pricing")}</h2>
                         <p>
-                          Price: <span>{productDetails?.price}</span>
+                          {t("products_detail.price")}:{" "}
+                          <span>{productDetails?.price}</span>
                         </p>
                         <p>
-                          Sales price:<span>{productDetails?.sale_price}</span>
+                          {t("products_detail.sales_price")}:
+                          <span>{productDetails?.sale_price}</span>
                         </p>
                         <p>
-                          Special price:{" "}
+                          {t("products_detail.special_price")}:{" "}
                           <span>{productDetails?.speacial_price}</span>
                         </p>
                         <p>
-                          VAT: <span>{productDetails?.vat}</span>
+                          {t("products_detail.vat")}:{" "}
+                          <span>{productDetails?.vat}</span>
                         </p>
                         <p>
-                          VAT class: <span>{productDetails?.vat_class}</span>
+                          {t("products_detail.vat_class")}:{" "}
+                          <span>{productDetails?.vat_class}</span>
                         </p>
                       </div>
                     </Col>
                     <Col md={6}>
                       <div className='order-dtl-box'>
-                        <h2>Dimensions </h2>
+                        {/* <h2>Dimensions </h2> */}
+                        <h2>{t("products_detail.dimensions")}</h2>
                         <p>
-                          Length: <span>21 cm</span>
+                          {t("products_detail.length")}:{" "}
+                          <span>{productDetails?.height} cm</span>
                         </p>
                         <p>
-                          Width: <span>{productDetails?.width} cm</span>
+                          {t("products_detail.width")}:{" "}
+                          <span>{productDetails?.width} cm</span>
                         </p>
                         <p>
-                          Depth: <span>{productDetails?.depth} cm</span>
+                          {t("products_detail.depth")}:{" "}
+                          <span>{productDetails?.depth} cm</span>
                         </p>
                         <p>
-                          Weight: <span>{productDetails?.weight} g</span>
+                          {t("products_detail.weight")}:{" "}
+                          <span>{productDetails?.weight} g</span>
                         </p>
                       </div>
                     </Col>
@@ -277,19 +306,22 @@ const handleAddLog = async () => {
                   className='btom_cart_box'
                 >
                   <div className='order-dtl-box mt-4'>
-                    <h2>My pages description</h2>
+                    {/* <h2>My pages description</h2> */}
+                    <h2>{t("products_detail.my_pages_description")}</h2>
                     <p>{productDetails?.page_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
-                    <h2>Short description</h2>
+                    {/* <h2>Short description</h2> */}
+                    <h2>{t("products_detail.short_description")}</h2>
                     <p>{productDetails?.short_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
-                    <h2>Product description</h2>
+                    {/* <h2>Product description</h2> */}
+                    <h2>{t("products_detail.product_description")}</h2>
                     <div
                       style={{
                         textAlign: "left",
@@ -305,13 +337,15 @@ const handleAddLog = async () => {
                 </Col>
                 <Col md={12}>
                   <div className='order-dtl-box mt-4'>
-                    <h2>Meta description</h2>
+                    {/* <h2>Meta description</h2> */}
+                    <h2>{t("products_detail.meta_description")}</h2>
                     <p>{productDetails?.meta_description}</p>
                   </div>
                 </Col>
                 <Col md={12}>
                   <div className='tag-box-btm mt-4'>
-                    <h2>Keywords</h2>
+                    {/* <h2>Keywords</h2> */}
+                    <h2>{t("products_detail.keywords")}</h2>
                     <div className='tag_list'>
                       <ul>
                         {productDetails?.keywords?.map((keyword) => {
@@ -333,7 +367,8 @@ const handleAddLog = async () => {
                 </Col>
                 <Col md={12}>
                   <div className='tag-box-btm  '>
-                    <h2>Related products</h2>
+                    {/* <h2>Related products</h2> */}
+                    <h2>{t("products_detail.related_products")}</h2>
                     <div className='tag_list'>
                       <ul>
                         {productDetails?.related_products?.map((product) => {
@@ -351,7 +386,8 @@ const handleAddLog = async () => {
             </Col>
             <Col lg={4}>
               <div className='order-dtl-box'>
-                <h2>Logg </h2>
+                {/* <h2>Logg </h2> */}
+                <h2>{t("products_detail.log")}</h2>
                 {(logs?.length &&
                   logs?.map((log, i) => {
                     return (
@@ -360,7 +396,7 @@ const handleAddLog = async () => {
                         <label>{log?.name}</label>
                       </div>
                     );
-                  })) || <div className="no_data_found">No logs available</div>}
+                  })) || <div className='no_data_found'>No logs available</div>}
 
                 {roleType !== "guest" && (
                   <div className='logg-til-desc'>
@@ -379,16 +415,16 @@ const handleAddLog = async () => {
                       >
                         Legg til notat
                       </button> */}
-                       <button
-                      className='send_chat_btn'
-                       onClick={addLogsHandler}
-                    >
-                      {/* Legg til notat  */} 
-                      <img
-                        className=''
-                        src='/images/chat_arrow.svg'
-                      />
-                    </button>
+                      <button
+                        className='send_chat_btn'
+                        onClick={addLogsHandler}
+                      >
+                        {/* Legg til notat  */}
+                        <img
+                          className=''
+                          src='/images/chat_arrow.svg'
+                        />
+                      </button>
                     </div>
                   </div>
                 )}

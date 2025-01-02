@@ -3,7 +3,7 @@ import Sidebar from "../Components/Sidebar/Sidebar";
 import Form from "react-bootstrap/Form";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-// import dynamic from "next/dynamic";
+import dynamic from "next/dynamic";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -16,8 +16,10 @@ import StateManagedSelect from "react-select";
 import { useRouter } from "next/navigation";
 import CreateCategoryModal from "../modals/createcategory";
 import CreateSubCategoryModal from "../modals/createsubcategory";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   let [count, setCount] = useState(0);
 
@@ -64,6 +66,7 @@ const page = () => {
     ProductDescription: "",
     PageDescription: "",
     MetaDescription: "",
+    VisibleForDirectSales: false,
   });
   const [errors, setErrors] = useState({});
 
@@ -106,6 +109,11 @@ const page = () => {
   };
 
   const handleAddKeyword = () => {
+    if (!keyword) {
+      toast.dismiss();
+      toast.error("Keyword cannot be empty");
+      return;
+    }
     if (!keywords.includes(keyword)) {
       setKeywords((prev) => [...prev, keyword]);
       setKeyword("");
@@ -250,13 +258,16 @@ const page = () => {
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
         formData.append("menu_order", productForm.menuOrder);
+        formData.append(
+          "visible_for_direct_sale",
+          productForm.VisibleForDirectSales ? 1 : 0
+        );
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
         });
 
         const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
-        console.log(res.data);
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
@@ -284,19 +295,22 @@ const page = () => {
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
-            <h2>Create product</h2>
+            {/* <h2>Create product</h2> */}
+            <h2>{t("create_product.create_product")}</h2>
             <div className='bot-btn'>
               <Link
                 href={"/produkter"}
                 className='can-btn'
               >
-                Cancel
+                {/* Cancel */}
+                {t("create_product.cancel")}
               </Link>
               <button
                 className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
-                Create product
+                {/* Create product */}
+                {t("create_product.create_product")}
               </button>
             </div>
           </div>
@@ -314,7 +328,8 @@ const page = () => {
               <div className='row'>
                 <div className='col-md-6'>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Productnumber</Form.Label>
+                    {/* <Form.Label>Productnumber</Form.Label> */}
+                    <Form.Label>{t("create_product.productnumber")}</Form.Label>
                     <Form.Control
                       value={productForm.ProductNumber}
                       onChange={(e) =>
@@ -373,12 +388,16 @@ const page = () => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Category</Form.Label>
+                      {/* <Form.Label>Category</Form.Label> */}
+                      <Form.Label>{t("create_product.category")}</Form.Label>
                       <Form.Select
                         onChange={(e) => setChosendCategory(e.target.value)}
                         value={chosendCategory}
                       >
-                        <option value='0'>Categories</option>
+                        {/* <option value='0'>Categories</option> */}
+                        <option value='0'>
+                          {t("create_product.categories")}
+                        </option>
                         {(categories.length &&
                           categories?.map((cat, i) => {
                             return (
@@ -405,12 +424,18 @@ const page = () => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Sub category</Form.Label>
+                      {/* <Form.Label>Sub category</Form.Label> */}
+                      <Form.Label>
+                        {t("create_product.sub_category")}
+                      </Form.Label>
                       <Form.Select
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
                       >
-                        <option value='0'>Sub Categories</option>
+                        {/* <option value='0'>Sub Categories</option> */}
+                        <option value='0'>
+                          {t("create_product.sub_category")}
+                        </option>
                         {(subCategories.length &&
                           subCategories?.map((sub, i) => {
                             return (
@@ -438,7 +463,8 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Price</Form.Label>
+                        {/* <Form.Label>Price</Form.Label> */}
+                        <Form.Label>{t("create_product.price")}</Form.Label>
                         <Form.Control
                           value={productForm.Price}
                           onChange={(e) =>
@@ -456,7 +482,10 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Sales price</Form.Label>
+                        {/* <Form.Label>Sales price</Form.Label> */}
+                        <Form.Label>
+                          {t("create_product.sales_price")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.SalesPrice}
                           onChange={(e) =>
@@ -474,7 +503,10 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Special price</Form.Label>
+                        {/* <Form.Label>Special price</Form.Label> */}
+                        <Form.Label>
+                          {t("create_product.special_price")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.SpecialPrice}
                           onChange={(e) =>
@@ -495,7 +527,8 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Length (cm)</Form.Label>
+                        {/* <Form.Label>Length (cm)</Form.Label> */}
+                        <Form.Label>{t("create_product.length")}</Form.Label>
                         <Form.Control
                           value={productForm.Length}
                           onChange={(e) =>
@@ -513,7 +546,8 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Width (cm)</Form.Label>
+                        {/* <Form.Label>Width (cm)</Form.Label> */}
+                        <Form.Label>{t("create_product.width")}</Form.Label>
                         <Form.Control
                           value={productForm.Width}
                           onChange={(e) =>
@@ -531,7 +565,8 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Depth (cm)</Form.Label>
+                        {/* <Form.Label>Depth (cm)</Form.Label> */}
+                        <Form.Label>{t("create_product.depth")}</Form.Label>
                         <Form.Control
                           value={productForm.Depth}
                           onChange={(e) =>
@@ -552,7 +587,8 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Weight (g)</Form.Label>
+                        {/* <Form.Label>Weight (g)</Form.Label> */}
+                        <Form.Label>{t("create_product.weight")}</Form.Label>
                         <Form.Control
                           value={productForm.Weight}
                           onChange={(e) =>
@@ -570,7 +606,8 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>GTIN / EAN</Form.Label>
+                        {/* <Form.Label>GTIN / EAN</Form.Label> */}
+                        <Form.Label>{t("create_product.gtin_ean")}</Form.Label>
                         <Form.Control
                           value={productForm.gtin}
                           onChange={(e) =>
@@ -588,7 +625,10 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Menu order</Form.Label>
+                        {/* <Form.Label>Menu order</Form.Label> */}
+                        <Form.Label>
+                          {t("create_product.menu_order")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.menuOrder}
                           onChange={(e) =>
@@ -608,10 +648,15 @@ const page = () => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Keywords</Form.Label>
+                      {/* <Form.Label>Keywords</Form.Label> */}
+                      <Form.Label>{t("create_product.keywords")}</Form.Label>
                       <Form.Control
                         value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            setKeyword(e.target.value);
+                          }
+                        }}
                       />
                     </div>
                     <button
@@ -638,7 +683,10 @@ const page = () => {
 
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Related products</Form.Label>
+                      {/* <Form.Label>Related products</Form.Label> */}
+                      <Form.Label>
+                        {t("create_product.related_products")}
+                      </Form.Label>
                       {/* <Form.Control placeholder='Chose product' /> */}
                       <StateManagedSelect
                         isMulti
@@ -674,7 +722,8 @@ const page = () => {
                 <div className='col-md-6'>
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
-                      Product name{" "}
+                      {/* Product name{" "} */}
+                      {t("create_product.product_name")}{" "}
                       <Link href={"/"}>/julepakke-2-til-og-fra-lapper</Link>
                     </Form.Label>
                     <Form.Control
@@ -710,7 +759,8 @@ const page = () => {
                           }}
                         />{" "}
                         <span className='d-inline-block'>
-                          Visible in online store
+                          {/* Visible in online store */}
+                          {t("create_product.visible_in_online_store")}
                         </span>
                       </Form.Group>
                     </div>
@@ -731,7 +781,10 @@ const page = () => {
                           }}
                         />{" "}
                         <span className='d-inline-block'>
-                          Visible in productgallery (landing page)
+                          {/* Visible in productgallery (landing page) */}
+                          {t(
+                            "create_product.visible_in_product_gallery_landing_page"
+                          )}
                         </span>
                       </Form.Group>
                     </div>
@@ -742,24 +795,26 @@ const page = () => {
                       >
                         <input
                           type='checkbox'
-                          name='VisibleInProductGallery'
-                          checked={productForm.VisibleInProductGallery}
+                          name='VisibleForDirectSales'
+                          checked={productForm.VisibleForDirectSales}
                           onChange={(e) => {
                             setForm((prev) => ({
                               ...prev,
-                              VisibleInProductGallery: e.target.checked,
+                              VisibleForDirectSales: e.target.checked,
                             }));
                           }}
                         />{" "}
                         <span className='d-inline-block'>
-                        Visible in shop-direkte
+                          {/* Visible in shop-direkte */}
+                          {t("create_product.visible_in_shop_direkte")}
                         </span>
                       </Form.Group>
                     </div>
                   </div>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Display</Form.Label>
+                    {/* <Form.Label>Display</Form.Label> */}
+                    <Form.Label>{t("create_product.display")}</Form.Label>
                     <Form.Select
                       value={productForm.Display}
                       onChange={(e) =>
@@ -776,7 +831,10 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Warehouse location</Form.Label>
+                        {/* <Form.Label>Warehouse location</Form.Label> */}
+                        <Form.Label>
+                          {t("create_product.warehouse_location")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.warehouseAddress}
                           onChange={(e) =>
@@ -790,7 +848,10 @@ const page = () => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>Quantity in stock</Form.Label>
+                        {/* <Form.Label>Quantity in stock</Form.Label> */}
+                        <Form.Label>
+                          {t("create_product.quantity_in_stock")}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.quantity}
                           onChange={(e) =>
@@ -822,7 +883,10 @@ const page = () => {
                             }));
                           }}
                         />{" "}
-                        <span className='mt-2 d-inline-block'>Stock keep</span>
+                        {/* <span className='mt-2 d-inline-block'>Stock keep</span> */}
+                        <span className='mt-2 d-inline-block'>
+                          {t("create_product.stock_keep")}
+                        </span>
                       </Form.Group>
                     </div>
                   </div>
@@ -831,6 +895,7 @@ const page = () => {
                     <div className='col-md-6'>
                       <Form.Group className='mb-3'>
                         <Form.Label>VAT</Form.Label>
+
                         <Form.Select
                           value={productForm.vat}
                           onChange={(e) => {
@@ -847,7 +912,8 @@ const page = () => {
                     </div>
                     <div className='col-md-6'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>VAT class</Form.Label>
+                        {/* <Form.Label>VAT class</Form.Label> */}
+                        <Form.Label>{t("create_product.vat_class")}</Form.Label>
                         <Form.Select
                           value={productForm.vatClass}
                           onChange={(e) =>
@@ -865,7 +931,10 @@ const page = () => {
                   </div>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Short description</Form.Label>
+                    {/* <Form.Label>Short description</Form.Label> */}
+                    <Form.Label>
+                      {t("create_product.short_description")}
+                    </Form.Label>
                     <Form.Control
                       as='textarea'
                       value={productForm.shortDescription}
@@ -880,7 +949,10 @@ const page = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Product description</Form.Label>
+                    {/* <Form.Label>Product description</Form.Label> */}
+                    <Form.Label>
+                      {t("create_product.product_description")}
+                    </Form.Label>
                     <ReactQuill
                       theme='snow'
                       value={productForm.ProductDescription}
@@ -894,7 +966,10 @@ const page = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>My pages description</Form.Label>
+                    {/* <Form.Label>My pages description</Form.Label> */}
+                    <Form.Label>
+                      {t("create_product.my_page_description")}
+                    </Form.Label>
                     <Form.Control
                       value={productForm.PageDescription}
                       onChange={(e) =>
@@ -907,7 +982,10 @@ const page = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Meta description</Form.Label>
+                    {/* <Form.Label>Meta description</Form.Label> */}
+                    <Form.Label>
+                      {t("create_product.meta_description")}
+                    </Form.Label>
                     <Form.Control
                       as='textarea'
                       rows={3}
@@ -924,8 +1002,8 @@ const page = () => {
               </div>
               <hr className='mt-5 mb-1'></hr>
               <div className='fotr-bot'>
-                <p>Created at: 03.11.2024</p>
-                <p>Updated at: 04.11.2024 17:11</p>
+                {/* <p>Created at: 03.11.2024</p>
+                <p>Updated at: 04.11.2024 17:11</p> */}
               </div>
             </div>
           </div>

@@ -10,8 +10,10 @@ import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import Cookies from "js-cookie";
 import CreateLeadModal from "../modals/leadChange";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [currentPage, setCurrent] = useState(1);
@@ -38,7 +40,7 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
 
       if (res?.data?.status) {
-        console.log({res})
+        console.log({ res });
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
       }
@@ -47,9 +49,7 @@ const page = () => {
     }
   };
 
-
-
-  console.log({customers})
+  console.log({ customers });
 
   const onPageChange = (selected) => {
     setCurrent(selected);
@@ -112,20 +112,23 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main'>
         <div className='admin-header'>
-          <h2>Customers</h2>
+          {/* <h2>Customers</h2> */}
+          <h2>{t("customers.customers")}</h2>
           <div className='search-frm'>
-            <Link href={"/createcustomer"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createcustomer"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
-              placeholder='Search customers'
+              // placeholder='Search customers'
               value={searchQuery}
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -145,26 +148,33 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>
-                    <input
-                      type='checkbox'
-                      checked={selectedCustomers.length === customers.length}
-                      onChange={handleSelectAll}
-                    />
-                  </th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Added</th>
-                  <th>Dugnadsgroup</th>
-                  <th>Contact person</th>
-                  <th>Email address</th>
-                  <th>Telephone</th>
-                  <th>Status</th>
-                  <th>Lead</th>
-                  <th>Last log</th>
-                  <th>Last contact</th>
-                  <th>Seller</th>
-                  <th>View</th>
+                  <th>{t("customers.mark")}</th>
+                  {/* <th>ID</th> */}
+                  <th>{t("customers.id")}</th>
+                  {/* <th>Name</th> */}
+                  <th>{t("customers.name")}</th>
+                  {/* <th>Added</th> */}
+                  <th>{t("customers.added")}</th>
+                  {/* <th>Dugnadsgroup</th> */}
+                  <th>{t("customers.dugnadsgroup")}</th>
+                  {/* <th>Contact person</th> */}
+                  <th>{t("customers.contact_person")}</th>
+                  {/* <th>Email address</th> */}
+                  <th>{t("customers.email_address")}</th>
+                  {/* <th>Telephone</th> */}
+                  <th>{t("customers.telephone")}</th>
+                  {/* <th>Status</th> */}
+                  <th>{t("customers.status")}</th>
+                  {/* <th>Lead</th> */}
+                  <th>{t("customers.lead")}</th>
+                  {/* <th>Last log</th> */}
+                  <th>{t("customers.last_log")}</th>
+                  {/* <th>Last contact</th> */}
+                  <th>{t("customers.last_contact")}</th>
+                  {/* <th>Seller</th> */}
+                  <th>{t("customers.seller")}</th>
+                  {/* <th>View</th> */}
+                  <th>{t("customers.view")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -181,10 +191,17 @@ const page = () => {
                         <td>{customer?.id || "N/A"}</td>
                         <td>{customer?.name || "N/A"}</td>
                         <td>{customer?.createdAt || "N/A"}</td>
-                        <td>{customer?.lastPurchaseDetails?.group_name || "N/A"}</td>
+                        <td>
+                          {customer?.lastPurchaseDetails?.group_name || "N/A"}
+                        </td>
                         <td>{customer?.contactPerson || "N/A"}</td>
                         <td>{customer?.email || "N/A"}</td>
-                        <td>{customer?.phone || "N/A"}</td>
+                        <td>
+                          <span style={{ color: "gray" }}>
+                            {customer?.countryCode}{" "}
+                          </span>{" "}
+                          {customer?.phone || "N/A"}
+                        </td>
                         <td>
                           <button className='status'>Created</button>
                         </td>
@@ -194,15 +211,15 @@ const page = () => {
                             setLeadUserId(customer.id);
                           }}
                         >
-                          <button
-                            className={`status ${customers?.lead_status}`}
-                          >
+                          <button className={`status ${customer?.lead_status}`}>
                             {customer?.lead_status}
                           </button>
                         </td>
                         <td>{customer?.lastLog || "N/A"}</td>
                         <td>{customer?.lastPurchaseDetails?.phone || "N/A"}</td>
-                        <td>{customer?.lastPurchaseDetails?.seller_name || "N/A"}</td>
+                        <td>
+                          {customer?.lastPurchaseDetails?.seller_name || "N/A"}
+                        </td>
                         <td>
                           <Link href={`/kunderdetail/${customer?.id}`}>
                             <img src='/images/added-us.svg' />
@@ -227,8 +244,10 @@ const page = () => {
                   setAction(e.target.value);
                 }}
               >
-                <option value={""}>Mass action</option>
-                <option value={"delete"}>Delete</option>
+                {/* <option value={""}>Mass action</option> */}
+                <option value={""}>{t("customers.mass_action")}</option>
+                {/* <option value={"delete"}>Delete</option> */}
+                <option value={"delete"}>{t("customers.delete")}</option>
               </select>
               {action && (
                 <button
