@@ -74,6 +74,7 @@ const page = () => {
     phone: "",
     email: "",
     DeliveryAddress: "",
+    countryCode: "+47",
   };
   const radios = [
     { name: "No", value: 0 },
@@ -328,12 +329,24 @@ const page = () => {
                       <div className='form-group'>
                         {/* <label htmlFor='phone'>Telephone number</label> */}
                         <label>{t("customers_create.telephone_number")}</label>
-                        <Field
-                          type='text'
-                          id='phone'
-                          name='phone'
-                          className='form-control'
-                        />
+                        <div className='d-flex '>
+                          <Field
+                            as='select'
+                            id='countryCode'
+                            name='countryCode'
+                            className='me-2 form-control'
+                            style={{ maxWidth: "80px" }}
+                          >
+                            <option value='+47'>+47</option>
+                            <option value='+46'>+46</option>
+                          </Field>
+                          <Field
+                            type='text'
+                            id='phone'
+                            name='phone'
+                            className='form-control'
+                          />
+                        </div>
                         <ErrorMessage
                           name='phone'
                           component='div'

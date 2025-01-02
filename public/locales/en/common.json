@@ -198,7 +198,7 @@
     "abc_idrettsklubb_j16": "ABC Sports Club J16"
   },
   "customers": {
-    "cutomers": "Customers",
+    "customers": "Customers",
     "mark": "Note",
     "id": "ID",
     "added": "Added",
@@ -268,7 +268,7 @@
     "email_address": "Email address",
     "address": "Address",
     "delivery_address": "Delivery address",
-    "zip": "Postal code",
+    "zip": "Zip",
     "city": "City",
     "select_seller": "Select Seller"
   },

@@ -200,7 +200,10 @@ const page = () => {
                         </td>
                         <td>{customer?.contactPerson || "N/A"}</td>
                         <td>{customer?.email || "N/A"}</td>
-                        <td>{customer?.phone || "N/A"}</td>
+                        <td>
+                          <spna>{customer?.countryCode}</spna>
+                          {customer?.phone || "N/A"}
+                        </td>
                         <td>
                           <button className='status'>Created</button>
                         </td>
@@ -210,9 +213,7 @@ const page = () => {
                             setLeadUserId(customer.id);
                           }}
                         >
-                          <button
-                            className={`status ${customers?.lead_status}`}
-                          >
+                          <button className={`status ${customer?.lead_status}`}>
                             {customer?.lead_status}
                           </button>
                         </td>
