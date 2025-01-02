@@ -17,15 +17,15 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "next/navigation";
 
-const page = () => {
-  const searchParams = useSearchParams();
-  const type = searchParams.get("type");
+const page = ({ searchParams }) => {
+  const type = searchParams.type;
   const { t } = useTranslation();
   const [fetchSeller, setFetchSeller] = useState();
   const [userData, setUserData] = useState({});
-  const [defualtActive, setDefault] = useState(type ? "users" : "general");
+  const [defualtActive, setDefault] = useState(
+    type == "seller" ? "users" : "general"
+  );
 
   let [count, setCount] = useState(0);
 
@@ -33,7 +33,6 @@ const page = () => {
   const [roleType, setRoleType] = useState();
 
   useEffect(() => {
-    // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
 
@@ -275,6 +274,7 @@ const page = () => {
     formData.append("header_title", data?.headerTitle);
     formData.append("header_description", data?.headerDescription);
     formData.append("header_label", data?.headerButtonLabel || "");
+    formData.append("header_label", data?.headerButtonLink || "");
     formData.append("id", data?.id);
 
     if (headerLogoFile) {
@@ -311,6 +311,7 @@ const page = () => {
       const response = await GET(`${BASE_URL}/api/admin/frontPageSettingList`);
       if (response?.status === 200) {
         const fetchFrontPageSetting = response?.data?.data[0];
+        console.log("fetchFrontPageSetting ---", fetchFrontPageSetting);
 
         // Populate the fields in the form
         reset3({
@@ -318,6 +319,7 @@ const page = () => {
           headerTitle: fetchFrontPageSetting?.header_title || "",
           headerDescription: fetchFrontPageSetting?.header_description || "",
           headerButtonLabel: fetchFrontPageSetting?.header_label || "",
+          headerButtonLink: fetchFrontPageSetting?.header_button_link || "",
           id: fetchFrontPageSetting?.id || "",
         });
 
@@ -346,7 +348,7 @@ const page = () => {
           <h2>{t("settings.settings")}</h2>
           <div className='search-frm'>
             <input type='text' />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -467,7 +469,7 @@ const page = () => {
                           <Form.Label>Title</Form.Label>
                           <Form.Control
                             placeholder='Title'
-                            {...register("Terms of purchase", {
+                            {...register("title", {
                               required: "Terms is required",
                             })}
                           />
@@ -518,9 +520,7 @@ const page = () => {
                     <div className='col-md-6'>
                       <Form.Label className='d-block'>
                         {/* Default text when sharing on social media */}
-                        {t(
-                          "settings.dugnadssettings.default_text_when_sahring_in_social_media"
-                        )}
+                        {t("settings.dugnadssettings.default_text")}
                       </Form.Label>
                       <Form.Label className='d-block mt-4'>
                         {/* Default image when sharing on social media */}
@@ -531,7 +531,11 @@ const page = () => {
                     </div>
                     <div className='col-md-6 text-end'>
                       <Form.Group className='mb-3'>
-                        <Form.Control />
+                        <Form.Control
+                          placeholder={t(
+                            "settings.dugnadssettings.thank_you_for_support"
+                          )}
+                        />
                       </Form.Group>
                       <img
                         className='strimg'
@@ -750,6 +754,25 @@ const page = () => {
                             {errors.headerButtonLabel && (
                               <p className='text-danger'>
                                 {errors.headerButtonLabel.message}
+                              </p>
+                            )}
+                          </Form.Group>
+                          <Form.Group className='mb-3'>
+                            {/* <Form.Label>Header Button Label</Form.Label> */}
+                            <Form.Label>
+                              {t(
+                                "settings.frontpage_settings.header_button_link"
+                              )}
+                            </Form.Label>
+                            <Form.Control
+                              // placeholder='Header Button Link'
+                              {...register3("headerButtonLink", {
+                                required: "Button Link is required",
+                              })}
+                            />
+                            {errors.headerButtonLink && (
+                              <p className='text-danger'>
+                                {errors.headerButtonLink.message}
                               </p>
                             )}
                           </Form.Group>

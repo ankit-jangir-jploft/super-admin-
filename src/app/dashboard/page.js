@@ -289,7 +289,7 @@ const page = () => {
               <p>{t("dashboard.profit")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.profit}</h2>
-                <span>{t("dashboard.active")}</span>
+                <span>{t("dashboard.total")}</span>
               </div>
             </div>
           </div>
@@ -299,7 +299,7 @@ const page = () => {
               <p>{t("dashboard.no_of_packages")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.no_of_packages} stk</h2>
-                <span>{t("dashboard.active")}</span>
+                <span>{t("dashboard.total")}</span>
               </div>
             </div>
           </div>

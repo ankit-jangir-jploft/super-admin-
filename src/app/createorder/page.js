@@ -200,7 +200,6 @@ const page = () => {
         <div className='row'>
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
-              <h3>#10332</h3>
               <div className='row'>
                 <div className='col-md-6'>
                   <Form.Group className='mb-3 cstmr-ad'>
@@ -377,9 +376,7 @@ const page = () => {
                           />
 
                           <h4>{prod.name}</h4>
-                          <span>
-                            {prod?.quantity} stk - Price {prod?.price},-
-                          </span>
+                          <span>Price {prod?.price},-</span>
                           {item ? (
                             <div className='prdct-plmn'>
                               <button onClick={() => decrementCount(prod.id)}>

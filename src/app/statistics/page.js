@@ -309,7 +309,7 @@ const page = () => {
               type='text'
               // placeholder='Sok i order'
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>

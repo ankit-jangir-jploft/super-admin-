@@ -66,6 +66,7 @@ const page = () => {
     ProductDescription: "",
     PageDescription: "",
     MetaDescription: "",
+    VisibleForDirectSales: false,
   });
   const [errors, setErrors] = useState({});
 
@@ -257,6 +258,10 @@ const page = () => {
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
         formData.append("menu_order", productForm.menuOrder);
+        formData.append(
+          "visible_for_direct_sale",
+          productForm.VisibleForDirectSales ? 1 : 0
+        );
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
@@ -778,7 +783,7 @@ const page = () => {
                         <span className='d-inline-block'>
                           {/* Visible in productgallery (landing page) */}
                           {t(
-                            "create_product.visible_in_productgallery_landing_page"
+                            "create_product.visible_in_product_gallery_landing_page"
                           )}
                         </span>
                       </Form.Group>
@@ -790,12 +795,12 @@ const page = () => {
                       >
                         <input
                           type='checkbox'
-                          name='VisibleInProductGallery'
-                          checked={productForm.VisibleInProductGallery}
+                          name='VisibleForDirectSales'
+                          checked={productForm.VisibleForDirectSales}
                           onChange={(e) => {
                             setForm((prev) => ({
                               ...prev,
-                              VisibleInProductGallery: e.target.checked,
+                              VisibleForDirectSales: e.target.checked,
                             }));
                           }}
                         />{" "}

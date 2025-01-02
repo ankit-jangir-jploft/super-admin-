@@ -48,7 +48,7 @@ const page = () => {
           <h2>{t("dugnader.dugnader")}</h2>
           <div className='search-frm'>
             <input type='text' />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -113,8 +113,8 @@ const page = () => {
                     </td>
                     <td>{item?.packs}</td>
                     <td>{item?.aps}</td>
-                    <td>{item?.turnover}</td>
-                    <td>{item?.profit}</td>
+                    <td>kr {item?.turnover}</td>
+                    <td>kr {item?.profit}</td>
                     <td>
                       <button className='status green-clr'>
                         {item?.status === 1 ? "Active" : "Inactive"}

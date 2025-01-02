@@ -392,7 +392,7 @@ const page = ({ params }) => {
                     <thead>
                       <tr>
                         {/* <th>Tidligere ordre</th> */}
-                        <th>{t("customer_details.past_orders")}</th>
+                        <th>#{t("customer_details.order")}</th>
                         {/* <th>Dato</th> */}
                         <th>{t("customer_details.date")}</th>
                         {/* <th>Status</th> */}
@@ -409,11 +409,16 @@ const page = ({ params }) => {
                           return (
                             <tr>
                               <td
-                                colSpan={6}
-                                className='text-center'
+                                onClick={() =>
+                                  (window.location.href = `/orderdetail/${order?.id}`)
+                                }
                               >
-                                No data
+                                #{order?.order_number}
                               </td>
+                              <td>{order?.created_at}</td>
+                              <td></td>
+                              <td>{order?.total_item}</td>
+                              <td>{order?.total_amount}</td>
                             </tr>
                           );
                         })) || (
@@ -459,25 +464,23 @@ const page = ({ params }) => {
                     </thead>
                     <tbody>
                       {(groupList?.length &&
-                        groupList
-                          ?.filter((group) => group?.group_name?.trim()) // Filter out rows with empty group_name
-                          .map((group, index) => (
-                            <tr key={index}>
-                              <td>{formatDateToCustom(group?.start_date)}</td>
-                              <td>{formatDateToCustom(group?.end_date)}</td>
-                              <td>{group?.group_name}</td>
-                              <td>{group?.user_count}</td>
-                              <td>
-                                {group?.user_count}/{group?.number_of_seller}
-                              </td>
-                              <td>{group?.total_qty_sold}</td>
-                              <td>kr {group?.total_sale_price}</td>
-                              <td>kr {group?.total_profit}</td>
-                              <td>
-                                {group?.group_status === 1 ? "Completed" : ""}
-                              </td>
-                            </tr>
-                          ))) || (
+                        groupList.map((group, index) => (
+                          <tr key={index}>
+                            <td>{group?.start_date}</td>
+                            <td>{group?.end_date}</td>
+                            <td>{group?.group_name}</td>
+                            <td>{group?.number_of_seller}</td>
+                            <td>
+                              {group?.user_count}/{group?.number_of_seller}
+                            </td>
+                            <td>{group?.total_qty_sold}</td>
+                            <td>kr {group?.total_sale_price}</td>
+                            <td>kr {group?.total_profit}</td>
+                            <td>
+                              {group?.group_status === 1 ? "Completed" : ""}
+                            </td>
+                          </tr>
+                        ))) || (
                         <tr>
                           <td
                             colSpan={9}

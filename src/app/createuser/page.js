@@ -112,7 +112,7 @@ const Page = () => {
               className='input-right-icon'
               src='/images/search-interface.svg'
             /> */}
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={"/"}>

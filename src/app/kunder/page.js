@@ -115,9 +115,11 @@ const page = () => {
           {/* <h2>Customers</h2> */}
           <h2>{t("customers.customers")}</h2>
           <div className='search-frm'>
-            <Link href={"/createcustomer"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createcustomer"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
               // placeholder='Search customers'
@@ -126,7 +128,7 @@ const page = () => {
                 setSearch(e.target.value);
               }}
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -146,13 +148,7 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>
-                    <input
-                      type='checkbox'
-                      checked={selectedCustomers.length === customers.length}
-                      onChange={handleSelectAll}
-                    />
-                  </th>
+                  <th>{t("customers.mark")}</th>
                   {/* <th>ID</th> */}
                   <th>{t("customers.id")}</th>
                   {/* <th>Name</th> */}
@@ -201,7 +197,9 @@ const page = () => {
                         <td>{customer?.contactPerson || "N/A"}</td>
                         <td>{customer?.email || "N/A"}</td>
                         <td>
-                          <spna>{customer?.countryCode}</spna>
+                          <span style={{ color: "gray" }}>
+                            {customer?.countryCode}{" "}
+                          </span>{" "}
                           {customer?.phone || "N/A"}
                         </td>
                         <td>

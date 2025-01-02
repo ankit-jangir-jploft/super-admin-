@@ -1,7 +1,7 @@
 "use client";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // Import the useRouter hook
+import { useParams, usePathname, useRouter } from "next/navigation"; // Import the useRouter hook
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 

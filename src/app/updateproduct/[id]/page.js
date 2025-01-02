@@ -34,8 +34,9 @@ const page = ({ params }) => {
           const id = product.id;
           return { value, label, id };
         });
-        console.log("related -- ", related);
+        setSlug(res.data?.data[0]?.product_slug);
         setSelected(related);
+        setID(res.data?.data[0]?.id);
         setForm({
           ProductNumber: res.data?.data[0]?.product_number || "",
           ProductName: res.data?.data[0]?.name || "",
@@ -43,6 +44,7 @@ const page = ({ params }) => {
           VisibleInProductGallery: res.data?.data[0]?.visible_in_productgallery
             ? true
             : false,
+
           Price: res.data?.data[0]?.price || 0,
           SalesPrice: res.data?.data[0]?.sale_price || 0,
           SpecialPrice: res.data?.data[0]?.speacial_price || "",
@@ -62,6 +64,9 @@ const page = ({ params }) => {
           ProductDescription: res.data?.data[0]?.product_description || "",
           PageDescription: res.data?.data[0]?.page_description || "",
           MetaDescription: res.data?.data[0]?.meta_description || "",
+          VisibleForDirectSales: res.data?.data[0]?.visible_for_direct_sale
+            ? true
+            : false,
         });
       }
     } catch (error) {}
@@ -77,7 +82,8 @@ const page = ({ params }) => {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
   }
-
+  const [productID, setID] = useState("");
+  const [productSlug, setSlug] = useState("");
   const [categories, setCategories] = useState([]);
   const [chosendCategory, setChosendCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
@@ -141,6 +147,7 @@ const page = ({ params }) => {
     const payload = {
       category_id: chosendCategory || "",
       sub_category_id: chosendSubCategory || "",
+      product_id: id,
     };
     const res = await GET(`${BASE_URL}/api/admin/relatedProductlist`, payload);
     if (res?.data?.status === "true") {
@@ -262,7 +269,7 @@ const page = ({ params }) => {
 
   const submitHandler = async () => {
     try {
-      console.log("errors", errors);
+      console.log("selectedReletedProducts", selectedReletedProducts);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory ? chosendCategory : "");
@@ -299,6 +306,10 @@ const page = ({ params }) => {
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", "1");
         formData.append("menu_order", productForm.menuOrder);
+        formData.append(
+          "visible_for_direct_sale",
+          productForm.VisibleForDirectSales ? 1 : 0
+        );
 
         files?.forEach((fi) => {
           formData.append("image[]", fi);
@@ -312,6 +323,7 @@ const page = ({ params }) => {
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
+          setSelected([]);
           window.location.href = "/produkter";
         } else {
           toast.dismiss();
@@ -378,7 +390,7 @@ const page = ({ params }) => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
-                #123{" "}
+                #{productID}{" "}
                 <Form.Select>
                   <option>English</option>
                 </Form.Select>
@@ -764,7 +776,7 @@ const page = ({ params }) => {
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
                       {t("update_product.product_name")}{" "}
-                      <Link href={""}>/julepakke-2-til-og-fra-lapper</Link>
+                      <Link href={""}>/{productSlug}</Link>
                     </Form.Label>
                     <Form.Control
                       value={productForm.ProductName}
@@ -823,8 +835,30 @@ const page = ({ params }) => {
                         <span className='mt-2 d-inline-block'>
                           {/* Visible in productgallery (landing page) */}
                           {t(
-                            "update_product.visible_in_productgallery_landing_page"
+                            "update_product.visible_in_product_gallery_landing_page"
                           )}
+                        </span>
+                      </Form.Group>
+                    </div>
+                    <div className='col-md-12 cstm-chk'>
+                      <Form.Group
+                        className='mb-3'
+                        controlId='formBasicCheckbox'
+                      >
+                        <input
+                          type='checkbox'
+                          name='VisibleForDirectSales'
+                          checked={productForm.VisibleForDirectSales}
+                          onChange={(e) => {
+                            setForm((prev) => ({
+                              ...prev,
+                              VisibleForDirectSales: e.target.checked,
+                            }));
+                          }}
+                        />{" "}
+                        <span className='d-inline-block'>
+                          {/* Visible in shop-direkte */}
+                          {t("create_product.visible_in_shop_direkte")}
                         </span>
                       </Form.Group>
                     </div>

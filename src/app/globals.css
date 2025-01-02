@@ -227,18 +227,6 @@ a {
   top: 0;
   background: #fff;
 }
-button.logout-btn.btn {
-  display: flex;
-  gap: 15px;
-  padding: 15px 30px;
-  border-radius: 10px 0px 0px 10px;
-  font-size: 17px;
-  font-weight: 400;
-  color: #fff;
-  transition: 0.3s;
-  position: relative;
-  font-weight: 600;
-}
 
 .menu-list-mange li a:hover,
 .menu-list-mange li a.active {
@@ -344,7 +332,7 @@ table {
 
 th,
 td {
-  border: 1px solid #ddd;
+  border: 0;
   padding: 12px 8px;
   text-align: left;
   white-space: nowrap;
@@ -1972,7 +1960,7 @@ ul.pgnatne li {
 .form_checkbox_top {
   display: flex;
   align-items: self-start;
-  padding-left: 0 !important;
+  padding-left: 0;
 }
 .UploadPhoto {
   height: auto !important;
@@ -2424,7 +2412,7 @@ span.dout-inc {
 .Cold {
   background: #d6ecff;
   border-color: #96dcff;
-  color: #1283b4;
+  color: 1283B4;
 }
 .Warm {
   background: #ffd6d6;
@@ -2581,7 +2569,7 @@ button.cr-btn.btn.createcustomer_btn,
   color: #000 !important;
   background: transparent !important;
 }
-.btn-bordr-sec {
+button.btn-bordr-sec {
   border: 1px solid #000000;
   padding: 10px 20px;
   border-radius: 25px;
@@ -2591,7 +2579,7 @@ button.cr-btn.btn.createcustomer_btn,
   color: #000000;
 }
 
-.btn-bordr-sec img {
+button.btn-bordr-sec img {
   margin-right: 10px;
 }
 button.btn-img-sec {

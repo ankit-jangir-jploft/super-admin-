@@ -111,16 +111,18 @@ const page = () => {
           {/* <h2>Orders</h2> */}
           <h2>{t("orders.orders")}</h2>
           <div className='search-frm'>
-            <Link href={"/createorder"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createorder"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
               value={searchOuery}
               onChange={(e) => setQuery(e.target.value)}
               // placeholder='Sok i order'
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -263,7 +265,7 @@ const page = () => {
                                   (product, productIndex) => (
                                     <tr key={productIndex}>
                                       <td className='productId'>
-                                        {product?.id}
+                                        {product?.product_number}
                                       </td>
                                       <td>
                                         <div className='sub-row-img'>

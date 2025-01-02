@@ -21,7 +21,7 @@ const RevenueChart = ({ donutChart }) => {
       if (valueRight) valueRight.innerText = `${percentage2}%`;
     };
 
-    updateChart(10, 90);
+    updateChart(40, 60);
   }, []);
 
   return (

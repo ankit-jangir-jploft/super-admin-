@@ -108,9 +108,11 @@ const page = () => {
           {/* <h2>Products</h2> */}
           <h2>{t("products.product")}</h2>
           <div className='search-frm'>
-            <Link href={"/createproduct"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createproduct"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
               value={searchQuery}
@@ -118,7 +120,7 @@ const page = () => {
                 setQuery(e.target.value);
               }}
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -138,15 +140,9 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>
-                    <input
-                      type='checkbox'
-                      checked={selectedProducts.length === products.length}
-                      onChange={handleSelectAll}
-                    />
-                  </th>
+                  <th>{t("products.mark")}</th>
                   {/* <th>Product #</th> */}
-                  <th>{t("products.product")}</th>
+                  <th>{t("products.product")}#</th>
                   {/* <th>Image</th> */}
                   <th>{t("products.image")}</th>
                   {/* <th>Product name</th> */}
@@ -196,7 +192,10 @@ const page = () => {
                       <td>{product?.name}</td>
                       <td>{product?.wareHouseLocation || "N/A"}</td>
                       <td>{product?.quantity || "N/A"} stk</td>
-                      <td>{product?.price || "N/A"}</td>
+                      <td>
+                        {product?.price}
+                        {product?.price == 0 ? "" : ",-"}
+                      </td>
                       <td>
                         <button
                           className={`status ${
