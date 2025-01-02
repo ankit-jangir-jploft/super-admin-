@@ -52,7 +52,7 @@ const Login = () => {
           console.log("login response", res?.data?.data);
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
           Cookies.set("user", JSON.stringify(res.data.data?.user));
-          const language = "en";
+          const language = res.data?.data?.user?.language_id || "en";
           Cookies.set("i18next", language, {
             expires: 365,
             path: "/dashboard",

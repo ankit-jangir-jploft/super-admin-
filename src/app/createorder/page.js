@@ -45,8 +45,9 @@ const page = () => {
     if (!orderedBy) newErrors.orderedBy = "Ordered by is required.";
     if (!selectedAddress)
       newErrors.selectedAddress = "Delivery address is required.";
-    if (!orderConfirm)
-      newErrors.orderConfirm = "Order confirmation is required.";
+
+    // if (!orderConfirm)
+    //   newErrors.orderConfirm = "Order confirmation is required.";
     if (productCount.length === 0) {
       toast.dismiss();
       toast.error("At least one product must be selected.");
@@ -148,7 +149,6 @@ const page = () => {
 
   const submitHandler = async () => {
     if (!validateFields()) {
-      toast.error("Validations failed!");
       return;
     }
 
@@ -370,9 +370,9 @@ const page = () => {
                               e.target.src = "/images/product1.png";
                             }}
                             style={{
-                              width: "150px",
+                              width: "100%",
                               height: "150px",
-                              objectFit: "cover",
+                              objectFit: "contain",
                             }}
                           />
 

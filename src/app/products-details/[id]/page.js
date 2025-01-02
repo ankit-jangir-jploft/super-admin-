@@ -140,18 +140,15 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-0'>
           <h2>
-            {productDetails?.name} <b>DUG40GULL</b>
+            {productDetails?.name} <b>{productDetails?.product_number}</b>
             <span>
               <div className='slg-btm'>
-                {productDetails?.product_number}{" "}
-                <span>
-                  {productDetails?.userDetail?.delivery_address ||
-                    "Q ldrettslag J14"}
-                </span>
+                {/* {productDetails?.product_number}{" "} */}
+                <span>{productDetails?.product_slug}</span>
               </div>
             </span>
           </h2>
-          <div className='search-frm'>
+          <div className='search-frm '>
             <input
               type='text'
               placeholder='Sok i order'
@@ -420,7 +417,7 @@ const page = ({ params }) => {
                       </button> */}
                       <button
                         className='send_chat_btn'
-                        onClick={handleAddLog}
+                        onClick={addLogsHandler}
                       >
                         {/* Legg til notat  */}
                         <img

@@ -7,6 +7,8 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { GET } from "../Utils/apiFunctions";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
+import RevenueChart from "../Components/RevenueChart";
+import SalesAnalyticsChart from "../Components/SalesAnalytics";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -197,7 +199,7 @@ const page = () => {
   return (
     <>
       <Sidebar />
-      <div className='detail-admin-main'>
+      <div className='detail-admin-main main-dashbord-grph'>
         <div className='admin-header'>
           {/* <h2>Main Dashboard</h2> */}
           <h2>{t("dashboard.main_dashboard")}</h2>
@@ -266,7 +268,8 @@ const page = () => {
               <p>{t("dashboard.number_of_groups")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2> {dashBoardData?.number_of_group}</h2>
-                <span>Active</span>
+                {/* <span>Active</span> */}
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
@@ -276,7 +279,7 @@ const page = () => {
               <p>{t("dashboard.number_of_sellers")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.number_of_seller}</h2>
-                <span>Active</span>
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
@@ -286,7 +289,7 @@ const page = () => {
               <p>{t("dashboard.profit")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.profit}</h2>
-                <span>Active</span>
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
@@ -296,38 +299,38 @@ const page = () => {
               <p>{t("dashboard.no_of_packages")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.no_of_packages} stk</h2>
-                <span>Active</span>
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-8'>
+          <div className='col-md-7 mb-4'>
             <div className='grph-crd'>
               <div id='chart'>
-                {/* <h3>Sales Analytics</h3> */}
-                <h3>{t("dashboard.sales_analytics")}</h3>
-                <ApexCharts
+                {/* <ApexCharts
                   options={lineChartOptions}
                   series={lineChart}
                   type='line'
                   height={300}
-                />
+                /> */}
+                <SalesAnalyticsChart />
               </div>
             </div>
           </div>
-          <div className='col-md-4'>
+          <div className='col-md-5  mb-4'>
             <div className='grph-crd'>
               {/* <img className='img-fluid' src="/images/revenue-ananst.png" /> */}
               {/* <h3>Revenue</h3> */}
               <h3>{t("dashboard.revenue")}</h3>
               <div id='chart'>
-                <ApexCharts
+                {/* <ApexCharts
                   options={state1.options}
                   series={donutChart}
                   type='donut'
                   height={315}
-                />
+                /> */}
+                <RevenueChart donutChart={donutChart} />
               </div>
             </div>
           </div>

@@ -149,6 +149,11 @@ const page = ({ params }) => {
   };
 
   const handleAddKeyword = () => {
+    if (!keyword) {
+      toast.dismiss();
+      toast.error("Keyword cannot be empty");
+      return;
+    }
     if (!keywords.includes(keyword)) {
       setKeywords((prev) => [...prev, keyword]);
       setKeyword("");
@@ -359,7 +364,7 @@ const page = ({ params }) => {
                 <span>{t("update_product.cancel")}</span>
               </Link>
               <button
-                className='cr-btn btn'
+                className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
                 {/* Update product */}

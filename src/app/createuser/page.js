@@ -108,10 +108,10 @@ const Page = () => {
           <h2>{t("settings.settings")}</h2>
           <div className='search-frm'>
             <input type='text' />
-            <img
+            {/* <img
               className='input-right-icon'
               src='/images/search-interface.svg'
-            />
+            /> */}
             <Link href={"/"}>
               <img src='/images/notifications_none.svg' />
             </Link>
@@ -254,7 +254,8 @@ const Page = () => {
                             {t("settings.users.create.language")}
                           </Form.Label>
                           <Form.Select {...register("language_id")}>
-                            <option value='1'>English</option>
+                            <option value={1}>Norwegian</option>
+                            <option value={2}>English</option>
                           </Form.Select>
                         </Form.Group>
                       </div>

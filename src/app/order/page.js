@@ -161,6 +161,7 @@ const page = () => {
                   {/* <th>Options</th> */}
                   <th>{t("orders.options")}</th>
                   {/* <th>Contact</th> */}
+                  <th>{t("order_more.seller")}</th>
                   <th>{t("orders.contact")}</th>
                 </tr>
               </thead>
@@ -223,6 +224,13 @@ const page = () => {
                             </Link>
                           </div>
                         </td>
+                        <td
+                          onClick={() =>
+                            (window.location.href = `/settings?type=seller`)
+                          }
+                        >
+                          {order?.seller_name}
+                        </td>
                         <td>
                           <Link href={`/kunderdetail/${order?.user_id}`}>
                             <img src='/images/prdctes.svg' />
@@ -241,8 +249,7 @@ const page = () => {
                                   <th>#</th>
                                   {/* <th>Product</th> */}
                                   <th>{t("order_more.product")}</th>
-                                  {/* <th>Seller</th> */}
-                                  <th>{t("order_more.seller")}</th>
+
                                   {/* <th>Cost</th> */}
                                   <th>{t("order_more.cost")}</th>
                                   {/* <th>Quantity</th> */}
@@ -268,10 +275,16 @@ const page = () => {
                                             }
                                             alt='product'
                                           />
-                                          <span>{product.product_name}</span>
+                                          <span
+                                            onClick={() =>
+                                              (window.location.href = `/products-details/${product?.product_id}`)
+                                            }
+                                          >
+                                            {product.product_name}
+                                          </span>
                                         </div>
                                       </td>
-                                      <td>{product.seller_name}</td>
+
                                       <td>kr {product.price}</td>
                                       <td>{product.qty}</td>
                                       <td>kr {product.total}</td>

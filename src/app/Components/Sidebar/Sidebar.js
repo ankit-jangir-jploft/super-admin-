@@ -57,7 +57,7 @@ const Sidebar = () => {
         label: t("sidebar.statistics"),
       },
     ];
-  } else if (roleType === "superadmin" || roleType === "guest") {
+  } else if (roleType === "administrator" || roleType === "guest") {
     menuItems = [
       { href: "/", icon: "/images/home.svg", label: t("sidebar.dashboard") },
       { href: "/order", icon: "/images/order.svg", label: t("sidebar.orders") },
@@ -158,7 +158,6 @@ const Sidebar = () => {
       </ul>
       <button
         className='logout-btn btn'
-        href=''
         onClick={() => {
           Cookies.remove("dugnadstisadmin");
           window.location.href = "/login";

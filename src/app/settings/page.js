@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import CustomRadioButton from "../Components/CustomRadioButton";
 import Image from "next/image";
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
+  ssr: false, // Disable SSR for this component
 });
 import "react-quill/dist/quill.snow.css";
 import { Badge, Tab, Tabs } from "react-bootstrap";
@@ -17,11 +17,15 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "next/navigation";
 
 const page = () => {
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
   const { t } = useTranslation();
   const [fetchSeller, setFetchSeller] = useState();
   const [userData, setUserData] = useState({});
+  const [defualtActive, setDefault] = useState(type ? "users" : "general");
 
   let [count, setCount] = useState(0);
 
@@ -362,7 +366,7 @@ const page = () => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <Tabs
-                defaultActiveKey='general'
+                defaultActiveKey={defualtActive}
                 id='uncontrolled-tab-example'
                 className='mb-3'
               >
@@ -457,10 +461,13 @@ const page = () => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Terms of Purchase</Form.Label> */}
-                          {/* <Form.Control
-                            placeholder='Terms of purchase'
-                            {...register("title", {
+                          <Form.Label>Terms of Purchase</Form.Label>
+                        </Form.Group>
+                        <Form.Group className='mb-3'>
+                          <Form.Label>Title</Form.Label>
+                          <Form.Control
+                            placeholder='Title'
+                            {...register("Terms of purchase", {
                               required: "Terms is required",
                             })}
                           />
@@ -468,7 +475,7 @@ const page = () => {
                             <p className='text-danger'>
                               {errorsGenralSetting.title.message}
                             </p>
-                          )} */}
+                          )}
                         </Form.Group>
                       </div>
                     </div>
@@ -591,7 +598,7 @@ const page = () => {
                         <div className='bot-btn add-quet'>
                           <button
                             type='button'
-                            className='btn btn-primary w-50 p-2'
+                            className='btn btn-primary w-50 p-2 bnt-borderquc'
                             onClick={handleAddQuestion}
                           >
                             {t(
@@ -868,7 +875,7 @@ const page = () => {
                             <td>{row?.role_type}</td>
                             <td>{row?.email}</td>
                             {roleType !== "guest" && (
-                              <td>
+                              <td className='actionbtn-right'>
                                 <Link href={`/useredit/${row?.id}`}>
                                   <img
                                     src='/images/edit-icn.svg'

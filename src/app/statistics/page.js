@@ -325,7 +325,7 @@ const page = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-3'>
+          <div className='col-md-3 '>
             <div className='dash-crde pinks-cr'>
               {/* <p>Number of active groups</p> */}
               <p>{t("statistics.number_of_active_groups")}</p>
@@ -400,7 +400,7 @@ const page = () => {
           </div>
         </div>
         <div className='row'>
-          <div className='col-md-6'>
+          <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
               <Form.Select aria-label='Default select example'>
                 <option>14 Days</option>
@@ -416,7 +416,7 @@ const page = () => {
               />
             </div>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
               <input type='Date'></input>
               <ApexCharts
@@ -425,12 +425,38 @@ const page = () => {
                 type='bar'
                 height={300}
               />
+              <div className='grafh_footer'>
+                <div className='leftSalesperson'>
+                  <div className='left_side'>
+                    <span className=''>
+                      <img src='/images/Avatar-sing.svg' />
+                    </span>
+                    <div className='text_bx'>
+                      <h3>Salesperson</h3>
+                      <p>Number of completed dugnader</p>
+                    </div>
+                  </div>
+                  <div className='count_num'>15</div>
+                </div>
+                <div className='leftSalesperson'>
+                  <div className='left_side'>
+                    <span className=''>
+                      <img src='/images/Avatargrup.svg' />
+                    </span>
+                    <div className='text_bx'>
+                      <h3>Group</h3>
+                      <p>Number of completed dugnader</p>
+                    </div>
+                  </div>
+                  <div className='count_num'>89</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <div className='row'>
-          <div className='col-md-5'>
+          <div className='col-md-5 mb-4'>
             <div className='grph-crd'>
               <div className='table-responsive order-table '>
                 {/* <h3>Top Products</h3> */}
@@ -550,8 +576,8 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-3'>
-            <div className='grph-crd'>
+          <div className='col-md-3 mb-4'>
+            <div className='grph-crd '>
               <input type='Date'></input>
               {/* <h3>Budget</h3> */}
               <h3>{t("statistics.budget")}</h3>
@@ -563,7 +589,7 @@ const page = () => {
               />
             </div>
           </div>
-          <div className='col-md-4'>
+          <div className='col-md-4  mb-4'>
             <div className='grph-crd'>
               <h3>
                 {t("statistics.sales_against_budget")}{" "}
@@ -585,6 +611,7 @@ const page = () => {
                     <p>330 000</p>
                   </div>
                 </div>
+                <div className='shape-arrow'></div>
                 <div className='left-sal right-disx'>
                   <span className='dout-inc'></span>
                   <div>

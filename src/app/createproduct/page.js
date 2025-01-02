@@ -108,6 +108,11 @@ const page = () => {
   };
 
   const handleAddKeyword = () => {
+    if (!keyword) {
+      toast.dismiss();
+      toast.error("Keyword cannot be empty");
+      return;
+    }
     if (!keywords.includes(keyword)) {
       setKeywords((prev) => [...prev, keyword]);
       setKeyword("");
@@ -258,7 +263,6 @@ const page = () => {
         });
 
         const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
-        console.log(res.data);
         if (res?.data?.status) {
           toast.dismiss();
           toast.success(res.data?.message);
@@ -643,7 +647,11 @@ const page = () => {
                       <Form.Label>{t("create_product.keywords")}</Form.Label>
                       <Form.Control
                         value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            setKeyword(e.target.value);
+                          }
+                        }}
                       />
                     </div>
                     <button
@@ -729,7 +737,7 @@ const page = () => {
                   </Form.Group>
 
                   <div className='row mt-5'>
-                    <div className='col-md-6 cstm-chk'>
+                    <div className='col-md-6 cstm-chk mb-3'>
                       <Form.Group
                         className=''
                         controlId='formBasicCheckbox'

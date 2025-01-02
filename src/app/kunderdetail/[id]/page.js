@@ -200,7 +200,7 @@ const page = ({ params }) => {
     <>
       <Sidebar />
       <div className='detail-admin-main'>
-        <div className='admin-header pb-0'>
+        <div className='admin-header pb-3'>
           <h2>
             {customer?.name} <b>NO</b>
             <span>
@@ -209,6 +209,7 @@ const page = ({ params }) => {
             </span>
           </h2>
         </div>
+
         {roleType === "guest" ? (
           ""
         ) : (
@@ -217,20 +218,49 @@ const page = ({ params }) => {
               PAGAENDE FORHANDSSALG
             </button>
             <div>
-              <button
+              <div className='butn-border_top_right'>
+                <a
+                  className='btn-bordr-sec'
+                  href={`tel:+${customer?.phone}`}
+                >
+                  <img src='/images/call-icon-top.svg' />
+                  {t("customer_details.call")}
+                </a>
+                <button
+                  className='btn-bordr-sec'
+                  onClick={sendMailHandler}
+                >
+                  <img src='/images/mail-icon-top.svg' />
+                  {t("customer_details.send_email")}
+                </button>
+                <button
+                  className='btn-bordr-sec'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePopup();
+                  }}
+                >
+                  <img src='/images/Createtask.svg' />
+                  {t("customer_details.create_a_task")}
+                </button>
+                <button className='btn-img-sec'>
+                  <img src='/images/edit-icon-top2.svg' />
+                </button>
+              </div>
+              {/* <button
                 className='bold-btn w-auto me-2'
                 onClick={sendMailHandler}
               >
                 {t("customer_details.send_email")}
               </button>
-              {/* <button className='bold-btn w-auto me-2'> */}
+
               <a
                 className='bold-btn w-auto me-2'
                 href={`tel:+${customer?.phone}`}
               >
                 {t("customer_details.call")}
               </a>
-              {/* </button> */}
+
               <button
                 className='bold-btn w-auto me-2'
                 onClick={(e) => {
@@ -248,67 +278,72 @@ const page = ({ params }) => {
                 }}
               >
                 <img src='/images/add.svg' />
-              </button>
+              </button> */}
             </div>
           </div>
         )}
         <div className='order-tble kunder-dtl-box w-100 d-inline-block'>
           <Row>
-            <Col md={3}>
-              <div className='order-dtl-box'>
-                <h2>
-                  {t("customer_details.customer")}{" "}
-                  <b className='text-right'>{customer?.lead_status}</b>{" "}
-                </h2>
+            <Col lg={8}>
+              <Row>
+                <Col md={3}>
+                  <div className='order-dtl-box'>
+                    <h2>
+                      {t("customer_details.customer")}{" "}
+                      <b className='text-right'>{customer?.lead_status}</b>{" "}
+                    </h2>
 
-                {/* <h2>{customer?.origin} </h2> */}
+                    {/* <h2>{customer?.origin} </h2> */}
 
-                <p>#{customer?.id}</p>
-                <p>
-                  {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
-                </p>
-                <p>{customer?.name}</p>
-                <p>{customer?.email}</p>
-                <p>{customer?.phone}</p>
-                <p>
-                  {t("customer_details.created")}: {customer?.createdAt}
-                </p>
-                <p>Antall dugnader: 1</p>
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className='order-dtl-box'>
-                {/* <h2>Aktiv dugnad </h2> */}
-                <h2>{t("customer_details.active_dugnad")}</h2>
-                <p>
-                  {t("customer_details.dugnadsgroup")}:{" "}
-                  <span>{lastPurchaseOrder?.group_name}</span>
-                </p>
-                <p>
-                  {t("customer_details.start_date")}:{" "}
-                  <span>
-                    {formatDateToCustom(lastPurchaseOrder?.start_date)}
-                  </span>
-                </p>
-                <p>
-                  {t("customer_details.end_date")}:{" "}
-                  <span>{formatDateToCustom(lastPurchaseOrder?.end_date)}</span>
-                </p>
-                <p>
-                  {t("customer_details.sellers")}:{" "}
-                  <span>{lastPurchaseOrder?.number_of_seller}</span>
-                </p>
-                <p>
-                  {t("customer_details.sold_till_now")}:{" "}
-                  <span>{lastPurchaseOrder?.user_count}</span>
-                </p>
-                <p>
-                  {t("customer_details.sellers_registered")}:{" "}
-                  <span>{lastPurchaseOrder?.total_qty_sold}</span>
-                </p>
-              </div>
-            </Col>
-            {/* <Col md={3}>
+                    <p>#{customer?.id}</p>
+                    <p>
+                      {customer?.userDetail?.delivery_address ||
+                        "Q ldrettslag J14"}
+                    </p>
+                    <p>{customer?.name}</p>
+                    <p>{customer?.email}</p>
+                    <p>{customer?.phone}</p>
+                    <p>
+                      {t("customer_details.created")}: {customer?.createdAt}
+                    </p>
+                    <p>Antall dugnader: 1</p>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className='order-dtl-box'>
+                    {/* <h2>Aktiv dugnad </h2> */}
+                    <h2>{t("customer_details.active_dugnad")}</h2>
+                    <p>
+                      {t("customer_details.dugnadsgroup")}:{" "}
+                      <span>{lastPurchaseOrder?.group_name}</span>
+                    </p>
+                    <p>
+                      {t("customer_details.start_date")}:{" "}
+                      <span>
+                        {formatDateToCustom(lastPurchaseOrder?.start_date)}
+                      </span>
+                    </p>
+                    <p>
+                      {t("customer_details.end_date")}:{" "}
+                      <span>
+                        {formatDateToCustom(lastPurchaseOrder?.end_date)}
+                      </span>
+                    </p>
+                    <p>
+                      {t("customer_details.sellers")}:{" "}
+                      <span>{lastPurchaseOrder?.number_of_seller}</span>
+                    </p>
+                    <p>
+                      {t("customer_details.sold_till_now")}:{" "}
+                      <span>{lastPurchaseOrder?.user_count}</span>
+                    </p>
+                    <p>
+                      {t("customer_details.sellers_registered")}:{" "}
+                      <span>{lastPurchaseOrder?.total_qty_sold}</span>
+                    </p>
+                  </div>
+                </Col>
+                {/* <Col md={3}>
               <div className='order-dtl-box'>
                 <h2>Gruppe informasjon </h2>
                 <p>
@@ -328,158 +363,157 @@ const page = ({ params }) => {
                 </p>
               </div>
             </Col> */}
-            <Col md={3}>
-              <div className='order-dtl-box'>
-                {/* <h2>Adresse </h2> */}
-                <h2>{t("customer_details.address")}</h2>
-                <p>{customer?.name}</p>
-                <p>Snarveien 33</p>
-                <p>
-                  {customer?.userDetail?.zip_code || "1234"}{" "}
-                  {customer?.userDetail?.city}
-                </p>
-                <p>Norge</p>
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className='order-dtl-box'>
-                {/* <h2> Delivery address</h2> */}
-                <h2>{t("customer_details.delivery_address")}</h2>
+                <Col md={3}>
+                  <div className='order-dtl-box'>
+                    {/* <h2>Adresse </h2> */}
+                    <h2>{t("customer_details.address")}</h2>
+                    <p>{customer?.name}</p>
+                    <p>Snarveien 33</p>
+                    <p>
+                      {customer?.userDetail?.zip_code || "1234"}{" "}
+                      {customer?.userDetail?.city}
+                    </p>
+                    <p>Norge</p>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className='order-dtl-box'>
+                    {/* <h2> Delivery address</h2> */}
+                    <h2>{t("customer_details.delivery_address")}</h2>
 
-                <p>Same as address</p>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={8}>
-              <div className='table-responsive order-table w-100 order-dtl-tbl'>
-                <table>
-                  <thead>
-                    <tr>
-                      {/* <th>Tidligere ordre</th> */}
-                      <th>{t("customer_details.past_orders")}</th>
-                      {/* <th>Dato</th> */}
-                      <th>{t("customer_details.date")}</th>
-                      {/* <th>Status</th> */}
-                      <th>{t("customer_details.status")}</th>
-                      {/* <th>Antall varer</th> */}
-                      <th>{t("customer_details.no_of_items")}</th>
-                      {/* <th>Totalt</th> */}
-                      <th>{t("customer_details.total")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(orderDetails?.length &&
-                      orderDetails?.map((order) => {
-                        return (
-                          <tr>
-                            <td>#{order?.order_number}</td>
-                            <td>{formatDateToCustom(order?.created_at)}</td>
-                            <td>
-                              {order?.order_status
-                                ? orders[order?.order_status]
-                                : ""}
-                            </td>
-                            <td>{order?.total_item} stk</td>
-                            <td>kr {order?.total_amount}</td>
-                          </tr>
+                    <p>Same as address</p>
+                  </div>
+                </Col>
+              </Row>
+
+              <Col lg={12}>
+                <div className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone'>
+                  <table>
+                    <thead>
+                      <tr>
+                        {/* <th>Tidligere ordre</th> */}
+                        <th>{t("customer_details.past_orders")}</th>
+                        {/* <th>Dato</th> */}
+                        <th>{t("customer_details.date")}</th>
+                        {/* <th>Status</th> */}
+                        <th>{t("customer_details.status")}</th>
+                        {/* <th>Antall varer</th> */}
+                        <th>{t("customer_details.no_of_items")}</th>
+                        {/* <th>Totalt</th> */}
+                        <th>{t("customer_details.total")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(orderDetails?.length &&
+                        orderDetails?.map((order) => {
+                          return (
+                            <tr>
+                              <td
+                                colSpan={6}
+                                className='text-center'
+                              >
+                                No data
+                              </td>
+                            </tr>
+                          );
+                        })) || (
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className='text-center'
+                          >
+                            No data
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone'
+                  style={{ marginTop: "20px" }}
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        {/* <th>Start date</th> */}
+                        <th>{t("customer_details.start_date")}</th>
+                        {/* <th>End date</th> */}
+                        <th>{t("customer_details.end_date")}</th>
+                        {/* <th>Dugnadsgroup</th> */}
+                        <th>{t("customer_details.dugnadsgroup")}</th>
+                        {/* <th>Sellers</th> */}
+                        <th>{t("customer_details.sellers")}</th>
+                        {/* <th>Active</th> */}
+                        <th>{t("customer_details.active")}</th>
+                        {/* <th>Packs</th> */}
+                        <th>{t("customer_details.packs")}</th>
+                        {/* <th>APS</th> */}
+                        {/* <th>Turnover</th> */}
+                        <th>{t("customer_details.turnover")}</th>
+                        {/* <th>Profit</th> */}
+                        <th>{t("customer_details.profit")}</th>
+                        {/* <th>Status</th> */}
+                        <th>{t("customer_details.status")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(groupList?.length &&
+                        groupList
+                          ?.filter((group) => group?.group_name?.trim()) // Filter out rows with empty group_name
+                          .map((group, index) => (
+                            <tr key={index}>
+                              <td>{formatDateToCustom(group?.start_date)}</td>
+                              <td>{formatDateToCustom(group?.end_date)}</td>
+                              <td>{group?.group_name}</td>
+                              <td>{group?.user_count}</td>
+                              <td>
+                                {group?.user_count}/{group?.number_of_seller}
+                              </td>
+                              <td>{group?.total_qty_sold}</td>
+                              <td>kr {group?.total_sale_price}</td>
+                              <td>kr {group?.total_profit}</td>
+                              <td>
+                                {group?.group_status === 1 ? "Completed" : ""}
+                              </td>
+                            </tr>
+                          ))) || (
+                        <tr>
+                          <td
+                            colSpan={9}
+                            className='text-center'
+                          >
+                            No data
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className='order-dtl-box mt-4'>
+                  {/* <h2>Tags</h2> */}
+                  <h2>{t("customer_details.tags")}</h2>
+                  <div className='p-2'>
+                    {(tags.length &&
+                      tags.map((tag) => {
+                        return roleType === "guest" ? (
+                          <button className='tags-btn'>{tag?.name}</button>
+                        ) : (
+                          <button
+                            onClick={() => handleDelete(tag?.id)}
+                            className='tags-btn'
+                          >
+                            {tag?.name} <img src='/images/close.svg' />
+                          </button>
                         );
-                      })) || (
-                      <tr>
-                        <td
-                          colSpan={6}
-                          className='text-center'
-                        >
-                          No data
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div
-                className='table-responsive order-table w-100 order-dtl-tbl'
-                style={{ marginTop: "20px" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      {/* <th>Start date</th> */}
-                      <th>{t("customer_details.start_date")}</th>
-                      {/* <th>End date</th> */}
-                      <th>{t("customer_details.end_date")}</th>
-                      {/* <th>Dugnadsgroup</th> */}
-                      <th>{t("customer_details.dugnadsgroup")}</th>
-                      {/* <th>Sellers</th> */}
-                      <th>{t("customer_details.sellers")}</th>
-                      {/* <th>Active</th> */}
-                      <th>{t("customer_details.active")}</th>
-                      {/* <th>Packs</th> */}
-                      <th>{t("customer_details.packs")}</th>
-                      {/* <th>APS</th> */}
-                      {/* <th>Turnover</th> */}
-                      <th>{t("customer_details.turnover")}</th>
-                      {/* <th>Profit</th> */}
-                      <th>{t("customer_details.profit")}</th>
-                      {/* <th>Status</th> */}
-                      <th>{t("customer_details.status")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(groupList?.length &&
-                      groupList
-                        ?.filter((group) => group?.group_name?.trim()) // Filter out rows with empty group_name
-                        .map((group, index) => (
-                          <tr key={index}>
-                            <td>{formatDateToCustom(group?.start_date)}</td>
-                            <td>{formatDateToCustom(group?.end_date)}</td>
-                            <td>{group?.group_name}</td>
-                            <td>{group?.user_count}</td>
-                            <td>
-                              {group?.user_count}/{group?.number_of_seller}
-                            </td>
-                            <td>{group?.total_qty_sold}</td>
-                            <td>kr {group?.total_sale_price}</td>
-                            <td>kr {group?.total_profit}</td>
-                            <td>
-                              {group?.group_status === 1 ? "Completed" : ""}
-                            </td>
-                          </tr>
-                        ))) || (
-                      <tr>
-                        <td
-                          colSpan={9}
-                          className='text-center'
-                        >
-                          No data
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              <div className='order-dtl-box mt-4'>
-                {/* <h2>Tags</h2> */}
-                <h2>{t("customer_details.tags")}</h2>
-                <div className='p-2'>
-                  {(tags.length &&
-                    tags.map((tag) => {
-                      return roleType === "guest" ? (
-                        <button className='tags-btn'>{tag?.name}</button>
-                      ) : (
-                        <button
-                          onClick={() => handleDelete(tag?.id)}
-                          className='tags-btn'
-                        >
-                          {tag?.name} <img src='/images/close.svg' />
-                        </button>
-                      );
-                    })) || <div>No Tags</div>}
+                      })) || <div>No Tags</div>}
+                  </div>
                 </div>
                 {roleType === "guest" ? (
                   ""
                 ) : (
-                  <div className='search-frm justify-content-end px-3'>
+                  <div className='search-frm justify-content-end  btm_search_tagbx'>
                     <input
                       type='text'
                       className='rounded w-auto ps-2'
@@ -487,14 +521,14 @@ const page = ({ params }) => {
                       onChange={(e) => setTagContent(e.target.value)}
                     />
                     <button
-                      className='add-icon'
+                      className='add-icon-img'
                       onClick={handleAddTags}
                     >
-                      <img src='/images/add.svg' />
+                      <img src='/images/tag-ser-add-icon.svg' />
                     </button>
                   </div>
                 )}
-              </div>
+              </Col>
             </Col>
             <Col lg={4}>
               <div className='order-dtl-box'>

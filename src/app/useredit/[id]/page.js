@@ -258,7 +258,8 @@ const Page = ({ param }) => {
                                 name='language'
                                 className='form-control'
                               >
-                                <option value={1}>English</option>
+                                <option value={1}>Norwegian</option>
+                                <option value={2}>English</option>
                               </Field>
                               <ErrorMessage
                                 name='language'
