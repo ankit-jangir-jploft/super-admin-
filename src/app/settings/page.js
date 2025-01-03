@@ -23,6 +23,7 @@ const page = ({ searchParams }) => {
   const { t } = useTranslation();
   const [fetchSeller, setFetchSeller] = useState();
   const [userData, setUserData] = useState({});
+  const [months, setMonth] = useState({});
   const [defualtActive, setDefault] = useState(
     type == "seller" ? "users" : "general"
   );
@@ -69,9 +70,8 @@ const page = ({ searchParams }) => {
       if (res?.data?.status && res?.data?.data) {
         const settings = res?.data?.data[0];
 
-        // Populate form with fetched settings
-        setIsEditMode(true); // Indicate we're in update mode
-        setSettingId(settings.setting_id); // Store the setting ID
+        setIsEditMode(true);
+        setSettingId(settings.setting_id);
         reset({
           status: settings.status,
           budget: settings.budget,
@@ -97,6 +97,7 @@ const page = ({ searchParams }) => {
         const res = await POST(`${BASE_URL}/api/admin/generalSettingCreate`, {
           ...data,
           setting_id: settingId,
+          months_data: months,
         });
 
         if (res?.data?.status) {
@@ -274,7 +275,7 @@ const page = ({ searchParams }) => {
     formData.append("header_title", data?.headerTitle);
     formData.append("header_description", data?.headerDescription);
     formData.append("header_label", data?.headerButtonLabel || "");
-    formData.append("header_label", data?.headerButtonLink || "");
+    formData.append("header_button_link", data?.headerButtonLink || "");
     formData.append("id", data?.id);
 
     if (headerLogoFile) {
@@ -427,7 +428,10 @@ const page = ({ searchParams }) => {
                           <Form.Label>
                             {t("settings.general.budget")}
                           </Form.Label>
-                          <CustomRadioButton />
+                          <CustomRadioButton
+                            months={months}
+                            setMonth={setMonth}
+                          />
                         </div>
                       </div>
                       <div className='col-md-6 mt-4'>

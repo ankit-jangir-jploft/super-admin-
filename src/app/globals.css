@@ -353,7 +353,7 @@ th {
   border-radius: 50px;
   font-weight: 500;
   font-size: 12px;
-  border: none; 
+  border: none;
   background: #ededed;
   border: 1px solid #cccccc;
   color: #aeaeae;
@@ -2688,6 +2688,24 @@ span.clg-cum {
   cursor: not-allowed;
 }
 
+.month-input {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+.month-input label.input-label {
+  flex: 0 0 auto;
+  border: none;
+}
+
+.month-input input.input-text {
+  border: 1px solid #cacaca;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #666666;
+  width: 121px;
+}
 h2.custom-pup-mn {
   background-color: #fd5a59;
   border-radius: 20px 20px 0 0;
