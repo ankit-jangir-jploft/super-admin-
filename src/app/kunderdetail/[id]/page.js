@@ -9,6 +9,7 @@ import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { Dropdown } from "react-bootstrap";
 
 function formatDateToCustom(dateString) {
   if (!dateString) return "";
@@ -52,7 +53,6 @@ const page = ({ params }) => {
         id: id,
       };
       const res = await GET(`${BASE_URL}/api/admin/customerDetail`, options);
-      console.log({ res });
       if (res?.data?.status) {
         setCustomers(res?.data?.data[0]);
         setOrderDetails(res.data?.orderList || []);
@@ -243,9 +243,23 @@ const page = ({ params }) => {
                   <img src='/images/Createtask.svg' />
                   {t("customer_details.create_a_task")}
                 </button>
-                <button className='btn-img-sec'>
+                {/* <button className='btn-img-sec'>
                   <img src='/images/edit-icon-top2.svg' />
-                </button>
+                </button> */}
+                <Dropdown className='btn-img-sec'>
+                  <Dropdown.Toggle id='dropdown-basic'>
+                    <img
+                      src='/images/edit-icon-top2.svg'
+                      alt='Edit Icon'
+                    />
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item href={`/update-customer/${id}`}>
+                      Edit
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
               {/* <button
                 className='bold-btn w-auto me-2'

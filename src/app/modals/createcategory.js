@@ -110,7 +110,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
         >
           ×
         </button>
-        <h2 className="hedingtext_top">Create Category</h2>
+        <h2 className='hedingtext_top'>Create Category</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -138,7 +138,17 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                   style={styles.errorText}
                 />
               </div>
-              <div style={styles.actions}>
+
+              <div
+                className='d-flex justify-content-around'
+                style={styles.actions}
+              >
+                <button
+                  style={styles.buttonSecondary}
+                  onClick={() => onClose()}
+                >
+                  Cancel
+                </button>
                 <button
                   type='submit'
                   style={styles.buttonPrimary}

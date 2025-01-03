@@ -148,7 +148,7 @@ const page = ({ params }) => {
               </div>
             </span>
           </h2>
-          <div className='search-frm '>
+          {/* <div className='search-frm '>
             <input
               type='text'
               placeholder='Sok i order'
@@ -159,7 +159,7 @@ const page = ({ params }) => {
             <Link href={"/"}>
               <img src='/images/avatar-style.png' />
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div className='order-tble kunder-dtl-box w-100 d-inline-block'>

@@ -97,6 +97,25 @@ const page = () => {
     }
   };
 
+  const fetchVatClass = async () => {
+    try {
+      const res = await GET(`${BASE_URL}/api/admin/getsetting`);
+      console.log(
+        "res?.data?.data?.vat_class --- ",
+        res?.data?.data?.vat_class
+      );
+
+      if (res?.data?.status) {
+        setForm((prev) => ({
+          ...prev,
+          vatClass: res?.data?.data?.vat_class || 12,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching VAT class:", error);
+    }
+  };
+
   const fetchReleted = async () => {
     const payload = {
       category_id: chosendCategory || "",
@@ -138,6 +157,10 @@ const page = () => {
     fetchReleted();
   }, [chosendCategory, chosendSubCategory]);
 
+  useEffect(() => {
+    fetchVatClass();
+  }, []);
+
   const validateForm = () => {
     let isValid = true;
     const tempErrors = {};
@@ -172,25 +195,25 @@ const page = () => {
     //   isValid = false;
     // }
 
-    if (!productForm.Length) {
-      tempErrors.Length = "Length is required.";
-      isValid = false;
-    }
+    // if (!productForm.Length) {
+    //   tempErrors.Length = "Length is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Width) {
-      tempErrors.Width = "Width is required.";
-      isValid = false;
-    }
+    // if (!productForm.Width) {
+    //   tempErrors.Width = "Width is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Depth) {
-      tempErrors.Depth = "Depth is required.";
-      isValid = false;
-    }
+    // if (!productForm.Depth) {
+    //   tempErrors.Depth = "Depth is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Weight) {
-      tempErrors.Weight = "Weight is required.";
-      isValid = false;
-    }
+    // if (!productForm.Weight) {
+    //   tempErrors.Weight = "Weight is required.";
+    //   isValid = false;
+    // }
 
     if (!files.length) {
       tempErrors.files = "Product image is required.";
@@ -922,9 +945,13 @@ const page = () => {
                               vatClass: e.target.value,
                             }))
                           }
+                          disabled
                         >
-                          <option value={1}>Select VAT class</option>
-                          <option value='standard (25%)'>Standard (25%)</option>
+                          <option value={""}>Select VAT class</option>
+                          <option value='0'>0%</option>
+                          <option value='12'>12%</option>
+                          <option value='15'>15%</option>
+                          <option value='25'>25%</option>
                         </Form.Select>
                       </Form.Group>
                     </div>

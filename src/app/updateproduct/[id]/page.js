@@ -14,6 +14,7 @@ import { GET, POST } from "../../Utils/apiFunctions";
 import { toast } from "react-toastify";
 import StateManagedSelect from "react-select";
 import CreateCategoryModal from "@/app/modals/createcategory";
+import CreateSubCategoryModal from "@/app/modals/createsubcategory";
 import { useTranslation } from "react-i18next";
 
 const page = ({ params }) => {
@@ -78,6 +79,7 @@ const page = ({ params }) => {
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const [showCreateSubCategory, setShowCreateSubCategory] = useState(false);
   function handleChange(e) {
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
@@ -219,25 +221,25 @@ const page = ({ params }) => {
     //   isValid = false;
     // }
 
-    if (!productForm.Length) {
-      tempErrors.Length = "Length is required.";
-      isValid = false;
-    }
+    // if (!productForm.Length) {
+    //   tempErrors.Length = "Length is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Width) {
-      tempErrors.Width = "Width is required.";
-      isValid = false;
-    }
+    // if (!productForm.Width) {
+    //   tempErrors.Width = "Width is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Depth) {
-      tempErrors.Depth = "Depth is required.";
-      isValid = false;
-    }
+    // if (!productForm.Depth) {
+    //   tempErrors.Depth = "Depth is required.";
+    //   isValid = false;
+    // }
 
-    if (!productForm.Weight) {
-      tempErrors.Weight = "Weight is required.";
-      isValid = false;
-    }
+    // if (!productForm.Weight) {
+    //   tempErrors.Weight = "Weight is required.";
+    //   isValid = false;
+    // }
 
     // if (!files.length) {
     //   tempErrors.files = "Product image is required.";
@@ -472,7 +474,7 @@ const page = ({ params }) => {
                       </Form.Select>
                     </div>
                     <button
-                      className='add-btne'
+                      className='add-btne btn-borderbl'
                       onClick={() => {
                         setShowCreateCategory(true);
                       }}
@@ -505,12 +507,14 @@ const page = ({ params }) => {
                           })) || <option>Not Available</option>}
                       </Form.Select>
                     </div>
-                    <Link
-                      href=''
-                      className='add-btne'
+                    <button
+                      className='add-btne btn-borderbl'
+                      onClick={() => {
+                        setShowCreateSubCategory(true);
+                      }}
                     >
                       +
-                    </Link>
+                    </button>
                   </Form.Group>
 
                   <div className='row'>
@@ -963,8 +967,13 @@ const page = ({ params }) => {
                               vatClass: e.target.value,
                             }))
                           }
+                          disabled
                         >
-                          <option value={1}>Standard (25%)</option>
+                          <option value={""}>Select VAT class</option>
+                          <option value='0'>0%</option>
+                          <option value='12'>12%</option>
+                          <option value='15'>15%</option>
+                          <option value='25'>25%</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -1051,10 +1060,17 @@ const page = ({ params }) => {
       </div>
       <CreateCategoryModal
         onClose={() => {
-          setChosendCategory(false);
+          setShowCreateCategory(false);
           fetchCategory();
         }}
         isOpen={showCreateCategory}
+      />
+      <CreateSubCategoryModal
+        onClose={() => {
+          setShowCreateSubCategory(false);
+          fetchSubCategory();
+        }}
+        isOpen={showCreateSubCategory}
       />
     </>
   );

@@ -203,7 +203,7 @@ const page = () => {
         <div className='admin-header'>
           {/* <h2>Main Dashboard</h2> */}
           <h2>{t("dashboard.main_dashboard")}</h2>
-          <div
+          {/* <div
             className='search-frm'
             style={{ position: "relative" }}
           >
@@ -239,7 +239,7 @@ const page = () => {
                 }}
               />
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className='row'>
           <div className='col-md-3'>

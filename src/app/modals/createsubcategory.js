@@ -192,7 +192,16 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                 />
               </div>
 
-              <div style={styles.actions}>
+              <div
+                className='d-flex justify-content-around'
+                style={styles.actions}
+              >
+                <button
+                  style={styles.buttonSecondary}
+                  onClick={() => onClose()}
+                >
+                  Cancel
+                </button>
                 <button
                   type='submit'
                   style={styles.buttonPrimary}

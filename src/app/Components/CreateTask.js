@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
 const CreateTask = (props) => {
+  const [loading, setLoading] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       taskName: "",
@@ -29,6 +31,7 @@ const CreateTask = (props) => {
       description: Yup.string().required("Task description is required"),
     }),
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         const data = {
           user_id: props.id,
@@ -55,6 +58,7 @@ const CreateTask = (props) => {
       } catch (error) {
         console.error("Error creating task:", error);
       }
+      setLoading(false);
     },
   });
   const { t } = useTranslation();
@@ -202,9 +206,12 @@ const CreateTask = (props) => {
 
           <button
             type='submit'
-            className='bold-btn w-50 p-3'
+            className={`bold-btn w-50 p-3 ${loading ? "disabled-class" : ""}`}
+            disabled={loading}
           >
-            {t("create_task.create_a_task")}
+            {loading
+              ? t("create_task.creating")
+              : t("create_task.create_a_task")}
           </button>
         </Form>
       </Modal.Body>

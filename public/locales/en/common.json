@@ -256,9 +256,15 @@
   },
   "customers_create": {
     "create_customer": "Create customer",
+    "update_customer": "Update Customer",
+    "new_address": "New Address",
+    "custom": "Custom",
+    "new_zip": "New Zip",
+    "new_city": "New City",
+    "same_as_address": "Same as address",
     "cancel": "Cancel",
     "country": "Country",
-    "se": "SE",
+    "yes": "YES",
     "no": "NO",
     "seller": "Seller",
     "name": "Name",
@@ -276,11 +282,12 @@
   "create_task": {
     "create_a_task": "Create a task",
     "task_name": "Title",
-    "start_time:": "Start time",
+    "start_time": "Start time",
     "end_time": "End time",
     "created_by": "Created by",
     "task_description": "Description",
-    "create_task": "Create"
+    "create_task": "Create",
+    "creating": "Creating..."
   },
   "products": {
     "mark": "Mark",

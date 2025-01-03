@@ -304,7 +304,7 @@ const page = () => {
               placeholder='Year to date'
             ></input>
           </div>
-          <div className='search-frm'>
+          {/* <div className='search-frm'>
             <input
               type='text'
               // placeholder='Sok i order'
@@ -322,7 +322,7 @@ const page = () => {
                 }}
               />
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className='row'>
           <div className='col-md-3 '>
