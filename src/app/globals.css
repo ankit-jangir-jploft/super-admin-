@@ -354,7 +354,6 @@ th {
   font-weight: 500;
   font-size: 12px;
   border: none;
-
   background: #ededed;
   border: 1px solid #cccccc;
   color: #aeaeae;
@@ -1130,6 +1129,7 @@ table th {
   border-radius: 12px;
   border: 4px solid #f4f4f4;
   margin-right: 5px;
+  object-fit: cover;
 }
 
 .cstm-fle {
@@ -2470,14 +2470,14 @@ span.dout-inc {
 .chart {
   position: relative;
   width: 300px;
-  height: 300px;
+  height: 270px;
   margin: 0 auto;
 }
 
 .circular-chart {
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);
+  transform: rotate(-160deg);
 }
 
 .circle-bg {
@@ -2570,7 +2570,7 @@ button.cr-btn.btn.createcustomer_btn,
   color: #000 !important;
   background: transparent !important;
 }
-button.btn-bordr-sec {
+.btn-bordr-sec {
   border: 1px solid #000000;
   padding: 10px 20px;
   border-radius: 25px;
@@ -2579,8 +2579,18 @@ button.btn-bordr-sec {
   font-size: 16px;
   color: #000000;
 }
-
-button.btn-bordr-sec img {
+.butn-border_top_right {
+  display: flex;
+  align-items: center;
+}
+.btn-img-sec.dropdown button#dropdown-basic {
+  background: transparent !important;
+  border: 0 !important;
+}
+.btn-img-sec.dropdown .dropdown-toggle::after {
+  display: none;
+}
+.btn-bordr-sec img {
   margin-right: 10px;
 }
 button.btn-img-sec {
@@ -2695,4 +2705,17 @@ span.clg-cum {
   font-size: 15px;
   color: #666666;
   width: 121px;
+}
+h2.custom-pup-mn {
+  background-color: #fd5a59;
+  border-radius: 20px 20px 0 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  display: block;
+  padding: 1rem 1rem;
+}
+form.createcategory_cumtm {
+  padding: 0px 20px 20px 20px;
 }
