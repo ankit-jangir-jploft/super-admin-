@@ -1,33 +1,51 @@
 import React, { useState } from "react";
 
-const CustomRadioButton = () => {
-  const [selectedOption, setSelectedOption] = useState("");
+const CustomInputText = ({ months, setMonth }) => {
+  // Initialize state with an object for each month
+  const [monthValues, setMonthValues] = useState({
+    January: "",
+    February: "",
+    March: "",
+    April: "",
+    May: "",
+    June: "",
+    July: "",
+    August: "",
+    September: "",
+    October: "",
+    November: "",
+    December: "",
+  });
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  // Handle input change
+  const handleInputChange = (event, month) => {
+    const value = event.target.value;
+    setMonthValues((prevValues) => ({
+      ...prevValues,
+      [month]: value,
+    }));
+    setMonth((prev) => ({ ...prev, [month]: value }));
   };
 
   return (
-    <div className="radio-container budget_box">
-        
-      {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((month) => (
-        <label
+    <div className='input-container budget_box'>
+      {Object.keys(monthValues).map((month) => (
+        <div
           key={month}
-          className={`radio-label ${selectedOption === month ? "selected" : ""}`}
+          className='month-input'
         >
+          <label className='input-label'>{month}</label>
           <input
-            type="radio"
-            name="month"
-            value={month}
-            className="radio-input"
-            checked={selectedOption === month}
-            onChange={handleOptionChange}
+            type='text'
+            name={month}
+            value={monthValues[month]}
+            className='input-text'
+            onChange={(event) => handleInputChange(event, month)}
           />
-          {month}
-        </label>
+        </div>
       ))}
     </div>
   );
 };
 
-export default CustomRadioButton;
+export default CustomInputText;

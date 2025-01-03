@@ -269,9 +269,9 @@ const Page = ({ param }) => {
                             </div>
                           </div>
                           <div className='col-md-6'>
-                            <div className='mb-3'>
+                            {/* <div className='mb-3'>
                               <div className='swtch-bt'>
-                                {/* <label>Appearance</label> */}
+       
                                 <label>
                                   {t("settings.users.create.appearance")}
                                 </label>
@@ -298,7 +298,7 @@ const Page = ({ param }) => {
                                   ))}
                                 </ButtonGroup>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                         <div className='row mt-3 mb-5'>

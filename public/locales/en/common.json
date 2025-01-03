@@ -162,6 +162,7 @@
     "ordered_by": "Ordered by",
     "delivery_address": "Delivery address",
     "customer_address": "Customer's address",
+    "customer_delivery_address": "Customer Delivery Address",
     "order_confirmation": "Order confirmation",
     "send_order_confirmation_to": "Send order confirmation to",
     "cancel": "Cancel",

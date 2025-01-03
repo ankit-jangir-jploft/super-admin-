@@ -14,38 +14,28 @@ import { useTranslation } from "react-i18next";
 const page = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [companies, setCompanies] = useState([]);
-  const [sellers, setSeller] = useState([]);
+  const [sellers, setSellers] = useState([]);
   const [orderConfirm, setOrderConfirm] = useState(0);
-
-  // const fetchCompanies = async () => {
-  //   try {
-  //     const res = await GET(`${BASE_URL}/api/admin/companyList`);
-  //     if (res?.data?.status) {
-  //       setCompanies(res?.data?.data);
-  //     }
-  //   } catch (error) {}
-  // };
+  const [customAddress, setCustomAddress] = useState("");
+  const [isCustom, setIsCustom] = useState(false);
 
   const fetchSellers = async () => {
     try {
       const res = await GET(`${BASE_URL}/api/admin/roleSellerList`);
       if (res?.data?.status) {
-        setSeller(res?.data?.data);
+        setSellers(res?.data?.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   useEffect(() => {
     fetchSellers();
-    // fetchCompanies();
   }, []);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    // company_id: Yup.string().required("Company is required"),
-    // orgnizationNumber: Yup.string()
-    //   .matches(/^\d+$/, "Must be a number")
-    //   .required("Organisation number is required"),
     address: Yup.string().required("Address is required"),
     zip: Yup.string()
       .matches(/^\d+$/, "Zip must be a number")
@@ -59,13 +49,24 @@ const page = () => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email address is required"),
-    // DeliveryAddress: Yup.string().required("Delivery address is required"),
+    // customZip: Yup.string()
+    //   .matches(/^\d+$/, "Custom Zip must be a number")
+    //   .when("DeliveryAddress", {
+    //     is: "Custom",
+    //     then: Yup.string().required("Custom Zip is required"),
+    //   }),
+    // customCity: Yup.string().when("DeliveryAddress", {
+    //   is: "Custom",
+    //   then: Yup.string().required("Custom City is required"),
+    // }),
+    // customAddress: Yup.string().when("DeliveryAddress", {
+    //   is: "Custom",
+    //   then: Yup.string().required("Custom Address is required"),
+    // }),
   });
 
   const initialValues = {
     name: "",
-    // company_id: "",
-    // orgnizationNumber: "",
     address: "",
     zip: "",
     city: "",
@@ -73,16 +74,30 @@ const page = () => {
     contactPerson: "",
     phone: "",
     email: "",
-    DeliveryAddress: "",
+    DeliveryAddress: "Same as address",
     countryCode: "+47",
     country: 0,
+    customZip: "",
+    customCity: "",
+    customAddress: "",
   };
   const radios = [
     { name: t("customers_create.no"), value: 0 },
     { name: t("customers_create.yes"), value: 1 },
   ];
+
   const submitHandler = async (values) => {
-    const res = await POST(`${BASE_URL}/api/admin/customerCreate`, values);
+    const payload = {
+      ...values,
+      ...(values.DeliveryAddress === "Custom" && {
+        customZip: values.customZip,
+        customCity: values.customCity,
+        customAddress: values.customAddress,
+      }),
+    };
+
+    const res = await POST(`${BASE_URL}/api/admin/customerCreate`, payload);
+
     if (res?.data?.status) {
       toast.dismiss();
       toast.success(res.data?.message);
@@ -131,7 +146,6 @@ const page = () => {
             >
               <div className='col-md-12'>
                 <div className='shdw-crd crte-ordr'>
-                  <h3>#1391</h3>
                   <div className='row'>
                     <div className='col-md-6'>
                       <div className='form-group swtch-bt'>
@@ -372,26 +386,74 @@ const page = () => {
                       </div>
 
                       <div className='form-group'>
-                        {/* <label htmlFor='DeliveryAddress'>
-                          Delivery address
-                        </label> */}
                         <label>{t("customers_create.delivery_address")}</label>
                         <Field
                           as='select'
                           id='DeliveryAddress'
                           name='DeliveryAddress'
                           className='form-control'
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            console.log("value -- ", value);
+                            setFieldValue("DeliveryAddress", value);
+                            setIsCustom(value === "Custom");
+                          }}
                         >
                           <option value='Same as address'>
-                            Same as address
+                            {t("customers_create.same_as_address")}
+                          </option>
+                          <option value='Custom'>
+                            {t("customers_create.custom")}
                           </option>
                         </Field>
-                        <ErrorMessage
-                          name='DeliveryAddress'
-                          component='div'
-                          className='text-danger'
-                        />
                       </div>
+                      {isCustom && (
+                        <>
+                          <div className='form-group row'>
+                            <div className='col-md-2'>
+                              {/* <label htmlFor='zip'>Zip</label> */}
+                              <label>{t("customers_create.new_zip")}</label>
+                              <Field
+                                type='text'
+                                id='customZip'
+                                name='customZip'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='customZip'
+                                component='div'
+                                className='text-danger'
+                              />
+                            </div>
+                            <div className='col-md-10'>
+                              {/* <label htmlFor='city'>City</label> */}
+                              <label>{t("customers_create.new_city")}</label>
+                              <Field
+                                type='text'
+                                id='customCity'
+                                name='customCity'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='customCity'
+                                component='div'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='form-group'>
+                            <label>{t("customers_create.new_address")}</label>
+                            <Field
+                              type='text'
+                              id='customAddress'
+                              name='customAddress'
+                              className='form-control'
+                              value={customAddress}
+                              onChange={(e) => setCustomAddress(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

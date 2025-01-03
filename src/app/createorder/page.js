@@ -24,9 +24,11 @@ const page = () => {
   const [productCount, setProductCount] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [allAddress, setAllAddress] = useState([]);
+  const [allDeliveryAddress, setAllDeliveryAddress] = useState([]);
   const [comments, setComments] = useState("");
   const [orderedBy, setOrderedBy] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
+  const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState("");
   const [orderConfirm, setOrderConfirm] = useState(0);
   const [errors, setErrors] = useState({});
   const [adminManagers, setAdminManagers] = useState([]);
@@ -44,7 +46,10 @@ const page = () => {
       newErrors.selectedCustomer = "Customer is required.";
     if (!orderedBy) newErrors.orderedBy = "Ordered by is required.";
     if (!selectedAddress)
-      newErrors.selectedAddress = "Delivery address is required.";
+      newErrors.selectedAddress = "Customer address is required.";
+    if (!selectedDeliveryAddress)
+      newErrors.selectedDeliveryAddress =
+        "Customer delivery address is required.";
 
     // if (!orderConfirm)
     //   newErrors.orderConfirm = "Order confirmation is required.";
@@ -91,7 +96,6 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/userAddressList`, options);
 
       if (res?.data?.status) {
-        console.log("res?.data.data", res?.data.data);
         setAllAddress(res.data?.data);
       } else {
         setAllAddress([]);
@@ -100,6 +104,27 @@ const page = () => {
       console.log(error);
     }
   };
+
+  const fetchDeliveryAddress = async () => {
+    try {
+      const options = {
+        per_page: 20,
+        customer_id: selectedCustomer?.id,
+      };
+      const res = await GET(
+        `${BASE_URL}/api/admin/userAddressDeliveryList`,
+        options
+      );
+      if (res?.data?.status) {
+        setAllDeliveryAddress(res.data?.data);
+      } else {
+        setAllDeliveryAddress([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchProductList = async () => {
     try {
       const options = {
@@ -145,6 +170,7 @@ const page = () => {
     fetchProductList();
     fetchAddress();
     fetchAdminManater();
+    fetchDeliveryAddress();
   }, [selectedCustomer]);
 
   const submitHandler = async () => {
@@ -155,6 +181,7 @@ const page = () => {
     const data = {
       user_id: selectedCustomer.id,
       delivery_address_id: selectedAddress,
+      customer_delivery_address_id: selectedDeliveryAddress,
       order_confirm: orderConfirm,
       order_by_user_id: orderedBy,
       comment: comments,
@@ -279,7 +306,7 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Delivery address</Form.Label> */}
                     <Form.Label>
-                      {t("order_create.delivery_address")}
+                      {t("order_create.customer_address")}
                     </Form.Label>
                     <Form.Select
                       value={selectedAddress}
@@ -302,6 +329,36 @@ const page = () => {
                     </Form.Select>
                     <Form.Control.Feedback type='invalid'>
                       {errors.selectedAddress}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group className='mb-3'>
+                    {/* <Form.Label>Delivery address</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.customer_delivery_address")}
+                    </Form.Label>
+                    <Form.Select
+                      value={selectedDeliveryAddress}
+                      onChange={(e) =>
+                        setSelectedDeliveryAddress(e.target.value)
+                      }
+                      isInvalid={!!errors.selectedDeliveryAddress}
+                    >
+                      <option value={""}>Customers address</option>
+                      {allDeliveryAddress.length &&
+                        allDeliveryAddress.map((address) => {
+                          return (
+                            <option
+                              key={address.id}
+                              id={address.id}
+                              value={address.id}
+                            >
+                              {address.address}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.selectedDeliveryAddress}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </div>

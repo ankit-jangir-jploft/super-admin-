@@ -37,6 +37,7 @@ const page = ({ params }) => {
   const [groupList, setGroupList] = useState([]);
   const [lastPurchaseOrder, setLastPurchaseOrder] = useState([]);
   const [roleType, setRoleType] = useState();
+  const [deliveryAddress, setDeliveryAddress] = useState({});
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -58,6 +59,7 @@ const page = ({ params }) => {
         setOrderDetails(res.data?.orderList || []);
         setGroupList(res.data?.groupLists || []);
         setLastPurchaseOrder(res.data?.lastPurchaseDetails || []);
+        setDeliveryAddress(res.data?.DeliveryAddress);
       }
     } catch (error) {
       console.log(error);
@@ -193,8 +195,6 @@ const page = ({ params }) => {
     fetchTags();
     fetchLogs();
   }, []);
-
-  console.log({ groupList });
 
   return (
     <>
@@ -395,7 +395,9 @@ const page = ({ params }) => {
                     {/* <h2> Delivery address</h2> */}
                     <h2>{t("customer_details.delivery_address")}</h2>
 
-                    <p>Same as address</p>
+                    <p>{deliveryAddress?.address}</p>
+                    <p>{deliveryAddress?.city}</p>
+                    <p>{deliveryAddress?.post_code}</p>
                   </div>
                 </Col>
               </Row>

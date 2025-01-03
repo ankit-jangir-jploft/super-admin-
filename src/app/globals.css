@@ -2677,3 +2677,22 @@ span.clg-cum {
   opacity: 0.6; /* Example: Dim the button */
   cursor: not-allowed;
 }
+
+.month-input {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+}
+
+.month-input label.input-label {
+  flex: 0 0 auto;
+  border: none;
+}
+
+.month-input input.input-text {
+  border: 1px solid #cacaca;
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #666666;
+  width: 121px;
+}

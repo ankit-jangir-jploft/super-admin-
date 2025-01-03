@@ -163,6 +163,7 @@
     "customer": "Kunde",
     "ordered_by": "Bestillt av",
     "delivery_address": "Leveringsadresse",
+    "customer_delivery_address": "Kunde Leveringsadresse",
     "customer_address": "Kundens adresse",
     "order_confirmation": "Ordrebekreftelse",
     "send_order_confirmation_to": "Send ordrebekreftelse til",
