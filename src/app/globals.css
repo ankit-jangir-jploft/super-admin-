@@ -2413,7 +2413,7 @@ span.dout-inc {
 .Cold {
   background: #d6ecff;
   border-color: #96dcff;
-  color: #1283B4;
+  color: #1283b4;
 }
 .Warm {
   background: #ffd6d6;
@@ -2640,7 +2640,9 @@ button.add-icon-img {
   margin: 0px;
   border-radius: 20px;
 }
-.search_list_dash li{padding: 0 15px;}
+.search_list_dash li {
+  padding: 0 15px;
+}
 span.link-tg {
   cursor: pointer;
 }
@@ -2660,14 +2662,18 @@ span.clg-cum {
   display: inline-block;
 }
 @media screen and (max-width: 767px) {
- 
-  .chart { 
-    width: 210px !important; 
+  .chart {
+    width: 210px !important;
+  }
+  .dash-crde {
+    height: auto;
+  }
+  div#chart button {
+    margin-bottom: 10px !important;
+  }
 }
-.dash-crde { 
-  height: auto;
-}
-div#chart button {
-  margin-bottom: 10px !important;
-}
+
+.disabled-class {
+  opacity: 0.6; /* Example: Dim the button */
+  cursor: not-allowed;
 }

@@ -346,7 +346,7 @@ const page = ({ searchParams }) => {
         <div className='admin-header'>
           {/* <h2>Settings</h2> */}
           <h2>{t("settings.settings")}</h2>
-          <div className='search-frm'>
+          {/* <div className='search-frm'>
             <input type='text' />
             <Link href={""}>
               <img src='/images/notifications_none.svg' />
@@ -361,7 +361,7 @@ const page = ({ searchParams }) => {
                 }}
               />
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div className='row'>

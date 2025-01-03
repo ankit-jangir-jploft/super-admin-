@@ -258,9 +258,15 @@
   },
   "customers_create": {
     "create_customer": "Opprett kunde",
+    "update_customer": "Oppdater kunde",
+    "new_address": "Ny Adresse",
+    "custom": "Tilpasset",
+    "new_zip": "Nytt Postnummer",
+    "new_city": "Ny By",
+    "same_as_address": "Samme som adresse",
     "cancel": "Avbryt",
     "country": "Land",
-    "se": "SE",
+    "yes": "SE",
     "no": "NO",
     "seller": "Selger",
     "name": "Navn",
@@ -282,7 +288,8 @@
     "end_time": "Slutt tid",
     "created_by": "Opprettet av",
     "task_description": "Beskrivelse",
-    "create_task": "Opprett"
+    "create_task": "Opprett",
+    "creating": "Opprette..."
   },
   "products": {
     "mark": "Merknad",

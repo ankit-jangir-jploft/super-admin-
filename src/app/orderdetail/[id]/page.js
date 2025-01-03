@@ -199,6 +199,7 @@ const page = () => {
                       </span>
                     </h2>
                     <p>{orderDetails?.delivery_address?.name}</p>
+                    <p>{orderDetails?.delivery_address?.address}</p>
                     {/* <p>Snarveien 33</p> */}
                     <p>
                       {orderDetails?.delivery_address?.post_code}{" "}
@@ -218,6 +219,7 @@ const page = () => {
                       </span>
                     </h2>
                     <p>{orderDetails?.delivery_address?.name}</p>
+                    <p>{orderDetails?.delivery_address?.address}</p>
                     {/* <p>Snarveien 33</p> */}
                     <p>
                       {orderDetails?.delivery_address?.post_code}{" "}
