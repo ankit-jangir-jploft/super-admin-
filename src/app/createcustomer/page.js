@@ -134,10 +134,10 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-6'>
                       <div className='form-group swtch-bt'>
-                        {/* <label htmlFor='address'>Address</label> */}
-                        <label htmlFor='name'>
+                        <label htmlFor='Country'>Country</label>
+                        {/* <label htmlFor='name'>
                           {t("customers_create.address")}
-                        </label>
+                        </label> */}
                         <ButtonGroup>
                           {radios.map((radio, idx) => (
                             <ToggleButton
@@ -242,7 +242,21 @@ const page = () => {
                           className='text-danger'
                         />
                       </div>
-
+                      <div className='form-group'>
+                        {/* <label htmlFor='email'>Email address</label> */}
+                        <label>{t("customers_create.email_address")}</label>
+                        <Field
+                          type='email'
+                          id='email'
+                          name='email'
+                          className='form-control'
+                        />
+                        <ErrorMessage
+                          name='email'
+                          component='div'
+                          className='text-danger'
+                        />
+                      </div>
                       <div className='form-group row'>
                         <div className='col-md-2'>
                           {/* <label htmlFor='zip'>Zip</label> */}
@@ -354,21 +368,7 @@ const page = () => {
                         />
                       </div>
 
-                      <div className='form-group'>
-                        {/* <label htmlFor='email'>Email address</label> */}
-                        <label>{t("customers_create.email_address")}</label>
-                        <Field
-                          type='email'
-                          id='email'
-                          name='email'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='email'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
+                     
 
                       <div className='form-group'>
                         {/* <label htmlFor='DeliveryAddress'>

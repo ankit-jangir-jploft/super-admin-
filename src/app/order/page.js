@@ -184,7 +184,7 @@ const page = () => {
                             (window.location.href = `/orderdetail/${order?.id}`)
                           }
                         >
-                          #{order.order_number}
+                         <span className="link-tg"> #{order.order_number}</span>
                         </td>
                         <td
                           onClick={() =>
@@ -206,7 +206,7 @@ const page = () => {
                         </td>
                         <td>{order.origin}</td>
                         <td>{order.order_details_count}</td>
-                        <td>kr {order.order_details_price_sum}</td>
+                        <td><span className="clg-cum"> kr</span> {order.order_details_price_sum}</td>
                         <td>
                           <div className='action-btn-table'>
                             <img

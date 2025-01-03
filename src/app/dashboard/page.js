@@ -214,31 +214,11 @@ const page = () => {
               placeholder='Search...'
             />
             {suggestions.length > 0 && (
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  width: "100%",
-                  maxHeight: "200px",
-                  overflowY: "auto",
-                  backgroundColor: "#fff",
-                  border: "1px solid #ced4da",
-                  borderRadius: "4px",
-                  zIndex: 1000,
-                  listStyle: "none",
-                  padding: "0",
-                  margin: "0",
-                }}
+              <ul className="search_list_dash" 
               >
                 {suggestions.map((suggestion, index) => (
                   <li
-                    key={index}
-                    style={{
-                      padding: "8px",
-                      cursor: "pointer",
-                      borderBottom: "1px solid #eee",
-                    }}
+                    key={index} 
                     onClick={() => handleSelectSuggestion(suggestion)}
                   >
                     {suggestion.title}

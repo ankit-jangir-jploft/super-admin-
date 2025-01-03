@@ -1496,6 +1496,7 @@ ul.pgnatne li {
   text-decoration-style: solid;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+  cursor: pointer;
 }
 
 .sub-row-img img {
@@ -2412,7 +2413,7 @@ span.dout-inc {
 .Cold {
   background: #d6ecff;
   border-color: #96dcff;
-  color: 1283B4;
+  color: #1283B4;
 }
 .Warm {
   background: #ffd6d6;
@@ -2621,4 +2622,52 @@ button.add-icon-img {
 }
 .actionbtn-right {
   text-align: right;
+}
+
+.search_list_dash {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(206, 212, 218);
+  border-radius: 4px;
+  z-index: 1000;
+  list-style: none;
+  padding: 10px;
+  margin: 0px;
+  border-radius: 20px;
+}
+.search_list_dash li{padding: 0 15px;}
+span.link-tg {
+  cursor: pointer;
+}
+span.clg-cum {
+  color: #000;
+  opacity: 0.5;
+}
+.biling-details {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+.biling-details p {
+  margin-bottom: 5px;
+}
+.biling-details p span {
+  display: inline-block;
+}
+@media screen and (max-width: 767px) {
+ 
+  .chart { 
+    width: 210px !important; 
+}
+.dash-crde { 
+  height: auto;
+}
+div#chart button {
+  margin-bottom: 10px !important;
+}
 }

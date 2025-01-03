@@ -43,6 +43,8 @@ const SalesAnalyticsChart = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexWrap:"wrap",
+          gap:"10px"
         }}
       >
         <h3>{t("dashboard.sales_analytics")}</h3>

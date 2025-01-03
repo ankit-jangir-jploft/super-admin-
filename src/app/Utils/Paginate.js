@@ -80,6 +80,8 @@ const styles = {
     gap: "8px",
     fontFamily: "Arial, sans-serif",
     fontSize: "14px",
+    justifyContent:"end", 
+    width: "100%",
   },
   button: {
     border: "0",

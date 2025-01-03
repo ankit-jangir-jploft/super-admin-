@@ -135,7 +135,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
               >
                 <div className='col-md-12'>
                   <div className='crte-ordr'>
-                    <h3>#1391</h3>
+                   
                     <div className='row'>
                       <div className='col-md-6'>
                         <div className='form-group'>
@@ -208,6 +208,20 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           />
                           <ErrorMessage
                             name='address'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
+                        <div className='form-group'>
+                          <label htmlFor='email'>Email address</label>
+                          <Field
+                            type='email'
+                            id='email'
+                            name='email'
+                            className='form-control'
+                          />
+                          <ErrorMessage
+                            name='email'
                             component='div'
                             className='text-danger'
                           />
@@ -316,21 +330,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           />
                         </div>
 
-                        <div className='form-group'>
-                          <label htmlFor='email'>Email address</label>
-                          <Field
-                            type='email'
-                            id='email'
-                            name='email'
-                            className='form-control'
-                          />
-                          <ErrorMessage
-                            name='email'
-                            component='div'
-                            className='text-danger'
-                          />
-                        </div>
-
+                       
                         <div className='form-group'>
                           <label htmlFor='DeliveryAddress'>
                             Delivery address
