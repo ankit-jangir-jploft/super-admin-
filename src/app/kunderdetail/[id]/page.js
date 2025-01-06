@@ -226,13 +226,13 @@ const page = ({ params }) => {
                   <img src='/images/call-icon-top.svg' />
                   {t("customer_details.call")}
                 </a>
-                <button
+                <a
                   className='btn-bordr-sec'
-                  onClick={sendMailHandler}
+                  href={`mailto:${customer?.email}`}
                 >
                   <img src='/images/mail-icon-top.svg' />
                   {t("customer_details.send_email")}
-                </button>
+                </a>
                 <button
                   className='btn-bordr-sec'
                   onClick={(e) => {

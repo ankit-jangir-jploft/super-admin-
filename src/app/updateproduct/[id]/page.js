@@ -81,6 +81,16 @@ const page = ({ params }) => {
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateSubCategory, setShowCreateSubCategory] = useState(false);
   function handleChange(e) {
+    const theFile = e.target.files[0];
+    if (!theFile) return;
+
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (theFile.size > maxSize) {
+      toast.error("File size is too large. Maximum allowed size is 2MB.");
+      return;
+    }
+
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
   }

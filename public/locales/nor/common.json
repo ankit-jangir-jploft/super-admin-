@@ -172,7 +172,8 @@
     "products": "Produkter",
     "add": "Legg til",
     "no": "NO",
-    "yes": "SE"
+    "yes": "SE",
+    "other": "Annen"
   },
   "orders_dropdown": {
     "orders": "Ordre",
@@ -280,7 +281,8 @@
     "delivery_address": "Leveringsadresse",
     "zip": "Postnr",
     "city": "Poststed",
-    "select_seller": "Velg Selger"
+    "select_seller": "Velg Selger",
+    "other": "Annen"
   },
   "create_task": {
     "create_a_task": "Opprett oppgave",

@@ -170,7 +170,8 @@
     "products": "Products",
     "add": "Add",
     "no": "NO",
-    "yes": "YES"
+    "yes": "YES",
+    "other": "Other"
   },
   "orders_dropdown": {
     "orders": "Orders",
@@ -278,7 +279,8 @@
     "delivery_address": "Delivery address",
     "zip": "Zip",
     "city": "City",
-    "select_seller": "Select Seller"
+    "select_seller": "Select Seller",
+    "other": "Other"
   },
   "create_task": {
     "create_a_task": "Create a task",
