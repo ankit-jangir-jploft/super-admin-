@@ -61,15 +61,18 @@ const page = ({ searchParams }) => {
     },
   });
   const [isEditMode, setIsEditMode] = useState(false);
-  const [settingId, setSettingId] = useState(null);
+  const [settingId, setSettingId] = useState("");
+  const [langId, setLangId] = useState(1);
 
   const fetchHandler = async () => {
     try {
-      const res = await GET(`${BASE_URL}/api/admin/generalSettingList`);
-      console.log({ res });
+      const payload = { language_id: langId, setting_id: settingId };
+      const res = await GET(
+        `${BASE_URL}/api/admin/generalSettingList`,
+        payload
+      );
       if (res?.data?.status && res?.data?.data) {
         const settings = res?.data?.data[0];
-
         setIsEditMode(true);
         setSettingId(settings.setting_id);
         setMonth(res?.data?.data[0].months);
@@ -80,7 +83,7 @@ const page = ({ searchParams }) => {
           language_id: settings.language_id,
           title: settings.title,
           text: settings.text,
-          setting_id: settings.setting_id, // Hidden field
+          setting_id: settings.setting_id,
         });
       } else {
         setIsEditMode(false); // No settings found, enable create mode
@@ -90,8 +93,6 @@ const page = ({ searchParams }) => {
       // toast.error("Failed to load settings.");
     }
   };
-
-  console.log({ months });
 
   const onSubmit = async (data) => {
     try {
@@ -123,15 +124,27 @@ const page = ({ searchParams }) => {
     }
   };
 
+  const [frontLang, setFrontLang] = useState(1);
+  const [settingID, setSettingID] = useState("");
+
+  useEffect(() => {
+    fetchHandler();
+
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUserData(userDetails);
+  }, [langId]);
   useEffect(() => {
     fetchHandler();
     fetchFaqList();
     fetchSellerList();
-    fetchFrontPageSettings();
 
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
   }, []);
+
+  useEffect(() => {
+    fetchFrontPageSettings();
+  }, [frontLang]);
 
   const [faqList, setFaqList] = useState([
     {
@@ -242,7 +255,17 @@ const page = ({ searchParams }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
+    const maxSize = 2 * 1024 * 1024; // 2MB size limit
+
     if (file) {
+      if (file.size > maxSize) {
+        setHeaderImageFileError(
+          "The file is too large. Please select a file smaller than 2MB."
+        );
+        setHeaderImageFile(null);
+        return;
+      }
+
       setHeaderImageFile(file);
       setHeaderImageFileError(null);
       const reader = new FileReader();
@@ -314,10 +337,19 @@ const page = ({ searchParams }) => {
   // Fetch and populate front page settings
   const fetchFrontPageSettings = async () => {
     try {
-      const response = await GET(`${BASE_URL}/api/admin/frontPageSettingList`);
+      const payload = {
+        language_id: frontLang,
+        setting_id: settingID,
+      };
+      const response = await GET(
+        `${BASE_URL}/api/admin/frontPageSettingList`,
+        payload
+      );
       if (response?.status === 200) {
         const fetchFrontPageSetting = response?.data?.data[0];
         console.log("fetchFrontPageSetting ---", fetchFrontPageSetting);
+
+        setSettingID(fetchFrontPageSetting?.id);
 
         // Populate the fields in the form
         reset3({
@@ -464,9 +496,13 @@ const page = ({ searchParams }) => {
                           </Form.Label>
                           <Form.Select
                             {...register("language_id")}
+                            onChange={(e) => {
+                              setLangId(e.target.value);
+                            }}
                             className='LanguageBox'
                           >
-                            <option value='1'>English</option>
+                            <option value={1}>English</option>
+                            <option value={2}>Norwegian</option>
                             {/* <option value="2">Korea</option> */}
                           </Form.Select>
                         </Form.Group>
@@ -651,9 +687,12 @@ const page = ({ searchParams }) => {
                           {...register3("navbarLanguage", {
                             required: "Navbar language is required",
                           })}
+                          onChange={(e) => {
+                            setFrontLang(e.target.value);
+                          }}
                         >
-                          <option value='1'>Norwegian</option>
-                          <option value='2'>English</option>
+                          <option value={1}>English</option>
+                          <option value={2}>Norwegian</option>
                         </Form.Select>
                         {errors.navbarLanguage && (
                           <p className='text-danger block'>

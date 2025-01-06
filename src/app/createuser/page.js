@@ -143,10 +143,22 @@ const Page = () => {
                         {...register("profile_image")}
                         accept='image/*'
                         onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            setSelectedImage(
-                              URL.createObjectURL(e.target.files[0])
-                            ); // Update image preview
+                          const theFile = e.target.files[0];
+
+                          if (theFile) {
+                            const maxSize = 2 * 1024 * 1024;
+
+                            if (theFile.size > maxSize) {
+                              toast.error(
+                                "File size is too large. Maximum allowed size is 2MB."
+                              );
+                              setSelectedImage(null);
+                              e.target.value = "";
+                              return;
+                            }
+
+                            setSelectedImage(URL.createObjectURL(theFile));
+                            setProfileImageFileError(null);
                           }
                         }}
                       />

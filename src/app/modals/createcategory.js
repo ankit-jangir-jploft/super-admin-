@@ -83,7 +83,6 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
       justifyContent: "center",
       marginTop: "15px",
     },
-     
   };
 
   return (
@@ -102,7 +101,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
           onSubmit={submitHandler}
         >
           {() => (
-            <Form className="createcategory_cumtm">
+            <Form className='createcategory_cumtm'>
               <div style={styles.formGroup}>
                 <label htmlFor='categoryName'>Category Name</label>
                 <Field
@@ -128,15 +127,15 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                 className='d-flex justify-content-around'
                 style={styles.actions}
               >
-                <button className="can-btn btn createcustomer_btncmf px-5"
-                 
+                <button
+                  className='can-btn btn createcustomer_btncmf px-5'
                   onClick={() => onClose()}
                 >
                   Cancel
                 </button>
-                <button className="cr-btn btn createcustomer_btn px-5"
+                <button
+                  className='cr-btn btn createcustomer_btn px-5'
                   type='submit'
-                  
                 >
                   Submit
                 </button>

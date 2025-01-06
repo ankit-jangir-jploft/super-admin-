@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import CreateCustomerModal from "../modals/createcustomer";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const page = () => {
   const { t } = useTranslation();
@@ -32,13 +33,20 @@ const page = () => {
   const [orderConfirm, setOrderConfirm] = useState(0);
   const [errors, setErrors] = useState({});
   const [adminManagers, setAdminManagers] = useState([]);
-
+  const [confirmationEmail, setConfirmationEmail] = useState("");
   const [showCreateCustomer, setCreate] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState({});
 
   const radios = [
     { name: t("order_create.no"), value: 0 },
     { name: t("order_create.yes"), value: 1 },
   ];
+
+  const validateEmail = (email) => {
+    // Simple regex for basic email validation
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const validateFields = () => {
     const newErrors = {};
@@ -50,6 +58,9 @@ const page = () => {
     if (!selectedDeliveryAddress)
       newErrors.selectedDeliveryAddress =
         "Customer delivery address is required.";
+
+    if (!confirmationEmail || !validateEmail(confirmationEmail))
+      newErrors.confirmationEmail = "A valid email is required.";
 
     // if (!orderConfirm)
     //   newErrors.orderConfirm = "Order confirmation is required.";
@@ -166,6 +177,10 @@ const page = () => {
   };
 
   useEffect(() => {
+    const userDetails = JSON.parse(Cookies.get("user"));
+
+    setLoggedInUser(userDetails);
+    setOrderedBy(userDetails?.id);
     fetchCustomers();
     fetchProductList();
     fetchAddress();
@@ -185,6 +200,7 @@ const page = () => {
       order_confirm: orderConfirm,
       order_by_user_id: orderedBy,
       comment: comments,
+      confirmation_email: confirmationEmail,
       items: productCount.map((prd) => {
         prd.product_id = prd.id;
         return prd;
@@ -241,6 +257,7 @@ const page = () => {
                             (custm) => custm.id == selectedId
                           );
                           console.log(customer);
+                          setConfirmationEmail(customer?.email);
                           setSelectedCustomer(customer || {});
                           fetchAddress();
                         }}
@@ -286,7 +303,10 @@ const page = () => {
                       isInvalid={!!errors.orderedBy}
                     >
                       <option value=''>Select ordered by</option>
-
+                      <option value={loggedInUser?.id}>
+                        {loggedInUser?.name}
+                      </option>
+                      {/* 
                       {adminManagers?.length &&
                         adminManagers?.map((admin) => {
                           return (
@@ -297,7 +317,7 @@ const page = () => {
                               {admin.name}
                             </option>
                           );
-                        })}
+                        })} */}
                     </Form.Select>
                     <Form.Control.Feedback type='invalid'>
                       {errors.orderedBy}
@@ -390,13 +410,18 @@ const page = () => {
                     </ButtonGroup>
                   </div>
                   <Form.Group className='mb-3'>
-                    {/* <Form.Label>Send order confirmation to</Form.Label> */}
                     <Form.Label>
                       {t("order_create.send_order_confirmation_to")}
                     </Form.Label>
-                    <Form.Control value={selectedCustomer.email}>
-                      {/* <option>kari.nordmann@mail.com</option> */}
-                    </Form.Control>
+                    <Form.Control
+                      type='email'
+                      value={confirmationEmail}
+                      onChange={(e) => setConfirmationEmail(e.target.value)} // Update email state on change
+                      isInvalid={!!errors.confirmationEmail} // Validate and show error if any
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.confirmationEmail}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Comment</Form.Label> */}
