@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CustomInputText = ({ months, setMonth }) => {
-  // Initialize state with an object for each month
+  // Initialize state with the provided months or default empty values
   const [monthValues, setMonthValues] = useState({
     January: "",
     February: "",
@@ -16,6 +16,14 @@ const CustomInputText = ({ months, setMonth }) => {
     November: "",
     December: "",
   });
+
+  // Update state when the `months` prop changes
+  useEffect(() => {
+    setMonthValues((prevValues) => ({
+      ...prevValues,
+      ...months, // Merge incoming values with the current state
+    }));
+  }, [months]);
 
   // Handle input change
   const handleInputChange = (event, month) => {

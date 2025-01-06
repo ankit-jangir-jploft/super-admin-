@@ -129,6 +129,10 @@ const page = () => {
       setLineChart(response?.data?.data?.lineChart);
 
       setDonut(response?.data?.data?.donutChart);
+      console.log(
+        "response?.data?.data?.donutChart --",
+        response?.data?.data?.donutChart
+      );
       const dynamicCategories = response?.data?.data?.months || [];
       const xaxis = {
         categories: dynamicCategories,

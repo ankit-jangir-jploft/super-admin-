@@ -169,8 +169,8 @@
     "comment": "Comment",
     "products": "Products",
     "add": "Add",
-    "no": "No",
-    "yes": "Yes"
+    "no": "NO",
+    "yes": "YES"
   },
   "orders_dropdown": {
     "orders": "Orders",
