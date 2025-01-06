@@ -2,44 +2,44 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "next/navigation";
 import { GET, POST } from "@/app/Utils/apiFunctions";
 import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import QRCodeGenerator from "@/app/Components/QRcode";
 
-const page = () => {
+
+const Page = () => {
   const { id } = useParams();
   const { t } = useTranslation();
 
   const [orderDetails, setOrderDetails] = useState({});
   const [logs, setLogs] = useState([]);
   const [content, setContent] = useState("");
+  
+  const [products, setProducts] = useState([]);
 
   const fetchOrderDetails = async () => {
     try {
-      const option = {
-        id: id,
-      };
-
+      const option = { id: id };
       const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, option);
-      console.log("Ashish pareek", res.data);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
+        
+        setProducts(res.data?.data?.order_details);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  console.log("dddd", { orderDetails });
-
   const fetchLogs = async () => {
     try {
-      const option = {
-        order_id: id,
-      };
+      const option = { order_id: id };
       const res = await GET(`${BASE_URL}/api/admin/orderLogList`, option);
       if (res?.data?.status) {
         setLogs(res?.data?.data);
@@ -66,10 +66,7 @@ const page = () => {
         return;
       }
 
-      const payload = {
-        order_id: id,
-        content: content,
-      };
+      const payload = { order_id: id, content: content };
       const res = await POST(`${BASE_URL}/api/admin/orderLogCreate`, payload);
 
       if (res?.data?.status) {
@@ -83,10 +80,40 @@ const page = () => {
     }
   };
 
-  useEffect(() => {
+  const generatePDF = async () => {
+    const pdf = new jsPDF("p", "mm", "a4");
+    const content = document.getElementById("pdf-content");
+  
+    if (!content) {
+      console.error("Content not found");
+      return;
+    }
+  
+    content.style.display = 'block'; // Show the content temporarily
+  
+    try {
+      const canvas = await html2canvas(content, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+  
+      if (!imgData || imgData === "data:,") {
+        console.error("Failed to generate image data");
+        return;
+      }
+  
+      pdf.addImage(imgData, 'PNG', 10, 10, 190, 0); // Add the image to the PDF
+      pdf.save("order-details.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      content.style.display = 'none'; // Hide the content again
+    }
+  };
+
+  useEffect (() => {
     fetchOrderDetails();
     fetchLogs();
   }, []);
+
   return (
     <>
       <Sidebar />
@@ -95,18 +122,6 @@ const page = () => {
           <h2>
             {t("order_details.orders")} #{orderDetails?.id}
           </h2>
-          {/* <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
-            <Link href={"/"}>
-              <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
-            </Link>
-          </div> */}
         </div>
         <div className='filter-manage'>
           <div className=''>
@@ -135,10 +150,8 @@ const page = () => {
               className='bold-btn w-auto me-2'
               onClick={() => {
                 if (orderDetails?.package_slip) {
-                  // Redirect to the package_slip in a new tab
                   window.open(orderDetails.package_slip, "_blank");
                 } else {
-                  // Handle the case where package_slip is not available
                   console.log("Package slip not available");
                 }
               }}
@@ -154,25 +167,24 @@ const page = () => {
               <img src='/images/invce.svg' />{" "}
               {t("order_details.create_shipping_label")}
             </button>
-            <button className='bold-btn w-auto me-2'>
+          
+            <button
+              className='bold-btn w-auto me-2'
+              onClick={generatePDF}
+            >
               <img src='/images/pick-list.svg' /> {t("order_details.invoice")}
             </button>
-            {/* <button className='status w-auto me-2'>Opprett retur</button> */}
             <Link href={"/"}>
               <img src='/images/dotted-btn.svg' />
             </Link>
           </div>
         </div>
-        <div className='order-tble w-100 d-inline-block'>
+        <div className='order-tble w-100 d-inline-block' id="invoice">
           <Row>
             <Col md={9}>
               <Row>
                 <Col md={3}>
-                  {/* <div className='send-ordercast mb-2'>
-                <input type='text' placeholder='Send ordrebekreftelse ' /><span><img src="/images/send.svg" /></span>
-              </div> */}
                   <div className='order-dtl-box'>
-                    {/* <h2>Note</h2> */}
                     <h2>{t("order_details.note")}</h2>
                     <p>{orderDetails?.comment}</p>
                   </div>
@@ -181,7 +193,6 @@ const page = () => {
                   <div className='order-dtl-box'>
                     <h2>
                       {t("order_details.customer")}{" "}
-                      {/* <span className=''>See contact</span> */}
                       <span>{t("order_details.see_contact")}</span>
                     </h2>
                     <p>{orderDetails?.customer?.name}</p>
@@ -215,7 +226,6 @@ const page = () => {
                     </h2>
                     <p>{orderDetails?.delivery_address?.name}</p>
                     <p>{orderDetails?.delivery_address?.address}</p>
-                    {/* <p>Snarveien 33</p> */}
                     <p>
                       {orderDetails?.delivery_address?.post_code}{" "}
                       {orderDetails?.delivery_address?.city}
@@ -228,14 +238,12 @@ const page = () => {
                   <div className='order-dtl-box'>
                     <h2>
                       {t("order_details.shipping")}{" "}
-                      {/* <span className='disssbl'>Packageslip not created</span> */}
                       <span className='disssbl'>
                         {t("order_details.packageslip_not_created")}
                       </span>
                     </h2>
-                    <p>{orderDetails?.delivery_address?.name}</p>
+                    <p >{orderDetails?.delivery_address?.name}</p>
                     <p>{orderDetails?.delivery_address?.address}</p>
-                    {/* <p>Snarveien 33</p> */}
                     <p>
                       {orderDetails?.delivery_address?.post_code}{" "}
                       {orderDetails?.delivery_address?.city}
@@ -251,13 +259,9 @@ const page = () => {
                     <thead>
                       <tr>
                         <th>#</th>
-                        {/* <th>Product </th> */}
                         <th>{t("order_details.product")}</th>
-                        {/* <th>Cost</th> */}
                         <th>{t("order_details.cost")}</th>
-                        {/* <th>Quantity</th> */}
                         <th>{t("order_details.quantity")}</th>
-                        {/* <th>Total</th> */}
                         <th>{t("order_details.total")}</th>
                       </tr>
                     </thead>
@@ -301,12 +305,12 @@ const page = () => {
                       style={{
                         background: "#F7F4F1",
                         width: "100%",
-                        padding: "15px 20px", // Adjusted padding for better spacing
-                        borderRadius: "15px", // More subtle border radius
-                        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-                        textAlign: "center", // Centering content within the footer
-                        fontWeight: "bold", // Make the text bold for emphasis
-                        color: "#333", // Darker text for better contrast
+                        padding: "15px 20px",
+                        borderRadius: "15px",
+                        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        color: "#333",
                       }}
                     >
                       <tr>
@@ -324,7 +328,7 @@ const page = () => {
                               <span>{orderDetails?.shipping_charge}</span>
                             </p>
                             <p>
-                              <b>{t("order_details.shipping_&_Handling")}: </b>{" "}
+                              <b>{t("order_details.total")}: </b>{" "}
                               <b>
                                 kr{" "}
                                 {parseInt(orderDetails?.total_final_amount) +
@@ -369,7 +373,6 @@ const page = () => {
                       className='send_chat_btn'
                       onClick={handleLogSubmit}
                     >
-                      {/* Legg til notat  */}
                       <img
                         className=''
                         src='/images/chat_arrow.svg'
@@ -381,9 +384,122 @@ const page = () => {
             </Col>
           </Row>
         </div>
+      </div >
+
+
+
+
+
+      <div id="pdf-content" style={{ display: 'none' }}>
+        <section className="shipping-cart">
+          <Container className="border-btm">
+            <h1 className="heading-mange">Pick List</h1>
+            <Row>
+              <Col md={4}>
+                <div className="addrs-shping">
+                  <h2>Delivery Address</h2>
+                  <p>
+                    {orderDetails?.delivery_address?.name} <br />
+                    {orderDetails?.delivery_address?.address} <br />
+                    {orderDetails?.delivery_address?.post_code}{" "}
+                    {orderDetails?.delivery_address?.city} <br />
+                    {orderDetails?.delivery_address?.state}
+                  </p>
+                </div>
+              </Col>
+              <Col md={4} className="text-center">
+                <div className="addrs-shping d-inline-block text-start">
+                  <h2>Billing Address</h2>
+                  <p>
+                    {orderDetails?.billing_address?.name} <br />
+                    {orderDetails?.billing_address?.address} <br />
+                    {orderDetails?.billing_address?.post_code}{" "}
+                    {orderDetails?.billing_address?.city} <br />
+                    {orderDetails?.billing_address?.state}
+                  </p>
+                </div>
+              </Col>
+              <Col md={4}>
+              <div className='qr-img-section text-end'>
+                <QRCodeGenerator url={"https://user.propheticpathway.com"} />
+              </div>
+            </Col>
+            </Row>
+          </Container>
+        </section>
+        <section>
+          <Container>
+            <Row>
+              <Col md={6}>
+                <ul className="pin-personal-dtl">
+                  <li>
+                    <strong>Order Number:</strong> {orderDetails?.order_number}
+                  </li>
+                  <li>
+                    <strong>Status:</strong>{" "}
+                    {orderDetails?.order_status === 1 ? "Completed" : "Pending"}
+                  </li>
+                  <li>
+                    <strong>Order Date:</strong>{" "}
+                    {new Date(orderDetails?.created_at).toLocaleString()}
+                  </li>
+                </ul>
+              </Col>
+              <Col md={6}>
+                <ul className="pin-personal-dtl">
+                  <li>
+                    <strong>Customer ID:</strong>{" "}
+                    {orderDetails?.customer?.id}
+                  </li>
+                  <li>
+                    <strong>Phone:</strong> {orderDetails?.customer?.phone}
+                  </li>
+                  <li>
+                    <strong>Email:</strong> {orderDetails?.customer?.email}
+                  </li>
+                  <li>
+                    <strong>Seller:</strong> {orderDetails?.seller_name}
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section>
+          <Container>
+            <div className="table-responsive order-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Packed</th>
+                    <th>Quantity</th>
+                    <th>Product</th>
+                    <th>Product Number</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products?.map((product, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{product?.qty}</td>
+                      <td>
+                        {product?.product_name} - {product?.qty} pcs
+                      </td>
+                      <td>{product?.product_number}</td>
+                      <td>-</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Container>
+        </section>
       </div>
     </>
   );
 };
 
-export default page;
+export default Page;
