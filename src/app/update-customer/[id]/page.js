@@ -18,6 +18,8 @@ const page = ({ params }) => {
   const [sellers, setSeller] = useState([]);
   const [orderConfirm, setOrderConfirm] = useState(0);
   const [initialValues, setValues] = useState({});
+  const [customAddress, setCustomAddress] = useState("");
+  const [isCustom, setIsCustom] = useState(false);
 
   const fetchSellers = async () => {
     try {
@@ -37,6 +39,7 @@ const page = ({ params }) => {
         `${BASE_URL}/api/admin/customerDetailShow`,
         options
       );
+
       if (res?.data?.status) {
         setValues({
           name: res.data?.data?.name,
@@ -47,11 +50,15 @@ const page = ({ params }) => {
           contactPerson: res.data?.data?.contactPerson,
           phone: res.data?.data?.phone,
           email: res.data?.data?.email,
-          DeliveryAddress: "",
+          DeliveryAddress: res.data?.data?.DeliveryAddress,
           countryCode: res.data?.data?.countryCode,
           country: res.data?.data?.country || 0,
+          customZip: res.data?.data?.customZip,
+          customCity: res.data?.data?.customCity,
+          customAddress: res.data?.data?.customAddress,
         });
         setOrderConfirm(res.data?.data?.country || 0);
+        setIsCustom(res.data?.data?.DeliveryAddress === "Custom");
       }
     } catch (error) {
       console.log(error);
@@ -129,7 +136,7 @@ const page = ({ params }) => {
           enableReinitialize={true}
           onSubmit={submitHandler}
         >
-          {({ values, handleChange }) => (
+          {({ values, handleChange, setFieldValue }) => (
             <Form
               id='customerForm'
               className='row'
@@ -332,26 +339,73 @@ const page = ({ params }) => {
                       </div>
 
                       <div className='form-group'>
-                        {/* <label htmlFor='DeliveryAddress'>
-                          Delivery address
-                        </label> */}
                         <label>{t("customers_create.delivery_address")}</label>
                         <Field
                           as='select'
                           id='DeliveryAddress'
                           name='DeliveryAddress'
                           className='form-control'
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setIsCustom(value === "Custom");
+                            setFieldValue("DeliveryAddress", value);
+                          }}
                         >
                           <option value='Same as address'>
-                            Same as address
+                            {t("customers_create.same_as_address")}
+                          </option>
+                          <option value='Custom'>
+                            {t("customers_create.other")}
                           </option>
                         </Field>
-                        <ErrorMessage
-                          name='DeliveryAddress'
-                          component='div'
-                          className='text-danger'
-                        />
                       </div>
+                      {isCustom && (
+                        <>
+                          <div className='form-group row'>
+                            <div className='col-md-2'>
+                              {/* <label htmlFor='zip'>Zip</label> */}
+                              <label>{t("customers_create.zip")}</label>
+                              <Field
+                                type='text'
+                                id='customZip'
+                                name='customZip'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='customZip'
+                                component='div'
+                                className='text-danger'
+                              />
+                            </div>
+                            <div className='col-md-10'>
+                              {/* <label htmlFor='city'>City</label> */}
+                              <label>{t("customers_create.city")}</label>
+                              <Field
+                                type='text'
+                                id='customCity'
+                                name='customCity'
+                                className='form-control'
+                              />
+                              <ErrorMessage
+                                name='customCity'
+                                component='div'
+                                className='text-danger'
+                              />
+                            </div>
+                          </div>
+                          <div className='form-group'>
+                            <label>{t("customers_create.address")}</label>
+                            <Field
+                              type='text'
+                              id='customAddress'
+                              name='customAddress'
+                              className='form-control'
+                              value={customAddress}
+                              onChange={(e) => setCustomAddress(e.target.value)}
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

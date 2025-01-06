@@ -394,7 +394,6 @@ const page = () => {
                           className='form-control'
                           onChange={(e) => {
                             const value = e.target.value;
-                            console.log("value -- ", value);
                             setFieldValue("DeliveryAddress", value);
                             setIsCustom(value === "Custom");
                           }}
@@ -403,7 +402,7 @@ const page = () => {
                             {t("customers_create.same_as_address")}
                           </option>
                           <option value='Custom'>
-                            {t("customers_create.custom")}
+                            {t("customers_create.other")}
                           </option>
                         </Field>
                       </div>
@@ -412,7 +411,7 @@ const page = () => {
                           <div className='form-group row'>
                             <div className='col-md-2'>
                               {/* <label htmlFor='zip'>Zip</label> */}
-                              <label>{t("customers_create.new_zip")}</label>
+                              <label>{t("customers_create.zip")}</label>
                               <Field
                                 type='text'
                                 id='customZip'
@@ -427,7 +426,7 @@ const page = () => {
                             </div>
                             <div className='col-md-10'>
                               {/* <label htmlFor='city'>City</label> */}
-                              <label>{t("customers_create.new_city")}</label>
+                              <label>{t("customers_create.city")}</label>
                               <Field
                                 type='text'
                                 id='customCity'
@@ -442,7 +441,7 @@ const page = () => {
                             </div>
                           </div>
                           <div className='form-group'>
-                            <label>{t("customers_create.new_address")}</label>
+                            <label>{t("customers_create.address")}</label>
                             <Field
                               type='text'
                               id='customAddress'

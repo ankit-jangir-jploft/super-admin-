@@ -151,7 +151,7 @@ const page = ({ params }) => {
                 </tr>
               </thead>
               <tbody>
-                {products.length &&
+                {(products.length &&
                   products.map((product) => {
                     return (
                       <tr>
@@ -167,7 +167,16 @@ const page = ({ params }) => {
                         {/* <td className='text-end'>{product?.price}</td> */}
                       </tr>
                     );
-                  })}
+                  })) || (
+                  <tr>
+                    <th
+                      colSpan={7}
+                      className='text-center'
+                    >
+                      Nothing here
+                    </th>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
