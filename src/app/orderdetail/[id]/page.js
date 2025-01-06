@@ -20,7 +20,7 @@ const Page = () => {
   const [orderDetails, setOrderDetails] = useState({});
   const [logs, setLogs] = useState([]);
   const [content, setContent] = useState("");
-  
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
   const fetchOrderDetails = async () => {
@@ -29,7 +29,7 @@ const Page = () => {
       const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, option);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
-        
+
         setProducts(res.data?.data?.order_details);
       }
     } catch (error) {
@@ -89,7 +89,10 @@ const Page = () => {
       return;
     }
   
-    content.style.display = 'block'; // Show the content temporarily
+    setLoading(true);
+    
+    // Temporarily show the content
+    content.style.display = 'block';
   
     try {
       const canvas = await html2canvas(content, { scale: 2, useCORS: true });
@@ -100,16 +103,25 @@ const Page = () => {
         return;
       }
   
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, 0); // Add the image to the PDF
+      // Calculate the width and height for A4 size
+      const pdfWidth = 210; // A4 width in mm
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
+  
+      // Add the image to the PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight); // Add the image to the PDF
+  
+      // Save the PDF
       pdf.save("order-details.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
-      content.style.display = 'none'; // Hide the content again
+      // Hide the content again
+      content.style.display = 'none';
+      setLoading(false); // Set loading to false after PDF generation
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     fetchOrderDetails();
     fetchLogs();
   }, []);
@@ -126,9 +138,8 @@ const Page = () => {
         <div className='filter-manage'>
           <div className=''>
             <button
-              className={`status ${
-                orders[+orderDetails?.order_status]?.style
-              } w-auto me-2`}
+              className={`status ${orders[+orderDetails?.order_status]?.style
+                } w-auto me-2`}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -167,7 +178,7 @@ const Page = () => {
               <img src='/images/invce.svg' />{" "}
               {t("order_details.create_shipping_label")}
             </button>
-          
+
             <button
               className='bold-btn w-auto me-2'
               onClick={generatePDF}
@@ -291,15 +302,15 @@ const Page = () => {
                             </tr>
                           );
                         })) || (
-                        <tr>
-                          <td
-                            colSpan={5}
-                            className='text-center'
-                          >
-                            No Products
-                          </td>
-                        </tr>
-                      )}
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className='text-center'
+                            >
+                              No Products
+                            </td>
+                          </tr>
+                        )}
                     </tbody>
                     <tfoot
                       style={{
@@ -390,7 +401,11 @@ const Page = () => {
 
 
 
+      {/* {loading ? (
+          ""
+        ) : ( */}
       <div id="pdf-content" style={{ display: 'none' }}>
+        {/* Your PDF content goes here */}
         <section className="shipping-cart">
           <Container className="border-btm">
             <h1 className="heading-mange">Pick List</h1>
@@ -420,13 +435,14 @@ const Page = () => {
                 </div>
               </Col>
               <Col md={4}>
-              <div className='qr-img-section text-end'>
-                <QRCodeGenerator url={"https://user.propheticpathway.com"} />
-              </div>
-            </Col>
+                <div className='qr-img-section text-end'>
+                  <QRCodeGenerator url={"https://user.propheticpathway.com"} />
+                </div>
+              </Col>
             </Row>
           </Container>
         </section>
+        {/* Add other sections as needed */}
         <section>
           <Container>
             <Row>
@@ -498,6 +514,60 @@ const Page = () => {
           </Container>
         </section>
       </div>
+      {/* )} */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* <div id="pdf-content" style={{ display: 'none'}}>
+        <section className="shipping-cart">
+          <Container className="border-btm" >
+            <h1 className="heading-mange">Pick List</h1>
+            <Row>
+              <Col md={4}>
+                <div className="addrs-shping">
+                  <h2>Delivery Address</h2>
+                  <p>
+                    {orderDetails?.delivery_address?.name} <br />
+                    {orderDetails?.delivery_address?.address} <br />
+                    {orderDetails?.delivery_address?.post_code}{" "}
+                    {orderDetails?.delivery_address?.city} <br />
+                    {orderDetails?.delivery_address?.state}
+                  </p>
+                </div>
+              </Col>
+              <Col md={4} className="text-center">
+                <div className="addrs-shping d-inline-block text-start">
+                  <h2>Billing Address</h2>
+                  <p>
+                    {orderDetails?.billing_address?.name} <br />
+                    {orderDetails?.billing_address?.address} <br />
+                    {orderDetails?.billing_address?.post_code}{" "}
+                    {orderDetails?.billing_address?.city} <br />
+                    {orderDetails?.billing_address?.state}
+                  </p>
+                </div>
+              </Col>
+              <Col md={4}>
+              <div className='qr-img-section text-end'>
+                <QRCodeGenerator url={"https://user.propheticpathway.com"} />
+              </div>
+            </Col>
+            </Row>
+          </Container>
+        </section>
+       
+      </div> */}
     </>
   );
 };
