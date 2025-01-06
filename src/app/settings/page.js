@@ -354,9 +354,18 @@ const page = ({ searchParams }) => {
         // Populate the fields in the form
         reset3({
           navbarLanguage: fetchFrontPageSetting?.language_id || "1",
-          headerTitle: fetchFrontPageSetting?.header_title || "",
-          headerDescription: fetchFrontPageSetting?.header_description || "",
-          headerButtonLabel: fetchFrontPageSetting?.header_label || "",
+          headerTitle:
+            fetchFrontPageSetting?.language_id == 1
+              ? fetchFrontPageSetting?.header_title
+              : fetchFrontPageSetting?.header_title_no,
+          headerDescription:
+            fetchFrontPageSetting?.language_id == 1
+              ? fetchFrontPageSetting?.header_description
+              : fetchFrontPageSetting?.header_description_no,
+          headerButtonLabel:
+            fetchFrontPageSetting?.language_id == 1
+              ? fetchFrontPageSetting?.header_label
+              : fetchFrontPageSetting?.header_label_no,
           headerButtonLink: fetchFrontPageSetting?.header_button_link || "",
           id: fetchFrontPageSetting?.id || "",
         });
@@ -687,9 +696,7 @@ const page = ({ searchParams }) => {
                           {...register3("navbarLanguage", {
                             required: "Navbar language is required",
                           })}
-                          onChange={(e) => {
-                            setFrontLang(e.target.value);
-                          }}
+                          onClick={(e) => setFrontLang(e.target.value)}
                         >
                           <option value={1}>English</option>
                           <option value={2}>Norwegian</option>
