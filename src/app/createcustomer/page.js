@@ -82,8 +82,8 @@ const page = () => {
     customAddress: "",
   };
   const radios = [
-    { name: t("customers_create.no"), value: 0 },
     { name: t("customers_create.yes"), value: 1 },
+    { name: t("customers_create.no"), value: 0 },
   ];
 
   const submitHandler = async (values) => {

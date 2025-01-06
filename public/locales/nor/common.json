@@ -171,8 +171,8 @@
     "comment": "Kommentar",
     "products": "Produkter",
     "add": "Legg til",
-    "no": "Nei",
-    "yes": "Ja"
+    "no": "NO",
+    "yes": "SE"
   },
   "orders_dropdown": {
     "orders": "Ordre",

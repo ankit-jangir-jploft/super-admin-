@@ -66,12 +66,13 @@ const page = ({ searchParams }) => {
   const fetchHandler = async () => {
     try {
       const res = await GET(`${BASE_URL}/api/admin/generalSettingList`);
-
+      console.log({ res });
       if (res?.data?.status && res?.data?.data) {
         const settings = res?.data?.data[0];
 
         setIsEditMode(true);
         setSettingId(settings.setting_id);
+        setMonth(res?.data?.data[0].months);
         reset({
           status: settings.status,
           budget: settings.budget,
@@ -89,6 +90,8 @@ const page = ({ searchParams }) => {
       // toast.error("Failed to load settings.");
     }
   };
+
+  console.log({ months });
 
   const onSubmit = async (data) => {
     try {
@@ -297,8 +300,10 @@ const page = ({ searchParams }) => {
 
       console.log(response);
 
-      if (response.status === 201) {
-        toast.success("Form submitted successfully!");
+      if (response?.data?.status) {
+        toast.success(response?.data?.message);
+      } else {
+        toast.error(response?.data?.message);
       }
     } catch (error) {
       console.error("Form submission error:", error.message);

@@ -131,10 +131,25 @@ const page = () => {
               <img src='/images/sales-ovr.svg' />{" "}
               {t("order_details.salesoverview")}
             </button>
-            <button className='bold-btn w-auto me-2'>
-              <img src='/images/pkg-slip.svg' />{" "}
+            <button
+              className='bold-btn w-auto me-2'
+              onClick={() => {
+                if (orderDetails?.package_slip) {
+                  // Redirect to the package_slip in a new tab
+                  window.open(orderDetails.package_slip, "_blank");
+                } else {
+                  // Handle the case where package_slip is not available
+                  console.log("Package slip not available");
+                }
+              }}
+            >
+              <img
+                src='/images/pkg-slip.svg'
+                alt='Package Slip Icon'
+              />{" "}
               {t("order_details.package_slip")}
             </button>
+
             <button className='bold-btn w-auto me-2'>
               <img src='/images/invce.svg' />{" "}
               {t("order_details.create_shipping_label")}
