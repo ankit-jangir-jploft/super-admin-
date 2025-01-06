@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import { useTranslation } from "react-i18next";
+import SkeletonLoader from "../Components/SkeletonLoader";
 
 const page = () => {
   const { t } = useTranslation();
@@ -21,12 +22,14 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
 
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
 
   const fetchProductList = async () => {
+    setLoading(true);
     try {
       const options = {
         per_page: 10,
@@ -42,6 +45,7 @@ const page = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const onPageChange = (selected) => {
@@ -104,7 +108,11 @@ const page = () => {
     <>
       <Sidebar />
       <div className='detail-admin-main'>
-        <div className='admin-header'>
+      {loading ? (
+        <SkeletonLoader />
+      ) : (
+        <>
+         <div className='admin-header'>
           {/* <h2>Products</h2> */}
           <h2>{t("products.product")}</h2>
           <div className='search-frm'>
@@ -285,7 +293,10 @@ const page = () => {
             paginationData={pagination}
           />
         </div>
-      </div>
+        </>
+       
+      )}
+     </div>
     </>
   );
 };

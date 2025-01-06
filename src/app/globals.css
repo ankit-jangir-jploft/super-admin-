@@ -804,6 +804,10 @@ tr:nth-child(even) {
   min-height: 345px;
   margin-top: 35px;
 }
+.budget-grp{
+  display: flex;
+  justify-content: space-between;
+}
 
 .grph-crdh3 {
   font-size: 20px;
@@ -2719,3 +2723,5 @@ h2.custom-pup-mn {
 form.createcategory_cumtm {
   padding: 0px 20px 20px 20px;
 }
+
+
