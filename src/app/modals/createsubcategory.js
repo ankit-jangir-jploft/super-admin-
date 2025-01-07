@@ -78,8 +78,8 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
     },
     container: {
       backgroundColor: "#fff",
-      padding: "20px",
-      borderRadius: "8px",
+      padding: "0",
+      borderRadius: "20px",
       width: "400px",
       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
       position: "relative",
@@ -105,41 +105,25 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
       justifyContent: "center",
       marginTop: "15px",
     },
-    buttonPrimary: {
-      backgroundColor: "#dc3545",
-      border: "none",
-      color: "#fff",
-      padding: "8px 16px",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
-    buttonSecondary: {
-      backgroundColor: "#6c757d",
-      border: "none",
-      color: "#fff",
-      padding: "8px 16px",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.container}>
-        <button
+        {/* <button
           style={styles.closeButton}
           onClick={onClose}
         >
           ×
-        </button>
-        <h2 className='hedingtext_top'>Create Sub-Category</h2>
+        </button> */}
+        <h2 className='hedingtext_top custom-pup-mn'>Create Sub-Category</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={submitHandler}
         >
           {() => (
-            <Form>
+            <Form className='createcategory_cumtm'>
               <div style={styles.formGroup}>
                 <label htmlFor='parentCategory'>Select Category</label>
                 <Field
@@ -150,7 +134,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                     width: "100%",
                     padding: "8px",
                     marginTop: "5px",
-                    borderRadius: "4px",
+                    borderRadius: "40px",
                     border: "1px solid #ced4da",
                   }}
                 >
@@ -181,7 +165,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                     width: "100%",
                     padding: "8px",
                     marginTop: "5px",
-                    borderRadius: "4px",
+                    borderRadius: "40px",
                     border: "1px solid #ced4da",
                   }}
                 />
@@ -192,8 +176,19 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                 />
               </div>
 
-              <div style={styles.actions}>
+              <div
+                className='d-flex justify-content-around'
+                style={styles.actions}
+              >
                 <button
+                  className='can-btn btn createcustomer_btncmf px-5'
+                  style={styles.buttonSecondary}
+                  onClick={() => onClose()}
+                >
+                  Cancel
+                </button>
+                <button
+                  className='cr-btn btn createcustomer_btn px-5'
                   type='submit'
                   style={styles.buttonPrimary}
                 >

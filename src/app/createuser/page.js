@@ -11,8 +11,10 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation"; // Use useRouter for client-side navigation
 import Loader from "../Components/Loader/Loader";
+import { useTranslation } from "react-i18next";
 
 const Page = () => {
+  const { t } = useTranslation();
   const [radioValue, setRadioValue] = useState("1"); // Appearance: Light or Dark
   const [selectedImage, setSelectedImage] = useState(null);
   const [profileImageFileError, setProfileImageFileError] = useState(null);
@@ -42,8 +44,8 @@ const Page = () => {
   }, []);
 
   const radios = [
-    { name: "Light", value: "1" },
-    { name: "Dark", value: "2" },
+    { name: t("settings.users.create.light"), value: "1" },
+    { name: t("settings.users.create.dark"), value: "2" },
   ];
 
   const {
@@ -102,17 +104,15 @@ const Page = () => {
       <Loader visible={pending} />
       <div className='detail-admin-main stng-pge'>
         <div className='admin-header'>
-          <h2>Settings</h2>
+          {/* <h2>Settings</h2> */}
+          <h2>{t("settings.settings")}</h2>
           <div className='search-frm'>
-            <input
-              type='text'
-              placeholder='Sok i order'
-            />
+            <input type='text' />
             {/* <img
               className='input-right-icon'
               src='/images/search-interface.svg'
             /> */}
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={"/"}>
@@ -132,7 +132,10 @@ const Page = () => {
                       style={{ borderRadius: "100%" }}
                       src={selectedImage || "/images/user.png"}
                     />
-                    <h2 className='my-4 color_red'>Edit Photo</h2>
+                    {/* <h2 className='my-4 color_red'>Add Photo</h2> */}
+                    <h2 className='my-4 color_red'>
+                      {t("settings.users.create.add_photo")}
+                    </h2>
                     <Form.Group className='UploadPhoto_file'>
                       <Form.Control
                         className='UploadPhoto'
@@ -140,10 +143,22 @@ const Page = () => {
                         {...register("profile_image")}
                         accept='image/*'
                         onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            setSelectedImage(
-                              URL.createObjectURL(e.target.files[0])
-                            ); // Update image preview
+                          const theFile = e.target.files[0];
+
+                          if (theFile) {
+                            const maxSize = 2 * 1024 * 1024;
+
+                            if (theFile.size > maxSize) {
+                              toast.error(
+                                "File size is too large. Maximum allowed size is 2MB."
+                              );
+                              setSelectedImage(null);
+                              e.target.value = "";
+                              return;
+                            }
+
+                            setSelectedImage(URL.createObjectURL(theFile));
+                            setProfileImageFileError(null);
                           }
                         }}
                       />
@@ -157,7 +172,10 @@ const Page = () => {
                     <div className='row'>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Name</Form.Label>
+                          {/* <Form.Label>Name</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.name")}
+                          </Form.Label>
                           <Form.Control
                             // placeholder="Elise Nordmann"
                             {...register("name", {
@@ -173,7 +191,10 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Email</Form.Label>
+                          {/* <Form.Label>Email</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.email")}
+                          </Form.Label>
                           <Form.Control
                             // placeholder="elise.nordmann@dugnadstid.no"
                             {...register("email", {
@@ -194,7 +215,10 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>User Type</Form.Label>
+                          {/* <Form.Label>User Type</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.user_type")}
+                          </Form.Label>
                           <Form.Select
                             {...register("role_id", {
                               required: "User type is required",
@@ -216,7 +240,10 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Status</Form.Label>
+                          {/* <Form.Label>Status</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.status")}
+                          </Form.Label>
                           <Form.Select
                             {...register("status", {
                               required: "Status is required",
@@ -234,15 +261,22 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Language</Form.Label>
+                          {/* <Form.Label>Language</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.language")}
+                          </Form.Label>
                           <Form.Select {...register("language_id")}>
-                            <option value='1'>English</option>
+                            <option value={1}>Norwegian</option>
+                            <option value={2}>English</option>
                           </Form.Select>
                         </Form.Group>
                       </div>
                       <div className='col-md-6'>
                         <div className='swtch-bt'>
-                          <Form.Label>Appearance</Form.Label>
+                          {/* <Form.Label>Appearance</Form.Label> */}
+                          <Form.Label>
+                            {t("settings.users.create.appearance")}
+                          </Form.Label>
                           <ButtonGroup>
                             {radios.map((radio, idx) => (
                               <ToggleButton
@@ -280,7 +314,8 @@ const Page = () => {
                           className='createorder_top_right btn_bg_save w-100'
                           type='submit'
                         >
-                          Save
+                          {/* Save */}
+                          {t("settings.users.create.save")}
                         </button>
                       </div>
                     </div>

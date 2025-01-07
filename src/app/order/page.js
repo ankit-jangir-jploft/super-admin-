@@ -8,8 +8,11 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import { useTranslation } from "react-i18next";
+import SkeletonLoader from "../Components/SkeletonLoader";
 
 const page = () => {
+  const { t } = useTranslation();
   const [openRowId, setOpenRowId] = useState(null);
   const [allOrders, setOrders] = useState([]);
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -19,6 +22,7 @@ const page = () => {
   const [action, setAction] = useState();
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -30,6 +34,7 @@ const page = () => {
   };
 
   const fetchOrders = async () => {
+    setLoading(true);
     try {
       const options = {
         page: currentPage,
@@ -44,6 +49,7 @@ const page = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const onPageChange = (selected) => {
@@ -105,210 +111,254 @@ const page = () => {
     <>
       <Sidebar />
       <div className='detail-admin-main'>
-        <div className='admin-header'>
-          <h2>Orders</h2>
-          <div className='search-frm'>
-            <Link href={"/createorder"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
-            <input
-              type='text'
-              value={searchOuery}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder='Sok i order'
-            />
-            <Link href={"/"}>
-              <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={`/useredit/${userData?.id}`}>
-              <img
-                className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
-                src={userData?.profile_image}
-                onError={(e) => {
-                  e.target.src = "/images/avatar-style.png";
-                }}
-              />
-            </Link>
-          </div>
-        </div>
-        <div className='shdw-crd'>
-          <div className='table-responsive order-table'>
-            <table>
-              <thead>
-                <tr>
-                  <th>Mark</th>
-                  <th>Ordernumber</th>
-                  <th>Date</th>
-                  <th>Ordered by</th>
-                  <th>Ordered for/from</th>
-                  <th>Status</th>
-                  <th>Origin</th>
-                  <th>Items</th>
-                  <th>Sum</th>
-                  <th>Options</th>
-                  <th>Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(allOrders.length &&
-                  allOrders.map((order, index) => (
-                    <React.Fragment key={index}>
+        {loading ? (
+          <SkeletonLoader />
+        ) : (
+          <>
+            <div className='admin-header'>
+              {/* <h2>Orders</h2> */}
+              <h2>{t("orders.orders")}</h2>
+              <div className='search-frm'>
+                {roleType !== "guest" && (
+                  <Link href={"/createorder"}>
+                    <img src='/images/add-plus.svg' />
+                  </Link>
+                )}
+                <input
+                  type='text'
+                  value={searchOuery}
+                  onChange={(e) => setQuery(e.target.value)}
+                  // placeholder='Sok i order'
+                />
+                <Link href={""}>
+                  <img src='/images/notifications_none.svg' />
+                </Link>
+                <Link href={`/useredit/${userData?.id}`}>
+                  <img
+                    className='object-fit-cover rounded-circle'
+                    style={{ width: "41px", height: "41px" }}
+                    src={userData?.profile_image}
+                    onError={(e) => {
+                      e.target.src = "/images/avatar-style.png";
+                    }}
+                  />
+                </Link>
+              </div>
+            </div>
+            <div className='shdw-crd'>
+              <div className='table-responsive order-table'>
+                <table>
+                  <thead>
+                    <tr>
+                      {/* <th>Mark</th> */}
+                      <th>{t("orders.mark")}</th>
+                      {/* <th>Ordernumber</th> */}
+                      <th>{t("orders.ordernumber")}</th>
+                      {/* <th>Date</th> */}
+                      <th>{t("orders.date")}</th>
+                      {/* <th>Ordered by</th> */}
+                      <th>{t("orders.ordered_by")}</th>
+                      {/* <th>Ordered for/from</th> */}
+                      <th>{t("orders.ordered_for")}</th>
+                      {/* <th>Status</th> */}
+                      <th>{t("orders.status")}</th>
+                      {/* <th>Origin</th> */}
+                      <th>{t("orders.origin")}</th>
+                      {/* <th>Items</th> */}
+                      <th>{t("orders.items")}</th>
+                      {/* <th>Sum</th> */}
+                      <th>{t("orders.sum")}</th>
+                      {/* <th>Options</th> */}
+                      <th>{t("orders.options")}</th>
+                      {/* <th>Contact</th> */}
+                      <th>{t("order_more.seller")}</th>
+                      <th>{t("orders.contact")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(allOrders.length &&
+                      allOrders.map((order, index) => (
+                        <React.Fragment key={index}>
+                          <tr>
+                            <td>
+                              <input
+                                type='checkbox'
+                                checked={selectedOrders.includes(order.id)}
+                                onChange={() => handleSelectOrder(order.id)}
+                              />
+                            </td>
+                            <td
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              <span className='link-tg'>
+                                {" "}
+                                #{order.order_number}
+                              </span>
+                            </td>
+                            <td
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              {order.created_at}
+                            </td>
+                            <td>{order.order_by}</td>
+                            <td>{order.order_for || "N/A"}</td>
+                            <td>
+                              <button
+                                className={`status ${
+                                  orders[+order.order_status]?.style
+                                }`}
+                              >
+                                {orders[+order.order_status]?.name}
+                              </button>
+                            </td>
+                            <td>{order.origin}</td>
+                            <td>{order.order_details_count}</td>
+                            <td>
+                              <span className='clg-cum'> kr</span>{" "}
+                              {order.order_details_price_sum}
+                            </td>
+                            <td>
+                              <div className='action-btn-table'>
+                                <img
+                                  src='/images/dwn-aro.svg'
+                                  className='cursor-pointer'
+                                  onClick={() => toggleRow(index)}
+                                  alt='Toggle Sub Rows'
+                                />
+                                <Link href='/salesoverview'>
+                                  <img src='/images/disable-print.svg' />
+                                </Link>
+                                <Link href={`/shipping/${order.id}`}>
+                                  <img src='/images/checklist.svg' />
+                                </Link>
+                                <Link href={`/package/${order.id}`}>
+                                  <img src='/images/save.svg' />
+                                </Link>
+                              </div>
+                            </td>
+                            <td
+                              onClick={() =>
+                                (window.location.href = `/settings?type=seller`)
+                              }
+                            >
+                              {order?.seller_name}
+                            </td>
+                            <td>
+                              <Link href={`/kunderdetail/${order?.user_id}`}>
+                                <img src='/images/prdctes.svg' />
+                              </Link>
+                            </td>
+                          </tr>
+                          {openRowId === index && (
+                            <tr>
+                              <td
+                                colSpan='12'
+                                className='sub-row'
+                              >
+                                <table className='sub-table w-full'>
+                                  <thead>
+                                    <tr>
+                                      <th>#</th>
+                                      {/* <th>Product</th> */}
+                                      <th>{t("order_more.product")}</th>
+
+                                      {/* <th>Cost</th> */}
+                                      <th>{t("order_more.cost")}</th>
+                                      {/* <th>Quantity</th> */}
+                                      <th>{t("order_more.quantity")}</th>
+                                      {/* <th>Total</th> */}
+                                      <th>{t("order_more.total")}</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {order?.orderDetails?.map(
+                                      (product, productIndex) => (
+                                        <tr key={productIndex}>
+                                          <td className='productId'>
+                                            {product?.product_number}
+                                          </td>
+                                          <td>
+                                            <div className='sub-row-img'>
+                                              <img
+                                                src={product?.product_image}
+                                                onError={(e) =>
+                                                  (e.target.src =
+                                                    "/images/product2.png")
+                                                }
+                                                alt='product'
+                                              />
+                                              <span
+                                                onClick={() =>
+                                                  (window.location.href = `/products-details/${product?.product_id}`)
+                                                }
+                                              >
+                                                {product.product_name}
+                                              </span>
+                                            </div>
+                                          </td>
+
+                                          <td>kr {product.price}</td>
+                                          <td>{product.qty}</td>
+                                          <td>kr {product.total}</td>
+                                        </tr>
+                                      )
+                                    )}
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))) || (
                       <tr>
-                        <td>
-                          <input
-                            type='checkbox'
-                            checked={selectedOrders.includes(order.id)}
-                            onChange={() => handleSelectOrder(order.id)}
-                          />
-                        </td>
                         <td
-                          onClick={() =>
-                            (window.location.href = `/orderdetail/${order?.id}`)
-                          }
+                          colSpan='12'
+                          style={{ textAlign: "center", padding: "20px" }}
                         >
-                          #{order.order_number}
-                        </td>
-                        <td
-                          onClick={() =>
-                            (window.location.href = `/orderdetail/${order?.id}`)
-                          }
-                        >
-                          {order.created_at}
-                        </td>
-                        <td>{order.order_by}</td>
-                        <td>{order.order_for || "N/A"}</td>
-                        <td>
-                          <button
-                            className={`status ${
-                              orders[+order.order_status]?.style
-                            }`}
-                          >
-                            {orders[+order.order_status]?.name}
-                          </button>
-                        </td>
-                        <td>{order.origin}</td>
-                        <td>{order.order_details_count}</td>
-                        <td>kr {order.order_details_price_sum}</td>
-                        <td>
-                          <div className='action-btn-table'>
-                            <img
-                              src='/images/dwn-aro.svg'
-                              className='cursor-pointer'
-                              onClick={() => toggleRow(index)}
-                              alt='Toggle Sub Rows'
-                            />
-                            <Link href='/salesoverview'>
-                              <img src='/images/disable-print.svg' />
-                            </Link>
-                            <Link href={`/shipping/${order.id}`}>
-                              <img src='/images/checklist.svg' />
-                            </Link>
-                            <Link href={`/package/${order.id}`}>
-                              <img src='/images/save.svg' />
-                            </Link>
-                          </div>
-                        </td>
-                        <td>
-                          <Link href={`/kunderdetail/${order?.user_id}`}>
-                            <img src='/images/prdctes.svg' />
-                          </Link>
+                          No Orders Yet
                         </td>
                       </tr>
-                      {openRowId === index && (
-                        <tr>
-                          <td
-                            colSpan='12'
-                            className='sub-row'
-                          >
-                            <table className='sub-table w-full'>
-                              <thead>
-                                <tr>
-                                  <th>#</th>
-                                  <th>Product</th>
-                                  <th>Seller</th>
-                                  <th>Cost</th>
-                                  <th>Quantity</th>
-                                  <th>Total</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {order?.orderDetails?.map(
-                                  (product, productIndex) => (
-                                    <tr key={productIndex}>
-                                      <td className='productId'>
-                                        {product?.id}
-                                      </td>
-                                      <td>
-                                        <div className='sub-row-img'>
-                                          <img
-                                            src={product?.product_image}
-                                            onError={(e) =>
-                                              (e.target.src =
-                                                "/images/product2.png")
-                                            }
-                                            alt='product'
-                                          />
-                                          <span>{product.product_name}</span>
-                                        </div>
-                                      </td>
-                                      <td>{product.seller_name}</td>
-                                      <td>kr {product.price}</td>
-                                      <td>{product.qty}</td>
-                                      <td>kr {product.total}</td>
-                                    </tr>
-                                  )
-                                )}
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
-                  ))) || (
-                  <tr>
-                    <td
-                      colSpan='12'
-                      style={{ textAlign: "center", padding: "20px" }}
-                    >
-                      No Orders Yet
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className='tablebruk'>
-          {roleType !== "guest" && (
-            <div className='tablebruk_left'>
-              <select
-                className='form-select'
-                value={action}
-                onChange={(e) => {
-                  setAction(e.target.value);
-                }}
-              >
-                <option value={""}>Mass action</option>
-                <option value={"delete"}>Delete</option>
-              </select>
-              {action && (
-                <button
-                  className='crte-userd Confirm_btn'
-                  onClick={handleMassDelete}
-                >
-                  Confirm
-                </button>
-              )}
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          )}
-          <Paginate
-            currentPage={currentPage}
-            totalPages={pagination?.totalPages}
-            onPageChange={onPageChange}
-            paginationData={pagination}
-          />
-        </div>
+            <div className='tablebruk'>
+              {roleType !== "guest" && (
+                <div className='tablebruk_left'>
+                  <select
+                    className='form-select'
+                    value={action}
+                    onChange={(e) => {
+                      setAction(e.target.value);
+                    }}
+                  >
+                    <option value={""}>{t("orders.mass_action")}</option>
+                    <option value={"delete"}>{t("orders.delete")}</option>
+                  </select>
+                  {action && (
+                    <button
+                      className='crte-userd Confirm_btn'
+                      onClick={handleMassDelete}
+                    >
+                      Confirm
+                    </button>
+                  )}
+                </div>
+              )}
+              <Paginate
+                currentPage={currentPage}
+                totalPages={pagination?.totalPages}
+                onPageChange={onPageChange}
+                paginationData={pagination}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

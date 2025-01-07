@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { BASE_URL } from "../Utils/apiHelper";
 import { GET } from "../Utils/apiFunctions";
 import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 import RevenueChart from "../Components/RevenueChart";
 import SalesAnalyticsChart from "../Components/SalesAnalytics";
 
@@ -14,6 +15,7 @@ const ApexCharts = dynamic(() => import("react-apexcharts"), {
 });
 
 const page = () => {
+  const { t } = useTranslation();
   const [dashBoardData, setDashBoardData] = useState();
   const [userData, setUserData] = useState();
   const series = [
@@ -127,6 +129,10 @@ const page = () => {
       setLineChart(response?.data?.data?.lineChart);
 
       setDonut(response?.data?.data?.donutChart);
+      console.log(
+        "response?.data?.data?.donutChart --",
+        response?.data?.data?.donutChart
+      );
       const dynamicCategories = response?.data?.data?.months || [];
       const xaxis = {
         categories: dynamicCategories,
@@ -199,8 +205,9 @@ const page = () => {
       <Sidebar />
       <div className='detail-admin-main main-dashbord-grph'>
         <div className='admin-header'>
-          <h2>Main Dashboard</h2>
-          <div
+          {/* <h2>Main Dashboard</h2> */}
+          <h2>{t("dashboard.main_dashboard")}</h2>
+          {/* <div
             className='search-frm'
             style={{ position: "relative" }}
           >
@@ -211,31 +218,11 @@ const page = () => {
               placeholder='Search...'
             />
             {suggestions.length > 0 && (
-              <ul
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  left: 0,
-                  width: "100%",
-                  maxHeight: "200px",
-                  overflowY: "auto",
-                  backgroundColor: "#fff",
-                  border: "1px solid #ced4da",
-                  borderRadius: "4px",
-                  zIndex: 1000,
-                  listStyle: "none",
-                  padding: "0",
-                  margin: "0",
-                }}
+              <ul className="search_list_dash" 
               >
                 {suggestions.map((suggestion, index) => (
                   <li
-                    key={index}
-                    style={{
-                      padding: "8px",
-                      cursor: "pointer",
-                      borderBottom: "1px solid #eee",
-                    }}
+                    key={index} 
                     onClick={() => handleSelectSuggestion(suggestion)}
                   >
                     {suggestion.title}
@@ -256,42 +243,47 @@ const page = () => {
                 }}
               />
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className='row'>
           <div className='col-md-3'>
             <div className='dash-crde pinks-cr'>
-              <p>Number of groups</p>
+              {/* <p>Number of groups</p> */}
+              <p>{t("dashboard.number_of_groups")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2> {dashBoardData?.number_of_group}</h2>
-                <span>Active</span>
+                {/* <span>Active</span> */}
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
           <div className='col-md-3'>
             <div className='dash-crde'>
-              <p>Number of sellers</p>
+              {/* <p>Number of sellers</p> */}
+              <p>{t("dashboard.number_of_sellers")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.number_of_seller}</h2>
-                <span>Active</span>
+                <span>{t("dashboard.active")}</span>
               </div>
             </div>
           </div>
           <div className='col-md-3'>
             <div className='dash-crde blue-cr'>
-              <p>Profit</p>
+              {/* <p>Profit</p> */}
+              <p>{t("dashboard.profit")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.profit}</h2>
-                <span>Active</span>
+                <span>{t("dashboard.total")}</span>
               </div>
             </div>
           </div>
           <div className='col-md-3'>
             <div className='dash-crde rde-cr'>
-              <p>No. of packages</p>
+              {/* <p>No. of packages</p> */}
+              <p>{t("dashboard.no_of_packages")}</p>
               <div className='d-flex justify-content-between align-items-center'>
                 <h2>{dashBoardData?.no_of_packages} stk</h2>
-                <span>Active</span>
+                <span>{t("dashboard.total")}</span>
               </div>
             </div>
           </div>
@@ -300,21 +292,21 @@ const page = () => {
           <div className='col-md-7 mb-4'>
             <div className='grph-crd'>
               <div id='chart'>
-                {/* <h3>Sales Analytics</h3> */}
                 {/* <ApexCharts
                   options={lineChartOptions}
                   series={lineChart}
                   type='line'
                   height={300}
                 /> */}
-                <SalesAnalyticsChart/>
+                <SalesAnalyticsChart />
               </div>
             </div>
           </div>
           <div className='col-md-5  mb-4'>
             <div className='grph-crd'>
               {/* <img className='img-fluid' src="/images/revenue-ananst.png" /> */}
-              <h3>Revenue</h3>
+              {/* <h3>Revenue</h3> */}
+              <h3>{t("dashboard.revenue")}</h3>
               <div id='chart'>
                 {/* <ApexCharts
                   options={state1.options}
@@ -322,7 +314,7 @@ const page = () => {
                   type='donut'
                   height={315}
                 /> */}
-                <RevenueChart  />
+                <RevenueChart donutChart={donutChart} />
               </div>
             </div>
           </div>
@@ -330,15 +322,20 @@ const page = () => {
 
         <div className='grph-crd'>
           <div className='table-responsive order-table'>
-            <h3>Overview Groups</h3>
+            {/* <h3>Overview Groups</h3> */}
+            <h3>{t("dashboard.overview_groups")}</h3>
             <table>
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Profit</th>
-                  <th>End Date</th>
+                  {/* <th>Name</th> */}
+                  <th>{t("dashboard.name")}</th>
+                  {/* <th>Quantity</th> */}
+                  <th>{t("dashboard.quantity")}</th>
+                  {/* <th>Profit</th> */}
+                  <th>{t("dashboard.profit")}</th>
+                  {/* <th>End Date</th> */}
+                  <th>{t("dashboard.end_date")}</th>
                 </tr>
               </thead>
 
@@ -357,7 +354,8 @@ const page = () => {
                 <tr>
                   <td></td>
                   <td>
-                    <b>Total</b>
+                    {/* <b>Total</b> */}
+                    <b>{t("dashboard.total")}</b>
                   </td>
                   <td>
                     <b>

@@ -44,9 +44,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     // company_id: Yup.string().required("Company is required"),
-    orgnizationNumber: Yup.string()
-      .matches(/^\d+$/, "Must be a number")
-      .required("Organisation number is required"),
+    // orgnizationNumber: Yup.string()
+    //   .matches(/^\d+$/, "Must be a number")
+    //   .required("Organisation number is required"),
     address: Yup.string().required("Address is required"),
     zip: Yup.string()
       .matches(/^\d+$/, "Zip must be a number")
@@ -65,7 +65,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
   const initialValues = {
     name: "",
     // company_id: "",
-    orgnizationNumber: "",
+    // orgnizationNumber: "",
     address: "",
     zip: "",
     city: "",
@@ -74,9 +74,11 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
     phone: "",
     email: "",
     DeliveryAddress: "",
+    countryCode: "+47",
   };
 
   const submitHandler = async (values) => {
+    console.log("values --", values);
     const res = await POST(`${BASE_URL}/api/admin/customerCreate`, values);
     if (res?.data?.status) {
       toast.dismiss();
@@ -92,66 +94,66 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
   return (
     <div className='modal-overlay'>
-      <div className="modal-custmr-ad">
-      <div className='modal-container'>
-        {/* <button
+      <div className='modal-custmr-ad'>
+        <div className='modal-container'>
+          {/* <button
           className='modal-close'
           onClick={onClose}
         >
           ×
         </button> */}
 
-        <div className='admin-header'>
-          <div className='d-flex justify-content-between w-100 align-items-center'>
-            <h2>Create Customer</h2>
-            <div className='bot-btn'>
-              <button
-                onClick={onClose}
-                className='can-btn btn createcustomer_btncmf px-5'
-              >
-                Cancel
-              </button>
-              <button
-                type='submit'
-                form='customerForm'
-                className='cr-btn btn createcustomer_btn px-3'
-              >
-                Create customer
-              </button>
+          <div className='admin-header'>
+            <div className='d-flex justify-content-between w-100 align-items-center'>
+              <h2>Create Customer</h2>
+              <div className='bot-btn'>
+                <button
+                  onClick={onClose}
+                  className='can-btn btn createcustomer_btncmf px-5'
+                >
+                  Cancel
+                </button>
+                <button
+                  type='submit'
+                  form='customerForm'
+                  className='cr-btn btn createcustomer_btn px-3'
+                >
+                  Create customer
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={submitHandler}
-        >
-          {({ values, handleChange }) => (
-            <Form
-              id='customerForm'
-              className='form-content'
-            >
-              <div className='col-md-12'>
-                <div className='crte-ordr'>
-                  <h3>#1391</h3>
-                  <div className='row'>
-                    <div className='col-md-6'>
-                      <div className='form-group'>
-                        <label htmlFor='name'>Name</label>
-                        <Field
-                          type='text'
-                          id='name'
-                          name='name'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='name'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={submitHandler}
+          >
+            {({ values, handleChange }) => (
+              <Form
+                id='customerForm'
+                className='form-content'
+              >
+                <div className='col-md-12'>
+                  <div className='crte-ordr'>
+                   
+                    <div className='row'>
+                      <div className='col-md-6'>
+                        <div className='form-group'>
+                          <label htmlFor='name'>Name</label>
+                          <Field
+                            type='text'
+                            id='name'
+                            name='name'
+                            className='form-control'
+                          />
+                          <ErrorMessage
+                            name='name'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
 
-                      {/* <div className='form-group'>
+                        {/* <div className='form-group'>
                         <label htmlFor='company'>Company</label>
                         <Field
                           as='select'
@@ -179,7 +181,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                         />
                       </div> */}
 
-                      <div className='form-group'>
+                        {/* <div className='form-group'>
                         <label htmlFor='orgnizationNumber'>
                           Organisation number
                         </label>
@@ -194,157 +196,169 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           component='div'
                           className='text-danger'
                         />
-                      </div>
+                      </div> */}
 
-                      <div className='form-group'>
-                        <label htmlFor='address'>Address</label>
-                        <Field
-                          type='text'
-                          id='address'
-                          name='address'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='address'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
-
-                      <div className='form-group row'>
-                        <div className='col-md-5'>
-                          <label htmlFor='zip'>Zip</label>
+                        <div className='form-group'>
+                          <label htmlFor='address'>Address</label>
                           <Field
                             type='text'
-                            id='zip'
-                            name='zip'
+                            id='address'
+                            name='address'
                             className='form-control'
                           />
                           <ErrorMessage
-                            name='zip'
+                            name='address'
                             component='div'
                             className='text-danger'
                           />
                         </div>
-                        <div className='col-md-7'>
-                          <label htmlFor='city'>City</label>
+                        <div className='form-group'>
+                          <label htmlFor='email'>Email address</label>
                           <Field
-                            type='text'
-                            id='city'
-                            name='city'
+                            type='email'
+                            id='email'
+                            name='email'
                             className='form-control'
                           />
                           <ErrorMessage
-                            name='city'
+                            name='email'
                             component='div'
                             className='text-danger'
                           />
                         </div>
-                      </div>
-                    </div>
 
-                    <div className='col-md-6'>
-                      <div className='form-group'>
-                        <label htmlFor='seller'>Seller</label>
-                        <Field
-                          as='select'
-                          id='seller'
-                          name='seller_id'
-                          className='form-control'
-                        >
-                          <option value=''>Select seller</option>
-                          {(sellers.length &&
-                            sellers.map((seller, i) => {
-                              return (
-                                <option
-                                  key={i}
-                                  value={seller.id}
-                                >
-                                  {seller.name}
-                                </option>
-                              );
-                            })) || <option>Not Available</option>}
-                        </Field>
-                        <ErrorMessage
-                          name='seller_id'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
-
-                      <div className='form-group'>
-                        <label htmlFor='contactPerson'>Contact person</label>
-                        <Field
-                          type='text'
-                          id='ContactPerson'
-                          name='contactPerson'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='contactPerson'
-                          component='div'
-                          className='text-danger'
-                        />
+                        <div className='form-group row'>
+                          <div className='col-md-5'>
+                            <label htmlFor='zip'>Zip</label>
+                            <Field
+                              type='text'
+                              id='zip'
+                              name='zip'
+                              className='form-control'
+                            />
+                            <ErrorMessage
+                              name='zip'
+                              component='div'
+                              className='text-danger'
+                            />
+                          </div>
+                          <div className='col-md-7'>
+                            <label htmlFor='city'>City</label>
+                            <Field
+                              type='text'
+                              id='city'
+                              name='city'
+                              className='form-control'
+                            />
+                            <ErrorMessage
+                              name='city'
+                              component='div'
+                              className='text-danger'
+                            />
+                          </div>
+                        </div>
                       </div>
 
-                      <div className='form-group'>
-                        <label htmlFor='phone'>Telephone number</label>
-                        <Field
-                          type='text'
-                          id='phone'
-                          name='phone'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='phone'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
+                      <div className='col-md-6'>
+                        <div className='form-group'>
+                          <label htmlFor='seller'>Seller</label>
+                          <Field
+                            as='select'
+                            id='seller'
+                            name='seller_id'
+                            className='form-control'
+                          >
+                            <option value=''>Select seller</option>
+                            {(sellers.length &&
+                              sellers.map((seller, i) => {
+                                return (
+                                  <option
+                                    key={i}
+                                    value={seller.id}
+                                  >
+                                    {seller.name}
+                                  </option>
+                                );
+                              })) || <option>Not Available</option>}
+                          </Field>
+                          <ErrorMessage
+                            name='seller_id'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
 
-                      <div className='form-group'>
-                        <label htmlFor='email'>Email address</label>
-                        <Field
-                          type='email'
-                          id='email'
-                          name='email'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='email'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
+                        <div className='form-group'>
+                          <label htmlFor='contactPerson'>Contact person</label>
+                          <Field
+                            type='text'
+                            id='ContactPerson'
+                            name='contactPerson'
+                            className='form-control'
+                          />
+                          <ErrorMessage
+                            name='contactPerson'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
 
-                      <div className='form-group'>
-                        <label htmlFor='DeliveryAddress'>
-                          Delivery address
-                        </label>
-                        <Field
-                          as='select'
-                          id='DeliveryAddress'
-                          name='DeliveryAddress'
-                          className='form-control select_arrow_input'
-                        >
-                          <option value='Same as address'>
-                            Same as address
-                          </option>
-                        </Field>
-                        <ErrorMessage
-                          name='DeliveryAddress'
-                          component='div'
-                          className='text-danger'
-                        />
+                        <div className='form-group'>
+                          <label htmlFor='phone'>Telephone number</label>
+                          <div className='d-flex'>
+                            <Field
+                              as='select'
+                              id='countryCode'
+                              name='countryCode'
+                              className='me-2 form-control'
+                              style={{ maxWidth: "70px" }}
+                            >
+                              <option value='+47'>+47</option>
+                              <option value='+46'>+46</option>
+                            </Field>
+                            <Field
+                              type='text'
+                              id='phone'
+                              name='phone'
+                              className='form-control'
+                            />
+                          </div>
+                          <ErrorMessage
+                            name='phone'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
+
+                       
+                        <div className='form-group'>
+                          <label htmlFor='DeliveryAddress'>
+                            Delivery address
+                          </label>
+                          <Field
+                            as='select'
+                            id='DeliveryAddress'
+                            name='DeliveryAddress'
+                            className='form-control select_arrow_input'
+                          >
+                            <option value='Same as address'>
+                              Same as address
+                            </option>
+                          </Field>
+                          <ErrorMessage
+                            name='DeliveryAddress'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
       </div>
     </div>
   );

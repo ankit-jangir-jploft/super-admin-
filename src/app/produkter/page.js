@@ -8,8 +8,11 @@ import { BASE_URL } from "../Utils/apiHelper";
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
+import { useTranslation } from "react-i18next";
+import SkeletonLoader from "../Components/SkeletonLoader";
 
 const page = () => {
+  const { t } = useTranslation();
   const [currentPage, setCurrent] = useState(1);
   const [pagination, setPagination] = useState();
   const [products, setProducts] = useState([]);
@@ -19,12 +22,14 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
 
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
 
   const fetchProductList = async () => {
+    setLoading(true);
     try {
       const options = {
         per_page: 10,
@@ -40,6 +45,7 @@ const page = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const onPageChange = (selected) => {
@@ -102,27 +108,33 @@ const page = () => {
     <>
       <Sidebar />
       <div className='detail-admin-main'>
-        <div className='admin-header'>
-          <h2>Products</h2>
+      {loading ? (
+        <SkeletonLoader />
+      ) : (
+        <>
+         <div className='admin-header'>
+          {/* <h2>Products</h2> */}
+          <h2>{t("products.product")}</h2>
           <div className='search-frm'>
-            <Link href={"/createproduct"}>
-              <img src='/images/add-plus.svg' />
-            </Link>
+            {roleType !== "guest" && (
+              <Link href={"/createproduct"}>
+                <img src='/images/add-plus.svg' />
+              </Link>
+            )}
             <input
               type='text'
-              placeholder='Search'
               value={searchQuery}
               onChange={(e) => {
                 setQuery(e.target.value);
               }}
             />
-            <Link href={"/"}>
+            <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height:"41px" }}
+                style={{ width: "41px", height: "41px" }}
                 src={userData?.profile_image}
                 onError={(e) => {
                   e.target.src = "/images/avatar-style.png";
@@ -136,24 +148,29 @@ const page = () => {
             <table>
               <thead>
                 <tr>
-                  <th>
-                    <input
-                      type='checkbox'
-                      checked={selectedProducts.length === products.length}
-                      onChange={handleSelectAll}
-                    />
-                  </th>
-                  <th>Product #</th>
-                  <th>Image</th>
-                  <th>Product name</th>
-                  <th>Location</th>
-                  <th>Stock</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Category</th>
-                  <th>Sub category</th>
-                  <th>Created</th>
-                  <th>View</th>
+                  <th>{t("products.mark")}</th>
+                  {/* <th>Product #</th> */}
+                  <th>{t("products.product")}#</th>
+                  {/* <th>Image</th> */}
+                  <th>{t("products.image")}</th>
+                  {/* <th>Product name</th> */}
+                  <th>{t("products.product_name")}</th>
+                  {/* <th>Location</th> */}
+                  <th>{t("products.location")}</th>
+                  {/* <th>Stock</th> */}
+                  <th>{t("products.stock")}</th>
+                  {/* <th>Price</th> */}
+                  <th>{t("products.price")}</th>
+                  {/* <th>Status</th> */}
+                  <th>{t("products.status")}</th>
+                  {/* <th>Category</th> */}
+                  <th>{t("products.category")}</th>
+                  {/* <th>Sub category</th> */}
+                  <th>{t("products.sub_category")}</th>
+                  {/* <th>Created</th> */}
+                  <th>{t("products.created")}</th>
+                  {/* <th>View</th> */}
+                  <th>{t("products.view")}</th>
                   {roleType !== "guest" && <th>Edit</th>}
                 </tr>
               </thead>
@@ -183,7 +200,10 @@ const page = () => {
                       <td>{product?.name}</td>
                       <td>{product?.wareHouseLocation || "N/A"}</td>
                       <td>{product?.quantity || "N/A"} stk</td>
-                      <td>{product?.price || "N/A"}</td>
+                      <td>
+                        {product?.price}
+                        {product?.price == 0 ? "" : ",-"}
+                      </td>
                       <td>
                         <button
                           className={`status ${
@@ -240,8 +260,10 @@ const page = () => {
                   setAction(e.target.value);
                 }}
               >
-                <option value={""}>Mass action</option>
-                <option value={"delete"}>Delete</option>
+                {/* <option value={""}>Mass action</option> */}
+                <option value={""}>{t("products.mass_action")}</option>
+                {/* <option value={"delete"}>Delete</option> */}
+                <option value={"delete"}>{t("products.delete")}</option>
               </select>
               {action && (
                 <button
@@ -271,7 +293,10 @@ const page = () => {
             paginationData={pagination}
           />
         </div>
-      </div>
+        </>
+       
+      )}
+     </div>
     </>
   );
 };

@@ -12,8 +12,11 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CreateCustomerModal from "../modals/createcustomer";
 import { Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const page = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [checked, setChecked] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
@@ -22,19 +25,28 @@ const page = () => {
   const [productCount, setProductCount] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState({});
   const [allAddress, setAllAddress] = useState([]);
+  const [allDeliveryAddress, setAllDeliveryAddress] = useState([]);
   const [comments, setComments] = useState("");
   const [orderedBy, setOrderedBy] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
+  const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState("");
   const [orderConfirm, setOrderConfirm] = useState(0);
   const [errors, setErrors] = useState({});
   const [adminManagers, setAdminManagers] = useState([]);
-
+  const [confirmationEmail, setConfirmationEmail] = useState("");
   const [showCreateCustomer, setCreate] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState({});
 
   const radios = [
-    { name: "No", value: 0 },
-    { name: "Yes", value: 1 },
+    { name: t("order_create.no"), value: 0 },
+    { name: t("order_create.yes"), value: 1 },
   ];
+
+  const validateEmail = (email) => {
+    // Simple regex for basic email validation
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const validateFields = () => {
     const newErrors = {};
@@ -42,9 +54,16 @@ const page = () => {
       newErrors.selectedCustomer = "Customer is required.";
     if (!orderedBy) newErrors.orderedBy = "Ordered by is required.";
     if (!selectedAddress)
-      newErrors.selectedAddress = "Delivery address is required.";
-    if (!orderConfirm)
-      newErrors.orderConfirm = "Order confirmation is required.";
+      newErrors.selectedAddress = "Customer address is required.";
+    if (!selectedDeliveryAddress)
+      newErrors.selectedDeliveryAddress =
+        "Customer delivery address is required.";
+
+    if (!confirmationEmail || !validateEmail(confirmationEmail))
+      newErrors.confirmationEmail = "A valid email is required.";
+
+    // if (!orderConfirm)
+    //   newErrors.orderConfirm = "Order confirmation is required.";
     if (productCount.length === 0) {
       toast.dismiss();
       toast.error("At least one product must be selected.");
@@ -88,7 +107,6 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/userAddressList`, options);
 
       if (res?.data?.status) {
-        console.log("res?.data.data", res?.data.data);
         setAllAddress(res.data?.data);
       } else {
         setAllAddress([]);
@@ -97,6 +115,27 @@ const page = () => {
       console.log(error);
     }
   };
+
+  const fetchDeliveryAddress = async () => {
+    try {
+      const options = {
+        per_page: 20,
+        customer_id: selectedCustomer?.id,
+      };
+      const res = await GET(
+        `${BASE_URL}/api/admin/userAddressDeliveryList`,
+        options
+      );
+      if (res?.data?.status) {
+        setAllDeliveryAddress(res.data?.data);
+      } else {
+        setAllDeliveryAddress([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchProductList = async () => {
     try {
       const options = {
@@ -138,24 +177,30 @@ const page = () => {
   };
 
   useEffect(() => {
+    const userDetails = JSON.parse(Cookies.get("user"));
+
+    setLoggedInUser(userDetails);
+    setOrderedBy(userDetails?.id);
     fetchCustomers();
     fetchProductList();
     fetchAddress();
     fetchAdminManater();
+    fetchDeliveryAddress();
   }, [selectedCustomer]);
 
   const submitHandler = async () => {
     if (!validateFields()) {
-      toast.error("Validations failed!");
       return;
     }
 
     const data = {
       user_id: selectedCustomer.id,
       delivery_address_id: selectedAddress,
+      customer_delivery_address_id: selectedDeliveryAddress,
       order_confirm: orderConfirm,
       order_by_user_id: orderedBy,
       comment: comments,
+      confirmation_email: confirmationEmail,
       items: productCount.map((prd) => {
         prd.product_id = prd.id;
         return prd;
@@ -176,19 +221,20 @@ const page = () => {
         <div className='admin-header'>
           {/* <h2>Create order</h2> */}
           <div className='d-flex justify-content-between w-100 align-items-center flex-wrap'>
-            <h2>Create order</h2>
+            {/* <h2>Create order</h2> */}
+            <h2>{t("order_create.create_order")}</h2>
             <div className='bot-btn'>
               <Link
                 href={"/order"}
                 className='can-btn'
               >
-                Cancel
+                {t("order_create.cancel")}
               </Link>
               <button
                 className='cr-btn btn createorder_top_right'
                 onClick={submitHandler}
               >
-                Create order
+                {t("order_create.create_order")}
               </button>
             </div>
           </div>
@@ -197,12 +243,12 @@ const page = () => {
         <div className='row'>
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
-              <h3>#10332</h3>
               <div className='row'>
                 <div className='col-md-6'>
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      <Form.Label>Customer</Form.Label>
+                      {/* <Form.Label>Customer</Form.Label> */}
+                      <Form.Label>{t("order_create.customer")}</Form.Label>
                       <Form.Select
                         value={selectedCustomer.id || ""}
                         onChange={(e) => {
@@ -211,12 +257,16 @@ const page = () => {
                             (custm) => custm.id == selectedId
                           );
                           console.log(customer);
+                          setConfirmationEmail(customer?.email);
                           setSelectedCustomer(customer || {});
                           fetchAddress();
                         }}
                         isInvalid={!!errors.selectedCustomer}
                       >
                         <option value=''>Select customer</option>
+                        {/* <option value=''>
+                          {t("order_create.select_customer")}
+                        </option> */}
                         {customers.length > 0 ? (
                           customers.map((custm) => (
                             <option
@@ -243,7 +293,8 @@ const page = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-3'>
-                    <Form.Label>Ordered by</Form.Label>
+                    {/* <Form.Label>Ordered by</Form.Label> */}
+                    <Form.Label>{t("order_create.ordered_by")}</Form.Label>
                     <Form.Select
                       value={orderedBy}
                       onChange={(e) => {
@@ -252,6 +303,10 @@ const page = () => {
                       isInvalid={!!errors.orderedBy}
                     >
                       <option value=''>Select ordered by</option>
+                      <option value={loggedInUser?.id}>
+                        {loggedInUser?.name}
+                      </option>
+                      {/* 
                       {adminManagers?.length &&
                         adminManagers?.map((admin) => {
                           return (
@@ -262,14 +317,17 @@ const page = () => {
                               {admin.name}
                             </option>
                           );
-                        })}
+                        })} */}
                     </Form.Select>
                     <Form.Control.Feedback type='invalid'>
                       {errors.orderedBy}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Delivery address</Form.Label>
+                    {/* <Form.Label>Delivery address</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.customer_address")}
+                    </Form.Label>
                     <Form.Select
                       value={selectedAddress}
                       onChange={(e) => setSelectedAddress(e.target.value)}
@@ -293,10 +351,43 @@ const page = () => {
                       {errors.selectedAddress}
                     </Form.Control.Feedback>
                   </Form.Group>
+                  <Form.Group className='mb-3'>
+                    {/* <Form.Label>Delivery address</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.customer_delivery_address")}
+                    </Form.Label>
+                    <Form.Select
+                      value={selectedDeliveryAddress}
+                      onChange={(e) =>
+                        setSelectedDeliveryAddress(e.target.value)
+                      }
+                      isInvalid={!!errors.selectedDeliveryAddress}
+                    >
+                      <option value={""}>Customers address</option>
+                      {allDeliveryAddress.length &&
+                        allDeliveryAddress.map((address) => {
+                          return (
+                            <option
+                              key={address.id}
+                              id={address.id}
+                              value={address.id}
+                            >
+                              {address.address}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.selectedDeliveryAddress}
+                    </Form.Control.Feedback>
+                  </Form.Group>
                 </div>
                 <div className='col-md-6'>
                   <div className='swtch-bt'>
-                    <Form.Label>Order confirmation</Form.Label>
+                    {/* <Form.Label>Order confirmation</Form.Label> */}
+                    <Form.Label>
+                      {t("order_create.order_confirmation")}
+                    </Form.Label>
                     <ButtonGroup>
                       {radios.map((radio, idx) => (
                         <ToggleButton
@@ -319,13 +410,22 @@ const page = () => {
                     </ButtonGroup>
                   </div>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Send order confirmation to</Form.Label>
-                    <Form.Control value={selectedCustomer.email}>
-                      {/* <option>kari.nordmann@mail.com</option> */}
-                    </Form.Control>
+                    <Form.Label>
+                      {t("order_create.send_order_confirmation_to")}
+                    </Form.Label>
+                    <Form.Control
+                      type='email'
+                      value={confirmationEmail}
+                      onChange={(e) => setConfirmationEmail(e.target.value)} // Update email state on change
+                      isInvalid={!!errors.confirmationEmail} // Validate and show error if any
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.confirmationEmail}
+                    </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className='mb-3'>
-                    <Form.Label>Comment</Form.Label>
+                    {/* <Form.Label>Comment</Form.Label> */}
+                    <Form.Label>{t("order_create.comment")}</Form.Label>
                     <Form.Control
                       value={comments}
                       onChange={(e) => setComments(e.target.value)}
@@ -333,7 +433,8 @@ const page = () => {
                   </Form.Group>
                 </div>
               </div>
-              <h5 className='mt-3'>Products</h5>
+              {/* <h5 className='mt-3'>Products</h5> */}
+              <h5>{t("order_create.products")}</h5>
               <div className='row'>
                 {products.length > 0 &&
                   products.map((prod, i) => {
@@ -357,9 +458,7 @@ const page = () => {
                           />
 
                           <h4>{prod.name}</h4>
-                          <span>
-                            {prod?.quantity} stk - Price {prod?.price},-
-                          </span>
+                          <span>Price {prod?.price},-</span>
                           {item ? (
                             <div className='prdct-plmn'>
                               <button onClick={() => decrementCount(prod.id)}>
@@ -379,7 +478,7 @@ const page = () => {
                                 src='/images/bag.svg'
                                 alt='Add to cart'
                               />{" "}
-                              ADD
+                              {t("order_create.add")}
                             </button>
                           )}
                         </div>

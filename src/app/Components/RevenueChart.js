@@ -1,52 +1,68 @@
 "use client";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
-const RevenueChart = ({ options, series}) => {
+const RevenueChart = ({ donutChart }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
-    // Update the chart percentages
-    const updateChart = (percentage1, percentage2) => {
-      const circle = document.querySelector('.circle');
-      if (circle) {
-        circle.setAttribute('stroke-dasharray', `${percentage1}, ${100 - percentage1}`);
-      }
-      // Update value labels
-      const valueLeft = document.querySelector('.value-left');
-      const valueRight = document.querySelector('.value-right');
-      if (valueLeft) valueLeft.innerText = `${percentage1}%`;
-      if (valueRight) valueRight.innerText = `${percentage2}%`;
-    };
+    if (donutChart.length >= 2) {
+      const [value1, value2] = donutChart.map(Number);
 
-    updateChart(35, 65);
-  }, []);
+      const total = value1 + value2;
+      const percentage1 = (value1 / total) * 100;
+      const percentage2 = (value2 / total) * 100;
+
+      console.log("percentage1", percentage1);
+      console.log("percentage2", percentage2);
+
+      // Update stroke-dasharray dynamically
+      const circle = document.querySelector(".circle");
+      if (circle) {
+        const strokeDasharray = `${percentage2} ${100 - percentage2}`;
+        circle.setAttribute("stroke-dasharray", strokeDasharray);
+      }
+
+      // Update value labels
+      const valueLeft = document.querySelector(".value-left");
+      const valueRight = document.querySelector(".value-right");
+      if (valueLeft) valueLeft.innerText = `${percentage2.toFixed(2)}%`;
+      if (valueRight) valueRight.innerText = `${percentage1.toFixed(2)}%`;
+    } else {
+      console.warn("donutChart data is insufficient to update the chart.");
+    }
+  }, [donutChart]); // Re-run effect whenever donutChart changes.
 
   return (
-    <div >
-     
-      <div className="chart">
-        <svg viewBox="-1 -3 47 48" className="circular-chart">
-          <path
-            className="circle-bg"
-            d="M21 2
-              a 19 19 0 0 1 0 38
-              a 19 19 0 0 1 0 -38"
+    <div>
+      <div className='chart'>
+        <svg
+          viewBox='0 0 42 42'
+          className='circular-chart'
+        >
+          <circle
+            className='circle-bg'
+            cx='21'
+            cy='21'
+            r='15.915'
           />
-          <path
-            className="circle"
-            strokeDasharray="50, 50"
-            d="M21 2
-              a 19 19 0 0 1 0 38
-              a 19 19 0 0 1 0 -38"
+          <circle
+            className='circle'
+            cx='21'
+            cy='21'
+            r='15.915'
+            strokeDasharray='0 100'
           />
         </svg>
-        <div className="value-label value-left">50%</div>
-        <div className="value-label value-right">50%</div>
+        <div className='value-label value-left'>0%</div>
+        <div className='value-label value-right'>0%</div>
       </div>
-      <div className="legend">
+      <div className='legend'>
         <span>
-          <span className="legend-circle sales"></span> Sales
+          <span className='legend-circle sales'></span> {t("dashboard.sales")}
         </span>
         <span>
-          <span className="legend-circle profit"></span> Profit
+          <span className='legend-circle profit'></span> {t("dashboard.profit")}
         </span>
       </div>
     </div>

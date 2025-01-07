@@ -1,10 +1,12 @@
 "use client";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // Import the useRouter hook
+import { useParams, usePathname, useRouter } from "next/navigation"; // Import the useRouter hook
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
   const [isActive, setIsActive] = useState(false);
   const [smallsidebar, setSmallSidebar] = useState(false);
   const [imagePath, setImagePath] = useState("/images/menu.svg");
@@ -33,50 +35,63 @@ const Sidebar = () => {
     return null;
   }
 
-  let menuItems = []
+  let menuItems = [];
 
   if (roleType === "seller") {
     menuItems = [
-      { href: "/", icon: "/images/home.svg", label: "Dashboard" },
-      { href: "/order", icon: "/images/order.svg", label: "Orders" },
-      { href: "/kunder", icon: "/images/customers.svg", label: "Customers" },
+      { href: "/", icon: "/images/home.svg", label: t("sidebar.dashboard") },
+      { href: "/order", icon: "/images/order.svg", label: t("sidebar.orders") },
+      {
+        href: "/kunder",
+        icon: "/images/customers.svg",
+        label: t("sidebar.customers"),
+      },
       {
         href: "/dugnader",
         icon: "/images/shopping-bag.svg",
-        label: "Dugnad campaigns",
+        label: t("sidebar.dugnad_compaigns"),
       },
       {
         href: "/statistics",
         icon: "/images/statistikk.svg",
-        label: "Statistics",
+        label: t("sidebar.statistics"),
       },
-    ]
-  } else if (roleType === "superadmin" || roleType === 'guest') {
-    menuItems = [
-      { href: "/", icon: "/images/home.svg", label: "Dashboard" },
-      { href: "/order", icon: "/images/order.svg", label: "Orders" },
-      { href: "/kunder", icon: "/images/customers.svg", label: "Customers" },
-      { href: "/produkter", icon: "/images/product.svg", label: "Products" },
-      {
-        href: "/dugnader",
-        icon: "/images/shopping-bag.svg",
-        label: "Dugnad campaigns",
-      },
-      {
-        href: "/statistics",
-        icon: "/images/statistikk.svg",
-        label: "Statistics",
-      },
-      { href: "/settings", icon: "/images/settings.svg", label: "Settings" },
     ];
-  } else if (roleType === 'warehouse') {
+  } else if (roleType === "administrator" || roleType === "guest") {
     menuItems = [
-      { href: "/order", icon: "/images/order.svg", label: "Orders" }
+      { href: "/", icon: "/images/home.svg", label: t("sidebar.dashboard") },
+      { href: "/order", icon: "/images/order.svg", label: t("sidebar.orders") },
+      {
+        href: "/kunder",
+        icon: "/images/customers.svg",
+        label: t("sidebar.customers"),
+      },
+      {
+        href: "/produkter",
+        icon: "/images/product.svg",
+        label: t("sidebar.products"),
+      },
+      {
+        href: "/dugnader",
+        icon: "/images/shopping-bag.svg",
+        label: t("sidebar.dugnad_compaigns"),
+      },
+      {
+        href: "/statistics",
+        icon: "/images/statistikk.svg",
+        label: t("sidebar.statistics"),
+      },
+      {
+        href: "/settings",
+        icon: "/images/settings.svg",
+        label: t("sidebar.settings"),
+      },
+    ];
+  } else if (roleType === "warehouse") {
+    menuItems = [
+      { href: "/order", icon: "/images/order.svg", label: t("sidebar.orders") },
     ];
   }
-
-
-
 
   return (
     <div
@@ -84,8 +99,8 @@ const Sidebar = () => {
         isActive
           ? "active sidebar-admin"
           : smallsidebar
-            ? "small-sidebar sidebar-admin"
-            : "sidebar-admin"
+          ? "small-sidebar sidebar-admin"
+          : "sidebar-admin"
       }
     >
       <span
@@ -143,7 +158,6 @@ const Sidebar = () => {
       </ul>
       <button
         className='logout-btn btn'
-        href=''
         onClick={() => {
           Cookies.remove("dugnadstisadmin");
           window.location.href = "/login";
@@ -153,7 +167,7 @@ const Sidebar = () => {
           src='/images/logout.svg'
           alt='Logout'
         />{" "}
-        Logout
+        {t("sidebar.logout")}
       </button>
     </div>
   );

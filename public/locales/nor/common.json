@@ -6,7 +6,8 @@
     "forgot_password": "Glemt passord?",
     "log_in": "Logg inn",
     "or": "eller",
-    "continue_with_vipps": "Fortsett med Vipps"
+    "continue_with_vipps": "Fortsett med Vipps",
+    "all_rights_reserved": "Alle rettigheter reservert"
   },
   "sidebar": {
     "dashboard": "Dashbord",
@@ -63,7 +64,8 @@
     "year_to_date": "År til dato",
     "groups": "Grupper",
     "sales_against_budget": "Salg mot budsjett",
-    "sales": "Salg"
+    "sales": "Salg",
+    "name": "Navn"
   },
 
   "external_page": {
@@ -86,28 +88,29 @@
     "sales": "Salg"
   },
   "picklist": {
-    "plukkliste": "PLUKKLISTE",
-    "leveringadresse": "leveringadresse",
+    "picking_list": "PLUKKLISTE",
+    "delivery_address": "leveringadresse",
     "faktureringsadresse": "Faktureringsadresse",
-    "ordrenummer:": "Ordrenummer:",
-    "leveringsmåte:": "Leveringsmåte:",
-    "ordredato:": "Ordredato:",
-    "kunde.nr:": "Kunde.nr:",
-    "telefon:": "Telefon:",
-    "e-post:": "E-post:",
-    "selger:": "Selger:",
+    "ordrenummer": "Ordrenummer",
+    "leveringsmate": "Leveringsmåte",
+    "ordredato": "Ordredato",
+    "kunde_nr": "Kunde.nr",
+    "telefon": "Telefon",
+    "e_post": "E-post",
+    "selger": "Selger",
     "pakket": "Pakket",
     "antall": "Antall",
     "produkt": "Produkt",
-    "art. nr": "Art. nr",
+    "art_nr": "Art. nr",
     "lokasjon": "Lokasjon"
   },
   "orders": {
+    "orders": "Ordre",
     "mark": "Merknad",
     "ordernumber": "Ordrenummer",
     "date": "Dato",
     "ordered_by": "Bestillt av",
-    "ordered_for/from": "Bestillt for",
+    "ordered_for": "Bestillt for",
     "status": "Status",
     "origin": "Opprinnelse",
     "items": "Varer",
@@ -124,16 +127,18 @@
     "delete": "Slett"
   },
   "order_details": {
+    "orders": "Ordre",
     "search": "Søk",
     "pick_list": "Plukkliste",
     "salesoverview": "Salgsoversikt",
     "package_slip": "Fraktlapp",
     "ready_to_picking": "Klar for plukking",
+    "create_shipping_label": "Opprett fraktlapp",
     "note": "Notat",
     "customer": "Kunde",
     "kari_nordmann": "Kari Mordmann",
-    "seiger": "Seiger",
-    "ordre": "Ordre",
+    "seller": "Seiger",
+    "order": "Ordre",
     "total": "Total",
     "see_contact": "Se kunde",
     "invoice": "Faktura",
@@ -148,9 +153,9 @@
     "cost": "Pris",
     "quantity": "Antall",
     "gratis_frakt": "Gratis_frakt",
-    "products_sum:": "Produkt sum:",
-    "shipping_&_Handling": "Frakt & håndtering:",
-    "order_total": "Ordre total:"
+    "products_sum": "Produkt sum",
+    "shipping_&_Handling": "Frakt & håndtering",
+    "order_total": "Ordre total"
   },
   "order_create": {
     "create_order": "Opprett ordre",
@@ -158,6 +163,7 @@
     "customer": "Kunde",
     "ordered_by": "Bestillt av",
     "delivery_address": "Leveringsadresse",
+    "customer_delivery_address": "Kunde Leveringsadresse",
     "customer_address": "Kundens adresse",
     "order_confirmation": "Ordrebekreftelse",
     "send_order_confirmation_to": "Send ordrebekreftelse til",
@@ -165,8 +171,9 @@
     "comment": "Kommentar",
     "products": "Produkter",
     "add": "Legg til",
-    "no": "Nei",
-    "yes": "Ja"
+    "no": "NO",
+    "yes": "SE",
+    "other": "Annen"
   },
   "orders_dropdown": {
     "orders": "Ordre",
@@ -195,13 +202,13 @@
     "abc_idrettsklubb_j16": "ABC Idrettsklubb J16"
   },
   "customers": {
-    "cutomers": "Kunder",
+    "customers": "Kunder",
     "mark": "Merknad",
     "id": "ID",
     "added": "Lagt til",
     "dugnadsgroup": "Dugnadsgruppe",
     "contact_person": "Kontaktperson",
-    "emailaddress": "Epostadresse",
+    "email_address": "Epostadresse",
     "telephone": "Telefonnummer",
     "status": "Status",
     "lead": "Lead",
@@ -210,6 +217,7 @@
     "seller": "Selger",
     "view": "Se",
     "mass_action": "Masse-handling",
+    "name": "Navn",
     "showing": "Viser ",
     "elements": "elementer",
     "of": "av",
@@ -243,13 +251,24 @@
     "turnover": "Omsetning",
     "profit": "Profitt",
     "total_sum:": "Total sum:",
-    "tags": "Tags"
+    "tags": "Tags",
+    "created": "Opprettet",
+    "sold_till_now": "Solgt til nå",
+    "sellers_registered": "Selgere registrert",
+    "past_orders": "Tidligere ordre",
+    "no_of_items": "Antall varer"
   },
   "customers_create": {
     "create_customer": "Opprett kunde",
+    "update_customer": "Oppdater kunde",
+    "new_address": "Ny Adresse",
+    "custom": "Tilpasset",
+    "new_zip": "Nytt Postnummer",
+    "new_city": "Ny By",
+    "same_as_address": "Samme som adresse",
     "cancel": "Avbryt",
     "country": "Land",
-    "se": "SE",
+    "yes": "SE",
     "no": "NO",
     "seller": "Selger",
     "name": "Navn",
@@ -261,16 +280,19 @@
     "address": "Adresse",
     "delivery_address": "Leveringsadresse",
     "zip": "Postnr",
-    "city": "Poststed"
+    "city": "Poststed",
+    "select_seller": "Velg Selger",
+    "other": "Annen"
   },
   "create_task": {
     "create_a_task": "Opprett oppgave",
     "task_name": "Tittel",
-    "start_time:": "Start tid",
+    "start_time": "Start tid",
     "end_time": "Slutt tid",
     "created_by": "Opprettet av",
     "task_description": "Beskrivelse",
-    "create_task": "Opprett"
+    "create_task": "Opprett",
+    "creating": "Opprette..."
   },
   "products": {
     "mark": "Merknad",
@@ -293,7 +315,7 @@
     "confirm": "Bekreft",
     "delete": "Slett"
   },
-  "products-detail": {
+  "products_detail": {
     "general": "Generelt",
     "pricing": "Priser",
     "dimensions": "Dimensjoner",
@@ -304,7 +326,30 @@
     "meta_description": "Meta beskrivelse",
     "keywords": "Nøkkelord",
     "related_products": "Relaterte produkter",
-    "add_an_internal_note": "Legg til en intern notat"
+    "add_an_internal_note": "Legg til en intern notat",
+    "display": "Visning",
+    "visible_in_online_stores": "Synlig i nettbutikker",
+    "visible_in_product_gallery": "Synlig i produktgalleriet",
+    "warehouse_location": "Lagerlokasjon",
+    "stock_keep": "Beholdning",
+    "quantity_in_stock": "Antall på lager",
+    "category": "Kategori",
+    "sub_category": "Underkategori",
+    "gtin_ean": "GTIN / EAN",
+    "menu_order": "Menyrekkefølge",
+    "created_at": "Opprettet",
+    "updated_at": "Oppdatert",
+    "yes": "Ja",
+    "no": "Nei",
+    "price": "Pris",
+    "sales_price": "Salgspris",
+    "special_price": "Spesialpris",
+    "vat": "MVA",
+    "vat_class": "MVA-klasse",
+    "length": "Lengde",
+    "width": "Bredde",
+    "depth": "Dybde",
+    "weight": "Vekt"
   },
   "create_product": {
     "english": "Engelsk",
@@ -313,7 +358,7 @@
     "productnumber": "Produktnummer",
     "product_name": "Produktnavn",
     "visible_in_online_store": "Synlig i nettbutikk",
-    "visible_in_productgallery (landing page)": "Synlig i produktgalleri (landingsside)",
+    "visible_in_product_gallery_landing_page": "Synlig i produktgalleri (landingsside)",
     "visible_in_shop_direkte": "Synlig for direktesalg",
     "category": "Kategori",
     "display": "Visning",
@@ -331,13 +376,14 @@
     "depth": "Dybde (cm)",
     "short_description": "Kort beskrivelse",
     "weight": "Vekt (g)",
-    "gtin/ean": "GTIN / EAN",
+    "gtin_ean": "GTIN / EAN",
     "menu_order": "Meny rekkefølge",
     "keywords": "Nøkkelord",
     "related_products": "Relaterte produkter",
     "product_description": "Produkt beskrivelse",
     "my_page_description": "Mine-sider beskrivelse",
-    "meta_description": "Meta beskrivelse"
+    "meta_description": "Meta beskrivelse",
+    "categories": "kategorier"
   },
   "update_product": {
     "english": "Engelsk",
@@ -348,7 +394,7 @@
     "cancel": "Avbryt",
     "update_product": "Oppdater produkt",
     "visible_in_online_store": "Synlig i nettbutikk",
-    "visible_in_productgallery (landing page)": "Synlig i produktgalleri (landingsside)",
+    "visible_in_product_gallery_landing_page": "Synlig i produktgalleri (landingsside)",
     "display": "Visning",
     "shown_for_group": "Vises for gruppe",
     "warehouse_location": "Lager lokasjon",
@@ -364,7 +410,7 @@
     "depth": "Dybde (cm)",
     "short_description": "Kort beskrivelse",
     "weight": "Vekt (g)",
-    "gtin_/_ean": "GTIN / EAN",
+    "gtin_ean": "GTIN / EAN",
     "menu_order": "Meny rekkefølge",
     "product_description": "Produkt beskrivelse",
     "keywords": "Nøkkelord",
@@ -373,6 +419,7 @@
     "meta_description": "Meta beskrivelse"
   },
   "dugnader": {
+    "dugnader": "Dugnader",
     "search": "Søk",
     "start_date": "Start dato",
     "end_date": "Slutt dato",
@@ -392,20 +439,28 @@
     "of": "av"
   },
   "settings": {
+    "settings": "Innstillinger",
+    "generals": "Generelt",
+    "dugnads_setting": "Dugnadsinnstillinger",
+    "frontpage_setting": "Forsideinnstillinger",
+    "userss": "Brukere",
     "general": {
       "search": "Søk",
       "general": "Generelt",
       "dugnadsettings": "Dugnadsinnstillinger",
       "frontpage_settings": "Forside innstillinger",
       "users": "Brukere",
-      "automatically_unpublish_items_in_the_online_store_with_less_than_100_pieces_in_stock": "Automatisk fjern visning av varer i nettbutikken med mindre enn 100 stykker på lager",
+      "automatically_unpublish": "Automatisk fjern visning av varer i nettbutikken med mindre enn 100 stykker på lager",
       "budget": "Budsjett",
       "create_product": "Opprett produkt",
       "default_vat_class": "Standard MVA-klasse",
       "english": "Engelsk",
       "terms_of_purchase": "Kjøpsvilkår",
       "title": "Tittel",
-      "text": "Tekst"
+      "text": "Tekst",
+      "language": "Språk",
+      "update_settings": "Oppdater innstillinger",
+      "create_settings": "Opprett innstillinger"
     },
     "dugnadssettings": {
       "search": "Søk",
@@ -415,7 +470,7 @@
       "users": "Brukere",
       "dugnadssetting": "Dugnadsinnstilling",
       "english": "Engelsk",
-      "default_text_when_sahring_in_social_media": "Standardtekst ved deling i sosiale medier",
+      "default_text": "Standardtekst ved deling i sosiale medier",
       "default_image_when_sharing_in_social_media": "Standardbilde ved deling i sosiale medier",
       "frequently_asked_questions": "Ofte stilte spørsmål",
       "question": "Spørsmål 1",
@@ -435,21 +490,23 @@
         "status": "Status",
         "type": "Type",
         "email": "Epost",
-        "create_user": "Opprett bruker"
+        "create_user": "Opprett bruker",
+        "profile": "Profil"
       },
       "create": {
         "users": "Brukere",
-        "edit_photo": "Rediger bilde",
+        "add_photo": "Legg til bilde",
         "name": "Navn",
         "email": "Epost",
         "user_type": "Brukertype",
         "status": "Status",
         "language": "Språk",
-        "appeearance": "Tema",
+        "appearance": "Tema",
         "light": "Lyst",
         "dark": "Mørkt",
         "delete_user": "Slett bruker",
-        "save": "Lagre"
+        "save": "Lagre",
+        "update": "Oppdater"
       }
     },
     "frontpage_settings": {
@@ -462,7 +519,22 @@
       "header_description": "Header beskrivelse",
       "header_button_label": "Header knapptekst",
       "header_button_link": "Header knapp link",
-      "save": "Lagre"
+      "save": "Lagre",
+      "drag_drop_or": "Dra og slipp eller",
+      "choose_file": "velg fil",
+      "to_upload": "for å laste opp"
     }
+  },
+  "order_more": {
+    "product": "Produkt",
+    "seller": "Selger",
+    "cost": "Kostnad",
+    "quantity": "Antall",
+    "total": "Totalt"
+  },
+  "paginate": {
+    "showing": "Viser",
+    "elements": "elementer",
+    "of": "av"
   }
 }

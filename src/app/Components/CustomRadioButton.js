@@ -1,33 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const CustomRadioButton = () => {
-  const [selectedOption, setSelectedOption] = useState("");
+const CustomInputText = ({ months, setMonth }) => {
+  // Initialize state with the provided months or default empty values
+  const [monthValues, setMonthValues] = useState({
+    January: "",
+    February: "",
+    March: "",
+    April: "",
+    May: "",
+    June: "",
+    July: "",
+    August: "",
+    September: "",
+    October: "",
+    November: "",
+    December: "",
+  });
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  // Update state when the `months` prop changes
+  useEffect(() => {
+    setMonthValues((prevValues) => ({
+      ...prevValues,
+      ...months, // Merge incoming values with the current state
+    }));
+  }, [months]);
+
+  // Handle input change
+  const handleInputChange = (event, month) => {
+    const value = event.target.value;
+    setMonthValues((prevValues) => ({
+      ...prevValues,
+      [month]: value,
+    }));
+    setMonth((prev) => ({ ...prev, [month]: value }));
   };
 
   return (
-    <div className="radio-container budget_box">
-        
-      {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((month) => (
-        <label
+    <div className='input-container budget_box'>
+      {Object.keys(monthValues).map((month) => (
+        <div
           key={month}
-          className={`radio-label ${selectedOption === month ? "selected" : ""}`}
+          className='month-input'
         >
+          <label className='input-label'>{month}</label>
           <input
-            type="radio"
-            name="month"
-            value={month}
-            className="radio-input"
-            checked={selectedOption === month}
-            onChange={handleOptionChange}
+            type='text'
+            name={month}
+            value={monthValues[month]}
+            className='input-text'
+            onChange={(event) => handleInputChange(event, month)}
           />
-          {month}
-        </label>
+        </div>
       ))}
     </div>
   );
 };
 
-export default CustomRadioButton;
+export default CustomInputText;

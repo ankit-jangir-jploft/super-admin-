@@ -2,20 +2,22 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Sidebar from "../Components/Sidebar/Sidebar";
+import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
-import { GET, POST } from "../Utils/apiFunctions";
-import { BASE_URL } from "../Utils/apiHelper";
+import { GET, POST } from "@/app/Utils/apiFunctions";
+import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const page = () => {
+const page = ({ params }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [sellers, setSellers] = useState([]);
+  const { id } = params;
+  const [sellers, setSeller] = useState([]);
   const [orderConfirm, setOrderConfirm] = useState(0);
+  const [initialValues, setValues] = useState({});
   const [customAddress, setCustomAddress] = useState("");
   const [isCustom, setIsCustom] = useState(false);
 
@@ -23,15 +25,48 @@ const page = () => {
     try {
       const res = await GET(`${BASE_URL}/api/admin/roleSellerList`);
       if (res?.data?.status) {
-        setSellers(res?.data?.data);
+        setSeller(res?.data?.data);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
+  const fetchCustomerDetails = async () => {
+    try {
+      const options = {
+        id: id,
+      };
+      const res = await GET(
+        `${BASE_URL}/api/admin/customerDetailShow`,
+        options
+      );
+
+      if (res?.data?.status) {
+        setValues({
+          name: res.data?.data?.name,
+          address: res.data?.data?.address,
+          zip: res.data?.data?.zip,
+          city: res.data?.data?.city,
+          seller_id: res.data?.data?.seller_id,
+          contactPerson: res.data?.data?.contactPerson,
+          phone: res.data?.data?.phone,
+          email: res.data?.data?.email,
+          DeliveryAddress: res.data?.data?.DeliveryAddress,
+          countryCode: res.data?.data?.countryCode,
+          country: res.data?.data?.country || 0,
+          customZip: res.data?.data?.customZip,
+          customCity: res.data?.data?.customCity,
+          customAddress: res.data?.data?.customAddress,
+        });
+        setOrderConfirm(res.data?.data?.country || 0);
+        setIsCustom(res.data?.data?.DeliveryAddress === "Custom");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchSellers();
+    fetchCustomerDetails();
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -49,59 +84,20 @@ const page = () => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email address is required"),
-    // customZip: Yup.string()
-    //   .matches(/^\d+$/, "Custom Zip must be a number")
-    //   .when("DeliveryAddress", {
-    //     is: "Custom",
-    //     then: Yup.string().required("Custom Zip is required"),
-    //   }),
-    // customCity: Yup.string().when("DeliveryAddress", {
-    //   is: "Custom",
-    //   then: Yup.string().required("Custom City is required"),
-    // }),
-    // customAddress: Yup.string().when("DeliveryAddress", {
-    //   is: "Custom",
-    //   then: Yup.string().required("Custom Address is required"),
-    // }),
+    // DeliveryAddress: Yup.string().required("Delivery address is required"),
   });
 
-  const initialValues = {
-    name: "",
-    address: "",
-    zip: "",
-    city: "",
-    seller_id: "",
-    contactPerson: "",
-    phone: "",
-    email: "",
-    DeliveryAddress: "Same as address",
-    countryCode: "+47",
-    country: 0,
-    customZip: "",
-    customCity: "",
-    customAddress: "",
-  };
   const radios = [
-    { name: t("customers_create.yes"), value: 1 },
     { name: t("customers_create.no"), value: 0 },
+    { name: t("customers_create.yes"), value: 1 },
   ];
-
   const submitHandler = async (values) => {
-    const payload = {
-      ...values,
-      ...(values.DeliveryAddress === "Custom" && {
-        customZip: values.customZip,
-        customCity: values.customCity,
-        customAddress: values.customAddress,
-      }),
-    };
-
-    const res = await POST(`${BASE_URL}/api/admin/customerCreate`, payload);
-
+    const payload = { ...values, id: id };
+    const res = await POST(`${BASE_URL}/api/admin/customerUpdate`, payload);
     if (res?.data?.status) {
       toast.dismiss();
       toast.success(res.data?.message);
-      router.push("/kunder");
+      router.push(`/kunderdetail/${id}`);
     } else {
       toast.dismiss();
       toast.error(res.data?.message);
@@ -115,10 +111,10 @@ const page = () => {
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
             {/* <h2>Create customer</h2> */}
-            <h2>{t("customers_create.create_customer")}</h2>
+            <h2>{t("customers_create.update_customer")}</h2>
             <div className='bot-btn'>
               <Link
-                href={"/kunder"}
+                href={`/kunderdetail/${id}`}
                 className='can-btn'
               >
                 {t("customers_create.cancel")}
@@ -128,7 +124,7 @@ const page = () => {
                 form='customerForm'
                 className='cr-btn btn createorder_top_right'
               >
-                {t("customers_create.create_customer")}
+                {t("customers_create.update_customer")}
               </button>
             </div>
           </div>
@@ -137,6 +133,7 @@ const page = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          enableReinitialize={true}
           onSubmit={submitHandler}
         >
           {({ values, handleChange, setFieldValue }) => (
@@ -162,13 +159,17 @@ const page = () => {
                               variant={
                                 idx % 2 ? "outline-success" : "outline-danger"
                               }
-                              name='radio'
+                              name='country'
                               value={radio.value}
-                              checked={orderConfirm === radio.value}
-                              onChange={(e) => {
-                                const value = Number(e.currentTarget.value);
-                                setFieldValue("country", value);
-                                setOrderConfirm(value);
+                              checked={values.country === radio.value}
+                              onChange={() => {
+                                setOrderConfirm(radio.value); // Update local state
+                                handleChange({
+                                  target: {
+                                    name: "country",
+                                    value: radio.value,
+                                  }, // Mimic form input change
+                                });
                               }}
                             >
                               {radio.name}
@@ -193,54 +194,6 @@ const page = () => {
                           className='text-danger'
                         />
                       </div>
-
-                      {/* <div className='form-group'>
-                        <label htmlFor='company'>Company</label>
-                        <Field
-                          as='select'
-                          id='company'
-                          name='company_id'
-                          className='form-control'
-                        >
-                          <option value=''>Select company</option>
-                          {companies.length &&
-                            companies.map((company, i) => {
-                              return (
-                                <option
-                                  key={i}
-                                  value={company.id}
-                                >
-                                  {company.name}
-                                </option>
-                              );
-                            })}
-                          <option value='Q Idrettslag AS'>
-                            Q Idrettslag AS
-                          </option>
-                        </Field>
-                        <ErrorMessage
-                          name='company_id'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div> */}
-
-                      {/* <div className='form-group'>
-                        <label htmlFor='orgnizationNumber'>
-                          Organisation number
-                        </label>
-                        <Field
-                          type='text'
-                          id='orgnizationNumber'
-                          name='orgnizationNumber'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='orgnizationNumber'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div> */}
 
                       <div className='form-group'>
                         {/* <label htmlFor='address'>Address</label> */}
@@ -394,8 +347,8 @@ const page = () => {
                           className='form-control'
                           onChange={(e) => {
                             const value = e.target.value;
-                            setFieldValue("DeliveryAddress", value);
                             setIsCustom(value === "Custom");
+                            setFieldValue("DeliveryAddress", value);
                           }}
                         >
                           <option value='Same as address'>
