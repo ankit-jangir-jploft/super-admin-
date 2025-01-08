@@ -52,15 +52,38 @@ const page = () => {
     setLoading(false);
   };
 
+
+
+
+
   const onPageChange = (selected) => {
     setCurrent(selected);
   };
 
+  // useEffect(() => {
+  //   fetchOrders();
+  //   const userDetail = JSON.parse(Cookies.get("user"));
+  //   setUserData(userDetail);
+  // }, [currentPage, searchOuery]);
+
+
+  // Debouncing searchQuery
   useEffect(() => {
-    fetchOrders();
+    const timer = setTimeout(() => {
+      fetchOrders();
+    }, 500); // Delay the API call by 500ms after the user stops typing
+
+    // Cleanup the timeout if searchQuery changes within 500ms
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchOuery, currentPage]); // Trigger when searchQuery or currentPage changes
+
+  useEffect(() => {
     const userDetail = JSON.parse(Cookies.get("user"));
     setUserData(userDetail);
-  }, [currentPage, searchOuery]);
+  }, []);
+
 
   const handleSelectOrder = (orderId) => {
     setSelectedOrders((prev) =>
@@ -128,7 +151,7 @@ const page = () => {
                   type='text'
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
-                  // placeholder='Sok i order'
+                // placeholder='Sok i order'
                 />
                 <Link href={""}>
                   <img src='/images/notifications_none.svg' />
@@ -208,9 +231,8 @@ const page = () => {
                             <td>{order.order_for || "N/A"}</td>
                             <td>
                               <button
-                                className={`status ${
-                                  orders[+order.order_status]?.style
-                                }`}
+                                className={`status ${orders[+order.order_status]?.style
+                                  }`}
                               >
                                 {orders[+order.order_status]?.name}
                               </button>
@@ -282,19 +304,19 @@ const page = () => {
                                             {product?.product_number}
                                           </td>
                                           <td>
-                                            <div className='sub-row-img'>
+                                            <div className='sub-row-img' onClick={() =>
+                                              (window.location.href = `/products-details/${product?.product_id}`)
+                                            }>
                                               <img
                                                 src={product?.product_image}
                                                 onError={(e) =>
-                                                  (e.target.src =
-                                                    "/images/product2.png")
+                                                (e.target.src =
+                                                  "/images/product2.png")
                                                 }
                                                 alt='product'
                                               />
                                               <span
-                                                onClick={() =>
-                                                  (window.location.href = `/products-details/${product?.product_id}`)
-                                                }
+
                                               >
                                                 {product.product_name}
                                               </span>
@@ -314,15 +336,15 @@ const page = () => {
                           )}
                         </React.Fragment>
                       ))) || (
-                      <tr>
-                        <td
-                          colSpan='12'
-                          style={{ textAlign: "center", padding: "20px" }}
-                        >
-                          No Orders Yet
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td
+                            colSpan='12'
+                            style={{ textAlign: "center", padding: "20px" }}
+                          >
+                            No Orders Yet
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </table>
               </div>

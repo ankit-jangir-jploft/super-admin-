@@ -70,7 +70,7 @@ const page = ({ params }) => {
             : false,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     fetchProductData();
@@ -288,7 +288,7 @@ const page = ({ params }) => {
         formData.append("price", productForm.Price);
         formData.append("sale_price", productForm.SalesPrice);
         formData.append("special_price", productForm.SpecialPrice);
-        formData.append("height", productForm.Length);
+        formData.append("height", productForm?.Length);
         formData.append("width", productForm.Width);
         formData.append("depth", productForm.Depth);
         formData.append("wight", productForm.Weight);
@@ -470,7 +470,7 @@ const page = ({ params }) => {
                         value={chosendCategory}
                       >
                         <option value=''>Select Category</option>
-                        {(categories.length &&
+                        {(categories?.length &&
                           categories?.map((cat, i) => {
                             return (
                               <option
@@ -504,7 +504,7 @@ const page = ({ params }) => {
                         value={chosendSubCategory}
                       >
                         <option value=''>Select Sub Category</option>
-                        {(subCategories.length &&
+                        {(subCategories?.length &&
                           subCategories?.map((sub, i) => {
                             return (
                               <option
@@ -596,9 +596,9 @@ const page = ({ params }) => {
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
                         {/* <Form.Label>Length (cm)</Form.Label> */}
-                        <Form.Label>{t("update_product.length")}</Form.Label>
+                        <Form.Label>{t("update_product?.length")}</Form.Label>
                         <Form.Control
-                          value={productForm.Length}
+                          value={productForm?.Length}
                           onChange={(e) =>
                             setForm((prev) => ({
                               ...prev,
@@ -790,7 +790,7 @@ const page = ({ params }) => {
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
                       {t("update_product.product_name")}{" "}
-                      <Link href={""}>/{productSlug}</Link>
+                      {/* <Link href={""}>/{productSlug}</Link> */}
                     </Form.Label>
                     <Form.Control
                       value={productForm.ProductName}
@@ -979,10 +979,9 @@ const page = ({ params }) => {
                           }
                           disabled
                         >
-                          <option value={""}>Select VAT class</option>
-                          <option value='0'>0%</option>
+                         <option value='0'>0%</option>
                           <option value='12'>12%</option>
-                          <option value='15'>15%</option>
+                          <option value='15' >15%</option>
                           <option value='25'>25%</option>
                         </Form.Select>
                       </Form.Group>

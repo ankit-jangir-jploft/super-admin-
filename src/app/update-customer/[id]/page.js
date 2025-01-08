@@ -77,7 +77,7 @@ const page = ({ params }) => {
       .required("Zip is required"),
     city: Yup.string().required("City is required"),
     seller_id: Yup.string().required("Seller is required"),
-    contactPerson: Yup.string().required("Contact person is required"),
+    contactPerson: Yup.string(),
     phone: Yup.string()
       .matches(/^\+?\d+$/, "Must be a valid phone number")
       .required("Telephone number is required"),
@@ -88,8 +88,8 @@ const page = ({ params }) => {
   });
 
   const radios = [
-    { name: t("customers_create.no"), value: 0 },
     { name: t("customers_create.yes"), value: 1 },
+    { name: t("customers_create.no"), value: 0 },
   ];
   const submitHandler = async (values) => {
     const payload = { ...values, id: id };

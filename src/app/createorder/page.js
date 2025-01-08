@@ -30,7 +30,7 @@ const page = () => {
   const [orderedBy, setOrderedBy] = useState("");
   const [selectedAddress, setSelectedAddress] = useState("");
   const [selectedDeliveryAddress, setSelectedDeliveryAddress] = useState("");
-  const [orderConfirm, setOrderConfirm] = useState(0);
+  const [orderConfirm, setOrderConfirm] = useState(1);
   const [errors, setErrors] = useState({});
   const [adminManagers, setAdminManagers] = useState([]);
   const [confirmationEmail, setConfirmationEmail] = useState("");
@@ -38,8 +38,8 @@ const page = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
 
   const radios = [
-    { name: t("order_create.no"), value: 0 },
     { name: t("order_create.yes"), value: 1 },
+    { name: t("order_create.no"), value: 0 },
   ];
 
   const validateEmail = (email) => {
@@ -283,6 +283,7 @@ const page = () => {
                           {errors.selectedCustomer}
                         </Form.Control.Feedback>
                       </Form.Select>
+                      
                     </div>
                     <Button
                       className='add-btne btn-borderbl '
