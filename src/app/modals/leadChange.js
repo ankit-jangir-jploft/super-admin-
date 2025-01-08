@@ -5,8 +5,10 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
+import { useTranslation } from "react-i18next";
 
 const CreateLeadModal = ({ isOpen, onClose, id }) => {
+  const {t} = useTranslation()
   const validationSchema = Yup.object().shape({
     leadType: Yup.string().required("Lead type is required"),
   });
@@ -53,8 +55,8 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
     },
     container: {
       backgroundColor: "#fff",
-      padding: "20px",
-      borderRadius: "8px",
+      padding: "0",
+      borderRadius: "20px",
       width: "400px",
       boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
       position: "relative",
@@ -80,29 +82,6 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
       justifyContent: "center",
       marginTop: "15px",
     },
-    buttonPrimary: {
-      backgroundColor: "#dc3545",
-      border: "none",
-      color: "#fff",
-      padding: "8px 16px",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
-    buttonSecondary: {
-      backgroundColor: "#6c757d",
-      border: "none",
-      color: "#fff",
-      padding: "8px 16px",
-      borderRadius: "4px",
-      cursor: "pointer",
-    },
-    select: {
-      width: "100%",
-      padding: "8px",
-      marginTop: "5px",
-      borderRadius: "4px",
-      border: "1px solid #ced4da",
-    },
   };
 
   return (
@@ -114,37 +93,43 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
         >
           ×
         </button>
-        <h2 className='hedingtext_top'>Create Lead</h2>
+        <h2 className='hedingtext_top custom-pup-mn'>{t('lead_option.create_lead')}</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={submitHandler}
         >
           {() => (
-            <Form>
+            <Form className='createcategory_cumtm'>
               <div style={styles.formGroup}>
-                <label htmlFor='leadType'>Lead Type</label>
+                <label htmlFor='leadType'>{t('lead_option.lead_type')}</label>
                 <Field
                   as='select'
                   id='leadType'
                   name='leadType'
-                  style={styles.select}
+                  style={{
+                    width: "100%",
+                    padding: "10px 15px",
+                    marginTop: "5px",
+                    borderRadius: "40px",
+                    border: "1px solid #ced4da",
+                  }}
                 >
                   <option
                     value=''
-                    label='Select lead type'
+                    label={t('lead_option.select_lead_type')}
                   />
                   <option
                     value='warm'
-                    label='Warm'
+                    label={t('lead_option.warm')}
                   />
                   <option
                     value='cold'
-                    label='Cold'
+                    label={t('lead_option.cold')}
                   />
                   <option
                     value='luke'
-                    label='Luke'
+                    label={t('lead_option.luke')}
                   />
                 </Field>
                 <ErrorMessage
@@ -155,10 +140,11 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
               </div>
               <div style={styles.actions}>
                 <button
+                  className='cr-btn btn createcustomer_btn px-5'
                   type='submit'
-                  style={styles.buttonPrimary}
+                  
                 >
-                  Submit
+                  {t('lead_option.submit')}
                 </button>
               </div>
             </Form>

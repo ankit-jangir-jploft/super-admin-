@@ -11,6 +11,10 @@ import Cookies from "js-cookie";
 import CreateLeadModal from "../modals/leadChange";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
+import CustomerStatusModal from "../modals/customerstatuschange"
+
+
+
 
 const page = () => {
   const { t } = useTranslation();
@@ -23,6 +27,7 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
   const [showCreateLead, setShowLead] = useState(false);
+  const [showStatusChange, setShowStatusChange] = useState(false);
   const [leadUserId, setLeadUserId] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -110,14 +115,53 @@ const page = () => {
       console.log("Error performing mass action:", error);
     }
   };
+
+  const customerStatus = {
+    "Created": {
+      value: t('customer_status.created'),
+      style: "created"
+    },
+    "Ordered trial package": {
+      value: t('customer_status.ordered_trial_package'),
+      style: "ordered_trial_package"
+    },
+    "Started dugnad": {
+      value: t('customer_status.started_dugnad'),
+      style: "started_dugnad"
+    },
+    "Finished dugnad": {
+      value: t('customer_status.finished_dugnad'),
+      style: "finished"
+    },
+    "Not started": {
+      value: t('customer_status.not_started'),
+      style: "not_started"
+    }
+  };
+
+  const leadStatus = {
+    "Warm": {
+      value: t('lead_option.warm'),
+      style: "warm"
+    },
+    "Cold": {
+      value: t('lead_option.cold'),
+      style: "cold"
+    },
+    "Luke": {
+      value: t('lead_option.luke'),
+      style: "luke"
+    }
+  };
+  
   return (
     <>
       <Sidebar />
       <div className='detail-admin-main'>
-      {loading ? (
-        <SkeletonLoader />
-      ) : (
-        <>
+        {loading ? (
+          <SkeletonLoader />
+        ) : (
+          <>
             <div className='admin-header'>
               {/* <h2>Customers</h2> */}
               <h2>{t("customers.customers")}</h2>
@@ -210,7 +254,7 @@ const page = () => {
                             {customer?.phone || "N/A"}
                           </td>
                           <td>
-                            <button className='status'>Created</button>
+                            <button className={`status ${customerStatus[customer?.customer_status]?.style}`} onClick={() => { setShowStatusChange(true); setLeadUserId(customer.id); }}>{customerStatus[customer?.customer_status]?.value}</button>
                           </td>
                           <td
                             onClick={() => {
@@ -219,7 +263,7 @@ const page = () => {
                             }}
                           >
                             <button className={`status ${customer?.lead_status}`}>
-                              {customer?.lead_status}
+                              {leadStatus[customer?.lead_status]?.value}
                             </button>
                           </td>
                           <td>{customer?.lastLog || "N/A"}</td>
@@ -285,17 +329,21 @@ const page = () => {
               />
             </div>
 
-          <CreateLeadModal
-            id={leadUserId}
-            isOpen={showCreateLead}
-            onClose={() => {
-              setShowLead(false);
+            <CreateLeadModal
+              id={leadUserId}
+              isOpen={showCreateLead}
+              onClose={() => {
+                setShowLead(false);
+                fetchCustomers();
+              }}
+            />
+            <CustomerStatusModal id={leadUserId} isOpen={showStatusChange} onClose={() => {
+              setShowStatusChange(false)
               fetchCustomers();
-            }}
-          />
-        </>
-      )}
-     </div>
+            }} />
+          </>
+        )}
+      </div>
     </>
   );
 };

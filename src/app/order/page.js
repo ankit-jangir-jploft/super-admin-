@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
+import ChangeOrderStatus from "../modals/changeorderstatus";
 
 const page = () => {
   const { t } = useTranslation();
@@ -23,6 +24,8 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
   const [loading, setLoading] = useState(false);
+  const [showStatusModal, setShowStatusModal] = useState(false)
+  const [customId, setCustomId] = useState("")
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -121,7 +124,7 @@ const page = () => {
     }
   };
 
-  const orders = {
+  const order = {
     0: { name: "Pending", style: "green-clr" },
     1: { name: "Confirmed", style: "brown-clr" },
     2: { name: "Processing", style: "gray-clr" },
@@ -129,6 +132,20 @@ const page = () => {
     4: { name: "Delivered", style: "purple-clr" },
     5: { name: "Canceled", style: "red-clr" },
   };
+
+  const orders = {
+    0: { name: t('order_status.ordered'), style: "green-clr" },
+    1: { name: t('order_status.ready_for_picking'), style: "brown-clr" },
+    2: { name: t('order_status.currently_picking'), style: "gray-clr" },
+    3: { name: t('order_status.sent'), style: "blue-clr" },
+    4: { name: t('order_status.in_transit'), style: "purple-clr" },
+    5: { name: t('order_status.delivered'), style: "purple-clr" },
+    6: { name: t('order_status.completed'), style: "" },
+    7: { name: t('order_status.canceled'), style: "" },
+    8: { name: t('order_status.on_hold'), style: "" }
+  };
+
+
 
   return (
     <>
@@ -231,6 +248,10 @@ const page = () => {
                             <td>{order.order_for || "N/A"}</td>
                             <td>
                               <button
+                                onClick={() => {
+                                  setShowStatusModal(true)
+                                  setCustomId(order?.id)
+                                }}
                                 className={`status ${orders[+order.order_status]?.style
                                   }`}
                               >
@@ -382,6 +403,7 @@ const page = () => {
           </>
         )}
       </div>
+      <ChangeOrderStatus onClose={() => { setShowStatusModal(false); fetchOrders() }} isOpen={showStatusModal} id={customId} />
     </>
   );
 };

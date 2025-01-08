@@ -67,7 +67,6 @@
     "sales": "Salg",
     "name": "Navn"
   },
-
   "external_page": {
     "number_of_active_groups": "Antall aktive grupper",
     "number_of_active_sellers": "Antall aktive selgere",
@@ -536,5 +535,40 @@
     "showing": "Viser",
     "elements": "elementer",
     "of": "av"
+  },
+  "customer_status": {
+    "select_status": "Velg status",
+    "created": "Opprettet",
+    "ordered_trial_package": "Bestillt prøvepakke",
+    "started_dugnad": "Startet dugnad",
+    "finished_dugnad": "Fullført dugnad",
+    "not_started": "Ikke startet",
+    "change_status": "Endre status",
+    "customer_status": "Kundestatus",
+    "submit": "Send"
+  },
+  "lead_option": {
+    "create_lead": "Opprett lead",
+    "lead_type": "Lead-type",
+    "select_lead_type": "Velg lead-type",
+    "warm": "Varm",
+    "cold": "Kald",
+    "luke": "Lunken",
+    "submit": "Send"
+  },
+  "order_status": {
+    "ordered": "Bestillt",
+     "order_status": "Bestillingsstatus",
+    "ready_for_picking": "Klar for plukking",
+    "currently_picking": "Plukkes nå",
+    "sent": "Sendt",
+    "in_transit": "På vei",
+    "delivered": "Levert",
+    "completed": "Fullført",
+    "canceled": "Kansellert",
+    "on_hold": "På vent",
+    "select_status": "Velg status",
+    "change_status": "Endre status",
+    "submit": "Send"
   }
 }

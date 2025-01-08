@@ -534,5 +534,40 @@
     "showing": "Showing",
     "elements": "elements",
     "of": "of"
+  },
+  "customer_status": {
+    "select_status": "Select status",
+    "created": "Created",
+    "ordered_trial_package": "Ordered trial package",
+    "started_dugnad": "Started dugnad",
+    "finished_dugnad": "Finished dugnad",
+    "not_started": "Not started",
+    "change_status": "Change Status",
+    "customer_status": "Customer Status",
+    "submit": "Submit"
+  },
+  "lead_option": {
+    "create_lead": "Create Lead",
+    "lead_type": "Lead Type",
+    "select_lead_type": "Select lead type",
+    "warm": "Warm",
+    "cold": "Cold",
+    "luke": "Luke",
+    "submit": "Submit"
+  },
+  "order_status": {
+    "select_status": "Select status",
+    "change_status": "Change Status",
+    "order_status": "Order status",
+    "ordered": "Ordered",
+    "ready_for_picking": "Ready for picking",
+    "currently_picking": "Currently picking",
+    "sent": "Sent",
+    "in_transit": "In transit",
+    "delivered": "Delivered",
+    "completed": "Completed",
+    "canceled": "Canceled",
+    "on_hold": "On hold",
+    "submit": "Submit"
   }
 }
