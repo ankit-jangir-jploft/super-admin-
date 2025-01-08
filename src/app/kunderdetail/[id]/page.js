@@ -480,7 +480,7 @@ const page = ({ params }) => {
                   </table>
                 </div>
                 <div
-                  className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone'
+                  className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone ener_page_details'
                   style={{ marginTop: "20px" }}
                 >
                   <table>

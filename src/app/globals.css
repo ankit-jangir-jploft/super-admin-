@@ -79,10 +79,17 @@ a {
 }
 
 .login-section {
-  height: 100vh;
+  /* height: 100vh; */
+  height: auto;
   background-color: #f5f0e9;
 }
-
+p.copyright {
+  color: #666666;
+  font-size: 12px;
+}
+.pass-for {
+  margin-top: 10px;
+}
 .title-login h1 {
   font-size: 24px;
   margin: 50px 0 30px;
@@ -115,6 +122,7 @@ a {
   font-size: 16px;
   display: inline-block;
   margin: 15px 0 30px;
+  margin-top: 0px;
 }
 
 .other-option {
@@ -145,6 +153,7 @@ a {
   color: #ffff;
   padding: 10px;
   border-radius: 50px;
+  display: inline-block;
 }
 
 .sidebar-admin {
@@ -200,10 +209,11 @@ a {
 .menu-list-mange {
   padding: 0;
   list-style: none;
-  margin-top: 60px;
+  margin-top: 30px;
   height: calc(98vh - 200px);
+  border-top: 1px solid #FF9E9D;
+  padding-top: 30px;
 }
-
 .menu-list-mange li a,
 .logout-btn {
   display: flex;
@@ -245,7 +255,7 @@ a {
   padding: 40px 20px 0;
   filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
     hue-rotate(291deg) brightness(104%) contrast(102%);
-  height: 60px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -445,7 +455,7 @@ tr:nth-child(even) {
 
 .order-dtl-box {
   margin-bottom: 20px;
-  padding-bottom: 12px;
+  /* padding-bottom: 12px; */
   min-height: 195px;
   background: #fff;
   border-radius: 20px;
@@ -485,7 +495,7 @@ tr:nth-child(even) {
   padding: 0px 15px;
   color: #000000;
   font-weight: 400;
-  word-break: break-all;
+  /* word-break: break-all; */
 }
 
 .order-dtl-box p a {
@@ -577,8 +587,14 @@ tr:nth-child(even) {
   border-top: 1px solid #c9c9c9;
   margin-top: 40px;
   padding-top: 20px;
+  padding-bottom: 20px;
 }
-
+.content-box-left-right {
+  padding-bottom: 10px;
+}
+.btom_cart_box .order-dtl-box {
+  padding-bottom: 12px;
+}
 .logg-til-desc textarea {
   width: 100%;
   border: 1px solid #c9c9c9;
@@ -986,6 +1002,7 @@ table th {
   border-radius: 40px !important;
   line-height: 1;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .swtch-bt .btn-group {
@@ -1669,6 +1686,35 @@ ul.pgnatne li {
     overflow: hidden;
     transition: 0.3s;
   }
+  .tablebruk_left {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.statistics-mne .grph-crd {
+ 
+  height: 100%;
+  min-height: auto;
+}
+.butn-border_top_right {
+   
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btm_search_tagbx { 
+  margin-bottom: 20px;
+}
+.totla-text-nimb {
+  width: 100%;
+}
+.pagint-box {
+  justify-content: center !important;
+}
+.leftSalesperson {
+  flex-basis: 100% !important ;
+  margin-bottom: 20px;
+}
+
 
   .active.sidebar-admin {
     height: 100vh;
@@ -2222,6 +2268,7 @@ button.crte-userd.Confirm_btn {
 .grafh_footer {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .leftSalesperson {
   flex-basis: 49%;
@@ -2257,14 +2304,24 @@ button.crte-userd.Confirm_btn {
   .btn-addcrt img {
     display: unset;
   }
+  .filter_date input[type="Date"] { 
+    width: 100%;
+    margin: 10px 0px;
+}
   .pagination-container p {
     flex: 0 0 100%;
   }
   .pagination-container {
     flex-wrap: wrap;
   }
+  .grph-crd input[type="date"] {
+     
+    max-width: 39px; 
 }
-
+}
+.apexcharts-canvas { 
+  margin: 0 auto;
+}
 .Confirm_btn {
   background: #fd5a59;
   border-radius: 25px;
@@ -2725,3 +2782,25 @@ form.createcategory_cumtm {
 }
 
 
+.crpr-im.filr-setng.filr-setng1 > img {
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.home-table-cl tr:nth-child(2n) {
+  background-color: #F8F9FA;
+}
+.ener_page_details tbody tr:nth-child(1n) {
+  background-color: #F7F4F1;
+}
+.complt_stastus {
+  border: 1px solid #AEAEAE;
+  border-radius: 10px;
+  background: #EBEBEB;
+  padding: 3px 8px;
+  line-height: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4C6B5D;
+  display: inline-block;
+}

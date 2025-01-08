@@ -112,8 +112,8 @@ const SalesAnalyticsChart = () => {
               style={{
                 padding: "8px 12px",
                 margin: "0 4px",
-                background: timeframe === key ? "#ff4d4f" : "#f3f3f3",
-                color: timeframe === key ? "#fff" : "#000",
+                background: timeframe === key ? "#ff4d4f" : "#FFF",
+                color: timeframe === key ? "#fff" : "#898989",
                 border: "none",
                 borderRadius: "4px",
                 cursor: "pointer",

@@ -15,12 +15,15 @@ const Pagination = ({
     onPageChange(Math.min(currentPage + 1, totalPages));
 
   return (
-    <div style={styles.paginationContainer}>
+    <div style={styles.paginationContainer} className="pagint-box">
+      <div className="totla-text-nimb">
+
       <p className='mb-0'>{`${t("paginate.showing")} ${parseInt(
         paginationData?.items_in_range
       )} ${t("paginate.of")} ${paginationData?.total_items} ${t(
         "paginate.elements"
       )}`}</p>
+      </div>
 
       <button
         onClick={handleFirstPage}
@@ -80,7 +83,8 @@ const styles = {
     gap: "8px",
     fontFamily: "Arial, sans-serif",
     fontSize: "14px",
-    justifyContent:"end", 
+    justifyContent:"end",  
+    flexWrap:"wrap",
     width: "100%",
   },
   button: {

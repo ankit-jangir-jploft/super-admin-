@@ -151,11 +151,24 @@ const page = () => {
 
   useEffect(() => {
     fetchData();
-
-    const userDetails = JSON.parse(Cookies.get("user"));
-    setUserData(userDetails);
+  
+    const userDetailsCookie = Cookies.get("user");
+  
+    if (userDetailsCookie) {
+      try {
+        const userDetails = JSON.parse(userDetailsCookie);
+        setUserData(userDetails);
+      } catch (error) {
+        console.error("Error parsing user cookie:", error.message);
+        // You can handle the error, for example, by setting default user data
+        setUserData(null); // or any default value you prefer
+      }
+    } else {
+      console.warn("No user cookie found");
+      setUserData(null); // or any default value you prefer
+    }
   }, []);
-
+  
   // check
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -321,7 +334,7 @@ const page = () => {
         </div>
 
         <div className='grph-crd'>
-          <div className='table-responsive order-table'>
+          <div className='table-responsive order-table home-table-cl'>
             {/* <h3>Overview Groups</h3> */}
             <h3>{t("dashboard.overview_groups")}</h3>
             <table>

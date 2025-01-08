@@ -148,22 +148,23 @@ const Login = () => {
                   <Form.Control.Feedback type='invalid'>
                     {formik.errors.password}
                   </Form.Control.Feedback>
-                </Form.Group>
-
-                <div className='text-center'>
-                  <Button
-                    className='btn-primary px-5 py-2'
-                    type='submit'
-                  >
-                    {t("loginpage.log_in")}
-                  </Button>
-                </div>
-                <div className='pass-for text-center'>
+                  <div className='pass-for text-end'>
                   {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
                   <Link href='/forgot-password'>
                     {t("loginpage.forgot_password")}
                   </Link>
                 </div>
+                </Form.Group>
+
+                <div className='text-center mb-4'>
+                  <Button
+                    className='btn-primary w-100 px-5 py-2'
+                    type='submit'
+                  >
+                    {t("loginpage.log_in")}
+                  </Button>
+                </div>
+            
                 <p className='other-option'>
                   {/* <span>eller</span> */}
                   <span>{t("loginpage.or")}</span>
@@ -171,7 +172,7 @@ const Login = () => {
 
                 <div className='text-center mt-5'>
                   <Link
-                    className='login-other'
+                    className='login-other w-100'
                     href='/'
                   >
                     <img
