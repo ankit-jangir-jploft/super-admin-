@@ -52,7 +52,7 @@ const SlickSlider = (props) => {
   return (
     <div>
       <Slider {...settings}>
-        {images.length &&
+        {images?.length &&
           images?.map((img) => {
             return (
               <div>

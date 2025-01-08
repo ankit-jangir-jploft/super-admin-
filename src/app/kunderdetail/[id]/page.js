@@ -38,11 +38,16 @@ const page = ({ params }) => {
   const [lastPurchaseOrder, setLastPurchaseOrder] = useState([]);
   const [roleType, setRoleType] = useState();
   const [deliveryAddress, setDeliveryAddress] = useState({});
+  const [userAddress, setUserAddress] = useState()
 
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
+
+
+
+  console.log({ customer })
 
   const handlePopup = () => {
     setShowModal(!modalShow);
@@ -54,12 +59,15 @@ const page = ({ params }) => {
         id: id,
       };
       const res = await GET(`${BASE_URL}/api/admin/customerDetail`, options);
+
+      console.log({ res })
       if (res?.data?.status) {
         setCustomers(res?.data?.data[0]);
         setOrderDetails(res.data?.orderList || []);
         setGroupList(res.data?.groupLists || []);
         setLastPurchaseOrder(res.data?.lastPurchaseDetails || []);
         setDeliveryAddress(res.data?.DeliveryAddress);
+        setUserAddress(res?.data?.userAddress)
       }
     } catch (error) {
       console.log(error);
@@ -80,6 +88,9 @@ const page = ({ params }) => {
       console.log(error);
     }
   };
+
+
+  console.log({ userAddress })
 
   const fetchTags = async () => {
     try {
@@ -205,7 +216,7 @@ const page = ({ params }) => {
             {customer?.name} <b>NO</b>
             <span>
               #{customer?.id} |{" "}
-              {customer?.userDetail?.delivery_address || "Q ldrettslag J14"}
+              {customer?.userDetail?.delivery_address}
             </span>
           </h2>
         </div>
@@ -311,8 +322,7 @@ const page = ({ params }) => {
 
                     <p>#{customer?.id}</p>
                     <p>
-                      {customer?.userDetail?.delivery_address ||
-                        "Q ldrettslag J14"}
+                      {customer?.userDetail?.delivery_address}
                     </p>
                     <p>{customer?.name}</p>
                     <p>{customer?.email}</p>
@@ -381,23 +391,42 @@ const page = ({ params }) => {
                   <div className='order-dtl-box'>
                     {/* <h2>Adresse </h2> */}
                     <h2>{t("customer_details.address")}</h2>
-                    <p>{customer?.name}</p>
-                    <p>Snarveien 33</p>
+                    <p>{userAddress?.address}</p>
+
                     <p>
-                      {customer?.userDetail?.zip_code || "1234"}{" "}
-                      {customer?.userDetail?.city}
+                      {userAddress?.zip_code}
                     </p>
-                    <p>Norge</p>
+                    <p>
+                      {userAddress?.post_code}
+                      {" "}
+                      {userAddress?.city}
+                    </p>
                   </div>
                 </Col>
                 <Col md={3}>
                   <div className='order-dtl-box'>
                     {/* <h2> Delivery address</h2> */}
                     <h2>{t("customer_details.delivery_address")}</h2>
-
+                    {/* 
                     <p>{deliveryAddress?.address}</p>
                     <p>{deliveryAddress?.city}</p>
-                    <p>{deliveryAddress?.post_code}</p>
+
+
+
+                    <p>{deliveryAddress?.post_code}</p> */}
+
+
+
+                    <p>{userAddress?.address}</p>
+
+                    <p>
+                      {userAddress?.zip_code}
+                    </p>
+                    <p>
+                      {userAddress?.post_code}
+                      {" "}
+                      {userAddress?.city}
+                    </p>
                   </div>
                 </Col>
               </Row>
@@ -438,15 +467,15 @@ const page = ({ params }) => {
                             </tr>
                           );
                         })) || (
-                        <tr>
-                          <td
-                            colSpan={6}
-                            className='text-center'
-                          >
-                            No data
-                          </td>
-                        </tr>
-                      )}
+                          <tr>
+                            <td
+                              colSpan={6}
+                              className='text-center'
+                            >
+                              No data
+                            </td>
+                          </tr>
+                        )}
                     </tbody>
                   </table>
                 </div>
@@ -497,15 +526,15 @@ const page = ({ params }) => {
                             </td>
                           </tr>
                         ))) || (
-                        <tr>
-                          <td
-                            colSpan={9}
-                            className='text-center'
-                          >
-                            No data
-                          </td>
-                        </tr>
-                      )}
+                          <tr>
+                            <td
+                              colSpan={9}
+                              className='text-center'
+                            >
+                              No data
+                            </td>
+                          </tr>
+                        )}
                     </tbody>
                   </table>
                 </div>

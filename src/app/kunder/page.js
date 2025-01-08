@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar/Sidebar";
-
 import Link from "next/link";
 import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
@@ -25,13 +24,22 @@ const page = () => {
   const [roleType, setRoleType] = useState();
   const [showCreateLead, setShowLead] = useState(false);
   const [leadUserId, setLeadUserId] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
+
+  // Fetch customers with debounce logic
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchCustomers();
+    }, 500); // Delay of 500ms
+
+    return () => {
+      clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
+    };
+  }, [searchQuery, currentPage]); // Trigger on searchQuery or currentPage change
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -44,7 +52,6 @@ const page = () => {
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
 
       if (res?.data?.status) {
-        console.log({ res });
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
       }
@@ -54,17 +61,9 @@ const page = () => {
     setLoading(false);
   };
 
-  console.log({ customers });
-
   const onPageChange = (selected) => {
     setCurrent(selected);
   };
-
-  useEffect(() => {
-    fetchCustomers();
-    const userDetails = JSON.parse(Cookies.get("user"));
-    setUserData(userDetails);
-  }, [searchQuery, currentPage]);
 
   const handleSelectCustomer = (customerId) => {
     setSelectedCustomers((prev) =>
@@ -111,7 +110,6 @@ const page = () => {
       console.log("Error performing mass action:", error);
     }
   };
-
   return (
     <>
       <Sidebar />

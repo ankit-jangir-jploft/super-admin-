@@ -757,7 +757,7 @@ const page = () => {
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
                       {t("create_product.product_name")}{" "}
-                      <Link href={"/"}>/julepakke-2-til-og-fra-lapper</Link>
+                      {/* <Link href={"/"}>/julepakke-2-til-og-fra-lapper</Link> */}
                     </Form.Label>
                     <Form.Control
                       value={productForm.ProductName}
@@ -939,7 +939,7 @@ const page = () => {
                           }}
                         >
                           <option value=''>Select VAT</option>
-                          <option value='taxable'>Taxable</option>
+                          <option value='taxable' selected>Taxable</option>
                         </Form.Select>
                       </Form.Group>
                     </div>

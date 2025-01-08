@@ -23,10 +23,22 @@ const page = () => {
   const [roleType, setRoleType] = useState();
 
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
+
+  // Debounce the API call for searchQuery
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProductList();
+    }, 500); // Wait for 500ms after the last keystroke
+
+    return () => {
+      clearTimeout(timer); // Cleanup the previous timer if searchQuery changes
+    };
+  }, [searchQuery, currentPage]); // Trigger when searchQuery or currentPage changes
 
   const fetchProductList = async () => {
     setLoading(true);
@@ -43,7 +55,7 @@ const page = () => {
         setProducts(res.data?.data);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error fetching products:", error);
     }
     setLoading(false);
   };
@@ -61,7 +73,7 @@ const page = () => {
   };
 
   const handleSelectAll = () => {
-    if (selectedProducts.length === products.length) {
+    if (selectedProducts?.length === products?.length) {
       setSelectedProducts([]);
     } else {
       setSelectedProducts(products.map((product) => product.id));
@@ -70,7 +82,7 @@ const page = () => {
 
   const handleMassAction = async () => {
     try {
-      if (!selectedProducts.length) {
+      if (!selectedProducts?.length) {
         toast.dismiss();
         toast.error("Please select products to perform the action!");
         return;
@@ -99,10 +111,10 @@ const page = () => {
   };
 
   useEffect(() => {
-    fetchProductList();
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
-  }, [currentPage, searchQuery]);
+  }, []);
+
 
   return (
     <>
@@ -175,7 +187,7 @@ const page = () => {
                 </tr>
               </thead>
               <tbody>
-                {(products.length &&
+                {(products?.length &&
                   products.map((product) => (
                     <tr key={product.id}>
                       <td>

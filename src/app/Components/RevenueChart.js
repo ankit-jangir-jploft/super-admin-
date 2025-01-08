@@ -6,7 +6,7 @@ const RevenueChart = ({ donutChart }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (donutChart.length >= 2) {
+    if (donutChart?.length >= 2) {
       const [value1, value2] = donutChart.map(Number);
 
       const total = value1 + value2;
