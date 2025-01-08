@@ -29,6 +29,7 @@ const Page = () => {
       const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, option);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
+        console.log({res})
 
         setProducts(res.data?.data?.order_details);
       }
@@ -253,14 +254,14 @@ const Page = () => {
                         {t("order_details.packageslip_not_created")}
                       </span>
                     </h2>
-                    <p >{orderDetails?.delivery_address?.name}</p>
-                    <p>{orderDetails?.delivery_address?.address}</p>
+                    <p >{orderDetails?.billing_address?.name}</p>
+                    <p>{orderDetails?.billing_address?.address}</p>
                     <p>
-                      {orderDetails?.delivery_address?.post_code}{" "}
-                      {orderDetails?.delivery_address?.city}
+                      {orderDetails?.billing_address?.post_code}{" "}
+                      {orderDetails?.billing_address?.city}
                     </p>
-                    <p>{orderDetails?.delivery_address?.email_address}</p>
-                    <p>{orderDetails?.delivery_address?.phone_no}</p>
+                    <p>{orderDetails?.billing_address?.email_address}</p>
+                    <p>{orderDetails?.billing_address?.phone_no}</p>
                   </div>
                 </Col>
               </Row>
