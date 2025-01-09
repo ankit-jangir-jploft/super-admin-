@@ -635,28 +635,42 @@ const page = ({ params }) => {
                 {/* <h2>Logg</h2> */}
                 <h2>{t("customer_details.log")}</h2>
                 {logs.length > 0 ? (
-                  logs.map((log, index) => (
-                    <div
-                      className='logg-dtl'
-                      key={index}
-                    >
-                      {log?.order_price ? (
-                        <div className='d-flex justify-content-between'>
+                  logs.map((log, index) => {
+                    const updatedContent = log?.order_price
+                      ? `
+                       <p style="padding: 0; display: inline-block; width: 70%; text-align: left;">
+                         ${log?.content}
+                       </p>
+                       <p style="padding: 0; display: inline-block; width: 28%; text-align: right;">
+                         kr ${log?.order_price}
+                       </p>
+                     `
+                      : log?.content;
+                    return (
+                      <div
+                        className='logg-dtl'
+                        key={index}
+                      >
+                        {log?.role_name ? (
+                          <div className='d-flex justify-content-between'>
+                            <span>{log?.updated_at}</span>
+                            <span>{log?.role_name}</span>
+                          </div>
+                        ) : (
                           <span>{log?.updated_at}</span>
-                          <span>{log?.order_price}</span>
-                        </div>
-                      ) : (
-                        <span>{log?.updated_at}</span>
-                      )}
-                      <label
-                        dangerouslySetInnerHTML={{
-                          __html: logStatus[log?.type]?.html
-                            ? logStatus[log?.type]?.html + " " + log?.content
-                            : log?.content,
-                        }}
-                      />
-                    </div>
-                  ))
+                        )}
+                        <label
+                          dangerouslySetInnerHTML={{
+                            __html: logStatus[log?.type]?.html
+                              ? logStatus[log?.type]?.html +
+                                " " +
+                                updatedContent
+                              : updatedContent,
+                          }}
+                        />
+                      </div>
+                    );
+                  })
                 ) : (
                   <p>No logs available.</p>
                 )}

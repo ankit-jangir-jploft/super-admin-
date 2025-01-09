@@ -168,7 +168,7 @@ const page = () => {
                   onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
                 />
-                <Link href={""}>
+                {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
                 </Link>
                 <Link href={`/useredit/${userData?.id}`}>
@@ -180,7 +180,7 @@ const page = () => {
                       e.target.src = "/images/avatar-style.png";
                     }}
                   />
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className='shdw-crd'>
@@ -226,6 +226,7 @@ const page = () => {
                               />
                             </td>
                             <td
+                              style={{ cursor: "pointer" }}
                               onClick={() =>
                                 (window.location.href = `/orderdetail/${order?.id}`)
                               }
@@ -236,14 +237,29 @@ const page = () => {
                               </span>
                             </td>
                             <td
+                              style={{ cursor: "pointer" }}
                               onClick={() =>
                                 (window.location.href = `/orderdetail/${order?.id}`)
                               }
                             >
                               {order.created_at}
                             </td>
-                            <td>{order.order_by}</td>
-                            <td>{order.order_for || "N/A"}</td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              {order.order_by}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              {order.order_for || "N/A"}
+                            </td>
                             <td>
                               <button
                                 onClick={() => {

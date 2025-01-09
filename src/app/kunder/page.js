@@ -181,7 +181,7 @@ const page = () => {
                     setSearch(e.target.value);
                   }}
                 />
-                <Link href={""}>
+                {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
                 </Link>
                 <Link href={`/useredit/${userData?.id}`}>
@@ -193,7 +193,7 @@ const page = () => {
                       e.target.src = "/images/avatar-style.png";
                     }}
                   />
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className='shdw-crd'>
@@ -245,16 +245,61 @@ const page = () => {
                                 }
                               />
                             </td>
-                            <td>{customer?.id || "N/A"}</td>
-                            <td>{customer?.name || "N/A"}</td>
-                            <td>{customer?.createdAt || "N/A"}</td>
-                            <td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
+                              {customer?.id || "N/A"}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
+                              {customer?.name || "N/A"}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
+                              {customer?.createdAt || "N/A"}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
                               {customer?.lastPurchaseDetails?.group_name ||
                                 "N/A"}
                             </td>
-                            <td>{customer?.contactPerson || "N/A"}</td>
-                            <td>{customer?.email || "N/A"}</td>
-                            <td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
+                              {customer?.contactPerson || "N/A"}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
+                              {customer?.email || "N/A"}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/kunderdetail/${customer?.id}`)
+                              }
+                            >
                               <span style={{ color: "gray" }}>
                                 {customer?.countryCode}{" "}
                               </span>{" "}

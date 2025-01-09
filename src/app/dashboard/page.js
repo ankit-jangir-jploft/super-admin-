@@ -151,9 +151,9 @@ const page = () => {
 
   useEffect(() => {
     fetchData();
-  
+
     const userDetailsCookie = Cookies.get("user");
-  
+
     if (userDetailsCookie) {
       try {
         const userDetails = JSON.parse(userDetailsCookie);
@@ -168,7 +168,7 @@ const page = () => {
       setUserData(null); // or any default value you prefer
     }
   }, []);
-  
+
   // check
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -220,7 +220,7 @@ const page = () => {
         <div className='admin-header'>
           {/* <h2>Main Dashboard</h2> */}
           <h2>{t("dashboard.main_dashboard")}</h2>
-          {/* <div
+          <div
             className='search-frm'
             style={{ position: "relative" }}
           >
@@ -231,11 +231,10 @@ const page = () => {
               placeholder='Search...'
             />
             {suggestions.length > 0 && (
-              <ul className="search_list_dash" 
-              >
+              <ul className='search_list_dash'>
                 {suggestions.map((suggestion, index) => (
                   <li
-                    key={index} 
+                    key={index}
                     onClick={() => handleSelectSuggestion(suggestion)}
                   >
                     {suggestion.title}
@@ -243,10 +242,10 @@ const page = () => {
                 ))}
               </ul>
             )}
-            <Link href=''>
+            {/* <Link href=''>
               <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={`/useredit/${userData?.id}`}>
+            </Link> */}
+            {/* <Link href={`/useredit/${userData?.id}`}>
               <img
                 className='object-fit-cover rounded-circle'
                 style={{ width: "41px" }}
@@ -255,8 +254,8 @@ const page = () => {
                   e.target.src = "/images/avatar-style.png";
                 }}
               />
-            </Link>
-          </div> */}
+            </Link> */}
+          </div>
         </div>
         <div className='row'>
           <div className='col-md-3'>

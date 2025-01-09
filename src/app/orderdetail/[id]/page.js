@@ -398,6 +398,17 @@ const Page = () => {
                 <h2>{t("order_details.log")}</h2>
                 {(logs?.length &&
                   logs?.map((log) => {
+                    const updatedContent = log?.order_price
+                      ? `
+                       <p style="padding: 0; display: inline-block; width: 70%; text-align: left;">
+                         ${log?.content}
+                       </p>
+                       <p style="padding: 0; display: inline-block; width: 28%; text-align: right;">
+                         kr ${log?.order_price}
+                       </p>
+                     `
+                      : log?.content;
+
                     return (
                       <div
                         key={log?.id}
@@ -414,8 +425,10 @@ const Page = () => {
                         <label
                           dangerouslySetInnerHTML={{
                             __html: logStatus[log?.type]?.html
-                              ? logStatus[log?.type]?.html + " " + log?.content
-                              : log?.content,
+                              ? logStatus[log?.type]?.html +
+                                " " +
+                                updatedContent
+                              : updatedContent,
                           }}
                         />
 
