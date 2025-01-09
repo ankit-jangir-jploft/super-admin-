@@ -79,9 +79,9 @@ a {
 }
 
 .login-section {
-  /* height: 100vh; */
-  height: auto;
+  height: 100vh; 
   background-color: #f5f0e9;
+  overflow: auto;
 }
 p.copyright {
   color: #666666;
@@ -414,6 +414,7 @@ tr:nth-child(even) {
 .filter-manage {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .filter-manage .bold-btn {
@@ -446,7 +447,9 @@ tr:nth-child(even) {
   color: #8e8e8e;
   font-size: 14px;
   box-shadow: 0 0 6px #00000024;
-}
+}  
+
+
 
 .send-ordercast input {
   border: 0;
@@ -455,13 +458,13 @@ tr:nth-child(even) {
 
 .order-dtl-box {
   margin-bottom: 20px;
-  /* padding-bottom: 12px; */
+  padding-bottom: 12px;
   min-height: 195px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
-
+ 
 .order-dtl-box h2 {
   font-size: 16px;
   padding: 10px 15px;
@@ -495,7 +498,7 @@ tr:nth-child(even) {
   padding: 0px 15px;
   color: #000000;
   font-weight: 400;
-  /* word-break: break-all; */
+  word-break: break-all;
 }
 
 .order-dtl-box p a {
@@ -1620,6 +1623,11 @@ ul.pgnatne li {
 }
 .createtask .modal-body button {
   text-align: center !important;
+  background-color: #FD5A59;
+  border: none;
+  margin: 0 auto;
+  display: block;
+  font-size: 16px;
 }
 .inputtime {
   display: flex;
@@ -1695,6 +1703,15 @@ ul.pgnatne li {
     height: 100%;
     min-height: auto;
   }
+  .crpr-im img {
+    
+    margin-bottom: 10px;
+    height: 100px;
+    width: 118px;
+}
+.crpr-im { 
+  flex-wrap: wrap;
+}
   .butn-border_top_right {
     flex-wrap: wrap;
     justify-content: center;
@@ -1716,7 +1733,16 @@ ul.pgnatne li {
   .active.sidebar-admin {
     height: 100vh;
   }
-
+  .inputtime div {
+    flex-wrap: wrap;
+    gap: 3px !important;
+}
+.inputtime { 
+  flex-wrap: wrap;
+}
+.prodct-viewp p { 
+  margin-top: 0;
+}
   .detail-admin-main {
     padding: 90px 20px 20px;
   }
@@ -2471,16 +2497,27 @@ span.dout-inc {
   background: #d6ecff;
   border-color: #96dcff;
   color: #1283b4;
+  padding: 2px 5px;
+    border-radius: 50px;
+}
+.logg-dtl label strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
 }
 .Warm {
   background: #ffd6d6;
   border-color: #ff9696;
   color: #b41212;
+  padding: 2px 5px;
+    border-radius: 50px;
 }
 .Luke {
   background: #ffead6;
   border-color: #ffd396;
   color: #b47612;
+  padding: 2px 5px;
+    border-radius: 50px;
 }
 .admin-header h2 b {
   font-weight: 400;
@@ -2894,4 +2931,8 @@ form.createcategory_cumtm {
 
 .detail-admin-main-cp {
   padding: 40px;
+}
+.filter-manage button {
+  font-size: 16px !important;
+  padding: 16px 28px;
 }
