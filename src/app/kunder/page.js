@@ -11,10 +11,7 @@ import Cookies from "js-cookie";
 import CreateLeadModal from "../modals/leadChange";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
-import CustomerStatusModal from "../modals/customerstatuschange"
-
-
-
+import CustomerStatusModal from "../modals/customerstatuschange";
 
 const page = () => {
   const { t } = useTranslation();
@@ -30,6 +27,7 @@ const page = () => {
   const [showStatusChange, setShowStatusChange] = useState(false);
   const [leadUserId, setLeadUserId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     setRoleType(Cookies.get("roleType"));
@@ -117,43 +115,47 @@ const page = () => {
   };
 
   const customerStatus = {
-    "Created": {
-      value: t('customer_status.created'),
-      style: "created"
+    Created: {
+      value: t("customer_status.created"),
+      style: "created",
     },
     "Ordered trial package": {
-      value: t('customer_status.ordered_trial_package'),
-      style: "ordered_trial_package"
+      value: t("customer_status.ordered_trial_package"),
+      style: "ordered_trial_package",
     },
     "Started dugnad": {
-      value: t('customer_status.started_dugnad'),
-      style: "started_dugnad"
+      value: t("customer_status.started_dugnad"),
+      style: "started_dugnad",
     },
     "Finished dugnad": {
-      value: t('customer_status.finished_dugnad'),
-      style: "finished"
+      value: t("customer_status.finished_dugnad"),
+      style: "finished",
     },
     "Not started": {
-      value: t('customer_status.not_started'),
-      style: "not_started"
-    }
+      value: t("customer_status.not_started"),
+      style: "not_started",
+    },
   };
 
   const leadStatus = {
-    "Warm": {
-      value: t('lead_option.warm'),
-      style: "warm"
+    None: {
+      value: t("lead_option.none"),
+      style: "",
     },
-    "Cold": {
-      value: t('lead_option.cold'),
-      style: "cold"
+    Warm: {
+      value: t("lead_option.warm"),
+      style: "warm",
     },
-    "Luke": {
-      value: t('lead_option.luke'),
-      style: "luke"
-    }
+    Cold: {
+      value: t("lead_option.cold"),
+      style: "cold",
+    },
+    Luke: {
+      value: t("lead_option.luke"),
+      style: "luke",
+    },
   };
-  
+
   return (
     <>
       <Sidebar />
@@ -231,53 +233,78 @@ const page = () => {
                   <tbody>
                     {customers.length
                       ? customers.map((customer) => (
-                        <tr key={customer.id}>
-                          <td>
-                            <input
-                              type='checkbox'
-                              checked={selectedCustomers.includes(customer.id)}
-                              onChange={() => handleSelectCustomer(customer.id)}
-                            />
-                          </td>
-                          <td>{customer?.id || "N/A"}</td>
-                          <td>{customer?.name || "N/A"}</td>
-                          <td>{customer?.createdAt || "N/A"}</td>
-                          <td>
-                            {customer?.lastPurchaseDetails?.group_name || "N/A"}
-                          </td>
-                          <td>{customer?.contactPerson || "N/A"}</td>
-                          <td>{customer?.email || "N/A"}</td>
-                          <td>
-                            <span style={{ color: "gray" }}>
-                              {customer?.countryCode}{" "}
-                            </span>{" "}
-                            {customer?.phone || "N/A"}
-                          </td>
-                          <td>
-                            <button className={`status ${customerStatus[customer?.customer_status]?.style}`} onClick={() => { setShowStatusChange(true); setLeadUserId(customer.id); }}>{customerStatus[customer?.customer_status]?.value}</button>
-                          </td>
-                          <td
-                            onClick={() => {
-                              setShowLead(true);
-                              setLeadUserId(customer.id);
-                            }}
-                          >
-                            <button className={`status ${customer?.lead_status}`}>
-                              {leadStatus[customer?.lead_status]?.value}
-                            </button>
-                          </td>
-                          <td>{customer?.lastLog || "N/A"}</td>
-                          <td>{customer?.lastPurchaseDetails?.phone || "N/A"}</td>
-                          <td>
-                            {customer?.lastPurchaseDetails?.seller_name || "N/A"}
-                          </td>
-                          <td>
-                            <Link href={`/kunderdetail/${customer?.id}`}>
-                              <img src='/images/added-us.svg' />
-                            </Link>
-                          </td>
-                        </tr>
-                      ))
+                          <tr key={customer.id}>
+                            <td>
+                              <input
+                                type='checkbox'
+                                checked={selectedCustomers.includes(
+                                  customer.id
+                                )}
+                                onChange={() =>
+                                  handleSelectCustomer(customer.id)
+                                }
+                              />
+                            </td>
+                            <td>{customer?.id || "N/A"}</td>
+                            <td>{customer?.name || "N/A"}</td>
+                            <td>{customer?.createdAt || "N/A"}</td>
+                            <td>
+                              {customer?.lastPurchaseDetails?.group_name ||
+                                "N/A"}
+                            </td>
+                            <td>{customer?.contactPerson || "N/A"}</td>
+                            <td>{customer?.email || "N/A"}</td>
+                            <td>
+                              <span style={{ color: "gray" }}>
+                                {customer?.countryCode}{" "}
+                              </span>{" "}
+                              {customer?.phone || "N/A"}
+                            </td>
+                            <td>
+                              <button
+                                className={`status ${
+                                  customerStatus[customer?.customer_status]
+                                    ?.style
+                                }`}
+                                onClick={() => {
+                                  setShowStatusChange(true);
+                                  setLeadUserId(customer.id);
+                                  setOrderId(customer?.order_id);
+                                }}
+                              >
+                                {
+                                  customerStatus[customer?.customer_status]
+                                    ?.value
+                                }
+                              </button>
+                            </td>
+                            <td
+                              onClick={() => {
+                                setShowLead(true);
+                                setLeadUserId(customer.id);
+                              }}
+                            >
+                              <button
+                                className={`status ${customer?.lead_status}`}
+                              >
+                                {leadStatus[customer?.lead_status]?.value}
+                              </button>
+                            </td>
+                            <td>{customer?.lastLog || "N/A"}</td>
+                            <td>
+                              {customer?.lastPurchaseDetails?.phone || "N/A"}
+                            </td>
+                            <td>
+                              {customer?.lastPurchaseDetails?.seller_name ||
+                                "N/A"}
+                            </td>
+                            <td>
+                              <Link href={`/kunderdetail/${customer?.id}`}>
+                                <img src='/images/added-us.svg' />
+                              </Link>
+                            </td>
+                          </tr>
+                        ))
                       : null}
                   </tbody>
                 </table>
@@ -331,16 +358,22 @@ const page = () => {
 
             <CreateLeadModal
               id={leadUserId}
+              orderId={orderId}
               isOpen={showCreateLead}
               onClose={() => {
                 setShowLead(false);
                 fetchCustomers();
               }}
             />
-            <CustomerStatusModal id={leadUserId} isOpen={showStatusChange} onClose={() => {
-              setShowStatusChange(false)
-              fetchCustomers();
-            }} />
+            <CustomerStatusModal
+              id={leadUserId}
+              orderId={orderId}
+              isOpen={showStatusChange}
+              onClose={() => {
+                setShowStatusChange(false);
+                fetchCustomers();
+              }}
+            />
           </>
         )}
       </div>

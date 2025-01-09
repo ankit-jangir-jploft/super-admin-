@@ -505,7 +505,8 @@
         "dark": "Mørkt",
         "delete_user": "Slett bruker",
         "save": "Lagre",
-        "update": "Oppdater"
+        "update": "Oppdater",
+        "password": "Passord"
       }
     },
     "frontpage_settings": {
@@ -554,11 +555,12 @@
     "warm": "Varm",
     "cold": "Kald",
     "luke": "Lunken",
-    "submit": "Send"
+    "submit": "Send",
+    "none": "Ingen"
   },
   "order_status": {
     "ordered": "Bestillt",
-     "order_status": "Bestillingsstatus",
+    "order_status": "Bestillingsstatus",
     "ready_for_picking": "Klar for plukking",
     "currently_picking": "Plukkes nå",
     "sent": "Sendt",

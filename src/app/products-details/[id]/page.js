@@ -133,6 +133,33 @@ const page = ({ params }) => {
     }
   };
 
+  const logStatus = {
+    note: {
+      name: "Note",
+      html: "<strong>Customer note:</strong><br/>",
+      style: "note",
+    },
+    order_status: {
+      name: "Order Status",
+      html: "<strong>Changed status:</strong>",
+      style: "order-status",
+    },
+    updated_stock: {
+      name: "Updated stock",
+      html: "<strong>Updated stock:</strong>",
+    },
+    new_order: {
+      name: "New Order",
+      html: "",
+      style: "new-order",
+    },
+    none: {
+      name: "None",
+      html: "",
+      style: "none",
+    },
+  };
+
   return (
     <>
       <Sidebar />
@@ -393,7 +420,13 @@ const page = ({ params }) => {
                     return (
                       <div className='logg-dtl'>
                         <span>{log?.created_at}</span>
-                        <label>{log?.name}</label>
+                        <label
+                          dangerouslySetInnerHTML={{
+                            __html: logStatus[log?.type]?.html
+                              ? logStatus[log?.type]?.html + " " + log?.name
+                              : log?.name,
+                          }}
+                        />
                       </div>
                     );
                   })) || <div className='no_data_found'>No logs available</div>}

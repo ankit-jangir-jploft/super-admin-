@@ -367,12 +367,12 @@ const page = () => {
 
   return (
     <>
-      <Sidebar />
-      <div className='detail-admin-main statistics-mne'>
-        <div className='admin-header'>
+      {/* <Sidebar /> */}
+      <div className='detail-admin-main-cp statistics-mne'>
+        {/* <div className='admin-header'>
           <h2>
             {t("statistics.statistics")}{" "}
-            <Link href={"/statistics_print"}>
+            <Link href={"/"}>
               <img src='/images/linkhed.svg' />
             </Link>
           </h2>
@@ -393,34 +393,8 @@ const page = () => {
                 placeholder='Year to date'
               />
             </div>
-            {/* Render your statistics data here */}
-            {/* {statistics && (
-        <div>
-          <h3>{t("statistics.data")}</h3>
-          <pre>{JSON.stringify(statistics, null, 2)}</pre>
-        </div>
-      )} */}
           </div>
-          {/* <div className='search-frm'>
-            <input
-              type='text'
-              // placeholder='Sok i order'
-            />
-            <Link href={""}>
-              <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={`/useredit/${userData?.id}`}>
-              <img
-                className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height: "41px" }}
-                src={userData?.profile_image}
-                onError={(e) => {
-                  e.target.src = "/images/avatar-style.png";
-                }}
-              />
-            </Link>
-          </div> */}
-        </div>
+        </div> */}
         <div className='row'>
           <div className='col-md-3 '>
             <div className='dash-crde pinks-cr'>

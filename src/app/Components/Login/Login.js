@@ -138,7 +138,6 @@ const Login = () => {
                     }
                   />
                   <img
-                    // src={!eyeToggle ? HideEye : ShowEye}
                     src={
                       !eyeToggle ? "/images/hide.svg" : "/images/showEye.svg"
                     }
@@ -149,11 +148,11 @@ const Login = () => {
                     {formik.errors.password}
                   </Form.Control.Feedback>
                   <div className='pass-for text-end'>
-                  {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
-                  <Link href='/forgot-password'>
-                    {t("loginpage.forgot_password")}
-                  </Link>
-                </div>
+                    {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
+                    <Link href='/forgot-password'>
+                      {t("loginpage.forgot_password")}
+                    </Link>
+                  </div>
                 </Form.Group>
 
                 <div className='text-center mb-4'>
@@ -164,7 +163,7 @@ const Login = () => {
                     {t("loginpage.log_in")}
                   </Button>
                 </div>
-            
+
                 <p className='other-option'>
                   {/* <span>eller</span> */}
                   <span>{t("loginpage.or")}</span>

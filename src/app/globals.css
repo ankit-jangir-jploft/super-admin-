@@ -211,7 +211,7 @@ p.copyright {
   list-style: none;
   margin-top: 30px;
   height: calc(98vh - 200px);
-  border-top: 1px solid #FF9E9D;
+  border-top: 1px solid #ff9e9d;
   padding-top: 30px;
 }
 .menu-list-mange li a,
@@ -820,7 +820,7 @@ tr:nth-child(even) {
   min-height: 345px;
   margin-top: 35px;
 }
-.budget-grp{
+.budget-grp {
   display: flex;
   justify-content: space-between;
 }
@@ -1690,31 +1690,28 @@ ul.pgnatne li {
     display: flex;
     justify-content: center;
     margin-bottom: 10px;
-}
-.statistics-mne .grph-crd {
- 
-  height: 100%;
-  min-height: auto;
-}
-.butn-border_top_right {
-   
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.btm_search_tagbx { 
-  margin-bottom: 20px;
-}
-.totla-text-nimb {
-  width: 100%;
-}
-.pagint-box {
-  justify-content: center !important;
-}
-.leftSalesperson {
-  flex-basis: 100% !important ;
-  margin-bottom: 20px;
-}
-
+  }
+  .statistics-mne .grph-crd {
+    height: 100%;
+    min-height: auto;
+  }
+  .butn-border_top_right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btm_search_tagbx {
+    margin-bottom: 20px;
+  }
+  .totla-text-nimb {
+    width: 100%;
+  }
+  .pagint-box {
+    justify-content: center !important;
+  }
+  .leftSalesperson {
+    flex-basis: 100% !important ;
+    margin-bottom: 20px;
+  }
 
   .active.sidebar-admin {
     height: 100vh;
@@ -2304,10 +2301,10 @@ button.crte-userd.Confirm_btn {
   .btn-addcrt img {
     display: unset;
   }
-  .filter_date input[type="Date"] { 
+  .filter_date input[type="Date"] {
     width: 100%;
     margin: 10px 0px;
-}
+  }
   .pagination-container p {
     flex: 0 0 100%;
   }
@@ -2315,11 +2312,10 @@ button.crte-userd.Confirm_btn {
     flex-wrap: wrap;
   }
   .grph-crd input[type="date"] {
-     
-    max-width: 39px; 
+    max-width: 39px;
+  }
 }
-}
-.apexcharts-canvas { 
+.apexcharts-canvas {
   margin: 0 auto;
 }
 .Confirm_btn {
@@ -2781,26 +2777,121 @@ form.createcategory_cumtm {
   padding: 0px 20px 20px 20px;
 }
 
-
 .crpr-im.filr-setng.filr-setng1 > img {
   border-radius: 20px;
   margin-bottom: 10px;
 }
 
 .home-table-cl tr:nth-child(2n) {
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
 }
 .ener_page_details tbody tr:nth-child(1n) {
-  background-color: #F7F4F1;
+  background-color: #f7f4f1;
 }
 .complt_stastus {
-  border: 1px solid #AEAEAE;
+  border: 1px solid #aeaeae;
   border-radius: 10px;
-  background: #EBEBEB;
+  background: #ebebeb;
   padding: 3px 8px;
   line-height: 1;
   font-size: 12px;
   font-weight: 500;
-  color: #4C6B5D;
+  color: #4c6b5d;
   display: inline-block;
+}
+
+.ready_for_picking {
+  background: #d6ffe8;
+  border: 1px solid #96ffc4;
+  border-radius: 30px;
+  color: #12b468;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.currently_picking {
+  background: #ffecd6;
+  border: 1px solid #e1a34b;
+  border-radius: 30px;
+  color: #b46812;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+.in_transit {
+  background: #d6ffe8;
+  border: 1px solid #96ffc4;
+  border-radius: 30px;
+  color: #12b468;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.completed {
+  background: #d0d0d0;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  color: #000000;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+.canceled {
+  background: #ededed;
+  border: 1px solid #cccccc;
+  border-radius: 30px;
+  color: #aeaeae;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+.on_hold {
+  background: #ffe1ce;
+  border: 1px solid #ffc464;
+  border-radius: 30px;
+  color: #ffe1ce;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+.ordered {
+  background: #ededed;
+  border: 1px solid #cccccc;
+  border-radius: 30px;
+  color: #aeaeae;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.ordered_trial_package,
+.started_dugnad {
+  background: #d6ffe8;
+  border: 1px solid #96ffc4;
+  border-radius: 30px;
+  color: #12b468;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.finished {
+  background: #d0d0d0;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  color: #000000;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+.not_started {
+  background: #ffe1ce;
+  border: 1px solid #ffd99c;
+  border-radius: 30px;
+  color: #fc9300;
+  padding: 3px 8px;
+  font-weight: 500;
+}
+
+.eye-icon {
+  position: absolute;
+  left: 72rem;
+  bottom: 170px;
+}
+
+.detail-admin-main-cp {
+  padding: 40px;
 }

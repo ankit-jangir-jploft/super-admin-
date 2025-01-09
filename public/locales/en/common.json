@@ -504,7 +504,8 @@
         "dark": "Dark",
         "delete_user": "Delete user",
         "update": "Update",
-        "save": "Save"
+        "save": "Save",
+        "password": "Password"
       }
     },
     "frontpage_settings": {
@@ -553,7 +554,8 @@
     "warm": "Warm",
     "cold": "Cold",
     "luke": "Luke",
-    "submit": "Submit"
+    "submit": "Submit",
+    "none": "None"
   },
   "order_status": {
     "select_status": "Select status",

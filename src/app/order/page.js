@@ -24,8 +24,8 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
   const [loading, setLoading] = useState(false);
-  const [showStatusModal, setShowStatusModal] = useState(false)
-  const [customId, setCustomId] = useState("")
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [customId, setCustomId] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -55,10 +55,6 @@ const page = () => {
     setLoading(false);
   };
 
-
-
-
-
   const onPageChange = (selected) => {
     setCurrent(selected);
   };
@@ -68,7 +64,6 @@ const page = () => {
   //   const userDetail = JSON.parse(Cookies.get("user"));
   //   setUserData(userDetail);
   // }, [currentPage, searchOuery]);
-
 
   // Debouncing searchQuery
   useEffect(() => {
@@ -86,7 +81,6 @@ const page = () => {
     const userDetail = JSON.parse(Cookies.get("user"));
     setUserData(userDetail);
   }, []);
-
 
   const handleSelectOrder = (orderId) => {
     setSelectedOrders((prev) =>
@@ -134,18 +128,22 @@ const page = () => {
   };
 
   const orders = {
-    0: { name: t('order_status.ordered'), style: "green-clr" },
-    1: { name: t('order_status.ready_for_picking'), style: "brown-clr" },
-    2: { name: t('order_status.currently_picking'), style: "gray-clr" },
-    3: { name: t('order_status.sent'), style: "blue-clr" },
-    4: { name: t('order_status.in_transit'), style: "purple-clr" },
-    5: { name: t('order_status.delivered'), style: "purple-clr" },
-    6: { name: t('order_status.completed'), style: "" },
-    7: { name: t('order_status.canceled'), style: "" },
-    8: { name: t('order_status.on_hold'), style: "" }
+    0: { name: t("order_status.ordered"), style: "ordered" },
+    1: {
+      name: t("order_status.ready_for_picking"),
+      style: "ready_for_picking",
+    },
+    2: {
+      name: t("order_status.currently_picking"),
+      style: "currently_picking",
+    },
+    3: { name: t("order_status.sent"), style: "ready_for_picking" }, // Fallback to 'ready_for_picking'
+    4: { name: t("order_status.in_transit"), style: "in_transit" },
+    5: { name: t("order_status.delivered"), style: "ready_for_picking" }, // Fallback to 'ready_for_picking'
+    6: { name: t("order_status.completed"), style: "completed" },
+    7: { name: t("order_status.canceled"), style: "canceled" },
+    8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
-
-
 
   return (
     <>
@@ -168,7 +166,7 @@ const page = () => {
                   type='text'
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
-                // placeholder='Sok i order'
+                  // placeholder='Sok i order'
                 />
                 <Link href={""}>
                   <img src='/images/notifications_none.svg' />
@@ -249,11 +247,12 @@ const page = () => {
                             <td>
                               <button
                                 onClick={() => {
-                                  setShowStatusModal(true)
-                                  setCustomId(order?.id)
+                                  setShowStatusModal(true);
+                                  setCustomId(order?.id);
                                 }}
-                                className={`status ${orders[+order.order_status]?.style
-                                  }`}
+                                className={`status ${
+                                  orders[+order.order_status]?.style
+                                }`}
                               >
                                 {orders[+order.order_status]?.name}
                               </button>
@@ -325,20 +324,21 @@ const page = () => {
                                             {product?.product_number}
                                           </td>
                                           <td>
-                                            <div className='sub-row-img' onClick={() =>
-                                              (window.location.href = `/products-details/${product?.product_id}`)
-                                            }>
+                                            <div
+                                              className='sub-row-img'
+                                              onClick={() =>
+                                                (window.location.href = `/products-details/${product?.product_id}`)
+                                              }
+                                            >
                                               <img
                                                 src={product?.product_image}
                                                 onError={(e) =>
-                                                (e.target.src =
-                                                  "/images/product2.png")
+                                                  (e.target.src =
+                                                    "/images/product2.png")
                                                 }
                                                 alt='product'
                                               />
-                                              <span
-
-                                              >
+                                              <span>
                                                 {product.product_name}
                                               </span>
                                             </div>
@@ -357,15 +357,15 @@ const page = () => {
                           )}
                         </React.Fragment>
                       ))) || (
-                        <tr>
-                          <td
-                            colSpan='12'
-                            style={{ textAlign: "center", padding: "20px" }}
-                          >
-                            No Orders Yet
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td
+                          colSpan='12'
+                          style={{ textAlign: "center", padding: "20px" }}
+                        >
+                          No Orders Yet
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -403,7 +403,14 @@ const page = () => {
           </>
         )}
       </div>
-      <ChangeOrderStatus onClose={() => { setShowStatusModal(false); fetchOrders() }} isOpen={showStatusModal} id={customId} />
+      <ChangeOrderStatus
+        onClose={() => {
+          setShowStatusModal(false);
+          fetchOrders();
+        }}
+        isOpen={showStatusModal}
+        id={customId}
+      />
     </>
   );
 };

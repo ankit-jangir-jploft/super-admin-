@@ -70,7 +70,7 @@ const page = ({ params }) => {
             : false,
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     fetchProductData();
@@ -961,7 +961,8 @@ const page = ({ params }) => {
                             }));
                           }}
                         >
-                          <option value={1}>Taxable</option>
+                          <option value=''>Select VAT</option>
+                          <option value='taxable'>Taxable</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -979,9 +980,9 @@ const page = ({ params }) => {
                           }
                           disabled
                         >
-                         <option value='0'>0%</option>
+                          <option value='0'>0%</option>
                           <option value='12'>12%</option>
-                          <option value='15' >15%</option>
+                          <option value='15'>15%</option>
                           <option value='25'>25%</option>
                         </Form.Select>
                       </Form.Group>

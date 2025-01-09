@@ -70,7 +70,7 @@ const page = () => {
     warehouseAddress: "",
     quantity: "",
     keepStock: false,
-    vat: "",
+    vat: "taxable",
     vatClass: "",
     shortDescription: "",
     ProductDescription: "",
@@ -939,7 +939,12 @@ const page = () => {
                           }}
                         >
                           <option value=''>Select VAT</option>
-                          <option value='taxable' selected>Taxable</option>
+                          <option
+                            value='taxable'
+                            selected
+                          >
+                            Taxable
+                          </option>
                         </Form.Select>
                       </Form.Group>
                     </div>

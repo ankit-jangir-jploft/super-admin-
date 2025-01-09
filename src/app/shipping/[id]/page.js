@@ -4,7 +4,7 @@ import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Container, Row } from "react-bootstrap";
 import { GET } from "@/app/Utils/apiFunctions";
-import { BASE_URL } from "@/app/Utils/apiHelper";
+import { APPLICATION_LINK, BASE_URL } from "@/app/Utils/apiHelper";
 import moment from "moment";
 import QRCodeGenerator from "@/app/Components/QRcode";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ const page = ({ params }) => {
   const fetchOrderDetails = async () => {
     try {
       const options = { id: id };
-      const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, options);
+      const res = await GET(`${BASE_URL}/api/admin/picklist-details`, options);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
         setProducts(res.data?.data?.order_details);
@@ -76,7 +76,7 @@ const page = ({ params }) => {
             </Col>
             <Col md={4}>
               <div className='qr-img-section text-end'>
-                <QRCodeGenerator url={"https://user.propheticpathway.com"} />
+                <QRCodeGenerator url={`${APPLICATION_LINK}/shipping/${id}`} />
               </div>
             </Col>
           </Row>
