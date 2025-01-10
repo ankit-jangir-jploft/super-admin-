@@ -231,126 +231,126 @@ const page = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {customers.length
-                      ? customers.map((customer) => (
-                          <tr key={customer.id}>
-                            <td>
-                              <input
-                                type='checkbox'
-                                checked={selectedCustomers.includes(
-                                  customer.id
-                                )}
-                                onChange={() =>
-                                  handleSelectCustomer(customer.id)
-                                }
-                              />
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.id || "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.name || "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.createdAt || "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.lastPurchaseDetails?.group_name ||
-                                "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.contactPerson || "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              {customer?.email || "N/A"}
-                            </td>
-                            <td
-                              style={{ cursor: "pointer" }}
-                              onClick={() =>
-                                (window.location.href = `/kunderdetail/${customer?.id}`)
-                              }
-                            >
-                              <span style={{ color: "gray" }}>
-                                {customer?.countryCode}{" "}
-                              </span>{" "}
-                              {customer?.phone || "N/A"}
-                            </td>
-                            <td>
-                              <button
-                                className={`status ${
-                                  customerStatus[customer?.customer_status]
-                                    ?.style
-                                }`}
-                                onClick={() => {
-                                  setShowStatusChange(true);
-                                  setLeadUserId(customer.id);
-                                  setOrderId(customer?.order_id);
-                                }}
-                              >
-                                {
-                                  customerStatus[customer?.customer_status]
-                                    ?.value
-                                }
-                              </button>
-                            </td>
-                            <td
+                    {(customers?.length &&
+                      customers?.map((customer) => (
+                        <tr key={customer.id}>
+                          <td>
+                            <input
+                              type='checkbox'
+                              checked={selectedCustomers.includes(customer.id)}
+                              onChange={() => handleSelectCustomer(customer.id)}
+                            />
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.id || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.name || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.createdAt || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.lastPurchaseDetails?.group_name || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.contactPerson || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            {customer?.email || "N/A"}
+                          </td>
+                          <td
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              (window.location.href = `/kunderdetail/${customer?.id}`)
+                            }
+                          >
+                            <span style={{ color: "gray" }}>
+                              {customer?.countryCode}{" "}
+                            </span>{" "}
+                            {customer?.phone || "N/A"}
+                          </td>
+                          <td>
+                            <button
+                              className={`status ${
+                                customerStatus[customer?.customer_status]?.style
+                              }`}
                               onClick={() => {
-                                setShowLead(true);
+                                setShowStatusChange(true);
                                 setLeadUserId(customer.id);
+                                setOrderId(customer?.order_id);
+                                console.log("customer?.order_id", customer);
                               }}
                             >
-                              <button
-                                className={`status ${customer?.lead_status}`}
-                              >
-                                {leadStatus[customer?.lead_status]?.value}
-                              </button>
-                            </td>
-                            <td>{customer?.lastLog || "N/A"}</td>
-                            <td>
-                              {customer?.lastPurchaseDetails?.phone || "N/A"}
-                            </td>
-                            <td>
-                              {customer?.lastPurchaseDetails?.seller_name ||
-                                "N/A"}
-                            </td>
-                            <td>
-                              <Link href={`/kunderdetail/${customer?.id}`}>
-                                <img src='/images/added-us.svg' />
-                              </Link>
-                            </td>
-                          </tr>
-                        ))
-                      : null}
+                              {customerStatus[customer?.customer_status]?.value}
+                            </button>
+                          </td>
+                          <td
+                            onClick={() => {
+                              setShowLead(true);
+                              setLeadUserId(customer.id);
+                            }}
+                          >
+                            <button
+                              className={`status ${customer?.lead_status}`}
+                            >
+                              {leadStatus[customer?.lead_status]?.value}
+                            </button>
+                          </td>
+                          <td>{customer?.lastLog || "N/A"}</td>
+                          <td>
+                            {customer?.lastPurchaseDetails?.phone || "N/A"}
+                          </td>
+                          <td>
+                            {customer?.lastPurchaseDetails?.seller_name ||
+                              "N/A"}
+                          </td>
+                          <td>
+                            <Link href={`/kunderdetail/${customer?.id}`}>
+                              <img src='/images/added-us.svg' />
+                            </Link>
+                          </td>
+                        </tr>
+                      ))) || (
+                      <tr>
+                        <th
+                          className='text-center'
+                          colSpan={15}
+                        >
+                          No records
+                        </th>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

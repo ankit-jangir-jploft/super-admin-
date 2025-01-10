@@ -7,7 +7,15 @@
     "log_in": "Logg inn",
     "or": "eller",
     "continue_with_vipps": "Fortsett med Vipps",
-    "all_rights_reserved": "Alle rettigheter reservert"
+    "all_rights_reserved": "Alle rettigheter reservert",
+    "email_invalid": "Vennligst oppgi en gyldig e-postadresse.",
+    "email_required": "E-post er påkrevd.",
+    "password_required": "Passord er påkrevd.",
+    "password_min": "Passord må være minst 8 tegn.",
+    "password_uppercase": "Passord må inneholde minst 1 stor bokstav.",
+    "password_lowercase": "Passord må inneholde minst 1 liten bokstav.",
+    "password_number": "Passord må inneholde minst 1 tall.",
+    "password_special": "Passord må inneholde minst 1 spesialtegn (@$!%*?&)."
   },
   "sidebar": {
     "dashboard": "Dashbord",
@@ -133,6 +141,7 @@
     "package_slip": "Fraktlapp",
     "ready_to_picking": "Klar for plukking",
     "create_shipping_label": "Opprett fraktlapp",
+    "shipping_label": "Fraktetikett",
     "note": "Notat",
     "customer": "Kunde",
     "kari_nordmann": "Kari Mordmann",
@@ -572,5 +581,27 @@
     "select_status": "Velg status",
     "change_status": "Endre status",
     "submit": "Send"
+  },
+  "forget_password": {
+    "email_invalid": "Vennligst oppgi en gyldig e-postadresse.",
+    "email_required": "E-post er påkrevd.",
+    "forgot_password": "Glemt passord",
+    "email_address": "E-postadresse",
+    "sending": "Sender...",
+    "send": "Send"
+  },
+  "set_password": {
+    "new_password_required": "Nytt passord er påkrevd.",
+    "password_min": "Passord må være minst 8 tegn.",
+    "password_uppercase": "Passord må inneholde minst 1 stor bokstav.",
+    "password_lowercase": "Passord må inneholde minst 1 liten bokstav.",
+    "password_number": "Passord må inneholde minst 1 tall.",
+    "password_special": "Passord må inneholde minst 1 spesialtegn (@$!%*?&).",
+    "confirm_password_required": "Bekreft passord er påkrevd.",
+    "passwords_must_match": "Passordene må være like.",
+    "set_password": "Angi passord!",
+    "new_password": "Nytt passord",
+    "confirm_password": "Bekreft passord",
+    "submit": "Send inn"
   }
 }

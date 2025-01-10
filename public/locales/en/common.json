@@ -7,7 +7,15 @@
     "log_in": "Log in",
     "or": "or",
     "continue_with_vipps": "Continue with Vipps",
-    "all_rights_reserved": "All rights reserved"
+    "all_rights_reserved": "All rights reserved",
+    "email_invalid": "Please enter a valid email address.",
+    "email_required": "Email is required.",
+    "password_required": "Password is required.",
+    "password_min": "Password must be at least 8 characters.",
+    "password_uppercase": "Password must include at least 1 uppercase letter.",
+    "password_lowercase": "Password must include at least 1 lowercase letter.",
+    "password_number": "Password must include at least 1 number.",
+    "password_special": "Password must include at least 1 special character (@$!%*?&)."
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -132,6 +140,7 @@
     "package_slip": "Packing slip",
     "ready_to_picking": "Ready for picking",
     "create_shipping_label": "Create shipping label",
+    "shipping_label": "Shipping label",
     "note": "Note",
     "customer": "Customer",
     "kari_nordmann": "Kari Nordmann",
@@ -570,6 +579,28 @@
     "completed": "Completed",
     "canceled": "Canceled",
     "on_hold": "On hold",
+    "submit": "Submit"
+  },
+  "forget_password": {
+    "email_invalid": "Please enter a valid email address.",
+    "email_required": "Email is required.",
+    "forgot_password": "Forgot password",
+    "email_address": "Email address",
+    "sending": "Sending...",
+    "send": "Send"
+  },
+  "set_password": {
+    "new_password_required": "New password is required.",
+    "password_min": "Password must be at least 8 characters.",
+    "password_uppercase": "Password must include at least 1 uppercase letter.",
+    "password_lowercase": "Password must include at least 1 lowercase letter.",
+    "password_number": "Password must include at least 1 number.",
+    "password_special": "Password must include at least 1 special character (@$!%*?&).",
+    "confirm_password_required": "Confirm password is required.",
+    "passwords_must_match": "Passwords must match.",
+    "set_password": "Set Password!",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
     "submit": "Submit"
   }
 }

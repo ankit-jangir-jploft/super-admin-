@@ -90,6 +90,18 @@ const Page = () => {
     }
   };
 
+  const handleCreateShipping = async () => {
+    const payload = {
+      order_id: id,
+    };
+    const res = await POST(`${BASE_URL}/api/admin/orderShipUpdate`, payload);
+    if (res?.data?.status) {
+      toast.dismiss();
+      toast.success(res?.data?.message);
+      fetchOrderDetails();
+    }
+  };
+
   const generatePDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const content = document.getElementById("pdf-content");
@@ -193,7 +205,7 @@ const Page = () => {
               <img src='/images/sales-ovr.svg' />{" "}
               {t("order_details.salesoverview")}
             </button>
-            <button
+            {/* <button
               className='bold-btn w-auto me-2'
               onClick={() => {
                 if (orderDetails?.package_slip) {
@@ -208,20 +220,35 @@ const Page = () => {
                 alt='Package Slip Icon'
               />{" "}
               {t("order_details.package_slip")}
-            </button>
+            </button> */}
 
-            <button className='bold-btn w-auto me-2'>
-              <img src='/images/invce.svg' />{" "}
-              {t("order_details.create_shipping_label")}
-            </button>
+            {orderDetails?.tracking_no ? (
+              <a
+                href={orderDetails?.package_slip}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='bold-btn w-auto me-2'
+              >
+                <img src='/images/invce.svg' />{" "}
+                {t("order_details.shipping_label")}
+              </a>
+            ) : (
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={handleCreateShipping}
+              >
+                <img src='/images/invce.svg' />{" "}
+                {t("order_details.create_shipping_label")}
+              </button>
+            )}
 
-            <button
+            {/* <button
               className='bold-btn w-auto me-2'
               onClick={generatePDF}
             >
               <img src='/images/pick-list.svg' /> {t("order_details.invoice")}
-            </button>
-            <Link href={"/"}>
+            </button> */}
+            <Link href={""}>
               <img src='/images/dotted-btn.svg' />
             </Link>
           </div>
@@ -289,7 +316,17 @@ const Page = () => {
                     <h2>
                       {t("order_details.shipping")}{" "}
                       <span className='disssbl'>
-                        {t("order_details.packageslip_not_created")}
+                        {orderDetails?.tracking_no ? (
+                          <a
+                            href={orderDetails?.package_slip}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            {orderDetails?.tracking_no}
+                          </a>
+                        ) : (
+                          t("order_details.packageslip_not_created")
+                        )}
                       </span>
                     </h2>
                     <p>{orderDetails?.billing_address?.name}</p>

@@ -271,6 +271,10 @@ const page = () => {
                                 }`}
                               >
                                 {orders[+order.order_status]?.name}
+                                {console.log(
+                                  "+order.order_status",
+                                  orders[+order.order_status]
+                                )}
                               </button>
                             </td>
                             <td>{order.origin}</td>
@@ -287,15 +291,32 @@ const page = () => {
                                   onClick={() => toggleRow(index)}
                                   alt='Toggle Sub Rows'
                                 />
-                                <Link href='/salesoverview'>
+                                <Link href=''>
                                   <img src='/images/disable-print.svg' />
                                 </Link>
                                 <Link href={`/shipping/${order.id}`}>
                                   <img src='/images/checklist.svg' />
                                 </Link>
-                                <Link href={`/package/${order.id}`}>
-                                  <img src='/images/save.svg' />
-                                </Link>
+                                {order?.tracking_no ? (
+                                  <a
+                                    href={order?.package_slip}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                  >
+                                    <img
+                                      src='/images/save.svg'
+                                      alt='Track Package'
+                                    />
+                                  </a>
+                                ) : (
+                                  <span>
+                                    <img
+                                      src='/images/save.svg'
+                                      alt='Tracking Not Available'
+                                      style={{ opacity: 0.5 }}
+                                    />
+                                  </span>
+                                )}
                               </div>
                             </td>
                             <td

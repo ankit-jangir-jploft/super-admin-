@@ -10,6 +10,7 @@ import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Dropdown } from "react-bootstrap";
+import CustomerStatusModal from "../../modals/customerstatuschange";
 
 function formatDateToCustom(dateString) {
   if (!dateString) return "";
@@ -40,6 +41,7 @@ const page = ({ params }) => {
   const [deliveryAddress, setDeliveryAddress] = useState({});
   const [userAddress, setUserAddress] = useState();
   const [user, setUser] = useState({});
+  const [showStatusChange, setShowStatusChange] = useState(false);
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -95,15 +97,15 @@ const page = ({ params }) => {
     },
     Warm: {
       value: t("lead_option.warm"),
-      style: "warm",
+      style: "Warm",
     },
     Cold: {
       value: t("lead_option.cold"),
-      style: "cold",
+      style: "Cold",
     },
     Luke: {
       value: t("lead_option.luke"),
-      style: "luke",
+      style: "Luke",
     },
   };
 
@@ -268,7 +270,7 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-3'>
           <h2>
-            {customer?.name} <b>NO</b>
+            {customer?.name}
             <span>
               #{customer?.id} | {customer?.userDetail?.delivery_address}
             </span>
@@ -283,6 +285,9 @@ const page = ({ params }) => {
               className={`status ${
                 customerStatus[customer?.customer_status]?.style
               } w-auto me-2`}
+              onClick={() => {
+                setShowStatusChange(true);
+              }}
             >
               {customerStatus[customer?.customer_status]?.value}
             </button>
@@ -473,11 +478,11 @@ const page = ({ params }) => {
 
                     <p>{deliveryAddress?.post_code}</p> */}
 
-                    <p>{userAddress?.address}</p>
+                    <p>{deliveryAddress?.address}</p>
 
-                    <p>{userAddress?.zip_code}</p>
+                    <p>{deliveryAddress?.zip_code}</p>
                     <p>
-                      {userAddress?.post_code} {userAddress?.city}
+                      {deliveryAddress?.post_code} {deliveryAddress?.city}
                     </p>
                   </div>
                 </Col>
@@ -712,6 +717,15 @@ const page = ({ params }) => {
         show={modalShow}
         id={id}
         onHide={() => handlePopup()}
+      />
+
+      <CustomerStatusModal
+        id={id}
+        isOpen={showStatusChange}
+        onClose={() => {
+          setShowStatusChange(false);
+          fetchCustomerDetails();
+        }}
       />
     </>
   );

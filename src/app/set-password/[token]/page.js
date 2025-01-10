@@ -10,8 +10,10 @@ import Cookies from "js-cookie";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { BARREL_OPTIMIZATION_PREFIX } from "next/dist/shared/lib/constants";
+import { useTranslation } from "react-i18next";
 
 const page = ({}) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { token } = useParams();
   const [newPasswordToggle, setNewPasswordToggle] = useState(false);
@@ -21,18 +23,18 @@ const page = ({}) => {
 
   const validationSchema = Yup.object({
     newPassword: Yup.string()
-      .required("New password is required.")
-      .min(8, "Password must be at least 8 characters.")
-      .matches(/[A-Z]/, "Password must include at least 1 uppercase letter.")
-      .matches(/[a-z]/, "Password must include at least 1 lowercase letter.")
-      .matches(/\d/, "Password must include at least 1 number.")
-      .matches(
-        /[@$!%*?&]/,
-        "Password must include at least 1 special character (@$!%*?&)."
-      ),
+      .required(t("set_password.new_password_required"))
+      .min(8, t("set_password.password_min"))
+      .matches(/[A-Z]/, t("set_password.password_uppercase"))
+      .matches(/[a-z]/, t("set_password.password_lowercase"))
+      .matches(/\d/, t("set_password.password_number"))
+      .matches(/[@$!%*?&]/, t("set_password.password_special")),
     confirmPassword: Yup.string()
-      .required("Confirm password is required.")
-      .oneOf([Yup.ref("newPassword"), null], "Passwords must match."),
+      .required(t("set_password.confirm_password_required"))
+      .oneOf(
+        [Yup.ref("newPassword"), null],
+        t("set_password.passwords_must_match")
+      ),
   });
 
   const formik = useFormik({
@@ -79,7 +81,7 @@ const page = ({}) => {
                 />
               </div>
               <div className='title-login text-center'>
-                <h1>Wachtwoord instellen!</h1>
+                <h1>{t("set_password.set_password")}</h1>
               </div>
               <Form
                 onSubmit={formik.handleSubmit}
@@ -89,7 +91,7 @@ const page = ({}) => {
                   className='form-group'
                   controlId='formBasicPassword'
                 >
-                  <Form.Label>New Password</Form.Label>
+                  <Form.Label>{t("set_password.new_password")}</Form.Label>
                   <Form.Control
                     className='pe-5'
                     type={!newPasswordToggle ? "password" : "text"}
@@ -120,7 +122,7 @@ const page = ({}) => {
                   className='form-group'
                   controlId='formBasicPassword'
                 >
-                  <Form.Label>Confirm Password</Form.Label>
+                  <Form.Label>{t("set_password.confirm_password")}</Form.Label>
                   <Form.Control
                     className='pe-5'
                     type={!confirmPasswordToggle ? "password" : "text"}
@@ -156,7 +158,7 @@ const page = ({}) => {
                     className='btn-primary px-5 py-2'
                     type='submit'
                   >
-                    Submit
+                    {t("set_password.submit")}
                   </Button>
                 </div>
               </Form>

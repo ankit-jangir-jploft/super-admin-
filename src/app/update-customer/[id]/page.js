@@ -400,8 +400,11 @@ const page = ({ params }) => {
                               id='customAddress'
                               name='customAddress'
                               className='form-control'
-                              value={customAddress}
-                              onChange={(e) => setCustomAddress(e.target.value)}
+                              value={values.customAddress} // Use Formik's value
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setFieldValue("customAddress", value); // Update Formik's state
+                              }}
                             />
                           </div>
                         </>
