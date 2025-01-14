@@ -10,6 +10,7 @@ import { BASE_URL } from "@/app/Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { Dropdown } from "react-bootstrap";
+import CustomerStatusModal from "../../modals/customerstatuschange";
 
 function formatDateToCustom(dateString) {
   if (!dateString) return "";
@@ -38,16 +39,17 @@ const page = ({ params }) => {
   const [lastPurchaseOrder, setLastPurchaseOrder] = useState([]);
   const [roleType, setRoleType] = useState();
   const [deliveryAddress, setDeliveryAddress] = useState({});
-  const [userAddress, setUserAddress] = useState()
+  const [userAddress, setUserAddress] = useState();
+  const [user, setUser] = useState({});
+  const [showStatusChange, setShowStatusChange] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
   }, []);
 
-
-
-  console.log({ customer })
+  console.log({ customer });
 
   const handlePopup = () => {
     setShowModal(!modalShow);
@@ -60,14 +62,14 @@ const page = ({ params }) => {
       };
       const res = await GET(`${BASE_URL}/api/admin/customerDetail`, options);
 
-      console.log({ res })
+      console.log({ res });
       if (res?.data?.status) {
         setCustomers(res?.data?.data[0]);
         setOrderDetails(res.data?.orderList || []);
         setGroupList(res.data?.groupLists || []);
         setLastPurchaseOrder(res.data?.lastPurchaseDetails || []);
         setDeliveryAddress(res.data?.DeliveryAddress);
-        setUserAddress(res?.data?.userAddress)
+        setUserAddress(res?.data?.userAddress);
       }
     } catch (error) {
       console.log(error);
@@ -89,8 +91,47 @@ const page = ({ params }) => {
     }
   };
 
+  const leadStatus = {
+    None: {
+      value: t("lead_option.none"),
+      style: "",
+    },
+    Warm: {
+      value: t("lead_option.warm"),
+      style: "Warm",
+    },
+    Cold: {
+      value: t("lead_option.cold"),
+      style: "Cold",
+    },
+    Luke: {
+      value: t("lead_option.luke"),
+      style: "Luke",
+    },
+  };
 
-  console.log({ userAddress })
+  const logStatus = {
+    note: {
+      name: "Note",
+      html: "<strong>Customer note:</strong><br/>",
+      style: "note",
+    },
+    order_status: {
+      name: "Order Status",
+      html: "<strong>Changed status:</strong>",
+      style: "order-status",
+    },
+    new_order: {
+      name: "New Order",
+      html: "",
+      style: "new-order",
+    },
+    none: {
+      name: "None",
+      html: "",
+      style: "none",
+    },
+  };
 
   const fetchTags = async () => {
     try {
@@ -172,6 +213,7 @@ const page = ({ params }) => {
       const options = {
         user_id: id,
         content: logsData,
+        user_id: user?.id,
       };
 
       const res = await POST(
@@ -192,16 +234,32 @@ const page = ({ params }) => {
     }
   };
 
-  const orders = {
-    0: { name: "Pending", style: "green-clr" },
-    1: { name: "Confirmed", style: "brown-clr" },
-    2: { name: "Processing", style: "gray-clr" },
-    3: { name: "Shipped", style: "blue-clr" },
-    4: { name: "Delivered", style: "purple-clr" },
-    5: { name: "Canceled", style: "red-clr" },
+  const customerStatus = {
+    Created: {
+      value: t("customer_status.created"),
+      style: "created",
+    },
+    "Ordered trial package": {
+      value: t("customer_status.ordered_trial_package"),
+      style: "ordered_trial_package",
+    },
+    "Started dugnad": {
+      value: t("customer_status.started_dugnad"),
+      style: "started_dugnad",
+    },
+    "Finished dugnad": {
+      value: t("customer_status.finished_dugnad"),
+      style: "finished",
+    },
+    "Not started": {
+      value: t("customer_status.not_started"),
+      style: "not_started",
+    },
   };
 
   useEffect(() => {
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUser(userDetails);
     fetchCustomerDetails();
     fetchTags();
     fetchLogs();
@@ -213,10 +271,9 @@ const page = ({ params }) => {
       <div className='detail-admin-main'>
         <div className='admin-header pb-3'>
           <h2>
-            {customer?.name} <b>NO</b>
+            {customer?.name}
             <span>
-              #{customer?.id} |{" "}
-              {customer?.userDetail?.delivery_address}
+              #{customer?.id} | {customer?.userDetail?.delivery_address}
             </span>
           </h2>
         </div>
@@ -225,8 +282,16 @@ const page = ({ params }) => {
           ""
         ) : (
           <div className='filter-manage'>
-            <button className='status green-clr w-auto me-2'>
-              PAGAENDE FORHANDSSALG
+            <button
+              className={`status ${
+                customerStatus[customer?.customer_status]?.style
+              } w-auto me-2`}
+              onClick={() => {
+                setShowStatusChange(true);
+                setCurrentStatus(customer?.customer_status);
+              }}
+            >
+              {customerStatus[customer?.customer_status]?.value}
             </button>
             <div>
               <div className='butn-border_top_right'>
@@ -315,15 +380,19 @@ const page = ({ params }) => {
                   <div className='order-dtl-box'>
                     <h2>
                       {t("customer_details.customer")}{" "}
-                      <b className='text-right'>{customer?.lead_status}</b>{" "}
+                      <b
+                        className={`text-right ${
+                          leadStatus[customer?.lead_status]?.style
+                        }`}
+                      >
+                        {leadStatus[customer?.lead_status]?.value}
+                      </b>{" "}
                     </h2>
 
                     {/* <h2>{customer?.origin} </h2> */}
 
                     <p>#{customer?.id}</p>
-                    <p>
-                      {customer?.userDetail?.delivery_address}
-                    </p>
+                    <p>{customer?.userDetail?.delivery_address}</p>
                     <p>{customer?.name}</p>
                     <p>{customer?.email}</p>
                     <p>{customer?.phone}</p>
@@ -393,13 +462,9 @@ const page = ({ params }) => {
                     <h2>{t("customer_details.address")}</h2>
                     <p>{userAddress?.address}</p>
 
+                    <p>{userAddress?.zip_code}</p>
                     <p>
-                      {userAddress?.zip_code}
-                    </p>
-                    <p>
-                      {userAddress?.post_code}
-                      {" "}
-                      {userAddress?.city}
+                      {userAddress?.post_code} {userAddress?.city}
                     </p>
                   </div>
                 </Col>
@@ -415,17 +480,11 @@ const page = ({ params }) => {
 
                     <p>{deliveryAddress?.post_code}</p> */}
 
+                    <p>{deliveryAddress?.address}</p>
 
-
-                    <p>{userAddress?.address}</p>
-
+                    <p>{deliveryAddress?.zip_code}</p>
                     <p>
-                      {userAddress?.zip_code}
-                    </p>
-                    <p>
-                      {userAddress?.post_code}
-                      {" "}
-                      {userAddress?.city}
+                      {deliveryAddress?.post_code} {deliveryAddress?.city}
                     </p>
                   </div>
                 </Col>
@@ -458,7 +517,7 @@ const page = ({ params }) => {
                                   (window.location.href = `/orderdetail/${order?.id}`)
                                 }
                               >
-                                #{order?.order_number}
+                                <div className="colr-them"> #{order?.order_number}</div>
                               </td>
                               <td>{order?.created_at}</td>
                               <td></td>
@@ -467,20 +526,20 @@ const page = ({ params }) => {
                             </tr>
                           );
                         })) || (
-                          <tr>
-                            <td
-                              colSpan={6}
-                              className='text-center'
-                            >
-                              No data
-                            </td>
-                          </tr>
-                        )}
+                        <tr>
+                          <td
+                            colSpan={6}
+                            className='text-center'
+                          >
+                            No data
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
                 <div
-                  className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone'
+                  className='table-responsive order-table w-100 order-dtl-tbl shdw-crd bordernone ener_page_details'
                   style={{ marginTop: "20px" }}
                 >
                   <table>
@@ -526,15 +585,15 @@ const page = ({ params }) => {
                             </td>
                           </tr>
                         ))) || (
-                          <tr>
-                            <td
-                              colSpan={9}
-                              className='text-center'
-                            >
-                              No data
-                            </td>
-                          </tr>
-                        )}
+                        <tr>
+                          <td
+                            colSpan={9}
+                            className='text-center'
+                          >
+                            No data
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -583,15 +642,42 @@ const page = ({ params }) => {
                 {/* <h2>Logg</h2> */}
                 <h2>{t("customer_details.log")}</h2>
                 {logs.length > 0 ? (
-                  logs.map((log, index) => (
-                    <div
-                      className='logg-dtl'
-                      key={index}
-                    >
-                      <span>{log?.updated_at}</span>
-                      <label>{log?.content}</label>
-                    </div>
-                  ))
+                  logs.map((log, index) => {
+                    const updatedContent = log?.order_price
+                      ? `
+                       <p style="padding: 0; display: inline-block; width: 70%; text-align: left;">
+                         ${log?.content}
+                       </p>
+                       <p style="padding: 0; display: inline-block; width: 28%; text-align: right;">
+                         kr ${log?.order_price}
+                       </p>
+                     `
+                      : log?.content;
+                    return (
+                      <div
+                        className='logg-dtl'
+                        key={index}
+                      >
+                        {log?.role_name ? (
+                          <div className='d-flex justify-content-between'>
+                            <span>{log?.updated_at}</span>
+                            <span>{log?.role_name}</span>
+                          </div>
+                        ) : (
+                          <span>{log?.updated_at}</span>
+                        )}
+                        <label
+                          dangerouslySetInnerHTML={{
+                            __html: logStatus[log?.type]?.html
+                              ? logStatus[log?.type]?.html +
+                                " " +
+                                updatedContent
+                              : updatedContent,
+                          }}
+                        />
+                      </div>
+                    );
+                  })
                 ) : (
                   <p>No logs available.</p>
                 )}
@@ -633,6 +719,16 @@ const page = ({ params }) => {
         show={modalShow}
         id={id}
         onHide={() => handlePopup()}
+      />
+
+      <CustomerStatusModal
+        id={id}
+        isOpen={showStatusChange}
+        onClose={() => {
+          setShowStatusChange(false);
+          fetchCustomerDetails();
+        }}
+        status={currentStatus}
       />
     </>
   );

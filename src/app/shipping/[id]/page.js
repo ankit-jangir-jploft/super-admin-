@@ -4,7 +4,7 @@ import Sidebar from "@/app/Components/Sidebar/Sidebar";
 import Link from "next/link";
 import { Col, Container, Row } from "react-bootstrap";
 import { GET } from "@/app/Utils/apiFunctions";
-import { BASE_URL } from "@/app/Utils/apiHelper";
+import { APPLICATION_LINK, BASE_URL } from "@/app/Utils/apiHelper";
 import moment from "moment";
 import QRCodeGenerator from "@/app/Components/QRcode";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ const page = ({ params }) => {
   const fetchOrderDetails = async () => {
     try {
       const options = { id: id };
-      const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, options);
+      const res = await GET(`${BASE_URL}/api/admin/picklist-details`, options);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
         setProducts(res.data?.data?.order_details);
@@ -32,7 +32,23 @@ const page = ({ params }) => {
     fetchOrderDetails();
   }, []);
 
-  console.log({ orderDetails });
+  const orders = {
+    0: { name: t("order_status.ordered"), style: "ordered" },
+    1: {
+      name: t("order_status.ready_for_picking"),
+      style: "ready_for_picking",
+    },
+    2: {
+      name: t("order_status.currently_picking"),
+      style: "currently_picking",
+    },
+    3: { name: t("order_status.sent"), style: "ready_for_picking" },
+    4: { name: t("order_status.in_transit"), style: "in_transit" },
+    5: { name: t("order_status.delivered"), style: "ready_for_picking" },
+    6: { name: t("order_status.completed"), style: "completed" },
+    7: { name: t("order_status.canceled"), style: "canceled" },
+    8: { name: t("order_status.on_hold"), style: "on_hold" },
+  };
 
   return (
     <>
@@ -76,7 +92,9 @@ const page = ({ params }) => {
             </Col>
             <Col md={4}>
               <div className='qr-img-section text-end'>
-                <QRCodeGenerator url={"https://user.propheticpathway.com"} />
+                <QRCodeGenerator
+                  url={`${APPLICATION_LINK}/order-status-change/${id}`}
+                />
               </div>
             </Col>
           </Row>
@@ -94,7 +112,7 @@ const page = ({ params }) => {
                 <li>
                   {/* <strong>Leveringsmate:</strong>{" "} */}
                   <strong>{t("picklist.leveringsmate")}:</strong>{" "}
-                  {orderDetails?.order_status === 1 ? "Completed" : "Pending"}
+                  {orders[orderDetails?.order_status]?.name}
                 </li>
                 <li>
                   {/* <strong>Ordredato:</strong>{" "} */}

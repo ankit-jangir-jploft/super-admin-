@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -16,23 +16,25 @@ const Login = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const [eyeToggle, setToggle] = useState(false);
+  const [defaultLang, setDefaultLang] = useState("nor");
+
+  useEffect(() => {
+    setDefaultLang("nor");
+    Cookies.set("i18next", "en", {
+      expires: 365,
+      path: "/dashboard",
+    });
+  });
 
   const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email("Please enter a valid email address.")
-      .required("Email is required."),
+      .email(t("loginpage.email_invalid"))
+      .required(t("loginpage.email_required")),
     password: Yup.string()
-      .required("Password is required.")
-      .min(8, "Password must be at least 8 characters.")
-      .matches(/[A-Z]/, "Password must include at least 1 uppercase letter.")
-      .matches(/[a-z]/, "Password must include at least 1 lowercase letter.")
-      .matches(/\d/, "Password must include at least 1 number.")
-      .matches(
-        /[@$!%*?&]/,
-        "Password must include at least 1 special character (@$!%*?&)."
-      ),
+      .required(t("loginpage.password_required"))
+      .min(3, t("loginpage.password_min")),
   });
 
   const formik = useFormik({
@@ -52,7 +54,7 @@ const Login = () => {
           console.log("login response", res?.data?.data);
           Cookies.set("dugnadstisadmin", res.data?.data?.token);
           Cookies.set("user", JSON.stringify(res.data.data?.user));
-          const language = res.data?.data?.user?.language_id || "en";
+          const language = res.data?.data?.user?.language_id || defaultLang;
           Cookies.set("i18next", language, {
             expires: 365,
             path: "/dashboard",
@@ -138,7 +140,6 @@ const Login = () => {
                     }
                   />
                   <img
-                    // src={!eyeToggle ? HideEye : ShowEye}
                     src={
                       !eyeToggle ? "/images/hide.svg" : "/images/showEye.svg"
                     }
@@ -148,22 +149,23 @@ const Login = () => {
                   <Form.Control.Feedback type='invalid'>
                     {formik.errors.password}
                   </Form.Control.Feedback>
+                  <div className='pass-for text-end'>
+                    {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
+                    <Link href='/forgot-password'>
+                      {t("loginpage.forgot_password")}
+                    </Link>
+                  </div>
                 </Form.Group>
 
-                <div className='text-center'>
+                <div className='text-center mb-4'>
                   <Button
-                    className='btn-primary px-5 py-2'
+                    className='btn-primary w-100 px-5 py-2'
                     type='submit'
                   >
                     {t("loginpage.log_in")}
                   </Button>
                 </div>
-                <div className='pass-for text-center'>
-                  {/* <Link href='/forgot-password'>Glemt passord?</Link> */}
-                  <Link href='/forgot-password'>
-                    {t("loginpage.forgot_password")}
-                  </Link>
-                </div>
+
                 <p className='other-option'>
                   {/* <span>eller</span> */}
                   <span>{t("loginpage.or")}</span>
@@ -171,7 +173,7 @@ const Login = () => {
 
                 <div className='text-center mt-5'>
                   <Link
-                    className='login-other'
+                    className='login-other w-100'
                     href='/'
                   >
                     <img

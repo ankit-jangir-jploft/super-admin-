@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
+import ChangeOrderStatus from "../modals/changeorderstatus";
 
 const page = () => {
   const { t } = useTranslation();
@@ -23,6 +24,9 @@ const page = () => {
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
   const [loading, setLoading] = useState(false);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [customId, setCustomId] = useState("");
+  const [currentStatus, setCurrentStatus] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -52,10 +56,6 @@ const page = () => {
     setLoading(false);
   };
 
-
-
-
-
   const onPageChange = (selected) => {
     setCurrent(selected);
   };
@@ -65,7 +65,6 @@ const page = () => {
   //   const userDetail = JSON.parse(Cookies.get("user"));
   //   setUserData(userDetail);
   // }, [currentPage, searchOuery]);
-
 
   // Debouncing searchQuery
   useEffect(() => {
@@ -83,7 +82,6 @@ const page = () => {
     const userDetail = JSON.parse(Cookies.get("user"));
     setUserData(userDetail);
   }, []);
-
 
   const handleSelectOrder = (orderId) => {
     setSelectedOrders((prev) =>
@@ -121,13 +119,50 @@ const page = () => {
     }
   };
 
-  const orders = {
+  const handlePrint = async (data) => {
+    const res = await GET(`${BASE_URL}/api/admin/sellerPdfGenerate`, data);
+    if (res?.data?.status) {
+      downloadFile(res?.data?.data?.file_path);
+    } else {
+      toast.dismiss();
+      toast.error(res?.data?.message);
+    }
+  };
+  const downloadFile = (filePath) => {
+    const a = document.createElement("a");
+    a.href = filePath;
+    a.download = filePath.split("/").pop();
+    document.body.appendChild(a);
+    a.target = "_blank";
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const order = {
     0: { name: "Pending", style: "green-clr" },
     1: { name: "Confirmed", style: "brown-clr" },
     2: { name: "Processing", style: "gray-clr" },
     3: { name: "Shipped", style: "blue-clr" },
     4: { name: "Delivered", style: "purple-clr" },
     5: { name: "Canceled", style: "red-clr" },
+  };
+
+  const orders = {
+    0: { name: t("order_status.ordered"), style: "ordered" },
+    1: {
+      name: t("order_status.ready_for_picking"),
+      style: "ready_for_picking",
+    },
+    2: {
+      name: t("order_status.currently_picking"),
+      style: "currently_picking",
+    },
+    3: { name: t("order_status.sent"), style: "ready_for_picking" },
+    4: { name: t("order_status.in_transit"), style: "in_transit" },
+    5: { name: t("order_status.delivered"), style: "ready_for_picking" },
+    6: { name: t("order_status.completed"), style: "completed" },
+    7: { name: t("order_status.canceled"), style: "canceled" },
+    8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
 
   return (
@@ -149,11 +184,12 @@ const page = () => {
                 )}
                 <input
                   type='text'
+                  placeholder="Search"
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
-                // placeholder='Sok i order'
+                  // placeholder='Sok i order'
                 />
-                <Link href={""}>
+                {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
                 </Link>
                 <Link href={`/useredit/${userData?.id}`}>
@@ -165,7 +201,7 @@ const page = () => {
                       e.target.src = "/images/avatar-style.png";
                     }}
                   />
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className='shdw-crd'>
@@ -178,7 +214,7 @@ const page = () => {
                       {/* <th>Ordernumber</th> */}
                       <th>{t("orders.ordernumber")}</th>
                       {/* <th>Date</th> */}
-                      <th>{t("orders.date")}</th>
+                      <th><b>{t("orders.date")}</b></th>
                       {/* <th>Ordered by</th> */}
                       <th>{t("orders.ordered_by")}</th>
                       {/* <th>Ordered for/from</th> */}
@@ -211,6 +247,7 @@ const page = () => {
                               />
                             </td>
                             <td
+                              style={{ cursor: "pointer" }}
                               onClick={() =>
                                 (window.location.href = `/orderdetail/${order?.id}`)
                               }
@@ -221,20 +258,45 @@ const page = () => {
                               </span>
                             </td>
                             <td
+                              style={{ cursor: "pointer" }}
                               onClick={() =>
                                 (window.location.href = `/orderdetail/${order?.id}`)
                               }
                             >
                               {order.created_at}
                             </td>
-                            <td>{order.order_by}</td>
-                            <td>{order.order_for || "N/A"}</td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              {order.order_by}
+                            </td>
+                            <td
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                (window.location.href = `/orderdetail/${order?.id}`)
+                              }
+                            >
+                              {order.order_for || "N/A"}
+                            </td>
                             <td>
                               <button
-                                className={`status ${orders[+order.order_status]?.style
-                                  }`}
+                                onClick={() => {
+                                  setShowStatusModal(true);
+                                  setCustomId(order?.id);
+                                  setCurrentStatus(+order?.order_status);
+                                }}
+                                className={`status ${
+                                  orders[+order.order_status]?.style
+                                }`}
                               >
                                 {orders[+order.order_status]?.name}
+                                {console.log(
+                                  "+order.order_status",
+                                  orders[+order.order_status]
+                                )}
                               </button>
                             </td>
                             <td>{order.origin}</td>
@@ -251,15 +313,58 @@ const page = () => {
                                   onClick={() => toggleRow(index)}
                                   alt='Toggle Sub Rows'
                                 />
-                                <Link href='/salesoverview'>
-                                  <img src='/images/disable-print.svg' />
-                                </Link>
+                                {order?.group_id ? (
+                                  <button
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "50%",
+                                    }}
+                                    onClick={() => {
+                                      handlePrint({
+                                        order_id: order?.id,
+                                        group_id: order?.group_id,
+                                      });
+                                    }}
+                                  >
+                                    <img src='/images/disable-print.svg' />
+                                  </button>
+                                ) : (
+                                  <button
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "50%",
+                                    }}
+                                    onClick={() => {
+                                      toast.dismiss();
+                                      toast.error("Missing group info");
+                                    }}
+                                  >
+                                    <img src='/images/disable-print.svg' />
+                                  </button>
+                                )}
                                 <Link href={`/shipping/${order.id}`}>
                                   <img src='/images/checklist.svg' />
                                 </Link>
-                                <Link href={`/package/${order.id}`}>
-                                  <img src='/images/save.svg' />
-                                </Link>
+                                {order?.tracking_no ? (
+                                  <a
+                                    href={order?.package_slip}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                  >
+                                    <img
+                                      src='/images/save.svg'
+                                      alt='Track Package'
+                                    />
+                                  </a>
+                                ) : (
+                                  <span>
+                                    <img
+                                      src='/images/save.svg'
+                                      alt='Tracking Not Available'
+                                      style={{ opacity: 0.5 }}
+                                    />
+                                  </span>
+                                )}
                               </div>
                             </td>
                             <td
@@ -267,7 +372,7 @@ const page = () => {
                                 (window.location.href = `/settings?type=seller`)
                               }
                             >
-                              {order?.seller_name}
+                             <u>{order?.seller_name}</u> 
                             </td>
                             <td>
                               <Link href={`/kunderdetail/${order?.user_id}`}>
@@ -304,20 +409,21 @@ const page = () => {
                                             {product?.product_number}
                                           </td>
                                           <td>
-                                            <div className='sub-row-img' onClick={() =>
-                                              (window.location.href = `/products-details/${product?.product_id}`)
-                                            }>
+                                            <div
+                                              className='sub-row-img'
+                                              onClick={() =>
+                                                (window.location.href = `/products-details/${product?.product_id}`)
+                                              }
+                                            >
                                               <img
                                                 src={product?.product_image}
                                                 onError={(e) =>
-                                                (e.target.src =
-                                                  "/images/product2.png")
+                                                  (e.target.src =
+                                                    "/images/product2.png")
                                                 }
                                                 alt='product'
                                               />
-                                              <span
-
-                                              >
+                                              <span>
                                                 {product.product_name}
                                               </span>
                                             </div>
@@ -336,15 +442,15 @@ const page = () => {
                           )}
                         </React.Fragment>
                       ))) || (
-                        <tr>
-                          <td
-                            colSpan='12'
-                            style={{ textAlign: "center", padding: "20px" }}
-                          >
-                            No Orders Yet
-                          </td>
-                        </tr>
-                      )}
+                      <tr>
+                        <td
+                          colSpan='12'
+                          style={{ textAlign: "center", padding: "20px" }}
+                        >
+                          No Orders Yet
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -382,6 +488,15 @@ const page = () => {
           </>
         )}
       </div>
+      <ChangeOrderStatus
+        onClose={() => {
+          setShowStatusModal(false);
+          fetchOrders();
+        }}
+        status={currentStatus}
+        isOpen={showStatusModal}
+        id={customId}
+      />
     </>
   );
 };

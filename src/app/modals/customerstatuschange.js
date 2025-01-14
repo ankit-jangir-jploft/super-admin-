@@ -5,36 +5,41 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
+import { useTranslation } from "react-i18next";
 
-const CreateCategoryModal = ({ isOpen, onClose }) => {
+const CreateLeadModal = ({ isOpen, onClose, id, orderId, status }) => {
+  const { t } = useTranslation();
   const validationSchema = Yup.object().shape({
-    categoryName: Yup.string()
-      .required("Category name is required")
-      .min(2, "Must be at least 2 characters"),
+    leadType: Yup.string().required("Lead type is required"),
   });
 
+  console.log("status -- ", status);
+
   const initialValues = {
-    categoryName: "",
+    leadType: status,
   };
 
   const submitHandler = async (values) => {
     try {
       const payload = {
-        language_id: 1,
-        parent_category_id: "",
-        name: values.categoryName,
+        customer_id: id,
+        customer_status: values.leadType,
+        order_id: orderId,
       };
-      const res = await POST(`${BASE_URL}/api/admin/categoryCreate`, payload);
+      const res = await POST(
+        `${BASE_URL}/api/admin/customerUpdateStatus`,
+        payload
+      );
       if (res?.data?.status) {
         toast.dismiss();
-        toast.success("Category created successfully!");
+        toast.success(res?.data?.message);
         onClose();
       } else {
         toast.dismiss();
         toast.error(res?.data?.message || "Something went wrong");
       }
     } catch (error) {
-      toast.error("Failed to create category");
+      toast.error("Failed to create lead");
     }
   };
 
@@ -89,13 +94,15 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
   return (
     <div style={styles.overlay}>
       <div style={styles.container}>
-        {/* <button
+        <button
           style={styles.closeButton}
           onClick={onClose}
         >
           ×
-        </button> */}
-        <h2 className='hedingtext_top custom-pup-mn'>Create Category</h2>
+        </button>
+        <h2 className='hedingtext_top custom-pup-mn'>
+          {t("customer_status.change_status")}
+        </h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -104,11 +111,13 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
           {() => (
             <Form className='createcategory_cumtm'>
               <div style={styles.formGroup}>
-                <label htmlFor='categoryName'>Category Name</label>
+                <label htmlFor='leadType'>
+                  {t("customer_status.customer_status")}
+                </label>
                 <Field
-                  id='categoryName'
-                  name='categoryName'
-                  type='text'
+                  as='select'
+                  id='leadType'
+                  name='leadType'
                   style={{
                     width: "100%",
                     padding: "10px 15px",
@@ -116,29 +125,44 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
                     borderRadius: "40px",
                     border: "1px solid #ced4da",
                   }}
-                />
+                >
+                  <option
+                    value=''
+                    label={t("customer_status.select_status")}
+                  ></option>
+                  <option
+                    value='Created'
+                    label={t("customer_status.created")}
+                  ></option>
+                  <option
+                    value='Ordered trial package'
+                    label={t("customer_status.ordered_trial_package")}
+                  ></option>
+                  <option
+                    value='Started dugnad'
+                    label={t("customer_status.started_dugnad")}
+                  ></option>
+                  <option
+                    value='Finished dugnad'
+                    label={t("customer_status.finished_dugnad")}
+                  ></option>
+                  <option
+                    value='Not started'
+                    label={t("customer_status.not_started")}
+                  ></option>
+                </Field>
                 <ErrorMessage
-                  name='categoryName'
+                  name='leadType'
                   component='div'
                   style={styles.errorText}
                 />
               </div>
-
-              <div
-                className='d-flex justify-content-around'
-                style={styles.actions}
-              >
-                <button
-                  className='can-btn btn createcustomer_btncmf px-5'
-                  onClick={() => onClose()}
-                >
-                  Cancel
-                </button>
+              <div style={styles.actions}>
                 <button
                   className='cr-btn btn createcustomer_btn px-5'
                   type='submit'
                 >
-                  Submit
+                  {t("customer_status.submit")}
                 </button>
               </div>
             </Form>
@@ -149,4 +173,4 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default CreateCategoryModal;
+export default CreateLeadModal;

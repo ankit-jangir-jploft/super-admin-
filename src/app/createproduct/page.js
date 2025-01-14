@@ -70,13 +70,14 @@ const page = () => {
     warehouseAddress: "",
     quantity: "",
     keepStock: false,
-    vat: "",
+    vat: "taxable",
     vatClass: "",
     shortDescription: "",
     ProductDescription: "",
     PageDescription: "",
     MetaDescription: "",
     VisibleForDirectSales: false,
+    language: 1,
   });
   const [errors, setErrors] = useState({});
 
@@ -119,6 +120,7 @@ const page = () => {
         setForm((prev) => ({
           ...prev,
           vatClass: res?.data?.data?.vat_class || 12,
+          vat: res?.data?.data?.vat_class == 0 ? "" : "taxable",
         }));
       }
     } catch (error) {
@@ -197,6 +199,10 @@ const page = () => {
 
     if (!productForm.quantity) {
       tempErrors.quantity = "Quantity in stock required";
+      isValid = false;
+    }
+    if (!chosendCategory) {
+      tempErrors.chosendCategory = "Category is required";
       isValid = false;
     }
 
@@ -289,7 +295,7 @@ const page = () => {
         formData.append("my_page_description", productForm.PageDescription);
         formData.append("meta_description", productForm.MetaDescription);
         formData.append("sub_category_id", chosendSubCategory || "");
-        formData.append("language_id", "1");
+        formData.append("language_id", productForm.language);
         formData.append("menu_order", productForm.menuOrder);
         formData.append(
           "visible_for_direct_sale",
@@ -353,9 +359,14 @@ const page = () => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
-                #123{" "}
-                <Form.Select>
-                  <option>English</option>
+                <Form.Select
+                  value={productForm.language}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, language: e.target.value }))
+                  }
+                >
+                  <option value={1}>English</option>
+                  <option value={2}>Norwegian</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -382,6 +393,9 @@ const page = () => {
                     {file.map((fl, i) => {
                       return (
                         <>
+                        <div className="imb-bx-upl">
+
+                      
                           {" "}
                           <img
                             key={i}
@@ -394,6 +408,7 @@ const page = () => {
                             }}
                           >
                             X
+                          </div>
                           </div>
                         </>
                       );
@@ -418,31 +433,33 @@ const page = () => {
                   ) : (
                     <></>
                   )}
-
                   <Form.Group className='mb-3 cstmr-ad'>
                     <div className='cstmr-dve'>
-                      {/* <Form.Label>Category</Form.Label> */}
                       <Form.Label>{t("create_product.category")}</Form.Label>
                       <Form.Select
                         onChange={(e) => setChosendCategory(e.target.value)}
                         value={chosendCategory}
+                        isInvalid={!!errors?.chosendCategory} // Check if there's an error
                       >
-                        {/* <option value='0'>Categories</option> */}
                         <option value='0'>
                           {t("create_product.categories")}
                         </option>
-                        {(categories.length &&
-                          categories?.map((cat, i) => {
-                            return (
-                              <option
-                                key={i}
-                                value={cat.id}
-                              >
-                                {cat.name}
-                              </option>
-                            );
-                          })) || <option>Not Available</option>}
+                        {categories.length > 0 ? (
+                          categories.map((cat, i) => (
+                            <option
+                              key={i}
+                              value={cat.id}
+                            >
+                              {cat.name}
+                            </option>
+                          ))
+                        ) : (
+                          <option>Not Available</option>
+                        )}
                       </Form.Select>
+                      <Form.Control.Feedback type='invalid'>
+                        {errors?.chosendCategory}
+                      </Form.Control.Feedback>
                     </div>
                     <button
                       onClick={() => {
@@ -450,6 +467,7 @@ const page = () => {
                         fetchCategory();
                       }}
                       className='add-btne btn-borderbl'
+                      type='button'
                     >
                       +
                     </button>
@@ -939,7 +957,12 @@ const page = () => {
                           }}
                         >
                           <option value=''>Select VAT</option>
-                          <option value='taxable' selected>Taxable</option>
+                          <option
+                            value='taxable'
+                            selected
+                          >
+                            Taxable
+                          </option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -955,7 +978,6 @@ const page = () => {
                               vatClass: e.target.value,
                             }))
                           }
-                          disabled
                         >
                           <option value={""}>Select VAT class</option>
                           <option value='0'>0%</option>

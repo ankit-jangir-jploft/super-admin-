@@ -20,6 +20,7 @@ const Page = () => {
   const [profileImageFileError, setProfileImageFileError] = useState(null);
   const [pending, setPending] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [eyeToggle, setToggle] = useState(false);
   const router = useRouter(); // Initialize useRouter for redirection
 
   useEffect(() => {
@@ -56,12 +57,12 @@ const Page = () => {
 
   const onSubmit = async (data) => {
     // Check for image selection
-    if (!selectedImage) {
-      setProfileImageFileError("Profile image is required.");
-      return; // Prevent form submission if image is not selected
-    } else {
-      setProfileImageFileError(null);
-    }
+    // if (!selectedImage) {
+    //   setProfileImageFileError("Profile image is required.");
+    //   return; // Prevent form submission if image is not selected
+    // } else {
+    //   setProfileImageFileError(null);
+    // }
 
     const formData = new FormData();
     formData.append("language_id", data.language_id || "1"); // Optional
@@ -70,7 +71,8 @@ const Page = () => {
     formData.append("role_id", data?.role_id);
     formData.append("status", data?.status);
     formData.append("appearance", radioValue);
-    formData.append("profile_image", data?.profile_image[0]);
+    formData.append("profile_image", data?.profile_image[0] || "");
+    formData.append("password", data?.password);
 
     try {
       setPending(true);
@@ -104,21 +106,7 @@ const Page = () => {
       <Loader visible={pending} />
       <div className='detail-admin-main stng-pge'>
         <div className='admin-header'>
-          {/* <h2>Settings</h2> */}
           <h2>{t("settings.settings")}</h2>
-          <div className='search-frm'>
-            <input type='text' />
-            {/* <img
-              className='input-right-icon'
-              src='/images/search-interface.svg'
-            /> */}
-            <Link href={""}>
-              <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={"/"}>
-              <img src='/images/avatar-style.png' />
-            </Link>
-          </div>
         </div>
 
         <div className='row'>
@@ -132,7 +120,6 @@ const Page = () => {
                       style={{ borderRadius: "100%" }}
                       src={selectedImage || "/images/user.png"}
                     />
-                    {/* <h2 className='my-4 color_red'>Add Photo</h2> */}
                     <h2 className='my-4 color_red'>
                       {t("settings.users.create.add_photo")}
                     </h2>
@@ -172,12 +159,10 @@ const Page = () => {
                     <div className='row'>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Name</Form.Label> */}
                           <Form.Label>
                             {t("settings.users.create.name")}
                           </Form.Label>
                           <Form.Control
-                            // placeholder="Elise Nordmann"
                             {...register("name", {
                               required: "Name is required",
                             })}
@@ -191,12 +176,10 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Email</Form.Label> */}
                           <Form.Label>
                             {t("settings.users.create.email")}
                           </Form.Label>
                           <Form.Control
-                            // placeholder="elise.nordmann@dugnadstid.no"
                             {...register("email", {
                               required: "Email is required",
                               pattern: {
@@ -215,7 +198,6 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>User Type</Form.Label> */}
                           <Form.Label>
                             {t("settings.users.create.user_type")}
                           </Form.Label>
@@ -240,7 +222,6 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Status</Form.Label> */}
                           <Form.Label>
                             {t("settings.users.create.status")}
                           </Form.Label>
@@ -261,7 +242,6 @@ const Page = () => {
                       </div>
                       <div className='col-md-6'>
                         <Form.Group className='mb-3'>
-                          {/* <Form.Label>Language</Form.Label> */}
                           <Form.Label>
                             {t("settings.users.create.language")}
                           </Form.Label>
@@ -272,50 +252,57 @@ const Page = () => {
                         </Form.Group>
                       </div>
                       <div className='col-md-6'>
-                        <div className='swtch-bt'>
-                          {/* <Form.Label>Appearance</Form.Label> */}
+                        <Form.Group className='mb-3 position-relative'>
                           <Form.Label>
-                            {t("settings.users.create.appearance")}
+                            {t("settings.users.create.password")}
                           </Form.Label>
-                          <ButtonGroup>
-                            {radios.map((radio, idx) => (
-                              <ToggleButton
-                                key={idx}
-                                id={`radio-${idx}`}
-                                type='radio'
-                                variant={
-                                  idx % 2 ? "outline-success" : "outline-danger"
-                                }
-                                name='appearance'
-                                value={radio.value}
-                                checked={radioValue === radio.value}
-                                onChange={(e) =>
-                                  setRadioValue(e.currentTarget.value)
-                                }
-                              >
-                                {radio.name}
-                              </ToggleButton>
-                            ))}
-                          </ButtonGroup>
-                        </div>
+                          <Form.Control
+                            className=''
+                            type={!eyeToggle ? "password" : "text"}
+                            {...register("password", {
+                              required: "Password is required",
+                              minLength: {
+                                value: 8,
+                                message:
+                                  "Password must be at least 8 characters long",
+                              },
+                            })}
+                          />
+                          <img
+                            src={
+                              !eyeToggle
+                                ? "/images/hide.svg"
+                                : "/images/showEye.svg"
+                            }
+                            className='img-fluid eye-icon user-crert'
+                            onClick={() => setToggle(!eyeToggle)}
+                          />
+                          {errors.password && (
+                            <span className='text-danger'>
+                              {errors.password.message}
+                            </span>
+                          )}
+                        </Form.Group>
                       </div>
                     </div>
                     <div className='row mt-3 mb-5'>
-                      {/* <div className="col-md-6">
-                                                <button
-                                                    className="createorder_top_right w-100 btn_bg_delt"
-                                                    type="submit"
-                                                >
-                                                    Delete user
-                                                </button>
-                                            </div> */}
                       <div className='col-md-6'>
                         <button
                           className='createorder_top_right btn_bg_save w-100'
                           type='submit'
                         >
-                          {/* Save */}
                           {t("settings.users.create.save")}
+                        </button>
+                      </div>
+                      <div className='col-md-6'>
+                        <button
+                          className='createorder_top_right can-btn w-100'
+                          style={{ border: "none" }}
+                          onClick={() =>
+                            (window.location.href = `/settings?type=seller`)
+                          }
+                        >
+                          {t("settings.users.create.cancel")}
                         </button>
                       </div>
                     </div>

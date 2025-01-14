@@ -15,30 +15,33 @@ const Pagination = ({
     onPageChange(Math.min(currentPage + 1, totalPages));
 
   return (
-    <div style={styles.paginationContainer}>
+    <div style={styles.paginationContainer} className="pagint-box">
+      <div className="totla-text-nimb">
+
       <p className='mb-0'>{`${t("paginate.showing")} ${parseInt(
         paginationData?.items_in_range
       )} ${t("paginate.of")} ${paginationData?.total_items} ${t(
         "paginate.elements"
       )}`}</p>
+      </div>
 
-      <button
+      <button className="left-arrow"
         onClick={handleFirstPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src='/images/button_left_dub.svg'
+          src='/images/right-dublarrow1.svg'
           alt='product'
         />
       </button>
-      <button
+      <button className="left-arrow"
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src='/images/button_left_singl.svg'
+          src='/images/right-singlarrow.svg'
           alt='product'
         />
       </button>
@@ -80,7 +83,8 @@ const styles = {
     gap: "8px",
     fontFamily: "Arial, sans-serif",
     fontSize: "14px",
-    justifyContent:"end", 
+    justifyContent:"end",  
+    flexWrap:"wrap",
     width: "100%",
   },
   button: {

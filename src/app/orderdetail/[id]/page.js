@@ -11,7 +11,8 @@ import { useTranslation } from "react-i18next";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import QRCodeGenerator from "@/app/Components/QRcode";
-
+import Cookies from "js-cookie";
+import ChangeOrderStatus from "../../modals/changeorderstatus";
 
 const Page = () => {
   const { id } = useParams();
@@ -22,6 +23,9 @@ const Page = () => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [user, setUser] = useState({});
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
 
   const fetchOrderDetails = async () => {
     try {
@@ -51,12 +55,21 @@ const Page = () => {
   };
 
   const orders = {
-    0: { name: "Pending", style: "gray-clr" },
-    1: { name: "Confirmed", style: "brown-clr" },
-    2: { name: "Processing", style: "green-clr" },
-    3: { name: "Shipped", style: "blue-clr" },
-    4: { name: "Delivered", style: "purple-clr" },
-    5: { name: "Canceled", style: "red-clr" },
+    0: { name: t("order_status.ordered"), style: "ordered" },
+    1: {
+      name: t("order_status.ready_for_picking"),
+      style: "ready_for_picking",
+    },
+    2: {
+      name: t("order_status.currently_picking"),
+      style: "currently_picking",
+    },
+    3: { name: t("order_status.sent"), style: "ready_for_picking" },
+    4: { name: t("order_status.in_transit"), style: "in_transit" },
+    5: { name: t("order_status.delivered"), style: "ready_for_picking" },
+    6: { name: t("order_status.completed"), style: "completed" },
+    7: { name: t("order_status.canceled"), style: "canceled" },
+    8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
 
   const handleLogSubmit = async () => {
@@ -67,7 +80,7 @@ const Page = () => {
         return;
       }
 
-      const payload = { order_id: id, content: content };
+      const payload = { order_id: id, content: content, user_id: user?.id };
       const res = await POST(`${BASE_URL}/api/admin/orderLogCreate`, payload);
 
       if (res?.data?.status) {
@@ -81,48 +94,85 @@ const Page = () => {
     }
   };
 
+  const handleCreateShipping = async () => {
+    const payload = {
+      order_id: id,
+    };
+    const res = await POST(`${BASE_URL}/api/admin/orderShipUpdate`, payload);
+    if (res?.data?.status) {
+      toast.dismiss();
+      toast.success(res?.data?.message);
+      fetchOrderDetails();
+    }
+  };
+
   const generatePDF = async () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const content = document.getElementById("pdf-content");
-  
+
     if (!content) {
       console.error("Content not found");
       return;
     }
-  
+
     setLoading(true);
-    
+
     // Temporarily show the content
-    content.style.display = 'block';
-  
+    content.style.display = "block";
+
     try {
       const canvas = await html2canvas(content, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL("image/png");
-  
+
       if (!imgData || imgData === "data:,") {
         console.error("Failed to generate image data");
         return;
       }
-  
+
       // Calculate the width and height for A4 size
       const pdfWidth = 210; // A4 width in mm
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
-  
+
       // Add the image to the PDF
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight); // Add the image to the PDF
-  
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight); // Add the image to the PDF
+
       // Save the PDF
       pdf.save("order-details.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
       // Hide the content again
-      content.style.display = 'none';
+      content.style.display = "none";
       setLoading(false); // Set loading to false after PDF generation
     }
   };
 
+  const logStatus = {
+    note: {
+      name: "Note",
+      html: "<strong>Customer note:</strong><br/>",
+      style: "note",
+    },
+    order_status: {
+      name: "Order Status",
+      html: "<strong>Changed status:</strong>",
+      style: "order-status",
+    },
+    new_order: {
+      name: "New Order",
+      html: "",
+      style: "new-order",
+    },
+    none: {
+      name: "None",
+      html: "",
+      style: "none",
+    },
+  };
+
   useEffect(() => {
+    const userDetails = JSON.parse(Cookies.get("user"));
+    setUser(userDetails);
     fetchOrderDetails();
     fetchLogs();
   }, []);
@@ -139,8 +189,13 @@ const Page = () => {
         <div className='filter-manage'>
           <div className=''>
             <button
-              className={`status ${orders[+orderDetails?.order_status]?.style
-                } w-auto me-2`}
+              className={`status ${
+                orders[+orderDetails?.order_status]?.style
+              } w-auto me-2`}
+              onClick={() => {
+                setShowStatusModal(true);
+                setCurrentStatus(+orderDetails?.order_status);
+              }}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -158,7 +213,7 @@ const Page = () => {
               <img src='/images/sales-ovr.svg' />{" "}
               {t("order_details.salesoverview")}
             </button>
-            <button
+            {/* <button
               className='bold-btn w-auto me-2'
               onClick={() => {
                 if (orderDetails?.package_slip) {
@@ -173,25 +228,43 @@ const Page = () => {
                 alt='Package Slip Icon'
               />{" "}
               {t("order_details.package_slip")}
-            </button>
+            </button> */}
 
-            <button className='bold-btn w-auto me-2'>
-              <img src='/images/invce.svg' />{" "}
-              {t("order_details.create_shipping_label")}
-            </button>
+            {orderDetails?.tracking_no ? (
+              <a
+                href={orderDetails?.package_slip}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='bold-btn w-auto me-2'
+              >
+                <img src='/images/invce.svg' />{" "}
+                {t("order_details.shipping_label")}
+              </a>
+            ) : (
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={handleCreateShipping}
+              >
+                <img src='/images/invce.svg' />{" "}
+                {t("order_details.create_shipping_label")}
+              </button>
+            )}
 
-            <button
+            {/* <button
               className='bold-btn w-auto me-2'
               onClick={generatePDF}
             >
               <img src='/images/pick-list.svg' /> {t("order_details.invoice")}
-            </button>
-            <Link href={"/"}>
+            </button> */}
+            <Link href={""}>
               <img src='/images/dotted-btn.svg' />
             </Link>
           </div>
         </div>
-        <div className='order-tble w-100 d-inline-block' id="invoice">
+        <div
+          className='order-tble w-100 d-inline-block'
+          id='invoice'
+        >
           <Row>
             <Col md={9}>
               <Row>
@@ -251,10 +324,20 @@ const Page = () => {
                     <h2>
                       {t("order_details.shipping")}{" "}
                       <span className='disssbl'>
-                        {t("order_details.packageslip_not_created")}
+                        {orderDetails?.tracking_no ? (
+                          <a
+                            href={orderDetails?.package_slip}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            {orderDetails?.tracking_no}
+                          </a>
+                        ) : (
+                          t("order_details.packageslip_not_created")
+                        )}
                       </span>
                     </h2>
-                    <p >{orderDetails?.billing_address?.name}</p>
+                    <p>{orderDetails?.billing_address?.name}</p>
                     <p>{orderDetails?.billing_address?.address}</p>
                     <p>
                       {orderDetails?.billing_address?.post_code}{" "}
@@ -303,15 +386,15 @@ const Page = () => {
                             </tr>
                           );
                         })) || (
-                          <tr>
-                            <td
-                              colSpan={5}
-                              className='text-center'
-                            >
-                              No Products
-                            </td>
-                          </tr>
-                        )}
+                        <tr>
+                          <td
+                            colSpan={5}
+                            className='text-center'
+                          >
+                            No Products
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                     <tfoot
                       style={{
@@ -356,17 +439,46 @@ const Page = () => {
               </div>
             </Col>
             <Col lg={3}>
-              <div className='order-dtl-box'>
+              <div className='order-dtl-box right-cht-dle'>
                 <h2>{t("order_details.log")}</h2>
                 {(logs?.length &&
                   logs?.map((log) => {
+                    const updatedContent = log?.order_price
+                      ? `
+                       <p style="padding: 0; display: inline-block; width: 70%; text-align: left;">
+                         ${log?.content}
+                       </p>
+                       <p style="padding: 0; display: inline-block; width: 28%; text-align: right;">
+                         kr ${log?.order_price}
+                       </p>
+                     `
+                      : log?.content;
+
                     return (
                       <div
                         key={log?.id}
                         className='logg-dtl'
                       >
-                        <span>{log?.updated_at}</span>
-                        <label>{log?.content}</label>
+                        {log?.role_name ? (
+                          <div className='d-flex justify-content-between'>
+                            <span>{log?.updated_at}</span>
+                            <span>{log?.role_name}</span>
+                          </div>
+                        ) : (
+                          <span>{log?.updated_at}</span>
+                        )}
+                        <label
+                          dangerouslySetInnerHTML={{
+                            __html: logStatus[log?.type]?.html
+                              ? logStatus[log?.type]?.html +
+                                " " +
+                                updatedContent
+                              : updatedContent,
+                          }}
+                        />
+
+                        {/* {log?.content}
+                        </label> */}
                       </div>
                     );
                   })) || <div className='logg-dtl'>No logs</div>}
@@ -396,23 +508,22 @@ const Page = () => {
             </Col>
           </Row>
         </div>
-      </div >
-
-
-
-
+      </div>
 
       {/* {loading ? (
           ""
         ) : ( */}
-      <div id="pdf-content" style={{ display: 'none' }}>
+      <div
+        id='pdf-content'
+        style={{ display: "none" }}
+      >
         {/* Your PDF content goes here */}
-        <section className="shipping-cart">
-          <Container className="border-btm">
-            <h1 className="heading-mange">Pick List</h1>
+        <section className='shipping-cart'>
+          <Container className='border-btm'>
+            <h1 className='heading-mange'>Pick List</h1>
             <Row>
               <Col md={4}>
-                <div className="addrs-shping">
+                <div className='addrs-shping'>
                   <h2>Delivery Address</h2>
                   <p>
                     {orderDetails?.delivery_address?.name} <br />
@@ -423,8 +534,11 @@ const Page = () => {
                   </p>
                 </div>
               </Col>
-              <Col md={4} className="text-center">
-                <div className="addrs-shping d-inline-block text-start">
+              <Col
+                md={4}
+                className='text-center'
+              >
+                <div className='addrs-shping d-inline-block text-start'>
                   <h2>Billing Address</h2>
                   <p>
                     {orderDetails?.billing_address?.name} <br />
@@ -448,7 +562,7 @@ const Page = () => {
           <Container>
             <Row>
               <Col md={6}>
-                <ul className="pin-personal-dtl">
+                <ul className='pin-personal-dtl'>
                   <li>
                     <strong>Order Number:</strong> {orderDetails?.order_number}
                   </li>
@@ -463,10 +577,9 @@ const Page = () => {
                 </ul>
               </Col>
               <Col md={6}>
-                <ul className="pin-personal-dtl">
+                <ul className='pin-personal-dtl'>
                   <li>
-                    <strong>Customer ID:</strong>{" "}
-                    {orderDetails?.customer?.id}
+                    <strong>Customer ID:</strong> {orderDetails?.customer?.id}
                   </li>
                   <li>
                     <strong>Phone:</strong> {orderDetails?.customer?.phone}
@@ -484,7 +597,7 @@ const Page = () => {
         </section>
         <section>
           <Container>
-            <div className="table-responsive order-table">
+            <div className='table-responsive order-table'>
               <table>
                 <thead>
                   <tr>
@@ -499,7 +612,7 @@ const Page = () => {
                   {products?.map((product, index) => (
                     <tr key={index}>
                       <td>
-                        <input type="checkbox" />
+                        <input type='checkbox' />
                       </td>
                       <td>{product?.qty}</td>
                       <td>
@@ -516,19 +629,6 @@ const Page = () => {
         </section>
       </div>
       {/* )} */}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* <div id="pdf-content" style={{ display: 'none'}}>
         <section className="shipping-cart">
@@ -569,6 +669,15 @@ const Page = () => {
         </section>
        
       </div> */}
+      <ChangeOrderStatus
+        onClose={() => {
+          setShowStatusModal(false);
+          fetchOrderDetails();
+        }}
+        isOpen={showStatusModal}
+        id={id}
+        status={currentStatus}
+      />
     </>
   );
 };

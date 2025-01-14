@@ -7,7 +7,15 @@
     "log_in": "Log in",
     "or": "or",
     "continue_with_vipps": "Continue with Vipps",
-    "all_rights_reserved": "All rights reserved"
+    "all_rights_reserved": "All rights reserved",
+    "email_invalid": "Please enter a valid email address.",
+    "email_required": "Email is required.",
+    "password_required": "Password is required.",
+    "password_min": "Password must be at least 8 characters.",
+    "password_uppercase": "Password must include at least 1 uppercase letter.",
+    "password_lowercase": "Password must include at least 1 lowercase letter.",
+    "password_number": "Password must include at least 1 number.",
+    "password_special": "Password must include at least 1 special character (@$!%*?&)."
   },
   "sidebar": {
     "dashboard": "Dashboard",
@@ -132,6 +140,7 @@
     "package_slip": "Packing slip",
     "ready_to_picking": "Ready for picking",
     "create_shipping_label": "Create shipping label",
+    "shipping_label": "Shipping label",
     "note": "Note",
     "customer": "Customer",
     "kari_nordmann": "Kari Nordmann",
@@ -171,7 +180,13 @@
     "add": "Add",
     "no": "NO",
     "yes": "YES",
-    "other": "Other"
+    "other": "Other",
+    "customer_required": "Customer is required.",
+    "ordered_by_required": "Ordered by is required.",
+    "customer_address_required": "Customer address is required.",
+    "customer_delivery_address_required": "Customer delivery address is required.",
+    "valid_email_required": "A valid email is required.",
+    "at_least_one_product_required": "At least one product must be selected."
   },
   "orders_dropdown": {
     "orders": "Orders",
@@ -280,7 +295,22 @@
     "zip": "Zip",
     "city": "City",
     "select_seller": "Select Seller",
-    "other": "Other"
+    "other": "Other",
+    "none": "None",
+    "name_required": "Name is required",
+    "address_required": "Address is required",
+    "zip_must_be_number": "Zip must be a number",
+    "zip_required": "Zip is required",
+    "city_required": "City is required",
+    "contact_person_required": "Contact person is required",
+    "valid_phone_number": "Must be a valid phone number",
+    "phone_required": "Telephone number is required",
+    "invalid_email": "Invalid email",
+    "email_required": "Email address is required",
+    "custom_zip_must_be_number": "Custom Zip must be a number",
+    "custom_zip_required": "Custom Zip is required",
+    "custom_city_required": "Custom City is required",
+    "custom_address_required": "Custom Address is required"
   },
   "create_task": {
     "create_a_task": "Create a task",
@@ -381,7 +411,22 @@
     "product_description": "Product description",
     "my_page_description": "My pages description",
     "meta_description": "Meta description",
-    "categories": "Categories"
+    "categories": "Categories",
+    "product_number_required": "Product number is required.",
+    "product_name_required": "Product name is required.",
+    "price_required": "Price is required.",
+    "sales_price_required": "Sales price is required.",
+    "quantity_required": "Quantity in stock is required.",
+    "category_required": "Category is required.",
+    "special_price_required": "Special price is required.",
+    "length_required": "Length is required.",
+    "width_required": "Width is required.",
+    "depth_required": "Depth is required.",
+    "weight_required": "Weight is required.",
+    "product_image_required": "Product image is required.",
+    "gtin_required": "Gtin is required.",
+    "menu_order_required": "Menu Order is required.",
+    "quantity_non_negative": "Quantity must be a non-negative number."
   },
   "update_product": {
     "english": "English",
@@ -458,7 +503,8 @@
       "text": "Text",
       "language": "Language",
       "update_settings": "Update settings",
-      "create_settings": "Create settings"
+      "create_settings": "Create settings",
+      "shipping_rate": "Shipping Rate"
     },
     "dugnadssettings": {
       "search": "Search",
@@ -496,7 +542,7 @@
         "add_photo": "Add photo",
         "name": "Name",
         "email": "Email",
-        "user_type": "User  type",
+        "user_type": "User type",
         "status": "Status",
         "language": "Language",
         "appearance": "Appearance",
@@ -504,7 +550,18 @@
         "dark": "Dark",
         "delete_user": "Delete user",
         "update": "Update",
-        "save": "Save"
+        "save": "Save",
+        "password": "Password",
+        "cancel": "Cancel",
+        "name_required": "Name is required.",
+        "email_required": "Email is required.",
+        "email_invalid": "Invalid email format.",
+        "user_type_required": "User type is required.",
+        "status_required": "Status is required.",
+        "password_required": "Password is required.",
+        "password_min_length": "Password must be at least 8 characters long.",
+        "profile_image_size_exceeded": "File size is too large. Maximum allowed size is 2MB.",
+        "profile_image_required": "Profile image is required."
       }
     },
     "frontpage_settings": {
@@ -534,5 +591,63 @@
     "showing": "Showing",
     "elements": "elements",
     "of": "of"
+  },
+  "customer_status": {
+    "select_status": "Select status",
+    "created": "Created",
+    "ordered_trial_package": "Ordered trial package",
+    "started_dugnad": "Started dugnad",
+    "finished_dugnad": "Finished dugnad",
+    "not_started": "Not started",
+    "change_status": "Change Status",
+    "customer_status": "Customer Status",
+    "submit": "Submit"
+  },
+  "lead_option": {
+    "create_lead": "Create Lead",
+    "lead_type": "Lead Type",
+    "select_lead_type": "Select lead type",
+    "warm": "Warm",
+    "cold": "Cold",
+    "luke": "Luke",
+    "submit": "Submit",
+    "none": "None"
+  },
+  "order_status": {
+    "select_status": "Select status",
+    "change_status": "Change Status",
+    "order_status": "Order status",
+    "ordered": "Ordered",
+    "ready_for_picking": "Ready for picking",
+    "currently_picking": "Currently picking",
+    "sent": "Sent",
+    "in_transit": "In transit",
+    "delivered": "Delivered",
+    "completed": "Completed",
+    "canceled": "Canceled",
+    "on_hold": "On hold",
+    "submit": "Submit"
+  },
+  "forget_password": {
+    "email_invalid": "Please enter a valid email address.",
+    "email_required": "Email is required.",
+    "forgot_password": "Forgot password",
+    "email_address": "Email address",
+    "sending": "Sending...",
+    "send": "Send"
+  },
+  "set_password": {
+    "new_password_required": "New password is required.",
+    "password_min": "Password must be at least 8 characters.",
+    "password_uppercase": "Password must include at least 1 uppercase letter.",
+    "password_lowercase": "Password must include at least 1 lowercase letter.",
+    "password_number": "Password must include at least 1 number.",
+    "password_special": "Password must include at least 1 special character (@$!%*?&).",
+    "confirm_password_required": "Confirm password is required.",
+    "passwords_must_match": "Passwords must match.",
+    "set_password": "Set Password!",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "submit": "Submit"
   }
 }

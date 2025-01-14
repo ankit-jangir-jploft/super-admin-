@@ -367,15 +367,14 @@ const page = () => {
 
   return (
     <>
-      <Sidebar />
-      <div className='detail-admin-main statistics-mne'>
-        <div className='admin-header'>
+      {/* <Sidebar /> */}
+      <div className='detail-admin-main-cp statistics-mne'>
+        {/* <div className='admin-header'>
           <h2>
             {t("statistics.statistics")}{" "}
-            <Link href={"/statistics-full"}>
+            <Link href={"/"}>
               <img src='/images/linkhed.svg' />
             </Link>
-             
           </h2>
           <div>
             <div className='filter_date'>
@@ -394,36 +393,10 @@ const page = () => {
                 placeholder='Year to date'
               />
             </div>
-            {/* Render your statistics data here */}
-            {/* {statistics && (
-        <div>
-          <h3>{t("statistics.data")}</h3>
-          <pre>{JSON.stringify(statistics, null, 2)}</pre>
-        </div>
-      )} */}
           </div>
-          {/* <div className='search-frm'>
-            <input
-              type='text'
-              // placeholder='Sok i order'
-            />
-            <Link href={""}>
-              <img src='/images/notifications_none.svg' />
-            </Link>
-            <Link href={`/useredit/${userData?.id}`}>
-              <img
-                className='object-fit-cover rounded-circle'
-                style={{ width: "41px", height: "41px" }}
-                src={userData?.profile_image}
-                onError={(e) => {
-                  e.target.src = "/images/avatar-style.png";
-                }}
-              />
-            </Link>
-          </div> */}
-        </div>
+        </div> */}
         <div className='row'>
-          <div className='col '>
+          <div className='col-md-3 '>
             <div className='dash-crde pinks-cr'>
               {/* <p>Number of active groups</p> */}
               <p>{t("statistics.number_of_active_groups")}</p>
@@ -439,7 +412,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col-md-3'>
             <div className='dash-crde'>
               {/* <p>Number of active sellers</p> */}
               <p>{t("statistics.number_of_active_sellers")}</p>
@@ -455,7 +428,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col-md-2'>
             <div className='dash-crde blue-cr'>
               {/* <p>Number of Packages Sold</p> */}
               <p>{t("statistics.number_of_packages_sold")}</p>
@@ -471,7 +444,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col-md-2'>
             <div className='dash-crde rde-cr'>
               {/* <p>Number of Packages Not Delivered</p> */}
               <p>{t("statistics.number_of_packages_not_delivered")}</p>
@@ -487,7 +460,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col'>
+          <div className='col-md-2'>
             <div className='dash-crde rde-cr'>
               {/* <p>New orders</p> */}
               <p>{t("statistics.new_orders")}</p>
@@ -687,10 +660,10 @@ const page = () => {
                     onChange={handleMonthsChange}
                     style={{
                       padding: "5px",
-                      width: "120px",
+                      width: "100%",
                       border: "1px solid #ccc",
                       borderRadius: "4px",
-                      fontSize: "14px",
+                      fontSize: "16px",
                     }}
                     required
                   />

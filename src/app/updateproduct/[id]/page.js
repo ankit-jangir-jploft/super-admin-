@@ -68,9 +68,10 @@ const page = ({ params }) => {
           VisibleForDirectSales: res.data?.data[0]?.visible_for_direct_sale
             ? true
             : false,
+          language: res.data?.data[0]?.language_id,
         });
       }
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     fetchProductData();
@@ -128,6 +129,7 @@ const page = ({ params }) => {
     ProductDescription: "",
     PageDescription: "",
     MetaDescription: "",
+    language: 1,
   });
   const [errors, setErrors] = useState({});
 
@@ -316,7 +318,7 @@ const page = ({ params }) => {
         formData.append("my_page_description", productForm.PageDescription);
         formData.append("meta_description", productForm.MetaDescription);
         formData.append("sub_category_id", chosendSubCategory || "");
-        formData.append("language_id", "1");
+        formData.append("language_id", productForm.language);
         formData.append("menu_order", productForm.menuOrder);
         formData.append(
           "visible_for_direct_sale",
@@ -403,8 +405,14 @@ const page = ({ params }) => {
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
                 #{productID}{" "}
-                <Form.Select>
-                  <option>English</option>
+                <Form.Select
+                  value={productForm.language}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, language: e.target.value }))
+                  }
+                >
+                  <option value={1}>English</option>
+                  <option value={2}>Norwegian</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -961,7 +969,8 @@ const page = ({ params }) => {
                             }));
                           }}
                         >
-                          <option value={1}>Taxable</option>
+                          <option value=''>Select VAT</option>
+                          <option value='taxable'>Taxable</option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -977,11 +986,10 @@ const page = ({ params }) => {
                               vatClass: e.target.value,
                             }))
                           }
-                          disabled
                         >
-                         <option value='0'>0%</option>
+                          <option value='0'>0%</option>
                           <option value='12'>12%</option>
-                          <option value='15' >15%</option>
+                          <option value='15'>15%</option>
                           <option value='25'>25%</option>
                         </Form.Select>
                       </Form.Group>

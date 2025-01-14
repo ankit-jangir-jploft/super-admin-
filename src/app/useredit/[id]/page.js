@@ -159,12 +159,12 @@ const Page = ({ param }) => {
                     {({ setFieldValue }) => (
                       <Form>
                         <div className='d-block text-center mb-4'>
-                          <Image
-                            width={100}
-                            height={100}
+                          <img
                             className='d-inline-block rounded-circle'
-                            src={profileImage || "/images/user-edt.png"}
-                            alt='Profile'
+                            style={{ width: "100px", height: "100px" }}
+                            src={profileImage}
+                            onError={(e) => (e.target.src = "/images/user.png")}
+                            // src='/images/user.png'
                           />
                           <div className='UploadPhoto_file'>
                             <input

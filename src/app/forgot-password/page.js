@@ -10,14 +10,16 @@ import Cookies from "js-cookie";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { BASE_URL } from "../Utils/apiHelper";
+import { useTranslation } from "react-i18next";
 
 const page = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email("Please enter a valid email address.")
-      .required("Email is required."),
+      .email(t("forget_password.email_invalid"))
+      .required(t("forget_password.email_required")),
   });
 
   const formik = useFormik({
@@ -68,7 +70,7 @@ const page = () => {
                 />
               </div>
               <div className='title-login text-center'>
-                <h1>Wachtwoord vergeten</h1>
+                <h1>{t("forget_password.forgot_password")}</h1>
               </div>
               <Form
                 onSubmit={formik.handleSubmit}
@@ -78,14 +80,13 @@ const page = () => {
                   className='form-group'
                   controlId='formBasicEmail'
                 >
-                  <Form.Label>Epostadresse</Form.Label>
+                  <Form.Label>{t("forget_password.email_address")}</Form.Label>
                   <Form.Control
                     type='email'
                     name='email'
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder='Epostadresse'
                     isInvalid={!!formik.errors.email && formik.touched.email}
                   />
                   <Form.Control.Feedback type='invalid'>
@@ -99,7 +100,9 @@ const page = () => {
                     className='btn-primary px-5 py-2'
                     type='submit'
                   >
-                    {loading ? "Sending..." : "Send"}
+                    {loading
+                      ? t("forget_password.sending")
+                      : t("forget_password.send")}
                   </Button>
                 </div>
               </Form>

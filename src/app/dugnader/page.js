@@ -16,7 +16,7 @@ const page = () => {
   const [pagination, setPagination] = useState();
   const [groupDataListing, setGroupDataListing] = useState();
   const [userData, setUserData] = useState({});
-  
+
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
@@ -57,7 +57,7 @@ const page = () => {
               <h2>{t("dugnader.dugnader")}</h2>
               <div className='search-frm'>
                 <input type='text' />
-                <Link href={""}>
+                {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
                 </Link>
                 <Link href={`/useredit/${userData?.id}`}>
@@ -69,7 +69,7 @@ const page = () => {
                       e.target.src = "/images/avatar-style.png";
                     }}
                   />
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className='shdw-crd'>
@@ -78,7 +78,7 @@ const page = () => {
                   <thead>
                     <tr>
                       {/* <th>Start date</th> */}
-                      <th>{t("dugnader.start_date")}</th>
+                      <th><b>{t("dugnader.start_date")}</b></th>
                       {/* <th>End date</th> */}
                       <th>{t("dugnader.end_date")}</th>
                       {/* <th>Dugnadsgroup</th> */}
@@ -153,13 +153,11 @@ const page = () => {
                 paginationData={pagination}
               />
             </div>
-
-
           </>
         )}
       </div>
-      </>
-      );
+    </>
+  );
 };
 
-      export default page;
+export default page;
