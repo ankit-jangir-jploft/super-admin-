@@ -7,14 +7,16 @@ import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { useTranslation } from "react-i18next";
 
-const CreateLeadModal = ({ isOpen, onClose, id, orderId }) => {
+const CreateLeadModal = ({ isOpen, onClose, id, orderId, status }) => {
   const { t } = useTranslation();
   const validationSchema = Yup.object().shape({
     leadType: Yup.string().required("Lead type is required"),
   });
 
+  console.log("status -- ", status);
+
   const initialValues = {
-    leadType: "",
+    leadType: status,
   };
 
   const submitHandler = async (values) => {

@@ -372,7 +372,7 @@ const page = () => {
         <div className='admin-header'>
           <h2>
             {t("statistics.statistics")}{" "}
-            <Link href={"/statistics_print"}>
+            <Link href={"/statistics-full"}>
               <img src='/images/linkhed.svg' />
             </Link>
           </h2>

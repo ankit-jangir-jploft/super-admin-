@@ -274,7 +274,7 @@ const page = () => {
                               href={`/products-details/${product?.id}`}
                               style={{ marginRight: "10px" }}
                             >
-                              <img src='/images/prdctes.svg' />
+                              <img src='/images/eye.svg' />
                             </Link>
                           </td>
                           {roleType !== "guest" && (

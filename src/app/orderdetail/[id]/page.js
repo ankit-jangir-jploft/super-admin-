@@ -12,6 +12,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import QRCodeGenerator from "@/app/Components/QRcode";
 import Cookies from "js-cookie";
+import ChangeOrderStatus from "../../modals/changeorderstatus";
 
 const Page = () => {
   const { id } = useParams();
@@ -23,6 +24,8 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [user, setUser] = useState({});
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
 
   const fetchOrderDetails = async () => {
     try {
@@ -188,6 +191,10 @@ const Page = () => {
               className={`status ${
                 orders[+orderDetails?.order_status]?.style
               } w-auto me-2`}
+              onClick={() => {
+                setShowStatusModal(true);
+                setCurrentStatus(+orderDetails?.order_status);
+              }}
             >
               {orders[+orderDetails?.order_status]?.name}
             </button>
@@ -661,6 +668,15 @@ const Page = () => {
         </section>
        
       </div> */}
+      <ChangeOrderStatus
+        onClose={() => {
+          setShowStatusModal(false);
+          fetchOrderDetails();
+        }}
+        isOpen={showStatusModal}
+        id={id}
+        status={currentStatus}
+      />
     </>
   );
 };

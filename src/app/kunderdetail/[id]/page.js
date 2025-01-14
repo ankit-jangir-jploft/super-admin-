@@ -42,6 +42,7 @@ const page = ({ params }) => {
   const [userAddress, setUserAddress] = useState();
   const [user, setUser] = useState({});
   const [showStatusChange, setShowStatusChange] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -287,6 +288,7 @@ const page = ({ params }) => {
               } w-auto me-2`}
               onClick={() => {
                 setShowStatusChange(true);
+                setCurrentStatus(customer?.customer_status);
               }}
             >
               {customerStatus[customer?.customer_status]?.value}
@@ -726,6 +728,7 @@ const page = ({ params }) => {
           setShowStatusChange(false);
           fetchCustomerDetails();
         }}
+        status={currentStatus}
       />
     </>
   );

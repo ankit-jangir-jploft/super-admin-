@@ -57,12 +57,12 @@ const Page = () => {
 
   const onSubmit = async (data) => {
     // Check for image selection
-    if (!selectedImage) {
-      setProfileImageFileError("Profile image is required.");
-      return; // Prevent form submission if image is not selected
-    } else {
-      setProfileImageFileError(null);
-    }
+    // if (!selectedImage) {
+    //   setProfileImageFileError("Profile image is required.");
+    //   return; // Prevent form submission if image is not selected
+    // } else {
+    //   setProfileImageFileError(null);
+    // }
 
     const formData = new FormData();
     formData.append("language_id", data.language_id || "1"); // Optional
@@ -71,7 +71,7 @@ const Page = () => {
     formData.append("role_id", data?.role_id);
     formData.append("status", data?.status);
     formData.append("appearance", radioValue);
-    formData.append("profile_image", data?.profile_image[0]);
+    formData.append("profile_image", data?.profile_image[0] || "");
     formData.append("password", data?.password);
 
     try {
@@ -292,6 +292,17 @@ const Page = () => {
                           type='submit'
                         >
                           {t("settings.users.create.save")}
+                        </button>
+                      </div>
+                      <div className='col-md-6'>
+                        <button
+                          className='createorder_top_right can-btn w-100'
+                          style={{ border: "none" }}
+                          onClick={() =>
+                            (window.location.href = `/settings?type=seller`)
+                          }
+                        >
+                          {t("settings.users.create.cancel")}
                         </button>
                       </div>
                     </div>

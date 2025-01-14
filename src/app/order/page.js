@@ -26,6 +26,7 @@ const page = () => {
   const [loading, setLoading] = useState(false);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [customId, setCustomId] = useState("");
+  const [currentStatus, setCurrentStatus] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -118,6 +119,25 @@ const page = () => {
     }
   };
 
+  const handlePrint = async (data) => {
+    const res = await GET(`${BASE_URL}/api/admin/sellerPdfGenerate`, data);
+    if (res?.data?.status) {
+      downloadFile(res?.data?.data?.file_path);
+    } else {
+      toast.dismiss();
+      toast.error(res?.data?.message);
+    }
+  };
+  const downloadFile = (filePath) => {
+    const a = document.createElement("a");
+    a.href = filePath;
+    a.download = filePath.split("/").pop();
+    document.body.appendChild(a);
+    a.target = "_blank";
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const order = {
     0: { name: "Pending", style: "green-clr" },
     1: { name: "Confirmed", style: "brown-clr" },
@@ -137,9 +157,9 @@ const page = () => {
       name: t("order_status.currently_picking"),
       style: "currently_picking",
     },
-    3: { name: t("order_status.sent"), style: "ready_for_picking" }, // Fallback to 'ready_for_picking'
+    3: { name: t("order_status.sent"), style: "ready_for_picking" },
     4: { name: t("order_status.in_transit"), style: "in_transit" },
-    5: { name: t("order_status.delivered"), style: "ready_for_picking" }, // Fallback to 'ready_for_picking'
+    5: { name: t("order_status.delivered"), style: "ready_for_picking" },
     6: { name: t("order_status.completed"), style: "completed" },
     7: { name: t("order_status.canceled"), style: "canceled" },
     8: { name: t("order_status.on_hold"), style: "on_hold" },
@@ -265,6 +285,7 @@ const page = () => {
                                 onClick={() => {
                                   setShowStatusModal(true);
                                   setCustomId(order?.id);
+                                  setCurrentStatus(+order?.order_status);
                                 }}
                                 className={`status ${
                                   orders[+order.order_status]?.style
@@ -291,9 +312,35 @@ const page = () => {
                                   onClick={() => toggleRow(index)}
                                   alt='Toggle Sub Rows'
                                 />
-                                <Link href=''>
-                                  <img src='/images/disable-print.svg' />
-                                </Link>
+                                {order?.group_id ? (
+                                  <button
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "50%",
+                                    }}
+                                    onClick={() => {
+                                      handlePrint({
+                                        order_id: order?.id,
+                                        group_id: order?.group_id,
+                                      });
+                                    }}
+                                  >
+                                    <img src='/images/disable-print.svg' />
+                                  </button>
+                                ) : (
+                                  <button
+                                    style={{
+                                      border: "none",
+                                      borderRadius: "50%",
+                                    }}
+                                    onClick={() => {
+                                      toast.dismiss();
+                                      toast.error("Missing group info");
+                                    }}
+                                  >
+                                    <img src='/images/disable-print.svg' />
+                                  </button>
+                                )}
                                 <Link href={`/shipping/${order.id}`}>
                                   <img src='/images/checklist.svg' />
                                 </Link>
@@ -445,6 +492,7 @@ const page = () => {
           setShowStatusModal(false);
           fetchOrders();
         }}
+        status={currentStatus}
         isOpen={showStatusModal}
         id={customId}
       />

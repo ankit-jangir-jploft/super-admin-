@@ -27,6 +27,11 @@ const page = ({ searchParams }) => {
   const [defualtActive, setDefault] = useState(
     type == "seller" ? "users" : "general"
   );
+  const [dugnadSetting, setDugnadSetting] = useState({
+    share_text: "",
+    share_image: "",
+    preview: "",
+  });
 
   let [count, setCount] = useState(0);
 
@@ -58,6 +63,7 @@ const page = ({ searchParams }) => {
       title: "",
       text: "",
       setting_id: null,
+      shipping_rate: "",
     },
   });
   const [isEditMode, setIsEditMode] = useState(false);
@@ -84,6 +90,7 @@ const page = ({ searchParams }) => {
           title: settings.title,
           text: settings.text,
           setting_id: settings.setting_id,
+          shipping_rate: settings.shipping_rate,
         });
       } else {
         setIsEditMode(false); // No settings found, enable create mode
@@ -183,18 +190,37 @@ const page = ({ searchParams }) => {
       return; // Stop the save operation if there are validation errors
     }
 
-    // Proceed with saving the data if no errors
+    // Construct FormData object
+    const formData = new FormData();
+    formData.append("language_id", 1);
+    formData.append("setting_id", settingId);
+
+    faqList.forEach((faq, index) => {
+      formData.append(`items[${index}][question]`, faq.question);
+      formData.append(`items[${index}][answer]`, faq.answer);
+    });
+
+    // Add other settings (dugnadSetting fields)
+    Object.entries(dugnadSetting).forEach(([key, value]) => {
+      if (value instanceof File) {
+        // Handle file uploads
+        formData.append(key, value);
+      } else {
+        // Handle other fields
+        formData.append(key, value);
+      }
+    });
+
+    // Proceed with saving the data
     try {
-      const response = await POST(`${BASE_URL}/api/admin/faqCreate`, {
-        language_id: 1,
-        items: faqList.map((faq) => ({
-          question: faq?.question,
-          answer: faq?.answer,
-        })),
+      const response = await POST(`${BASE_URL}/api/admin/faqCreate`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Ensure the request is sent as FormData
+        },
       });
 
       if (response?.data?.status === true) {
-        toast.success("Faq Created SuccessFully");
+        toast.success("FAQ Created Successfully");
       }
     } catch (error) {
       console.log(error.message);
@@ -211,6 +237,12 @@ const page = ({ searchParams }) => {
       }));
 
       setFaqList(mappedFaqs);
+
+      setDugnadSetting({
+        share_text: response?.data?.share?.share_text,
+        preview: response?.data?.share?.share_image_url,
+        share_image: "",
+      });
     }
   };
 
@@ -347,7 +379,6 @@ const page = ({ searchParams }) => {
       );
       if (response?.status === 200) {
         const fetchFrontPageSetting = response?.data?.data[0];
-        console.log("fetchFrontPageSetting ---", fetchFrontPageSetting);
 
         setSettingID(fetchFrontPageSetting?.id);
 
@@ -471,18 +502,34 @@ const page = ({ searchParams }) => {
                       <div className='row'>
                         <div className='col-md-12'>
                           {/* <Form.Label>Budget</Form.Label> */}
-                          <Form.Label>
-                            {t("settings.general.budget")}
-                          </Form.Label>
+                          <Form.Group>
+                            <Form.Label>
+                              {t("settings.general.budget")}
+                            </Form.Label>
+                            <Form.Select
+                              className='budget_drp'
+                              {...register("budget")}
+                            >
+                              <option value=''>Select</option>
+                              <option value='2025'>2025</option>
+                              <option value='2026'>2026</option>
+                              <option value='2027'>2027</option>
+                              <option value='2028'>2028</option>
+                              <option value='2029'>2029</option>
+                              <option value='2030'>2030</option>
+                              <option value='2031'>2031</option>
+                              <option value='2032'>2032</option>
+                            </Form.Select>
+                          </Form.Group>
                           <CustomRadioButton
                             months={months}
                             setMonth={setMonth}
                           />
                         </div>
                       </div>
-                      <div className='col-md-6 mt-4'>
+                      <div className='col-md-15 mt-4'>
                         <div className='row'>
-                          <div className='col-md-12'>
+                          <div className='col-md-5'>
                             <Form.Group className='mb-3'>
                               {/* <Form.Label>Default VAT class</Form.Label> */}
                               <Form.Label>
@@ -494,6 +541,15 @@ const page = ({ searchParams }) => {
                                 <option value='15'>15%</option>
                                 <option value='25'>25%</option>
                               </Form.Select>
+                            </Form.Group>
+                          </div>
+                          <div className='col-md-5'>
+                            <Form.Group className='mb-3'>
+                              {/* <Form.Label>Default VAT class</Form.Label> */}
+                              <Form.Label>
+                                {t("settings.general.shipping_rate")}
+                              </Form.Label>
+                              <Form.Control {...register("shipping_rate")} />
                             </Form.Group>
                           </div>
                         </div>
@@ -568,6 +624,7 @@ const page = ({ searchParams }) => {
                     {t("settings.dugnads_setting")}
                     <Form.Select className='ms-3'>
                       <option>English</option>
+                      <option>Norwegian</option>
                     </Form.Select>
                   </h5>
                   <div className='row'>
@@ -586,15 +643,70 @@ const page = ({ searchParams }) => {
                     <div className='col-md-6 text-end'>
                       <Form.Group className='mb-3'>
                         <Form.Control
+                          value={dugnadSetting.share_text}
+                          onChange={(e) => {
+                            setDugnadSetting((prev) => ({
+                              ...prev,
+                              share_text: e.target.value,
+                            }));
+                          }}
                           placeholder={t(
                             "settings.dugnadssettings.thank_you_for_support"
                           )}
                         />
                       </Form.Group>
-                      <img
-                        className='strimg'
-                        src='/images/store-im.png'
-                      />
+
+                      <div className='crpr-im filr-setng filr-setng1 strimg'>
+                        <Image
+                          src={
+                            dugnadSetting.preview || "/images/image-upload1.svg"
+                          }
+                          alt='Header Image Preview'
+                          className='rounded-circle m-0'
+                          width={100}
+                          height={100}
+                        />
+
+                        <div className='cstm-fle'>
+                          <input
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              console.log("file", file);
+                              if (file) {
+                                const maxSize = 1024 * 1024 * 2;
+                                if (file.size > maxSize) {
+                                  toast.dismiss();
+                                  toast.error(
+                                    "The file is too large. Please select a file smaller than 2MB."
+                                  );
+                                  return;
+                                }
+
+                                setDugnadSetting((prev) => ({
+                                  ...prev,
+                                  share_image: file,
+                                  preview: URL.createObjectURL(file),
+                                }));
+                              }
+                            }}
+                            type='file'
+                          />
+                          <img
+                            src='/images/image-upload1.svg'
+                            alt='Upload icon'
+                          />
+                          <p className='m-0'>
+                            {/* Drag & Drop or <span>choose file</span> to
+                                upload */}
+                            {t("settings.frontpage_settings.drag_drop_or")}{" "}
+                            <span>
+                              {t("settings.frontpage_settings.choose_file")}
+                            </span>{" "}
+                            {t("settings.frontpage_settings.to_upload")}
+                          </p>
+                          <small>Supported formats: Jpeg, png</small>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   {/* <Form.Label>Frequently asked questions</Form.Label> */}
@@ -932,38 +1044,43 @@ const page = ({ searchParams }) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {fetchSeller?.data?.map((row, index) => (
-                          <tr key={row?.id}>
-                            <td>
-                              <Image
-                                src={row?.profile_image}
-                                alt='Profile Image'
-                                width={40}
-                                height={40}
-                                className='rounded-circle'
-                                crossOrigin='anonymous'
-                              />
-                            </td>
-                            <td>{row?.name}</td>
-                            <td>
-                              <Badge bg='success'>
-                                {row?.status === 1 ? "Active" : "Inactive"}
-                              </Badge>
-                            </td>
-                            <td>{row?.role_type}</td>
-                            <td>{row?.email}</td>
-                            {roleType !== "guest" && (
-                              <td className='actionbtn-right'>
-                                <Link href={`/useredit/${row?.id}`}>
-                                  <img
-                                    src='/images/edit-icn.svg'
-                                    alt='Edit'
-                                  />
-                                </Link>
+                        {fetchSeller?.data?.map((row, index) => {
+                          const image = row?.profile_image
+                            ? row?.profile_image
+                            : "/images/user.png";
+                          return (
+                            <tr key={row?.id}>
+                              <td>
+                                <img
+                                  src={row?.profile_image}
+                                  onError={(e) =>
+                                    (e.target.src = "/images/user.png")
+                                  }
+                                  style={{ height: "40px", width: "40px" }}
+                                  className='rounded-circle'
+                                />
                               </td>
-                            )}
-                          </tr>
-                        ))}
+                              <td>{row?.name}</td>
+                              <td>
+                                <Badge bg='success'>
+                                  {row?.status === 1 ? "Active" : "Inactive"}
+                                </Badge>
+                              </td>
+                              <td>{row?.role_type}</td>
+                              <td>{row?.email}</td>
+                              {roleType !== "guest" && (
+                                <td className='actionbtn-right'>
+                                  <Link href={`/useredit/${row?.id}`}>
+                                    <img
+                                      src='/images/edit-icn.svg'
+                                      alt='Edit'
+                                    />
+                                  </Link>
+                                </td>
+                              )}
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>

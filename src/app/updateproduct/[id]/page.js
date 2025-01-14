@@ -986,7 +986,6 @@ const page = ({ params }) => {
                               vatClass: e.target.value,
                             }))
                           }
-                          disabled
                         >
                           <option value='0'>0%</option>
                           <option value='12'>12%</option>

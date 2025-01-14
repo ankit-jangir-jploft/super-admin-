@@ -120,6 +120,7 @@ const page = () => {
         setForm((prev) => ({
           ...prev,
           vatClass: res?.data?.data?.vat_class || 12,
+          vat: res?.data?.data?.vat_class == 0 ? "" : "taxable",
         }));
       }
     } catch (error) {

@@ -28,6 +28,8 @@ const page = () => {
   const [leadUserId, setLeadUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [currentLead, setCurrentLead] = useState("");
+  const [currentStatus, setCurrentStatus] = useState("");
 
   useEffect(() => {
     setRoleType(Cookies.get("roleType"));
@@ -309,6 +311,7 @@ const page = () => {
                                 setShowStatusChange(true);
                                 setLeadUserId(customer.id);
                                 setOrderId(customer?.order_id);
+                                setCurrentStatus(customer?.customer_status);
                                 console.log("customer?.order_id", customer);
                               }}
                             >
@@ -319,6 +322,7 @@ const page = () => {
                             onClick={() => {
                               setShowLead(true);
                               setLeadUserId(customer.id);
+                              setCurrentLead(customer?.lead_status);
                             }}
                           >
                             <button
@@ -405,6 +409,7 @@ const page = () => {
               id={leadUserId}
               orderId={orderId}
               isOpen={showCreateLead}
+              lead={currentLead}
               onClose={() => {
                 setShowLead(false);
                 fetchCustomers();
@@ -414,6 +419,7 @@ const page = () => {
               id={leadUserId}
               orderId={orderId}
               isOpen={showStatusChange}
+              status={currentStatus}
               onClose={() => {
                 setShowStatusChange(false);
                 fetchCustomers();

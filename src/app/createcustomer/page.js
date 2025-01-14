@@ -41,7 +41,7 @@ const page = () => {
       .matches(/^\d+$/, "Zip must be a number")
       .required("Zip is required"),
     city: Yup.string().required("City is required"),
-    seller_id: Yup.string().required("Seller is required"),
+
     contactPerson: Yup.string().required("Contact person is required"),
     phone: Yup.string()
       .matches(/^\+?\d+$/, "Must be a valid phone number")
@@ -243,6 +243,21 @@ const page = () => {
                       </div> */}
 
                       <div className='form-group'>
+                        {/* <label htmlFor='email'>Email address</label> */}
+                        <label>{t("customers_create.email_address")}</label>
+                        <Field
+                          type='email'
+                          id='email'
+                          name='email'
+                          className='form-control'
+                        />
+                        <ErrorMessage
+                          name='email'
+                          component='div'
+                          className='text-danger'
+                        />
+                      </div>
+                      <div className='form-group'>
                         {/* <label htmlFor='address'>Address</label> */}
                         <label htmlFor='address'>
                           {t("customers_create.address")}
@@ -255,21 +270,6 @@ const page = () => {
                         />
                         <ErrorMessage
                           name='address'
-                          component='div'
-                          className='text-danger'
-                        />
-                      </div>
-                      <div className='form-group'>
-                        {/* <label htmlFor='email'>Email address</label> */}
-                        <label>{t("customers_create.email_address")}</label>
-                        <Field
-                          type='email'
-                          id='email'
-                          name='email'
-                          className='form-control'
-                        />
-                        <ErrorMessage
-                          name='email'
                           component='div'
                           className='text-danger'
                         />
@@ -319,9 +319,7 @@ const page = () => {
                           className='form-control'
                         >
                           {/* <option value=''>Select seller</option> */}
-                          <option value=''>
-                            {t("customers_create.select_seller")}
-                          </option>
+                          <option value=''>{t("customers_create.none")}</option>
                           {(sellers.length &&
                             sellers.map((seller, i) => {
                               return (
@@ -408,6 +406,20 @@ const page = () => {
                       </div>
                       {isCustom && (
                         <>
+                          <div className='form-group'>
+                            <label>{t("customers_create.address")}</label>
+                            <Field
+                              type='text'
+                              id='customAddress'
+                              name='customAddress'
+                              className='form-control'
+                              value={values.customAddress}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setFieldValue("customAddress", value);
+                              }}
+                            />
+                          </div>
                           <div className='form-group row'>
                             <div className='col-md-2'>
                               {/* <label htmlFor='zip'>Zip</label> */}
@@ -439,20 +451,6 @@ const page = () => {
                                 className='text-danger'
                               />
                             </div>
-                          </div>
-                          <div className='form-group'>
-                            <label>{t("customers_create.address")}</label>
-                            <Field
-                              type='text'
-                              id='customAddress'
-                              name='customAddress'
-                              className='form-control'
-                              value={values.customAddress}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setFieldValue("customAddress", value);
-                              }}
-                            />
                           </div>
                         </>
                       )}

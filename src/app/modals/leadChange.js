@@ -7,14 +7,14 @@ import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { useTranslation } from "react-i18next";
 
-const CreateLeadModal = ({ isOpen, onClose, id }) => {
-  const {t} = useTranslation()
+const CreateLeadModal = ({ isOpen, onClose, id, lead }) => {
+  const { t } = useTranslation();
   const validationSchema = Yup.object().shape({
     leadType: Yup.string().required("Lead type is required"),
   });
 
   const initialValues = {
-    leadType: "",
+    leadType: lead.toLowerCase() || "",
   };
 
   const submitHandler = async (values) => {
@@ -93,7 +93,9 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
         >
           ×
         </button>
-        <h2 className='hedingtext_top custom-pup-mn'>{t('lead_option.create_lead')}</h2>
+        <h2 className='hedingtext_top custom-pup-mn'>
+          {t("lead_option.create_lead")}
+        </h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -102,7 +104,7 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
           {() => (
             <Form className='createcategory_cumtm'>
               <div style={styles.formGroup}>
-                <label htmlFor='leadType'>{t('lead_option.lead_type')}</label>
+                <label htmlFor='leadType'>{t("lead_option.lead_type")}</label>
                 <Field
                   as='select'
                   id='leadType'
@@ -117,19 +119,19 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
                 >
                   <option
                     value=''
-                    label={t('lead_option.select_lead_type')}
+                    label={t("lead_option.select_lead_type")}
                   />
                   <option
                     value='warm'
-                    label={t('lead_option.warm')}
+                    label={t("lead_option.warm")}
                   />
                   <option
                     value='cold'
-                    label={t('lead_option.cold')}
+                    label={t("lead_option.cold")}
                   />
                   <option
                     value='luke'
-                    label={t('lead_option.luke')}
+                    label={t("lead_option.luke")}
                   />
                 </Field>
                 <ErrorMessage
@@ -142,9 +144,8 @@ const CreateLeadModal = ({ isOpen, onClose, id }) => {
                 <button
                   className='cr-btn btn createcustomer_btn px-5'
                   type='submit'
-                  
                 >
-                  {t('lead_option.submit')}
+                  {t("lead_option.submit")}
                 </button>
               </div>
             </Form>

@@ -181,7 +181,13 @@
     "add": "Legg til",
     "no": "NO",
     "yes": "SE",
-    "other": "Annen"
+    "other": "Annen",
+    "customer_required": "Kunde er påkrevd.",
+    "ordered_by_required": "Bestilt av er påkrevd.",
+    "customer_address_required": "Kundeadresse er påkrevd.",
+    "customer_delivery_address_required": "Leveringsadresse er påkrevd.",
+    "valid_email_required": "En gyldig e-post er påkrevd.",
+    "at_least_one_product_required": "Minst ett produkt må velges."
   },
   "orders_dropdown": {
     "orders": "Ordre",
@@ -290,7 +296,22 @@
     "zip": "Postnr",
     "city": "Poststed",
     "select_seller": "Velg Selger",
-    "other": "Annen"
+    "other": "Annen",
+    "none": "Ingen",
+    "name_required": "Navn er påkrevd",
+    "address_required": "Adresse er påkrevd",
+    "zip_must_be_number": "Postnummer må være et tall",
+    "zip_required": "Postnummer er påkrevd",
+    "city_required": "By er påkrevd",
+    "contact_person_required": "Kontaktperson er påkrevd",
+    "valid_phone_number": "Må være et gyldig telefonnummer",
+    "phone_required": "Telefonnummer er påkrevd",
+    "invalid_email": "Ugyldig e-post",
+    "email_required": "E-postadresse er påkrevd",
+    "custom_zip_must_be_number": "Tilpasset postnummer må være et tall",
+    "custom_zip_required": "Tilpasset postnummer er påkrevd",
+    "custom_city_required": "Tilpasset by er påkrevd",
+    "custom_address_required": "Tilpasset adresse er påkrevd"
   },
   "create_task": {
     "create_a_task": "Opprett oppgave",
@@ -391,7 +412,22 @@
     "product_description": "Produkt beskrivelse",
     "my_page_description": "Mine-sider beskrivelse",
     "meta_description": "Meta beskrivelse",
-    "categories": "kategorier"
+    "categories": "kategorier",
+    "product_number_required": "Produktnummer er påkrevd.",
+    "product_name_required": "Produktnavn er påkrevd.",
+    "price_required": "Pris er påkrevd.",
+    "sales_price_required": "Salgspris er påkrevd.",
+    "quantity_required": "Antall på lager er påkrevd.",
+    "category_required": "Kategori er påkrevd.",
+    "special_price_required": "Spesialpris er påkrevd.",
+    "length_required": "Lengde er påkrevd.",
+    "width_required": "Bredde er påkrevd.",
+    "depth_required": "Dybde er påkrevd.",
+    "weight_required": "Vekt er påkrevd.",
+    "product_image_required": "Produktbilde er påkrevd.",
+    "gtin_required": "Gtin er påkrevd.",
+    "menu_order_required": "Menyrekkefølge er påkrevd.",
+    "quantity_non_negative": "Antall må være et ikke-negativt tall."
   },
   "update_product": {
     "english": "Engelsk",
@@ -468,7 +504,8 @@
       "text": "Tekst",
       "language": "Språk",
       "update_settings": "Oppdater innstillinger",
-      "create_settings": "Opprett innstillinger"
+      "create_settings": "Opprett innstillinger",
+      "shipping_rate": "Fraktrate"
     },
     "dugnadssettings": {
       "search": "Søk",
@@ -515,7 +552,17 @@
         "delete_user": "Slett bruker",
         "save": "Lagre",
         "update": "Oppdater",
-        "password": "Passord"
+        "password": "Passord",
+        "cancel": "Avbryt",
+        "name_required": "Navn er påkrevd.",
+        "email_required": "E-post er påkrevd.",
+        "email_invalid": "Ugyldig e-postformat.",
+        "user_type_required": "Brukertype er påkrevd.",
+        "status_required": "Status er påkrevd.",
+        "password_required": "Passord er påkrevd.",
+        "password_min_length": "Passordet må være minst 8 tegn langt.",
+        "profile_image_size_exceeded": "Filstørrelsen er for stor. Maksimal tillatt størrelse er 2 MB.",
+        "profile_image_required": "Profilbilde er påkrevd."
       }
     },
     "frontpage_settings": {

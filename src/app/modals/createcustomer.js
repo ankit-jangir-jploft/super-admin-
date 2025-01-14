@@ -25,7 +25,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
   const fetchSellers = async () => {
     try {
-      const res = await GET(`${BASE_URL}/api/admin/sellerList`);
+      const res = await GET(`${BASE_URL}/api/admin/roleSellerList`);
       if (res?.data?.status) {
         setSeller(res?.data?.data);
       }
@@ -135,7 +135,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
               >
                 <div className='col-md-12'>
                   <div className='crte-ordr'>
-                   
                     <div className='row'>
                       <div className='col-md-6'>
                         <div className='form-group'>
@@ -199,20 +198,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                       </div> */}
 
                         <div className='form-group'>
-                          <label htmlFor='address'>Address</label>
-                          <Field
-                            type='text'
-                            id='address'
-                            name='address'
-                            className='form-control'
-                          />
-                          <ErrorMessage
-                            name='address'
-                            component='div'
-                            className='text-danger'
-                          />
-                        </div>
-                        <div className='form-group'>
                           <label htmlFor='email'>Email address</label>
                           <Field
                             type='email'
@@ -226,7 +211,20 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             className='text-danger'
                           />
                         </div>
-
+                        <div className='form-group'>
+                          <label htmlFor='address'>Address</label>
+                          <Field
+                            type='text'
+                            id='address'
+                            name='address'
+                            className='form-control'
+                          />
+                          <ErrorMessage
+                            name='address'
+                            component='div'
+                            className='text-danger'
+                          />
+                        </div>
                         <div className='form-group row'>
                           <div className='col-md-5'>
                             <label htmlFor='zip'>Zip</label>
@@ -268,7 +266,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             name='seller_id'
                             className='form-control'
                           >
-                            <option value=''>Select seller</option>
+                            <option value=''>None</option>
                             {(sellers.length &&
                               sellers.map((seller, i) => {
                                 return (
@@ -330,7 +328,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           />
                         </div>
 
-                       
                         <div className='form-group'>
                           <label htmlFor='DeliveryAddress'>
                             Delivery address
