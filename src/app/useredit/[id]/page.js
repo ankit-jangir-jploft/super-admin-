@@ -90,13 +90,17 @@ const Page = ({ param }) => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
+    name: Yup.string().required(t("settings.users.create.name_required")),
     email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    userType: Yup.string().required("User Type is required"),
-    status: Yup.string().required("Status is required"),
-    language: Yup.string().required("Language is required"),
+      .email(t("settings.users.create.invalid_email"))
+      .required(t("settings.users.create.email_required")),
+    userType: Yup.string().required(
+      t("settings.users.create.user_type_required")
+    ),
+    status: Yup.string().required(t("settings.users.create.status_required")),
+    language: Yup.string().required(
+      t("settings.users.create.language_required")
+    ),
   });
 
   const initialValues = {

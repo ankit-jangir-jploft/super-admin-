@@ -51,23 +51,24 @@ const page = () => {
   const validateFields = () => {
     const newErrors = {};
     if (!selectedCustomer.id)
-      newErrors.selectedCustomer = "Customer is required.";
-    if (!orderedBy) newErrors.orderedBy = "Ordered by is required.";
+      newErrors.selectedCustomer = t("order_create.customer_required");
+    if (!orderedBy) newErrors.orderedBy = t("order_create.ordered_by_required");
     if (!selectedAddress)
-      newErrors.selectedAddress = "Customer address is required.";
+      newErrors.selectedAddress = t("order_create.customer_address_required");
     if (!selectedDeliveryAddress)
-      newErrors.selectedDeliveryAddress =
-        "Customer delivery address is required.";
+      newErrors.selectedDeliveryAddress = t(
+        "order_create.customer_delivery_address_required"
+      );
 
     if (!confirmationEmail || !validateEmail(confirmationEmail))
-      newErrors.confirmationEmail = "A valid email is required.";
+      newErrors.confirmationEmail = t("order_create.valid_email_required");
 
     // if (!orderConfirm)
     //   newErrors.orderConfirm = "Order confirmation is required.";
     if (productCount.length === 0) {
       toast.dismiss();
-      toast.error("At least one product must be selected.");
-      newErrors.products = "At least one product must be selected.";
+      toast.error(t("order_create.at_least_one_product_required"));
+      newErrors.products = t("order_create.at_least_one_product_required");
     }
 
     setErrors(newErrors);
@@ -279,11 +280,10 @@ const page = () => {
                         ) : (
                           <option>No Customer</option>
                         )}
-                        <Form.Control.Feedback type='invalid'>
-                          {errors.selectedCustomer}
-                        </Form.Control.Feedback>
                       </Form.Select>
-                      
+                      <Form.Control.Feedback type='invalid'>
+                        {errors.selectedCustomer}
+                      </Form.Control.Feedback>
                     </div>
                     <Button
                       className='add-btne btn-borderbl '

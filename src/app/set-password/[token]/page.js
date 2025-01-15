@@ -3,7 +3,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
@@ -24,11 +24,8 @@ const page = ({}) => {
   const validationSchema = Yup.object({
     newPassword: Yup.string()
       .required(t("set_password.new_password_required"))
-      .min(8, t("set_password.password_min"))
-      .matches(/[A-Z]/, t("set_password.password_uppercase"))
-      .matches(/[a-z]/, t("set_password.password_lowercase"))
-      .matches(/\d/, t("set_password.password_number"))
-      .matches(/[@$!%*?&]/, t("set_password.password_special")),
+      .min(8, t("set_password.password_min")),
+
     confirmPassword: Yup.string()
       .required(t("set_password.confirm_password_required"))
       .oneOf(
@@ -36,6 +33,13 @@ const page = ({}) => {
         t("set_password.passwords_must_match")
       ),
   });
+
+  useEffect(() => {
+    Cookies.set("i18next", "nor", {
+      expires: 365,
+      path: "/dashboard",
+    });
+  }, []);
 
   const formik = useFormik({
     initialValues: {

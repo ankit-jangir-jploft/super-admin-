@@ -20,7 +20,7 @@ const Login = () => {
 
   useEffect(() => {
     setDefaultLang("nor");
-    Cookies.set("i18next", "en", {
+    Cookies.set("i18next", "nor", {
       expires: 365,
       path: "/dashboard",
     });

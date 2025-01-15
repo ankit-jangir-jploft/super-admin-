@@ -31,10 +31,10 @@ const Page = () => {
         if (response?.data?.status === true) {
           setRoles(response?.data?.data || []);
         } else {
-          toast.error("Error submitting form.");
+          toast.error(t("settings.users.create.form_error"));
         }
       } catch (error) {
-        toast.error("Error submitting form.");
+        toast.error(t("settings.users.create.form_error"));
         console.error(error);
       } finally {
         setPending(false);
@@ -56,14 +56,6 @@ const Page = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // Check for image selection
-    // if (!selectedImage) {
-    //   setProfileImageFileError("Profile image is required.");
-    //   return; // Prevent form submission if image is not selected
-    // } else {
-    //   setProfileImageFileError(null);
-    // }
-
     const formData = new FormData();
     formData.append("language_id", data.language_id || "1"); // Optional
     formData.append("name", data?.name);
@@ -86,14 +78,14 @@ const Page = () => {
 
       if (response?.data?.status === true) {
         setPending(false);
-        toast.success("Form submitted successfully!");
+        toast.success(t("settings.users.create.success"));
         router.push("/settings");
       } else {
         setPending(false);
       }
     } catch (error) {
       setPending(false);
-      toast.error("Error submitting form.");
+      toast.error(t("settings.users.create.form_error"));
       console.error(error);
     } finally {
       setPending(false);
@@ -137,7 +129,9 @@ const Page = () => {
 
                             if (theFile.size > maxSize) {
                               toast.error(
-                                "File size is too large. Maximum allowed size is 2MB."
+                                t(
+                                  "settings.users.create.profile_image_size_exceeded"
+                                )
                               );
                               setSelectedImage(null);
                               e.target.value = "";
@@ -164,7 +158,9 @@ const Page = () => {
                           </Form.Label>
                           <Form.Control
                             {...register("name", {
-                              required: "Name is required",
+                              required: t(
+                                "settings.users.create.name_required"
+                              ),
                             })}
                           />
                           {errors.name && (
@@ -181,11 +177,15 @@ const Page = () => {
                           </Form.Label>
                           <Form.Control
                             {...register("email", {
-                              required: "Email is required",
+                              required: t(
+                                "settings.users.create.email_required"
+                              ),
                               pattern: {
                                 value:
                                   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                message: "Invalid email format",
+                                message: t(
+                                  "settings.users.create.email_invalid"
+                                ),
                               },
                             })}
                           />
@@ -203,7 +203,9 @@ const Page = () => {
                           </Form.Label>
                           <Form.Select
                             {...register("role_id", {
-                              required: "User type is required",
+                              required: t(
+                                "settings.users.create.user_type_required"
+                              ),
                             })}
                           >
                             <option value=''>Select User Type</option>
@@ -227,7 +229,9 @@ const Page = () => {
                           </Form.Label>
                           <Form.Select
                             {...register("status", {
-                              required: "Status is required",
+                              required: t(
+                                "settings.users.create.status_required"
+                              ),
                             })}
                           >
                             <option value='1'>Active</option>
@@ -260,11 +264,14 @@ const Page = () => {
                             className=''
                             type={!eyeToggle ? "password" : "text"}
                             {...register("password", {
-                              required: "Password is required",
+                              required: t(
+                                "settings.users.create.password_required"
+                              ),
                               minLength: {
                                 value: 8,
-                                message:
-                                  "Password must be at least 8 characters long",
+                                message: t(
+                                  "settings.users.create.password_min_length"
+                                ),
                               },
                             })}
                           />

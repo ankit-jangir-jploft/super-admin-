@@ -178,80 +178,82 @@ const page = () => {
     const tempErrors = {};
 
     if (!productForm.ProductNumber) {
-      tempErrors.ProductNumber = "Product number is required.";
+      tempErrors.ProductNumber = t("create_product.product_number_required");
       isValid = false;
     }
 
     if (!productForm.ProductName) {
-      tempErrors.ProductName = "Product name is required.";
+      tempErrors.ProductName = t("create_product.product_name_required");
       isValid = false;
     }
 
     if (!productForm.Price) {
-      tempErrors.Price = "Price is required.";
+      tempErrors.Price = t("create_product.price_required");
       isValid = false;
     }
 
     if (!productForm.SalesPrice) {
-      tempErrors.SalesPrice = "Sales price is required.";
+      tempErrors.SalesPrice = t("create_product.sales_price_required");
       isValid = false;
     }
 
     if (!productForm.quantity) {
-      tempErrors.quantity = "Quantity in stock required";
-      isValid = false;
-    }
-    if (!chosendCategory) {
-      tempErrors.chosendCategory = "Category is required";
+      tempErrors.quantity = t("create_product.quantity_required");
       isValid = false;
     }
 
+    if (!chosendCategory) {
+      tempErrors.chosendCategory = t("create_product.category_required");
+      isValid = false;
+    }
+
+    // Uncomment these if you need validation for these fields
     // if (!productForm.SpecialPrice) {
-    //   tempErrors.SpecialPrice = "Special price is required.";
+    //   tempErrors.SpecialPrice = t("create_product.special_price_required");
     //   isValid = false;
     // }
 
     // if (!productForm.Length) {
-    //   tempErrors.Length = "Length is required.";
+    //   tempErrors.Length = t("create_product.length_required");
     //   isValid = false;
     // }
 
     // if (!productForm.Width) {
-    //   tempErrors.Width = "Width is required.";
+    //   tempErrors.Width = t("create_product.width_required");
     //   isValid = false;
     // }
 
     // if (!productForm.Depth) {
-    //   tempErrors.Depth = "Depth is required.";
+    //   tempErrors.Depth = t("create_product.depth_required");
     //   isValid = false;
     // }
 
     // if (!productForm.Weight) {
-    //   tempErrors.Weight = "Weight is required.";
+    //   tempErrors.Weight = t("create_product.weight_required");
     //   isValid = false;
     // }
 
     if (!files.length) {
-      tempErrors.files = "Product image is required.";
+      tempErrors.files = t("create_product.product_image_required");
       isValid = false;
     }
+
     // if (!productForm.gtin) {
-    //   tempErrors.gtin = "Gtin is required.";
-    //   isValid = false;
-    // }
-    // if (!productForm.menuOrder) {
-    //   tempErrors.menuOrder = "Menu Order is required.";
+    //   tempErrors.gtin = t("create_product.gtin_required");
     //   isValid = false;
     // }
 
-    // if (!productForm.quantity) {
-    //   tempErrors.quantity = "Quantity is required.";
+    // if (!productForm.menuOrder) {
+    //   tempErrors.menuOrder = t("create_product.menu_order_required");
     //   isValid = false;
-    // } else if (
-    //   isNaN(productForm.quantity) ||
-    //   Number(productForm.quantity) < 0
-    // ) {
-    //   tempErrors.quantity = "Quantity must be a non-negative number.";
+    // }
+
+    // Example of more advanced validation
+    // if (!productForm.quantity) {
+    //   tempErrors.quantity = t("create_product.quantity_required");
+    //   isValid = false;
+    // } else if (isNaN(productForm.quantity) || Number(productForm.quantity) < 0) {
+    //   tempErrors.quantity = t("create_product.quantity_non_negative");
     //   isValid = false;
     // }
 
@@ -393,22 +395,20 @@ const page = () => {
                     {file.map((fl, i) => {
                       return (
                         <>
-                        <div className="imb-bx-upl">
-
-                      
-                          {" "}
-                          <img
-                            key={i}
-                            src={fl}
-                          />
-                          <div
-                            className='close_img_top'
-                            onClick={() => {
-                              removeFile(i, fl);
-                            }}
-                          >
-                            X
-                          </div>
+                          <div className='imb-bx-upl'>
+                            {" "}
+                            <img
+                              key={i}
+                              src={fl}
+                            />
+                            <div
+                              className='close_img_top'
+                              onClick={() => {
+                                removeFile(i, fl);
+                              }}
+                            >
+                              X
+                            </div>
                           </div>
                         </>
                       );
@@ -787,7 +787,7 @@ const page = () => {
                       }
                       isInvalid={!!errors?.ProductName}
                     />
-                    <Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>
                       {errors?.ProductName}
                     </Form.Control.Feedback>
                   </Form.Group>

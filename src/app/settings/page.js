@@ -573,10 +573,13 @@ const page = ({ searchParams }) => {
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                          <Form.Label>Terms of Purchase</Form.Label>
+                          <Form.Label>{t("")}</Form.Label>
                         </Form.Group>
                         <Form.Group className='mb-3'>
-                          <Form.Label>Title</Form.Label>
+                          <Form.Label>
+                            {" "}
+                            {t("settings.general.title")}
+                          </Form.Label>
                           <Form.Control
                             placeholder='Title'
                             {...register("title", {

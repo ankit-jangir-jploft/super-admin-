@@ -35,33 +35,35 @@ const page = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    address: Yup.string().required("Address is required"),
+    name: Yup.string().required(t("customers_create.name_required")),
+    address: Yup.string().required(t("customers_create.address_required")),
     zip: Yup.string()
-      .matches(/^\d+$/, "Zip must be a number")
-      .required("Zip is required"),
-    city: Yup.string().required("City is required"),
-
-    contactPerson: Yup.string().required("Contact person is required"),
+      .matches(/^\d+$/, t("customers_create.zip_must_be_number"))
+      .required(t("customers_create.zip_required")),
+    city: Yup.string().required(t("customers_create.city_required")),
+    contactPerson: Yup.string().required(
+      t("customers_create.contact_person_required")
+    ),
     phone: Yup.string()
-      .matches(/^\+?\d+$/, "Must be a valid phone number")
-      .required("Telephone number is required"),
+      .matches(/^\+?\d+$/, t("customers_create.valid_phone_number"))
+      .required(t("customers_create.phone_required")),
     email: Yup.string()
-      .email("Invalid email")
-      .required("Email address is required"),
+      .email(t("customers_create.invalid_email"))
+      .required(t("customers_create.email_required")),
+    // Uncomment the following if you have conditional validation for custom fields
     // customZip: Yup.string()
-    //   .matches(/^\d+$/, "Custom Zip must be a number")
+    //   .matches(/^\d+$/, t("customers_create.custom_zip_must_be_number"))
     //   .when("DeliveryAddress", {
     //     is: "Custom",
-    //     then: Yup.string().required("Custom Zip is required"),
+    //     then: Yup.string().required(t("customers_create.custom_zip_required")),
     //   }),
     // customCity: Yup.string().when("DeliveryAddress", {
     //   is: "Custom",
-    //   then: Yup.string().required("Custom City is required"),
+    //   then: Yup.string().required(t("customers_create.custom_city_required")),
     // }),
     // customAddress: Yup.string().when("DeliveryAddress", {
     //   is: "Custom",
-    //   then: Yup.string().required("Custom Address is required"),
+    //   then: Yup.string().required(t("customers_create.custom_address_required")),
     // }),
   });
 
