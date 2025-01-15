@@ -50,6 +50,7 @@ const CreateCategoryModal = ({ isOpen, onClose }) => {
       bottom: 0,
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       display: "flex",
+      padding: "20px",
       justifyContent: "center",
       alignItems: "center",
       zIndex: 1000,

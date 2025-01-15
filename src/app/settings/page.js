@@ -784,7 +784,7 @@ const page = ({ searchParams }) => {
                           className='bot-btn justify-content-end'
                           onClick={handleSave}
                         >
-                          <button className='btn btn-primary w-25 p-2'>
+                          <button className='btn btn-primary w-50 p-2'>
                             {/* Save */}
                             {t("settings.dugnadssettings.save")}
                           </button>

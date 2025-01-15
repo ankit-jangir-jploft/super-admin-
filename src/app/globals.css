@@ -88,7 +88,7 @@ p.copyright {
   font-size: 12px;
 }
 .pass-for {
-  margin-top: 10px;
+  margin-top: 2px;
 }
 .title-login h1 {
   font-size: 24px;
@@ -225,6 +225,7 @@ p.copyright {
   color: #fff;
   transition: 0.3s;
   position: relative;
+  width: 100%;
 }
 
 .menu-list-mange li a.active::after {
@@ -407,7 +408,7 @@ th {
   width: 28px;
 }
 
-tr:nth-child(even) {
+tr:nth-child(odd) {
   background-color: #f7f4f1;
 }
 
@@ -488,6 +489,8 @@ tr:nth-child(even) {
 
 .order-dtl-box h2 span.disssbl {
   background: #d9d9d9;
+  font-size: 10px;
+  padding: 8px;
 }
 
 .order-dtl-box p {
@@ -662,7 +665,7 @@ tr:nth-child(even) {
   padding: 6px 20px;
   color: #585858;
   border-radius: 50px;
-  width: 140px;
+  min-width: 160px;
 }
 
 .psn-sts {
@@ -1142,7 +1145,9 @@ table th {
 
 .crpr-im {
   display: flex;
+  flex-wrap: wrap;
   margin: 30px 0 15px 0;
+  gap: 10px;
 }
 
 .crpr-im img {
@@ -1684,7 +1689,45 @@ ul.pgnatne li {
   }
 }
 
+.order-dtl-box.right-cht-dle {
+  height: 100%;
+  position: relative;
+}
+.order-dtl-box.right-cht-dle .logg-til-desc {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.order-dtl-box.right-cht-dle .logg-til-desc .form-group {
+  margin-bottom: 0px;
+  flex: 0 0 77%;
+  width: 100%;
+}
+.order-dtl-box.right-cht-dle .logg-til-desc {
+  gap: 5px;
+}
+.btn-bordr-sec {
+  padding: 10px 28px;
+}
+#dropdown-basic {
+  padding: 0px;
+  margin-left: 10px;
+}
 @media screen and (max-width: 767px) {
+  .order-dtl-box.right-cht-dle {
+    padding-bottom: 0px;
+    height: auto;
+    position: relative;
+    margin-bottom: 0px;
+    margin-top: 20px;
+  }
+  .order-dtl-box.right-cht-dle .logg-til-desc {
+    position: relative;
+  }
+  .filter-manage button {
+    margin-bottom: 10px;
+  }
   .sidebar-admin {
     width: 100%;
     height: 7vh;
@@ -2433,8 +2476,8 @@ h2.hedingtext_top {
 }
 
 .close_img_top {
-  position: relative;
-  left: -31px;
+  position: absolute;
+  right: 12px;
   top: 6px;
   background: #d54d4c;
   width: 15px;
@@ -3001,4 +3044,37 @@ form.createcategory_cumtm {
   border: 1px solid #ea5154 !important;
   display: inline-block;
   margin-left: 15px;
+}
+.logout-btn.btn:hover {
+  background-color: #ffffff31 !important;
+  font-weight: 600;
+  width: 100%;
+  color: #fff !important;
+}
+u {
+  font-size: 14px;
+  color: #000000;
+}
+.underline {
+  text-decoration: underline !important;
+}
+.table-responsive.order-table thead tr {
+  background: #fff;
+}
+.colr-them {
+  color: #ea5154;
+}
+.crpr-im.filr-setng img.rounded-circle.m-0 {
+  margin-bottom: 10px !important;
+}
+img.img-fluid.eye-icon.user-crert {
+  right: 10px;
+  bottom: 17px !important;
+  left: auto;
+}
+button.left-arrow {
+  transform: rotate(180deg);
+}
+button.left-arrow:disabled {
+  filter: contrast(0.9);
 }

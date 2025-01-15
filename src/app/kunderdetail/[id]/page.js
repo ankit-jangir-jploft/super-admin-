@@ -517,7 +517,10 @@ const page = ({ params }) => {
                                   (window.location.href = `/orderdetail/${order?.id}`)
                                 }
                               >
-                                #{order?.order_number}
+                                <div className='colr-them'>
+                                  {" "}
+                                  #{order?.order_number}
+                                </div>
                               </td>
                               <td>{order?.created_at}</td>
                               <td></td>

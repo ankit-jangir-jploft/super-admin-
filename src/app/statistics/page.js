@@ -422,7 +422,7 @@ const page = () => {
           </div> */}
         </div>
         <div className='row'>
-          <div className='col-md-3 '>
+          <div className='col '>
             <div className='dash-crde pinks-cr'>
               {/* <p>Number of active groups</p> */}
               <p>{t("statistics.number_of_active_groups")}</p>
@@ -438,7 +438,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-3'>
+          <div className='col'>
             <div className='dash-crde'>
               {/* <p>Number of active sellers</p> */}
               <p>{t("statistics.number_of_active_sellers")}</p>
@@ -454,7 +454,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-2'>
+          <div className='col'>
             <div className='dash-crde blue-cr'>
               {/* <p>Number of Packages Sold</p> */}
               <p>{t("statistics.number_of_packages_sold")}</p>
@@ -470,7 +470,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-2'>
+          <div className='col'>
             <div className='dash-crde rde-cr'>
               {/* <p>Number of Packages Not Delivered</p> */}
               <p>{t("statistics.number_of_packages_not_delivered")}</p>
@@ -486,7 +486,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className='col-md-2'>
+          <div className='col'>
             <div className='dash-crde rde-cr'>
               {/* <p>New orders</p> */}
               <p>{t("statistics.new_orders")}</p>
@@ -686,10 +686,10 @@ const page = () => {
                     onChange={handleMonthsChange}
                     style={{
                       padding: "5px",
-                      width: "100%",
+                      width: "120px",
                       border: "1px solid #ccc",
                       borderRadius: "4px",
-                      fontSize: "16px",
+                      fontSize: "14px",
                     }}
                     required
                   />

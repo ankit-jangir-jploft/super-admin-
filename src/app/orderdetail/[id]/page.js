@@ -33,6 +33,7 @@ const Page = () => {
       const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, option);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
+        console.log({res})
 
         setProducts(res.data?.data?.order_details);
       }
@@ -438,7 +439,7 @@ const Page = () => {
               </div>
             </Col>
             <Col lg={3}>
-              <div className='order-dtl-box'>
+              <div className='order-dtl-box right-cht-dle'>
                 <h2>{t("order_details.log")}</h2>
                 {(logs?.length &&
                   logs?.map((log) => {

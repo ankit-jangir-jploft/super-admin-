@@ -78,7 +78,7 @@ const page = () => {
                   <thead>
                     <tr>
                       {/* <th>Start date</th> */}
-                      <th>{t("dugnader.start_date")}</th>
+                      <th><b>{t("dugnader.start_date")}</b></th>
                       {/* <th>End date</th> */}
                       <th>{t("dugnader.end_date")}</th>
                       {/* <th>Dugnadsgroup</th> */}

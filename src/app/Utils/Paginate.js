@@ -25,23 +25,23 @@ const Pagination = ({
       )}`}</p>
       </div>
 
-      <button
+      <button className="left-arrow"
         onClick={handleFirstPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src='/images/button_left_dub.svg'
+          src='/images/right-dublarrow1.svg'
           alt='product'
         />
       </button>
-      <button
+      <button className="left-arrow"
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
         style={currentPage === 1 ? styles.disabledButton : styles.button}
       >
         <img
-          src='/images/button_left_singl.svg'
+          src='/images/right-singlarrow.svg'
           alt='product'
         />
       </button>

@@ -252,12 +252,12 @@ const Page = () => {
                         </Form.Group>
                       </div>
                       <div className='col-md-6'>
-                        <Form.Group className='mb-3'>
+                        <Form.Group className='mb-3 position-relative'>
                           <Form.Label>
                             {t("settings.users.create.password")}
                           </Form.Label>
                           <Form.Control
-                            className='position-relative'
+                            className=''
                             type={!eyeToggle ? "password" : "text"}
                             {...register("password", {
                               required: "Password is required",
@@ -274,7 +274,7 @@ const Page = () => {
                                 ? "/images/hide.svg"
                                 : "/images/showEye.svg"
                             }
-                            className='img-fluid eye-icon'
+                            className='img-fluid eye-icon user-crert'
                             onClick={() => setToggle(!eyeToggle)}
                           />
                           {errors.password && (

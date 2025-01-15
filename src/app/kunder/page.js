@@ -177,7 +177,7 @@ const page = () => {
                 )}
                 <input
                   type='text'
-                  // placeholder='Search customers'
+                  placeholder='Search'
                   value={searchQuery}
                   onChange={(e) => {
                     setSearch(e.target.value);
@@ -289,7 +289,12 @@ const page = () => {
                               (window.location.href = `/kunderdetail/${customer?.id}`)
                             }
                           >
-                            {customer?.email || "N/A"}
+                            <a
+                              href=''
+                              className='underline'
+                            >
+                              {customer?.email || "N/A"}
+                            </a>
                           </td>
                           <td
                             style={{ cursor: "pointer" }}

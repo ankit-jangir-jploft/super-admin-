@@ -184,6 +184,7 @@ const page = () => {
                 )}
                 <input
                   type='text'
+                  placeholder="Search"
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
@@ -213,7 +214,7 @@ const page = () => {
                       {/* <th>Ordernumber</th> */}
                       <th>{t("orders.ordernumber")}</th>
                       {/* <th>Date</th> */}
-                      <th>{t("orders.date")}</th>
+                      <th><b>{t("orders.date")}</b></th>
                       {/* <th>Ordered by</th> */}
                       <th>{t("orders.ordered_by")}</th>
                       {/* <th>Ordered for/from</th> */}
@@ -371,7 +372,7 @@ const page = () => {
                                 (window.location.href = `/settings?type=seller`)
                               }
                             >
-                              {order?.seller_name}
+                             <u>{order?.seller_name}</u> 
                             </td>
                             <td>
                               <Link href={`/kunderdetail/${order?.user_id}`}>

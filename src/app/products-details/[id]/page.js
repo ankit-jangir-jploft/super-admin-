@@ -412,7 +412,7 @@ const page = ({ params }) => {
               </Row>
             </Col>
             <Col lg={4}>
-              <div className='order-dtl-box'>
+              <div className='order-dtl-box right-cht-dle'>
                 {/* <h2>Logg </h2> */}
                 <h2>{t("products_detail.log")}</h2>
                 {(logs?.length &&

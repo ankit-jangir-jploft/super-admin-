@@ -393,6 +393,9 @@ const page = () => {
                     {file.map((fl, i) => {
                       return (
                         <>
+                        <div className="imb-bx-upl">
+
+                      
                           {" "}
                           <img
                             key={i}
@@ -405,6 +408,7 @@ const page = () => {
                             }}
                           >
                             X
+                          </div>
                           </div>
                         </>
                       );
