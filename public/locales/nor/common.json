@@ -28,12 +28,12 @@
     "logout": "Logg ut"
   },
   "dashboard": {
-    "main_dashboard": "Hoved Dashbord",
+    "main_dashboard": "Dugnadstid - Mine sider",
     "number_of_groups": "Antall grupper",
     "active": "Aktive",
     "number_of_sellers": "Antall selgere",
     "profit": "Profitt",
-    "total": "Total",
+    "total": "Totalt",
     "no_of_packages": "Antall pakker",
     "sales_analytics": "Salgsanalyse",
     "daily": "Daglig",
@@ -49,7 +49,7 @@
     "not_set": "Ikke satt"
   },
   "statistics": {
-    "statistics": "Statistics",
+    "statistics": "Statistikk",
     "active": "Aktive",
     "from": "Fra",
     "to": "Til",
@@ -144,8 +144,7 @@
     "shipping_label": "Fraktetikett",
     "note": "Notat",
     "customer": "Kunde",
-    "kari_nordmann": "Kari Mordmann",
-    "seller": "Seiger",
+    "seller": "Selger",
     "order": "Ordre",
     "total": "Total",
     "see_contact": "Se kunde",
@@ -160,18 +159,17 @@
     "product": "Produkt",
     "cost": "Pris",
     "quantity": "Antall",
-    "gratis_frakt": "Gratis_frakt",
+    "gratis_frakt": "Gratis frakt",
     "products_sum": "Produkt sum",
     "shipping_&_Handling": "Frakt & håndtering",
     "order_total": "Ordre total"
   },
   "order_create": {
     "create_order": "Opprett ordre",
-    "roger_nordmann": "Roger Nordmann",
     "customer": "Kunde",
     "ordered_by": "Bestillt av",
     "delivery_address": "Leveringsadresse",
-    "customer_delivery_address": "Kunde Leveringsadresse",
+    "customer_delivery_address": "Kundes leveringsadresse",
     "customer_address": "Kundens adresse",
     "order_confirmation": "Ordrebekreftelse",
     "send_order_confirmation_to": "Send ordrebekreftelse til",
@@ -179,14 +177,14 @@
     "comment": "Kommentar",
     "products": "Produkter",
     "add": "Legg til",
-    "no": "NO",
-    "yes": "SE",
+    "no": "Nei",
+    "yes": "Ja",
     "other": "Annen",
     "customer_required": "Kunde er påkrevd.",
-    "ordered_by_required": "Bestilt av er påkrevd.",
+    "ordered_by_required": "Bestilt av, er påkrevd.",
     "customer_address_required": "Kundeadresse er påkrevd.",
     "customer_delivery_address_required": "Leveringsadresse er påkrevd.",
-    "valid_email_required": "En gyldig e-post er påkrevd.",
+    "valid_email_required": "En gyldig e-postadresse er påkrevd.",
     "at_least_one_product_required": "Minst ett produkt må velges."
   },
   "orders_dropdown": {
@@ -213,7 +211,7 @@
     "total": "Total"
   },
   "salesoverview": {
-    "abc_idrettsklubb_j16": "ABC Idrettsklubb J16"
+    "salesoverview": "Salgsoversikt"
   },
   "customers": {
     "customers": "Kunder",
@@ -229,7 +227,7 @@
     "last_log": "Siste logg",
     "last_contact": "Siste kontakt",
     "seller": "Selger",
-    "view": "Se",
+    "view": "Vis",
     "mass_action": "Masse-handling",
     "name": "Navn",
     "showing": "Viser ",
@@ -282,8 +280,8 @@
     "same_as_address": "Samme som adresse",
     "cancel": "Avbryt",
     "country": "Land",
-    "yes": "SE",
-    "no": "NO",
+    "SE": "SE",
+    "NO": "NO",
     "seller": "Selger",
     "name": "Navn",
     "contact_person": "Kontaktperson",
@@ -505,7 +503,7 @@
       "language": "Språk",
       "update_settings": "Oppdater innstillinger",
       "create_settings": "Opprett innstillinger",
-      "shipping_rate": "Fraktrate"
+      "shipping_rate": "Fraktkostnad"
     },
     "dugnadssettings": {
       "search": "Søk",
@@ -518,11 +516,11 @@
       "default_text": "Standardtekst ved deling i sosiale medier",
       "default_image_when_sharing_in_social_media": "Standardbilde ved deling i sosiale medier",
       "frequently_asked_questions": "Ofte stilte spørsmål",
-      "question": "Spørsmål 1",
+      "question": "Spørsmål",
       "add_question_and_answer": "Legg til spørsmål og svar",
       "answer": "Svar",
       "save": "Lagre",
-      "thank_you_for_support": "Takk for din støtte"
+      "thank_you_for_support": "Takk for din støtte!"
     },
     "users": {
       "list": {
@@ -568,13 +566,13 @@
     "frontpage_settings": {
       "language": "Språk",
       "norwegian": "Norsk",
-      "header_title": "Header tittel",
-      "header_image": "Header bilde",
+      "header_title": "Forside tittel",
+      "header_image": "Forside bilde",
       "drag_&_drop_or_choose_file_to_upload": "Dra og slipp eller velg filen du vil laste opp",
       "supported_formats: Jpeg, png": "Støttede formater: Jpeg, png",
-      "header_description": "Header beskrivelse",
-      "header_button_label": "Header knapptekst",
-      "header_button_link": "Header knapp link",
+      "header_description": "Forside beskrivelse",
+      "header_button_label": "Forside knapptekst",
+      "header_button_link": "Forside knapp link",
       "save": "Lagre",
       "drag_drop_or": "Dra og slipp eller",
       "choose_file": "velg fil",
@@ -602,7 +600,7 @@
     "not_started": "Ikke startet",
     "change_status": "Endre status",
     "customer_status": "Kundestatus",
-    "submit": "Send"
+    "submit": "Oppdater"
   },
   "lead_option": {
     "create_lead": "Opprett lead",
@@ -611,7 +609,7 @@
     "warm": "Varm",
     "cold": "Kald",
     "luke": "Lunken",
-    "submit": "Send",
+    "submit": "Oppdater",
     "none": "Ingen"
   },
   "order_status": {
@@ -627,7 +625,7 @@
     "on_hold": "På vent",
     "select_status": "Velg status",
     "change_status": "Endre status",
-    "submit": "Send"
+    "submit": "Oppdater"
   },
   "forget_password": {
     "email_invalid": "Vennligst oppgi en gyldig e-postadresse.",
