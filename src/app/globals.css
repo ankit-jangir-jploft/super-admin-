@@ -3079,3 +3079,6 @@ button.left-arrow {
 button.left-arrow:disabled{
   filter: contrast(0.9);
 }
+.imb-bx-upl{
+  position: relative;
+}

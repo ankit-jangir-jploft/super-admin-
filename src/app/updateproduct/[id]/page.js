@@ -440,6 +440,8 @@ const page = ({ params }) => {
                       return (
                         <>
                           {" "}
+                           <div className="imb-bx-upl">
+                            
                           <img
                             key={i}
                             src={fl?.image}
@@ -451,6 +453,8 @@ const page = ({ params }) => {
                             }}
                           >
                             X
+                          </div>
+                          
                           </div>
                         </>
                       );
