@@ -490,7 +490,7 @@ const page = ({ searchParams }) => {
                           <div className='bot-btn justify-content-end'>
                             <button
                               type='submit'
-                              className='btn btn-primary px-3 p-2'
+                              className='btn btn-primary w-50 px-3 p-2'
                             >
                               {isEditMode
                                 ? t("settings.general.update_settings")
@@ -527,8 +527,8 @@ const page = ({ searchParams }) => {
                           />
                         </div>
                       </div>
-                      <div className='col-md-15 mt-4'>
-                        <div className='row'>
+                      <div className='col-md-12 mt-4 '>
+                        <div className='row justify-content-between align-items-center'>
                           <div className='col-md-5'>
                             <Form.Group className='mb-3'>
                               {/* <Form.Label>Default VAT class</Form.Label> */}
@@ -542,6 +542,9 @@ const page = ({ searchParams }) => {
                                 <option value='25'>25%</option>
                               </Form.Select>
                             </Form.Group>
+                          </div>
+                          <div className="col-md-2">
+                            <div className="border-right"></div>
                           </div>
                           <div className='col-md-5'>
                             <Form.Group className='mb-3'>
@@ -629,11 +632,11 @@ const page = ({ searchParams }) => {
                   </h5>
                   <div className='row'>
                     <div className='col-md-6'>
-                      <Form.Label className='d-block'>
+                      <Form.Label className='d-block px-2'>
                         {/* Default text when sharing on social media */}
                         {t("settings.dugnadssettings.default_text")}
                       </Form.Label>
-                      <Form.Label className='d-block mt-4'>
+                      <Form.Label className='d-block mt-4  px-2'>
                         {/* Default image when sharing on social media */}
                         {t(
                           "settings.dugnadssettings.default_image_when_sharing_in_social_media"
@@ -662,7 +665,7 @@ const page = ({ searchParams }) => {
                             dugnadSetting.preview || "/images/image-upload1.svg"
                           }
                           alt='Header Image Preview'
-                          className='rounded-circle m-0'
+                          className=' m-0'
                           width={100}
                           height={100}
                         />
@@ -710,7 +713,7 @@ const page = ({ searchParams }) => {
                     </div>
                   </div>
                   {/* <Form.Label>Frequently asked questions</Form.Label> */}
-                  <Form.Label>
+                  <Form.Label className="lebl-heading">
                     {t("settings.dugnadssettings.frequently_asked_questions")}
                   </Form.Label>
                   <div className='row'>
@@ -957,7 +960,7 @@ const page = ({ searchParams }) => {
                             <Image
                               src={headerImage || "/images/image-upload1.svg"}
                               alt='Header Image Preview'
-                              className='rounded-circle m-0'
+                              className=' m-0'
                               width={100}
                               height={100}
                             />

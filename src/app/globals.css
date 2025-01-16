@@ -1122,6 +1122,7 @@ table th {
   background: #f5f0e9;
   color: #000;
   margin-right: 15px;
+  border: 1px solid #f5f0e9 !important;
 }
 
 .cr-btn {
@@ -1134,7 +1135,7 @@ table th {
 }
 
 .ad-prdtse select {
-  padding: 2px 15px;
+  padding: 6px 15px !important;
   border: 1px solid #fd5a59;
   width: 110px;
   border-radius: 30px;
@@ -1393,6 +1394,8 @@ ul.nvbre-txt li {
   border-radius: 50%;
   display: inline-block;
   margin-right: 5px;
+  position: relative;
+    top: -1px;
 }
 
 .badge.bg-danger {
@@ -2693,7 +2696,7 @@ tspan {
   gap: 30px;
 }
 .can-btn:hover {
-  border: 1px solid #f5f0e9;
+  border: 1px solid #f5f0e9 !important;
   background: transparent !important;
 }
 button.cr-btn.btn.createcustomer_btn,
@@ -3081,4 +3084,35 @@ button.left-arrow:disabled{
 }
 .imb-bx-upl{
   position: relative;
+}
+ 
+.border-right {
+  height: 40px;
+  width: 2px;
+  background: #ccc;
+  text-align: center;
+  margin: 0 auto;
+}
+.lebl-heading{
+  margin-bottom:15px !important;
+}
+.inactive {
+  background-color: #FFCECF !important;
+  border: 1px solid #FF9C9E;
+  border-radius: 40px;
+  color: #FC0004;
+  font-weight: 500;
+  line-height: 11px;
+  font-size: 12px;
+}
+.badge.inactive::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background-color: #FC0004;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+  top: -1px;
 }
