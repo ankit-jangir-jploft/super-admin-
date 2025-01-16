@@ -774,7 +774,10 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
-                      {t("create_product.product_name")}{" "}
+                      {/* {t("create_product.product_name")}{" "} */}
+                      {productForm.language == 1
+                        ? "Product name"
+                        : "Produktnavn"}
                       {/* <Link href={"/"}>/julepakke-2-til-og-fra-lapper</Link> */}
                     </Form.Label>
                     <Form.Control
@@ -884,7 +887,10 @@ const page = () => {
                       <Form.Group className='mb-3'>
                         {/* <Form.Label>Warehouse location</Form.Label> */}
                         <Form.Label>
-                          {t("create_product.warehouse_location")}
+                          {/* {t("create_product.warehouse_location")} */}
+                          {productForm.language == 1
+                            ? "Warehouse location"
+                            : "Lager lokasjon"}
                         </Form.Label>
                         <Form.Control
                           value={productForm.warehouseAddress}
@@ -992,7 +998,10 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Short description</Form.Label> */}
                     <Form.Label>
-                      {t("create_product.short_description")}
+                      {/* {t("create_product.short_description")} */}
+                      {productForm.language == 1
+                        ? "Short description"
+                        : "Kort beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       as='textarea'
@@ -1010,7 +1019,10 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Product description</Form.Label> */}
                     <Form.Label>
-                      {t("create_product.product_description")}
+                      {/* {t("create_product.product_description")} */}
+                      {productForm.language == 1
+                        ? "Product description"
+                        : "Produkt beskrivelse"}
                     </Form.Label>
                     <ReactQuill
                       theme='snow'
@@ -1027,7 +1039,10 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>My pages description</Form.Label> */}
                     <Form.Label>
-                      {t("create_product.my_page_description")}
+                      {/* {t("create_product.my_page_description")} */}
+                      {productForm.language == 1
+                        ? "My pages description"
+                        : "Mine-sider beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       value={productForm.PageDescription}
@@ -1043,7 +1058,10 @@ const page = () => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Meta description</Form.Label> */}
                     <Form.Label>
-                      {t("create_product.meta_description")}
+                      {/* {t("create_product.meta_description")} */}
+                      {productForm.language == 1
+                        ? "Meta description"
+                        : "Meta beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       as='textarea'

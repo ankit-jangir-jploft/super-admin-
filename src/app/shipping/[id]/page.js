@@ -181,7 +181,7 @@ const page = ({ params }) => {
                           {product?.product_name} - {product?.qty} stk
                         </td>
                         <td>{product?.product_number}</td>
-                        <td>-</td>
+                        <td>{product?.warehouse_address}</td>
                         {/* <td className='text-end'>{product?.price}</td> */}
                       </tr>
                     );

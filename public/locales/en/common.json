@@ -281,7 +281,7 @@
     "same_as_address": "Same as address",
     "cancel": "Cancel",
     "country": "Country",
-    "yes": "YES",
+    "yes": "SE",
     "no": "NO",
     "seller": "Seller",
     "name": "Name",
@@ -649,5 +649,9 @@
     "new_password": "New Password",
     "confirm_password": "Confirm Password",
     "submit": "Submit"
+  },
+  "note": {
+    "customer_note": "Customer note",
+    "changed_status": "Changed status"
   }
 }

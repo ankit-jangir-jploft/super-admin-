@@ -259,10 +259,10 @@ const page = ({ params }) => {
     //   isValid = false;
     // }
 
-    if (!files.length) {
-      tempErrors.files = t("create_product.product_image_required");
-      isValid = false;
-    }
+    // if (!files.length) {
+    //   tempErrors.files = t("create_product.product_image_required");
+    //   isValid = false;
+    // }
 
     // if (!productForm.gtin) {
     //   tempErrors.gtin = t("create_product.gtin_required");
@@ -282,6 +282,7 @@ const page = ({ params }) => {
     //   tempErrors.quantity = t("create_product.quantity_non_negative");
     //   isValid = false;
     // }
+    console.log("isValid -- ", isValid);
 
     setErrors(tempErrors);
     return isValid;
@@ -289,7 +290,7 @@ const page = ({ params }) => {
 
   const submitHandler = async () => {
     try {
-      console.log("selectedReletedProducts", selectedReletedProducts);
+      console.log("errors --", errors);
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory ? chosendCategory : "");
@@ -446,17 +447,19 @@ const page = ({ params }) => {
                       return (
                         <>
                           {" "}
-                          <img
-                            key={i}
-                            src={fl?.image}
-                          />
-                          <div
-                            className='close_img_top'
-                            onClick={() => {
-                              removeFile(fl);
-                            }}
-                          >
-                            X
+                          <div className='imb-bx-upl'>
+                            <img
+                              key={i}
+                              src={fl?.image}
+                            />
+                            <div
+                              className='close_img_top'
+                              onClick={() => {
+                                removeFile(fl);
+                              }}
+                            >
+                              X
+                            </div>
                           </div>
                         </>
                       );
@@ -803,7 +806,9 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
-                      {t("update_product.product_name")}{" "}
+                      {productForm.language == 1
+                        ? "Product name"
+                        : "Produktnavn"}{" "}
                       {/* <Link href={""}>/{productSlug}</Link> */}
                     </Form.Label>
                     <Form.Control
@@ -894,7 +899,7 @@ const page = ({ params }) => {
 
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Display</Form.Label> */}
-                    {t("update_product.display")}
+                    <Form.Label>{t("update_product.display")}</Form.Label>
                     <Form.Select
                       onChange={(e) =>
                         setForm((prev) => ({
@@ -911,7 +916,12 @@ const page = ({ params }) => {
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
                         {/* <Form.Label>Warehouse location</Form.Label> */}
-                        {t("update_product.warehouse_location")}
+                        {/* {t("update_product.warehouse_location")} */}
+                        <Form.Label>
+                          {productForm.language == 1
+                            ? "Warehouse location"
+                            : "Lager lokasjon"}
+                        </Form.Label>
                         <Form.Control
                           value={productForm.warehouseAddress}
                           onChange={(e) =>
@@ -925,8 +935,10 @@ const page = ({ params }) => {
                     </div>
                     <div className='col-md-4'>
                       <Form.Group className='mb-3'>
-                        {/* <Form.Label>Quantity in stock</Form.Label> */}
-                        {t("update_product.quantity_in_stock")}
+                        <Form.Label>
+                          {t("update_product.quantity_in_stock")}
+                        </Form.Label>
+
                         <Form.Control
                           value={productForm.quantity}
                           onChange={(e) =>
@@ -1009,7 +1021,10 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Short description</Form.Label> */}
                     <Form.Label>
-                      {t("update_product.short_description")}
+                      {/* {t("update_product.short_description")} */}
+                      {productForm.language == 1
+                        ? "Short description"
+                        : "Kort beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       as='textarea'
@@ -1027,7 +1042,9 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Product description</Form.Label> */}
                     <Form.Label>
-                      {t("update_product.product_description")}
+                      {productForm.language == 1
+                        ? "Product description"
+                        : "Produkt beskrivelse"}
                     </Form.Label>
                     <ReactQuill
                       theme='snow'
@@ -1044,7 +1061,10 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>My pages description</Form.Label> */}
                     <Form.Label>
-                      {t("update_product.my_page_description")}
+                      {/* {t("update_product.my_page_description")} */}
+                      {productForm.language == 1
+                        ? "My pages description"
+                        : "Mine-sider beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       value={productForm.PageDescription}
@@ -1060,7 +1080,10 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Meta description</Form.Label> */}
                     <Form.Label>
-                      {t("update_product.meta_description")}
+                      {/* {t("update_product.meta_description")} */}
+                      {productForm.language == 1
+                        ? "Meta description"
+                        : "Meta beskrivelse"}
                     </Form.Label>
                     <Form.Control
                       as='textarea'

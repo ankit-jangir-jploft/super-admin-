@@ -33,7 +33,7 @@ const Page = () => {
       const res = await GET(`${BASE_URL}/api/admin/OrderBillDetail`, option);
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
-        console.log({res})
+        console.log({ res });
 
         setProducts(res.data?.data?.order_details);
       }
@@ -128,34 +128,29 @@ const Page = () => {
         console.error("Failed to generate image data");
         return;
       }
+      const pdfWidth = 210;
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      // Calculate the width and height for A4 size
-      const pdfWidth = 210; // A4 width in mm
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      // Add the image to the PDF
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight); // Add the image to the PDF
-
-      // Save the PDF
       pdf.save("order-details.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
-      // Hide the content again
       content.style.display = "none";
-      setLoading(false); // Set loading to false after PDF generation
+      setLoading(false);
     }
   };
 
   const logStatus = {
     note: {
       name: "Note",
-      html: "<strong>Customer note:</strong><br/>",
+      html: `<strong>${t("note.customer_note")}:</strong><br/>`,
       style: "note",
     },
     order_status: {
       name: "Order Status",
-      html: "<strong>Changed status:</strong>",
+      html: `<strong>${t("note.changed_status")}:</strong>`,
       style: "order-status",
     },
     new_order: {
@@ -673,6 +668,7 @@ const Page = () => {
         onClose={() => {
           setShowStatusModal(false);
           fetchOrderDetails();
+          fetchLogs();
         }}
         isOpen={showStatusModal}
         id={id}

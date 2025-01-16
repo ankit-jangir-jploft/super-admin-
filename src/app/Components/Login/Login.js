@@ -41,6 +41,7 @@ const Login = () => {
     initialValues: {
       email: "",
       password: "",
+      lang: "nor",
     },
     validationSchema,
     onSubmit: async (values) => {

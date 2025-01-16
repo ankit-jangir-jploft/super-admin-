@@ -113,12 +113,12 @@ const page = ({ params }) => {
   const logStatus = {
     note: {
       name: "Note",
-      html: "<strong>Customer note:</strong><br/>",
+      html: `<strong>${t("note.customer_note")}:</strong><br/>`,
       style: "note",
     },
     order_status: {
       name: "Order Status",
-      html: "<strong>Changed status:</strong>",
+      html: `<strong>${t("note.changed_status")}:</strong>`,
       style: "order-status",
     },
     new_order: {
@@ -427,12 +427,12 @@ const page = ({ params }) => {
                       <span>{lastPurchaseOrder?.number_of_seller}</span>
                     </p>
                     <p>
-                      {t("customer_details.sold_till_now")}:{" "}
-                      <span>{lastPurchaseOrder?.user_count}</span>
-                    </p>
-                    <p>
                       {t("customer_details.sellers_registered")}:{" "}
                       <span>{lastPurchaseOrder?.total_qty_sold}</span>
+                    </p>
+                    <p>
+                      {t("customer_details.sold_till_now")}:{" "}
+                      <span>{lastPurchaseOrder?.user_count}</span>
                     </p>
                   </div>
                 </Col>
@@ -730,6 +730,8 @@ const page = ({ params }) => {
         onClose={() => {
           setShowStatusChange(false);
           fetchCustomerDetails();
+          fetchLogs();
+          fetchTags();
         }}
         status={currentStatus}
       />

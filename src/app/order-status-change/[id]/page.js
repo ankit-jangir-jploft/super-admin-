@@ -39,7 +39,8 @@ function page({ params }) {
       );
       if (res?.data?.status) {
         setOrderDetails(res.data?.data);
-        setChosenStatus(res.data?.data.status);
+        setChosenStatus(res.data?.data?.order_status);
+        console.log("res.data?.data?.status", res.data?.data?.order_status);
       }
     } catch (error) {
       console.log(error);
@@ -52,7 +53,7 @@ function page({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!chosenStatus) {
+    if (chosenStatus == "") {
       toast.dismiss();
       toast.error("Please select a status");
       return;
@@ -68,6 +69,7 @@ function page({ params }) {
       toast.success("Status updated successfully");
       setChosenStatus("");
       getStatusData();
+      window.location.href = `/shipping/${id}`;
     } else {
       toast.dismiss();
       toast.error(res.data?.message || "Something went wrong");
@@ -112,6 +114,7 @@ function page({ params }) {
               onChange={(e) => setChosenStatus(e.target.value)}
             >
               <option value=''>{t("customer_status.select_status")}</option>
+              <option value='0'>{t("order_status.ordered")}</option>
               <option value='1'>{t("order_status.ready_for_picking")}</option>
               <option value='2'>{t("order_status.currently_picking")}</option>
               <option value='3'>{t("order_status.sent")}</option>
@@ -127,7 +130,13 @@ function page({ params }) {
             >
               Update
             </button>
-            <button className='can-btn btn createcustomer_btncmf w-100 px-5 '>
+            <button
+              className='can-btn btn createcustomer_btncmf w-100 px-5 '
+              onClick={() => {
+                window.location.href = `/shipping/${id}`;
+              }}
+              type='button'
+            >
               Close
             </button>
           </div>

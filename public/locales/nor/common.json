@@ -648,5 +648,9 @@
     "new_password": "Nytt passord",
     "confirm_password": "Bekreft passord",
     "submit": "Send inn"
+  },
+  "note": {
+    "customer_note": "Kundemerknad",
+    "changed_status": "Endret status"
   }
 }

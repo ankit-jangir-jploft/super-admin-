@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 
 export const GET = async (Url, data) => {
   const token = Cookies.get("dugnadstisadmin");
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -22,11 +23,13 @@ export const GET = async (Url, data) => {
 
 export const POST = async (Url, data) => {
   const token = Cookies.get("dugnadstisadmin");
+  const lang = Cookies.get("i18next");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+  data.lang = lang;
   try {
     const res = await axios.post(Url, data, config);
     return res;

@@ -1066,7 +1066,8 @@ const page = ({ searchParams }) => {
                               <td>{row?.name}</td>
                               <td>
                                 <Badge bg='success'>
-                                  {row?.status === 1 ? "Active" : "Inactive"}
+                                  {row?.status ? "Active" : "Inactive"}
+                                  {console.log("row?.status", row?.status)}
                                 </Badge>
                               </td>
                               <td>{row?.role_type}</td>

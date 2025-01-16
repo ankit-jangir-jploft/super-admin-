@@ -128,6 +128,19 @@ const page = () => {
       toast.error(res?.data?.message);
     }
   };
+
+  const handlePickList = async (data) => {
+    const res = await GET(`${BASE_URL}/api/admin/pickList`, data);
+
+    if (res?.data?.status) {
+      console.log("res?.data.data", res?.data.data);
+      downloadFile(res?.data?.data);
+    } else {
+      toast.dismiss();
+      toast.error(res?.data?.message);
+    }
+  };
+
   const downloadFile = (filePath) => {
     const a = document.createElement("a");
     a.href = filePath;
@@ -184,7 +197,7 @@ const page = () => {
                 )}
                 <input
                   type='text'
-                  placeholder="Search"
+                  placeholder='Search'
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
@@ -214,7 +227,9 @@ const page = () => {
                       {/* <th>Ordernumber</th> */}
                       <th>{t("orders.ordernumber")}</th>
                       {/* <th>Date</th> */}
-                      <th><b>{t("orders.date")}</b></th>
+                      <th>
+                        <b>{t("orders.date")}</b>
+                      </th>
                       {/* <th>Ordered by</th> */}
                       <th>{t("orders.ordered_by")}</th>
                       {/* <th>Ordered for/from</th> */}
@@ -342,9 +357,18 @@ const page = () => {
                                     <img src='/images/disable-print.svg' />
                                   </button>
                                 )}
-                                <Link href={`/shipping/${order.id}`}>
+                                <button
+                                  // href={`/shipping/${order.id}`}
+                                  style={{
+                                    border: "none",
+                                    borderRadius: "50%",
+                                  }}
+                                  onClick={() =>
+                                    handlePickList({ id: order?.id })
+                                  }
+                                >
                                   <img src='/images/checklist.svg' />
-                                </Link>
+                                </button>
                                 {order?.tracking_no ? (
                                   <a
                                     href={order?.package_slip}
@@ -372,7 +396,7 @@ const page = () => {
                                 (window.location.href = `/settings?type=seller`)
                               }
                             >
-                             <u>{order?.seller_name}</u> 
+                              <u>{order?.seller_name}</u>
                             </td>
                             <td>
                               <Link href={`/kunderdetail/${order?.user_id}`}>

@@ -6,11 +6,13 @@ import { GET, POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 const CreateCustomerModal = ({ isOpen, onClose }) => {
-  const router = useRouter();
+  const { t } = useTranslation();
   // const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
+  const [isCustom, setIsCustom] = useState(false);
 
   // const fetchCompanies = async () => {
   //   try {
@@ -52,7 +54,6 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
       .matches(/^\d+$/, "Zip must be a number")
       .required("Zip is required"),
     city: Yup.string().required("City is required"),
-    seller_id: Yup.string().required("Seller is required"),
     contactPerson: Yup.string().required("Contact person is required"),
     phone: Yup.string()
       .matches(/^\+?\d+$/, "Must be a valid phone number")
@@ -75,11 +76,22 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
     email: "",
     DeliveryAddress: "",
     countryCode: "+47",
+    customZip: "",
+    customCity: "",
+    customAddress: "",
   };
 
   const submitHandler = async (values) => {
-    console.log("values --", values);
-    const res = await POST(`${BASE_URL}/api/admin/customerCreate`, values);
+    const payload = {
+      ...values,
+      ...(values.DeliveryAddress === "Custom" && {
+        customZip: values.customZip,
+        customCity: values.customCity,
+        customAddress: values.customAddress,
+      }),
+    };
+
+    const res = await POST(`${BASE_URL}/api/admin/customerCreate`, payload);
     if (res?.data?.status) {
       toast.dismiss();
       toast.success(res.data?.message);
@@ -128,7 +140,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
             validationSchema={validationSchema}
             onSubmit={submitHandler}
           >
-            {({ values, handleChange }) => (
+            {({ values, handleChange, setFieldValue }) => (
               <Form
                 id='customerForm'
                 className='form-content'
@@ -337,9 +349,17 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             id='DeliveryAddress'
                             name='DeliveryAddress'
                             className='form-control select_arrow_input'
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setFieldValue("DeliveryAddress", value);
+                              setIsCustom(value === "Custom");
+                            }}
                           >
                             <option value='Same as address'>
-                              Same as address
+                              {t("customers_create.same_as_address")}
+                            </option>
+                            <option value='Custom'>
+                              {t("customers_create.other")}
                             </option>
                           </Field>
                           <ErrorMessage
@@ -348,6 +368,56 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             className='text-danger'
                           />
                         </div>
+                        {isCustom && (
+                          <>
+                            <div className='form-group'>
+                              <label>{t("customers_create.address")}</label>
+                              <Field
+                                type='text'
+                                id='customAddress'
+                                name='customAddress'
+                                className='form-control'
+                                value={values.customAddress}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  setFieldValue("customAddress", value);
+                                }}
+                              />
+                            </div>
+                            <div className='form-group row'>
+                              <div className='col-md-2'>
+                                {/* <label htmlFor='zip'>Zip</label> */}
+                                <label>{t("customers_create.zip")}</label>
+                                <Field
+                                  type='text'
+                                  id='customZip'
+                                  name='customZip'
+                                  className='form-control'
+                                />
+                                <ErrorMessage
+                                  name='customZip'
+                                  component='div'
+                                  className='text-danger'
+                                />
+                              </div>
+                              <div className='col-md-10'>
+                                {/* <label htmlFor='city'>City</label> */}
+                                <label>{t("customers_create.city")}</label>
+                                <Field
+                                  type='text'
+                                  id='customCity'
+                                  name='customCity'
+                                  className='form-control'
+                                />
+                                <ErrorMessage
+                                  name='customCity'
+                                  component='div'
+                                  className='text-danger'
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
