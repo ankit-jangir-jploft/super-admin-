@@ -234,7 +234,7 @@ const page = () => {
       },
     },
     title: {
-      text: "Closing Date",
+      text: t("statistics.closing_date"),
       align: "left",
       style: {
         fontSize: "20px",
@@ -306,7 +306,7 @@ const page = () => {
       // }
     },
     title: {
-      text: "Completed Dugnader",
+      text: t("statistics.completed_dugnader"),
       align: "left",
       style: {
         fontSize: "20px",

@@ -228,7 +228,7 @@ const page = () => {
               type='text'
               value={searchTerm}
               onChange={handleSearchChange}
-              placeholder='Search...'
+              // placeholder='Search...'
             />
             {suggestions.length > 0 && (
               <ul className='search_list_dash'>

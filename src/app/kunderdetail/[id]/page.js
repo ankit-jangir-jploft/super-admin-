@@ -213,7 +213,6 @@ const page = ({ params }) => {
       const options = {
         user_id: id,
         content: logsData,
-        user_id: user?.id,
       };
 
       const res = await POST(
@@ -332,7 +331,7 @@ const page = ({ params }) => {
 
                   <Dropdown.Menu>
                     <Dropdown.Item href={`/update-customer/${id}`}>
-                      Edit
+                      {t("customer_details.edit")}
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -617,7 +616,7 @@ const page = ({ params }) => {
                             {tag?.name} <img src='/images/close.svg' />
                           </button>
                         );
-                      })) || <div>No Tags</div>}
+                      })) || <div></div>}
                   </div>
                 </div>
                 {roleType === "guest" ? (

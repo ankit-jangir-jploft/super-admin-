@@ -44,7 +44,7 @@ const CustomInputText = ({ months, setMonth }) => {
         >
           <label className='input-label'>{month}</label>
           <input
-            type='text'
+            type='number'
             name={month}
             value={monthValues[month]}
             className='input-text'

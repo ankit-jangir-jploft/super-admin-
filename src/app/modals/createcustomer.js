@@ -7,13 +7,14 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 
 const CreateCustomerModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   // const [companies, setCompanies] = useState([]);
   const [sellers, setSeller] = useState([]);
   const [isCustom, setIsCustom] = useState(false);
-
+  const [orderConfirm, setOrderConfirm] = useState(0);
   // const fetchCompanies = async () => {
   //   try {
   //     const res = await GET(`${BASE_URL}/api/admin/companyList`);
@@ -24,6 +25,11 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
   //     console.error("Error fetching companies:", error);
   //   }
   // };
+
+  const radios = [
+    { name: t("customers_create.yes"), value: 1 },
+    { name: t("customers_create.no"), value: 0 },
+  ];
 
   const fetchSellers = async () => {
     try {
@@ -61,12 +67,11 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
     email: Yup.string()
       .email("Invalid email")
       .required("Email address is required"),
+    country: Yup.number().required("Country selection is required"),
   });
 
   const initialValues = {
     name: "",
-    // company_id: "",
-    // orgnizationNumber: "",
     address: "",
     zip: "",
     city: "",
@@ -79,6 +84,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
     customZip: "",
     customCity: "",
     customAddress: "",
+    country: 0, // Add this field
   };
 
   const submitHandler = async (values) => {
@@ -117,20 +123,20 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
           <div className='admin-header'>
             <div className='d-flex justify-content-between w-100 align-items-center'>
-              <h2>Create Customer</h2>
+              <h2>{t("customers_create.create_customer")}</h2>
               <div className='bot-btn'>
                 <button
                   onClick={onClose}
                   className='can-btn btn createcustomer_btncmf px-5'
                 >
-                  Cancel
+                  {t("customers_create.cancel")}
                 </button>
                 <button
                   type='submit'
                   form='customerForm'
                   className='cr-btn btn createcustomer_btn px-3'
                 >
-                  Create customer
+                  {t("customers_create.create_customer")}
                 </button>
               </div>
             </div>
@@ -149,8 +155,40 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                   <div className='crte-ordr'>
                     <div className='row'>
                       <div className='col-md-6'>
+                        <div className='form-group swtch-bt'>
+                          <label htmlFor='Country'>
+                            {t("customers_create.country")}
+                          </label>
+                          {/* <label htmlFor='name'>
+                          {t("customers_create.address")}
+                        </label> */}
+                          <ButtonGroup>
+                            {radios.map((radio, idx) => (
+                              <ToggleButton
+                                key={idx}
+                                id={`radios-${idx}`}
+                                type='radio'
+                                variant={
+                                  idx % 2 ? "outline-success" : "outline-danger"
+                                }
+                                name='country'
+                                value={radio.value}
+                                checked={orderConfirm === radio.value}
+                                onChange={(e) => {
+                                  const value = Number(e.currentTarget.value);
+                                  setOrderConfirm(value); // Update orderConfirm state
+                                  setFieldValue("country", value); // Update Formik's field value
+                                }}
+                              >
+                                {radio.name}
+                              </ToggleButton>
+                            ))}
+                          </ButtonGroup>
+                        </div>
                         <div className='form-group'>
-                          <label htmlFor='name'>Name</label>
+                          <label htmlFor='name'>
+                            {t("customers_create.name")}
+                          </label>
                           <Field
                             type='text'
                             id='name'
@@ -210,7 +248,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                       </div> */}
 
                         <div className='form-group'>
-                          <label htmlFor='email'>Email address</label>
+                          <label htmlFor='email'>
+                            {t("customers_create.email_address")}
+                          </label>
                           <Field
                             type='email'
                             id='email'
@@ -224,7 +264,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                           />
                         </div>
                         <div className='form-group'>
-                          <label htmlFor='address'>Address</label>
+                          <label htmlFor='address'>
+                            {t("customers_create.address")}
+                          </label>
                           <Field
                             type='text'
                             id='address'
@@ -239,7 +281,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                         </div>
                         <div className='form-group row'>
                           <div className='col-md-5'>
-                            <label htmlFor='zip'>Zip</label>
+                            <label htmlFor='zip'>
+                              {t("customers_create.zip")}
+                            </label>
                             <Field
                               type='text'
                               id='zip'
@@ -253,7 +297,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                             />
                           </div>
                           <div className='col-md-7'>
-                            <label htmlFor='city'>City</label>
+                            <label htmlFor='city'>
+                              {t("customers_create.city")}
+                            </label>
                             <Field
                               type='text'
                               id='city'
@@ -271,14 +317,18 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
                       <div className='col-md-6'>
                         <div className='form-group'>
-                          <label htmlFor='seller'>Seller</label>
+                          <label htmlFor='seller'>
+                            {t("customers_create.seller")}
+                          </label>
                           <Field
                             as='select'
                             id='seller'
                             name='seller_id'
                             className='form-control'
                           >
-                            <option value=''>None</option>
+                            <option value=''>
+                              {t("customers_create.none")}
+                            </option>
                             {(sellers.length &&
                               sellers.map((seller, i) => {
                                 return (
@@ -299,7 +349,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className='form-group'>
-                          <label htmlFor='contactPerson'>Contact person</label>
+                          <label htmlFor='contactPerson'>
+                            {t("customers_create.contact_person")}
+                          </label>
                           <Field
                             type='text'
                             id='ContactPerson'
@@ -314,7 +366,9 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className='form-group'>
-                          <label htmlFor='phone'>Telephone number</label>
+                          <label htmlFor='phone'>
+                            {t("customers_create.telephone_number")}
+                          </label>
                           <div className='d-flex'>
                             <Field
                               as='select'
@@ -342,7 +396,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
 
                         <div className='form-group'>
                           <label htmlFor='DeliveryAddress'>
-                            Delivery address
+                            {t("customers_create.delivery_address")}
                           </label>
                           <Field
                             as='select'
@@ -385,7 +439,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                               />
                             </div>
                             <div className='form-group row'>
-                              <div className='col-md-2'>
+                              <div className='col-md-5'>
                                 {/* <label htmlFor='zip'>Zip</label> */}
                                 <label>{t("customers_create.zip")}</label>
                                 <Field
@@ -400,7 +454,7 @@ const CreateCustomerModal = ({ isOpen, onClose }) => {
                                   className='text-danger'
                                 />
                               </div>
-                              <div className='col-md-10'>
+                              <div className='col-md-7'>
                                 {/* <label htmlFor='city'>City</label> */}
                                 <label>{t("customers_create.city")}</label>
                                 <Field

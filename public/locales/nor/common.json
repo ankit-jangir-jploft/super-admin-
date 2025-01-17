@@ -230,7 +230,7 @@
     "view": "Vis",
     "mass_action": "Masse-handling",
     "name": "Navn",
-    "showing": "Viser ",
+    "showing": "Viser",
     "elements": "elementer",
     "of": "av",
     "confirm": "Bekreft",
@@ -262,13 +262,14 @@
     "aps": "APS",
     "turnover": "Omsetning",
     "profit": "Profitt",
-    "total_sum:": "Total sum:",
+    "total_sum": "Total sum:",
     "tags": "Tags",
     "created": "Opprettet",
     "sold_till_now": "Solgt til nå",
     "sellers_registered": "Selgere registrert",
     "past_orders": "Tidligere ordre",
-    "no_of_items": "Antall varer"
+    "no_of_items": "Antall varer",
+    "edit": "Rediger"
   },
   "customers_create": {
     "create_customer": "Opprett kunde",
@@ -280,8 +281,8 @@
     "same_as_address": "Samme som adresse",
     "cancel": "Avbryt",
     "country": "Land",
-    "no": "Nei",
-    "yes": "Ja",
+    "no": "NO",
+    "yes": "SE",
     "seller": "Selger",
     "name": "Navn",
     "contact_person": "Kontaktperson",
@@ -340,7 +341,9 @@
     "of": "av",
     "search": "Søk",
     "confirm": "Bekreft",
-    "delete": "Slett"
+    "delete": "Slett",
+    "published": "Publisert",
+    "unpublished": "Ikke publisert"
   },
   "products_detail": {
     "general": "Generelt",
@@ -652,5 +655,11 @@
   "note": {
     "customer_note": "Kundemerknad",
     "changed_status": "Endret status"
+  },
+  "confirm_delete": {
+    "title": "Bekreft sletting",
+    "message": "Er du sikker på at du vil slette dette elementet?",
+    "cancel": "Avbryt",
+    "confirm": "Bekreft"
   }
 }

@@ -8,6 +8,7 @@ import { APPLICATION_LINK, BASE_URL } from "@/app/Utils/apiHelper";
 import moment from "moment";
 import QRCodeGenerator from "@/app/Components/QRcode";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const page = ({ params }) => {
   const { t } = useTranslation();
@@ -29,6 +30,10 @@ const page = ({ params }) => {
   };
 
   useEffect(() => {
+    Cookies.set("i18next", "nor", {
+      expires: 365,
+      path: "/dashboard",
+    });
     fetchOrderDetails();
   }, []);
 

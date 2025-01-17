@@ -549,7 +549,10 @@ const page = ({ searchParams }) => {
                               <Form.Label>
                                 {t("settings.general.shipping_rate")}
                               </Form.Label>
-                              <Form.Control {...register("shipping_rate")} />
+                              <Form.Control
+                                type='number'
+                                {...register("shipping_rate")}
+                              />
                             </Form.Group>
                           </div>
                         </div>
@@ -721,7 +724,10 @@ const page = ({ searchParams }) => {
                       <React.Fragment key={index}>
                         <div className='col-md-6'>
                           <Form.Group className='mb-3'>
-                            <Form.Label>Question {index + 1}</Form.Label>
+                            <Form.Label>
+                              {t("settings.dugnadssettings.question")}{" "}
+                              {index + 1}
+                            </Form.Label>
                             <Form.Control
                               value={faq.question}
                               onChange={(e) =>

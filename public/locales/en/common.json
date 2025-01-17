@@ -269,7 +269,8 @@
     "sold_till_now": "Sold till now",
     "sellers_registered": "Sellers registered",
     "past_orders": "Past Orders",
-    "no_of_items": "Quantity"
+    "no_of_items": "Quantity",
+    "edit": "Edit"
   },
   "customers_create": {
     "create_customer": "Create customer",
@@ -341,7 +342,9 @@
     "of": "of",
     "search": "Search",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "published": "Published",
+    "unpublished": "Unpublished"
   },
   "products_detail": {
     "general": "General",
@@ -653,5 +656,11 @@
   "note": {
     "customer_note": "Customer note",
     "changed_status": "Changed status"
+  },
+  "confirm_delete": {
+    "title": "Confirm Delete",
+    "message": "Are you sure you want to delete this item?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

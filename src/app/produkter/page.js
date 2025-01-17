@@ -262,8 +262,8 @@ const page = () => {
                               }`}
                             >
                               {product?.product_status == 1
-                                ? "Published"
-                                : "Unpublished"}
+                                ? t("products.published")
+                                : t("products.unpublished")}
                             </button>
                           </td>
                           <td>{product?.category || "N/A"}</td>

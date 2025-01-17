@@ -78,7 +78,7 @@ const Page = () => {
 
       if (response?.data?.status === true) {
         setPending(false);
-        toast.success(t("settings.users.create.success"));
+        toast.success(response.data?.message);
         router.push("/settings");
       } else {
         setPending(false);

@@ -197,7 +197,7 @@ const page = () => {
                 )}
                 <input
                   type='text'
-                  placeholder='Search'
+                  // placeholder='Search'
                   value={searchOuery}
                   onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'

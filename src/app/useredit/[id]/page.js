@@ -13,6 +13,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import DeleteConfirm from "@/app/modals/deleteConfirm";
 
 const Page = ({ param }) => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ const Page = ({ param }) => {
   const [fetchSellerById, setFetchSellerById] = useState(null);
   const [pending, setPending] = useState(false);
   const [roles, setRoles] = useState([]);
-  const router = useRouter();
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const params = useParams();
 
@@ -131,9 +132,9 @@ const Page = ({ param }) => {
       );
 
       if (response?.data?.status === true) {
-        toast.success("Seller updated successfully!");
+        toast.success(response?.data?.message);
         fetchSellerList();
-        router.push("/settings");
+        window.location.href = `/settings?type=seller`;
       }
     } catch (error) {
       console.log(error);
@@ -311,16 +312,32 @@ const Page = ({ param }) => {
                           </div>
                         </div>
                         <div className='row mt-3 mb-5'>
-                          <div className='col-md-6'>
+                          <div className='col-md-4'>
                             <button
                               className='createorder_top_right w-100 btn_bg_delt'
                               type='button'
+                              onClick={() => {
+                                window.location.href = `/settings?type=seller`;
+                              }}
+                            >
+                              {/* cancel user */}
+                              {t("settings.users.create.cancel")}
+                            </button>
+                          </div>
+                          <div className='col-md-4'>
+                            <button
+                              className='createorder_top_right w-100 btn_bg_delt'
+                              type='button'
+                              onClick={() => {
+                                setDeleteConfirm(true);
+                              }}
                             >
                               {/* Delete user */}
                               {t("settings.users.create.delete_user")}
                             </button>
                           </div>
-                          <div className='col-md-6'>
+
+                          <div className='col-md-4'>
                             <button
                               className='createorder_top_right btn_bg_save w-100'
                               type='submit'
@@ -339,6 +356,11 @@ const Page = ({ param }) => {
           </div>
         </div>
       </div>
+      <DeleteConfirm
+        isOpen={deleteConfirm}
+        onClose={() => setDeleteConfirm(false)}
+        id={params?.id}
+      />
     </>
   );
 };
