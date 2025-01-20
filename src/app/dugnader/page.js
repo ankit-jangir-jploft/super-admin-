@@ -78,7 +78,9 @@ const page = () => {
                   <thead>
                     <tr>
                       {/* <th>Start date</th> */}
-                      <th><b>{t("dugnader.start_date")}</b></th>
+                      <th>
+                        <b>{t("dugnader.start_date")}</b>
+                      </th>
                       {/* <th>End date</th> */}
                       <th>{t("dugnader.end_date")}</th>
                       {/* <th>Dugnadsgroup</th> */}
@@ -125,8 +127,14 @@ const page = () => {
                         <td>kr {item?.turnover}</td>
                         <td>kr {item?.profit}</td>
                         <td>
-                          <button className='status green-clr'>
-                            {item?.status === 1 ? "Active" : "Inactive"}
+                          <button
+                            className={`status ${
+                              item?.status === 1 ? "green-clr" : "red-clr"
+                            }`}
+                          >
+                            {item?.status === 1
+                              ? t("dugnader.active")
+                              : t("dugnader.inactive")}
                           </button>
                         </td>
 

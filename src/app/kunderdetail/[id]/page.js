@@ -427,11 +427,11 @@ const page = ({ params }) => {
                     </p>
                     <p>
                       {t("customer_details.sellers_registered")}:{" "}
-                      <span>{lastPurchaseOrder?.total_qty_sold}</span>
+                      <span>{lastPurchaseOrder?.user_count}</span>
                     </p>
                     <p>
                       {t("customer_details.sold_till_now")}:{" "}
-                      <span>{lastPurchaseOrder?.user_count}</span>
+                      <span>{lastPurchaseOrder?.total_qty_sold}</span>
                     </p>
                   </div>
                 </Col>

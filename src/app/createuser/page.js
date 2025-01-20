@@ -234,8 +234,12 @@ const Page = () => {
                               ),
                             })}
                           >
-                            <option value='1'>Active</option>
-                            <option value='2'>Inactive</option>
+                            <option value='Active'>
+                              {t("dugnader.active")}
+                            </option>
+                            <option value='Inactive'>
+                              {t("dugnader.inactive")}
+                            </option>
                           </Form.Select>
                           {errors.status && (
                             <span className='text-danger'>

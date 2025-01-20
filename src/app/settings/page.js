@@ -557,11 +557,12 @@ const page = ({ searchParams }) => {
                           </div>
                         </div>
 
-                        <Form.Group className='mb-3'>
-                          {/* <Form.Label>Language</Form.Label> */}
-                          <Form.Label>
-                            {t("settings.general.language")}
+                        <Form.Group className='mb-3 d-flex align-items-center'>
+                          <Form.Label className='me-3 mb-0'>
+                            {/* Terms of purchase */}
+                            {t("settings.general.terms_of_purchase")}
                           </Form.Label>
+
                           <Form.Select
                             {...register("language_id")}
                             onChange={(e) => {
@@ -575,9 +576,9 @@ const page = ({ searchParams }) => {
                           </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className='mb-3'>
+                        {/* <Form.Group className='mb-3'>
                           <Form.Label>{t("")}</Form.Label>
-                        </Form.Group>
+                        </Form.Group> */}
                         <Form.Group className='mb-3'>
                           <Form.Label>
                             {" "}
@@ -602,9 +603,7 @@ const page = ({ searchParams }) => {
                       <div className='col-md-12'>
                         <Form.Group className='mb-3'>
                           {/* <Form.Label>Terms of Purchase</Form.Label> */}
-                          <Form.Label>
-                            {t("settings.general.terms_of_purchase")}
-                          </Form.Label>
+                          <Form.Label>{t("settings.general.text")}</Form.Label>
                           <Controller
                             name='text'
                             control={control}
@@ -1071,11 +1070,13 @@ const page = ({ searchParams }) => {
                               </td>
                               <td>{row?.name}</td>
                               <td>
-                                <Badge bg='success'>
-                                  {row?.status ? "Active" : "Inactive"}
-                                  {console.log("row?.status", row?.status)}
+                                <Badge bg={row?.status ? "success" : "danger"}>
+                                  {row?.status
+                                    ? t("dugnader.active")
+                                    : t("dugnader.inactive")}
                                 </Badge>
                               </td>
+
                               <td>{row?.role_type}</td>
                               <td>{row?.email}</td>
                               {roleType !== "guest" && (

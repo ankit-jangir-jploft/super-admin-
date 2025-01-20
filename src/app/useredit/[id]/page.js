@@ -247,8 +247,12 @@ const Page = ({ param }) => {
                                 name='status'
                                 className='form-control'
                               >
-                                <option value='Active'>Active</option>
-                                <option value='Inactive'>Inactive</option>
+                                <option value='Active'>
+                                  {t("dugnader.active")}
+                                </option>
+                                <option value='Inactive'>
+                                  {t("dugnader.inactive")}
+                                </option>
                               </Field>
                               <ErrorMessage
                                 name='status'

@@ -75,19 +75,48 @@ const page = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const incrementCount = (id) => {
-    setProductCount((prev) =>
-      prev.map((pr) => (pr.id === id ? { ...pr, qty: pr.qty + 1 } : pr))
-    );
+  const incrementCount = (id, availableStock) => {
+    setProductCount((prev) => {
+      let updated = false;
+
+      const newState = prev.map((pr) => {
+        if (pr.id === id) {
+          if (pr.qty < availableStock) {
+            updated = true;
+            return { ...pr, qty: pr.qty + 1 };
+          } else {
+            toast.error("Cannot exceed available stock!");
+          }
+        }
+        return pr;
+      });
+
+      return updated ? newState : prev;
+    });
   };
 
   const decrementCount = (id) => {
-    setProductCount((prev) =>
-      prev
-        .map((pr) => (pr.id === id ? { ...pr, qty: pr.qty - 1 } : pr))
-        .filter((pr) => pr.qty > 0)
-    );
+    setProductCount((prev) => {
+      let updated = false;
+
+      const newState = prev
+        .map((pr) => {
+          if (pr.id === id) {
+            if (pr.qty > 1) {
+              updated = true;
+              return { ...pr, qty: pr.qty - 1 };
+            } else {
+              toast.error("Quantity cannot go below 1!");
+            }
+          }
+          return pr;
+        })
+        .filter((pr) => pr.qty > 0);
+
+      return updated ? newState : prev;
+    });
   };
+
   const countHandler = (id, price) => {
     const counter = {
       id: id,
@@ -466,7 +495,11 @@ const page = () => {
                                 -
                               </button>
                               <div className='qty-cnt'>{item.qty}</div>
-                              <button onClick={() => incrementCount(prod.id)}>
+                              <button
+                                onClick={() =>
+                                  incrementCount(prod.id, prod.quantity)
+                                }
+                              >
                                 +
                               </button>
                             </div>

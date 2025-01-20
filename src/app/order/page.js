@@ -471,7 +471,7 @@ const page = () => {
                           colSpan='12'
                           style={{ textAlign: "center", padding: "20px" }}
                         >
-                          No Orders Yet
+                          {t("order_more.no_order_yet")}
                         </td>
                       </tr>
                     )}

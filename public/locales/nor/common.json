@@ -32,7 +32,7 @@
     "number_of_groups": "Antall grupper",
     "active": "Aktive",
     "number_of_sellers": "Antall selgere",
-    "profit": "Profitt",
+    "profit": "Fortjeneste",
     "total": "Totalt",
     "no_of_packages": "Antall pakker",
     "sales_analytics": "Salgsanalyse",
@@ -234,7 +234,8 @@
     "elements": "elementer",
     "of": "av",
     "confirm": "Bekreft",
-    "delete": "Slett"
+    "delete": "Slett",
+    "no_record": "Ingen poster"
   },
   "customer_details": {
     "ongoing_pre_sale": "Pågående forhåndssalg",
@@ -261,7 +262,7 @@
     "packs": "Pakker",
     "aps": "APS",
     "turnover": "Omsetning",
-    "profit": "Profitt",
+    "profit": "Fortjeneste",
     "total_sum": "Total sum:",
     "tags": "Tags",
     "created": "Opprettet",
@@ -343,7 +344,8 @@
     "confirm": "Bekreft",
     "delete": "Slett",
     "published": "Publisert",
-    "unpublished": "Ikke publisert"
+    "unpublished": "Ikke publisert",
+    "inventory_not_tracked": "Beholdning ikke sporet"
   },
   "products_detail": {
     "general": "Generelt",
@@ -471,10 +473,11 @@
     "dugnadsgroup": "Dugnadsgruppe",
     "sellers": "Selgere",
     "active": "Aktive",
+    "inactive": "Deaktivert",
     "packs": "Pakker",
     "aps": "APS",
     "turnover": "Omsetning",
-    "profit": "Profitt",
+    "profit": "Fortjeneste",
     "status": "Status",
     "contact_person": "Kontaktperson",
     "seller": "Selger",
@@ -489,6 +492,20 @@
     "dugnads_setting": "Dugnadsinnstillinger",
     "frontpage_setting": "Forsideinnstillinger",
     "userss": "Brukere",
+    "months": {
+      "January": "Januar",
+      "February": "Februar",
+      "March": "Mars",
+      "April": "April",
+      "May": "Mai",
+      "June": "Juni",
+      "July": "Juli",
+      "August": "August",
+      "September": "September",
+      "October": "Oktober",
+      "November": "November",
+      "December": "Desember"
+    },
     "general": {
       "search": "Søk",
       "general": "Generelt",
@@ -501,9 +518,11 @@
       "default_vat_class": "Standard MVA-klasse",
       "english": "Engelsk",
       "terms_of_purchase": "Kjøpsvilkår",
+      "text": "Tekst",
       "title": "Tittel",
       "text": "Tekst",
       "language": "Språk",
+      "tersmOfPurchase": "Kjøpsbetingelser",
       "update_settings": "Oppdater innstillinger",
       "create_settings": "Opprett innstillinger",
       "shipping_rate": "Fraktkostnad"
@@ -587,7 +606,8 @@
     "seller": "Selger",
     "cost": "Kostnad",
     "quantity": "Antall",
-    "total": "Totalt"
+    "total": "Totalt",
+    "no_order_yet": "Ingen bestillinger ennå"
   },
   "paginate": {
     "showing": "Viser",

@@ -242,7 +242,12 @@ const page = () => {
                               (window.location.href = `/products-details/${product?.id}`)
                             }
                           >
-                            {product?.quantity || "N/A"} stk
+                            <div>
+                              {product.stock_keep === 1
+                                ? `${product.quantity} stk` ||
+                                  t("products.inventory_not_tracked")
+                                : t("products.inventory_not_tracked")}
+                            </div>
                           </td>
                           <td
                             style={{ cursor: "pointer" }}
@@ -291,7 +296,7 @@ const page = () => {
                           className='text-center'
                           colSpan={13}
                         >
-                          No Products Yet
+                          {t("customers.no_record")}
                         </td>
                       </tr>
                     )}

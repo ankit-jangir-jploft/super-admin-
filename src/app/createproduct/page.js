@@ -81,6 +81,20 @@ const page = () => {
   });
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    if (parseInt(productForm.quantity, 10) > 0) {
+      setForm((prev) => ({
+        ...prev,
+        keepStock: true,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        keepStock: false,
+      }));
+    }
+  }, [productForm.quantity]);
+
   const options = reletedProducts.map((product) => {
     const value = product.id;
     const label = `${product.name} (${product.product_number})`;
@@ -197,7 +211,7 @@ const page = () => {
       isValid = false;
     }
 
-    if (!productForm.quantity) {
+    if (productForm.keepStock && !productForm.quantity) {
       tempErrors.quantity = t("create_product.quantity_required");
       isValid = false;
     }
@@ -288,7 +302,10 @@ const page = () => {
         );
         formData.append("display", productForm.Display);
         formData.append("warehouse_address", productForm.warehouseAddress);
-        formData.append("quantity", productForm.quantity);
+        formData.append(
+          "quantity",
+          productForm.quantity ? productForm.quantity : 0
+        );
         formData.append("stock_keep", productForm.keepStock ? 1 : 0);
         formData.append("vat", productForm.vat);
         formData.append("vat_class", productForm.vatClass);

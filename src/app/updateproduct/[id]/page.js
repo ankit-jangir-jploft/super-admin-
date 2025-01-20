@@ -133,6 +133,20 @@ const page = ({ params }) => {
   });
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    if (parseInt(productForm.quantity, 10) > 0) {
+      setForm((prev) => ({
+        ...prev,
+        keepStock: true,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        keepStock: false,
+      }));
+    }
+  }, [productForm.quantity]);
+
   const options = reletedProducts.map((product) => {
     const value = product.id;
     const label = `${product.name} (${product.product_number})`;
@@ -223,7 +237,7 @@ const page = ({ params }) => {
       isValid = false;
     }
 
-    if (!productForm.quantity) {
+    if (productForm.keepStock && !productForm.quantity) {
       tempErrors.quantity = t("create_product.quantity_required");
       isValid = false;
     }

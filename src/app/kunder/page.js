@@ -356,7 +356,7 @@ const page = () => {
                           className='text-center'
                           colSpan={15}
                         >
-                          No records
+                          {t("customers.no_record")}
                         </th>
                       </tr>
                     )}

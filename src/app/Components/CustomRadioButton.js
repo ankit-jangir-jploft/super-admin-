@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const CustomInputText = ({ months, setMonth }) => {
+  const { t } = useTranslation();
+
   // Initialize state with the provided months or default empty values
   const [monthValues, setMonthValues] = useState({
     January: "",
@@ -42,7 +45,8 @@ const CustomInputText = ({ months, setMonth }) => {
           key={month}
           className='month-input'
         >
-          <label className='input-label'>{month}</label>
+          <label className='input-label'>{t(`settings.months.${month}`)}</label>{" "}
+          {/* Translate month names */}
           <input
             type='number'
             name={month}

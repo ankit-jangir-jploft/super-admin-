@@ -235,7 +235,8 @@
     "elements": "elements",
     "of": "of",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "no_record": "No records"
   },
   "customer_details": {
     "ongoing_pre_sale": "Ongoing pre-sale",
@@ -344,7 +345,8 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "published": "Published",
-    "unpublished": "Unpublished"
+    "unpublished": "Unpublished",
+    "inventory_not_tracked": "Inventory not tracked"
   },
   "products_detail": {
     "general": "General",
@@ -472,6 +474,7 @@
     "dugnadsgroup": "Fundraising group",
     "sellers": "Sellers",
     "active": "Active",
+    "inactive": "Disabled",
     "packs": "Packs",
     "aps": "APS",
     "turnover": "Turnover",
@@ -490,6 +493,20 @@
     "dugnads_setting": "Dugnad settings",
     "frontpage_setting": "Frontpage settings",
     "userss": "Users",
+    "months": {
+      "January": "January",
+      "February": "February",
+      "March": "March",
+      "April": "April",
+      "May": "May",
+      "June": "June",
+      "July": "July",
+      "August": "August",
+      "September": "September",
+      "October": "October",
+      "November": "November",
+      "December": "December"
+    },
     "general": {
       "search": "Search",
       "general": "General",
@@ -588,7 +605,8 @@
     "seller": "Seller",
     "cost": "Cost",
     "quantity": "Quantity",
-    "total": "Total"
+    "total": "Total",
+    "no_order_yet": "No Orders Yet"
   },
   "paginate": {
     "showing": "Showing",
