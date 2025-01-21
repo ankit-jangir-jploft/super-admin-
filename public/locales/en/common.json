@@ -46,7 +46,19 @@
     "name": "Name",
     "quantity": "Quantity",
     "end_date": "End date",
-    "not_set": "Not set"
+    "not_set": "Not set",
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
   },
   "statistics": {
     "statistics": "Statistics",
@@ -60,7 +72,7 @@
     "number_of_packages_sold": "Number of packages sold",
     "number_of_packages_not_delivered": "Number of packages not delivered",
     "new_orders": "New orders",
-    "closing_date": "Closing date",
+    "closing_date": "Closing Date",
     "days": "Days",
     "completed_dugnader": "Completed fundraisers",
     "salesperson": "Salesperson",
@@ -72,7 +84,10 @@
     "year_to_date": "Year to date",
     "groups": "Groups",
     "sales_against_budget": "Sales against budget",
-    "sales": "Sales"
+    "sales": "Sales",
+    "name": "Name",
+    "budget_remaining": "Budget remaining",
+    "sales_achieved": "Sales achieved"
   },
   "external_page": {
     "number_of_active_groups": "Number of active groups",

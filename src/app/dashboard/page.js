@@ -358,7 +358,17 @@ const page = () => {
                     <td>{item?.name}</td>
                     <td>{item?.total_items} stk</td>
                     <td>kr {item?.total_amount},-</td>
-                    <td>{item?.end_date}</td>
+                    <td>
+                      {item?.end_date
+                        ? new Date(item.end_date)
+                            .toLocaleDateString("nb-NO", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                            .replace(/\./g, "")
+                        : "N/A"}
+                    </td>
                   </tr>
                 ))}
 

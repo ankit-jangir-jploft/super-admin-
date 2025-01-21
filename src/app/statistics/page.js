@@ -53,11 +53,11 @@ const page = () => {
         // Update series data for the chart
         setSeries3([
           {
-            name: "Sales",
+            name: t("statistics.sales"),
             data: sales,
           },
           {
-            name: "Budget",
+            name: t("statistics.budget"),
             data: budget,
           },
         ]);
@@ -165,7 +165,7 @@ const page = () => {
   const fetchBudgetData = async (month) => {
     try {
       const res = await GET(
-        `${BASE_URL}/api/admin/statisticsBudget?month=${month}`
+        `${BASE_URL}/api/admin/statisticsBudget?month=${month}&lang=${lang}`
       );
       if (res?.data?.status) {
         const { budget, labels } = res.data.data;
@@ -260,6 +260,7 @@ const page = () => {
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
     },
   ];
+
   const options = {
     chart: {
       type: "bar",
@@ -288,15 +289,15 @@ const page = () => {
     },
     xaxis: {
       categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        t("dashboard.feb"),
+        t("dashboard.mar"),
+        t("dashboard.apr"),
+        t("dashboard.may"),
+        t("dashboard.jun"),
+        t("dashboard.jul"),
+        t("dashboard.aug"),
+        t("dashboard.sep"),
+        t("dashboard.oct"),
       ],
     },
     yaxis: {
@@ -364,6 +365,8 @@ const page = () => {
       data: [76, 85, 85, 48, 80, 55],
     },
   ];
+
+  const lang = Cookies.get("i18next") || "en";
 
   return (
     <>
@@ -503,9 +506,9 @@ const page = () => {
                 aria-label='Default select example'
                 onChange={(e) => setDays(e.target.value)}
               >
-                <option value='14'>14 Days</option>
-                <option value='7'>7 Days</option>
-                <option value='10'>10 Days</option>
+                <option value='14'>14 {t("statistics.days")}</option>
+                <option value='7'>7 {t("statistics.days")}</option>
+                <option value='10'>10 {t("statistics.days")}</option>
               </Form.Select>
               <ApexCharts
                 options={chartOptions}
@@ -517,7 +520,20 @@ const page = () => {
           </div>
           <div className='col-md-6 mb-4'>
             <div className='grph-crd'>
-              <input type='Date'></input>
+              <input
+                type='date'
+                onFocus={(e) => {
+                  const dateLocale = lang == "nor" ? "nb-NO" : "en-US";
+                  e.target.placeholder = new Date().toLocaleDateString(
+                    dateLocale,
+                    {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    }
+                  );
+                }}
+              />
               <ApexCharts
                 options={options}
                 series={Series}
@@ -531,8 +547,8 @@ const page = () => {
                       <img src='/images/Avatar-sing.svg' />
                     </span>
                     <div className='text_bx'>
-                      <h3>Salesperson</h3>
-                      <p>Number of completed dugnader</p>
+                      <h3>{t("statistics.salesperson")}</h3>
+                      <p>{t("statistics.number_of_completed_dugnader")}</p>
                     </div>
                   </div>
                   <div className='count_num'>15</div>
@@ -543,8 +559,8 @@ const page = () => {
                       <img src='/images/Avatargrup.svg' />
                     </span>
                     <div className='text_bx'>
-                      <h3>Group</h3>
-                      <p>Number of completed dugnader</p>
+                      <h3>{t("statistics.groups")}</h3>
+                      <p>{t("statistics.number_of_completed_dugnader")}</p>
                     </div>
                   </div>
                   <div className='count_num'>89</div>
@@ -736,7 +752,7 @@ const page = () => {
                 <div className='left-sal'>
                   <span className='dout-inc'></span>
                   <div>
-                    <h2>Sales</h2>
+                    <h2>{t("statistics.sales")}</h2>
                     <p>{salesTotal.toLocaleString()}</p>{" "}
                     {/* Format number with commas */}
                   </div>
@@ -745,7 +761,7 @@ const page = () => {
                 <div className='left-sal right-disx'>
                   <span className='dout-inc'></span>
                   <div>
-                    <h2>Budget</h2>
+                    <h2> {t("statistics.budget")}</h2>
                     <p>{budgetTotal.toLocaleString()}</p>{" "}
                     {/* Format number with commas */}
                   </div>

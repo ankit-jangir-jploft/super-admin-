@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation"; // Use useRouter for client-side na
 import Loader from "../Components/Loader/Loader";
 import { useTranslation } from "react-i18next";
 
+import Cookies from "js-cookie";
+
 const Page = () => {
   const { t } = useTranslation();
   const [radioValue, setRadioValue] = useState("1"); // Appearance: Light or Dark
@@ -61,10 +63,11 @@ const Page = () => {
     formData.append("name", data?.name);
     formData.append("email", data?.email);
     formData.append("role_id", data?.role_id);
-    formData.append("status", data?.status);
+    formData.append("status", data?.status === "Active" ? 1 : 0);
     formData.append("appearance", radioValue);
     formData.append("profile_image", data?.profile_image[0] || "");
     formData.append("password", data?.password);
+    formData.append("lang", Cookies.get("i18next"));
 
     try {
       setPending(true);

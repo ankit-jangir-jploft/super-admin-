@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import DeleteConfirm from "@/app/modals/deleteConfirm";
+import Cookies from "js-cookie";
 
 const Page = ({ param }) => {
   const { t } = useTranslation();
@@ -121,6 +122,7 @@ const Page = ({ param }) => {
       formData.append("status", values.status === "Active" ? 1 : 0);
       formData.append("language_id", values.language);
       formData.append("appearance", radioValue);
+      formData.append("lang", Cookies.get("i18next"));
 
       if (selectedImage) {
         formData.append("profile_image", selectedImage);
@@ -135,6 +137,8 @@ const Page = ({ param }) => {
         toast.success(response?.data?.message);
         fetchSellerList();
         window.location.href = `/settings?type=seller`;
+      } else {
+        toast.error(response?.data?.message);
       }
     } catch (error) {
       console.log(error);

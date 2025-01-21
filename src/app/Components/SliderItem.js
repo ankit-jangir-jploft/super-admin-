@@ -63,7 +63,7 @@ const SlickSlider = (props) => {
                   src={img?.image}
                   onError={(e) =>
                     (e.target.src =
-                      "https://v5.checkprojectstatus.com/dugnadstid_staging/public/admin/uploads/products/41676.png")
+                      "https://v5.checkprojectstatus.com/dugnadstid_api/public/admin/uploads/products/41676.png")
                   }
                   alt='Image 1'
                   style={{ width: "100%" }}

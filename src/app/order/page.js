@@ -178,6 +178,8 @@ const page = () => {
     8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
 
+  const lang = Cookies.get("i18next") || "en";
+
   return (
     <>
       <Sidebar />
@@ -314,7 +316,26 @@ const page = () => {
                                 )}
                               </button>
                             </td>
-                            <td>{order.origin}</td>
+                            <td>
+                              {lang === "nor"
+                                ? order.origin === "Finished dugnad"
+                                  ? "Ferdig dugnad"
+                                  : order.origin === "Direct from webstore"
+                                  ? "Direkte fra nettbutikken"
+                                  : order.origin === "Manual order"
+                                  ? "Manuell ordre"
+                                  : order.origin === "Directly to mailbox"
+                                  ? "Direkte til postkassen"
+                                  : order.origin === "Trial package"
+                                  ? "Prøvepakke"
+                                  : order.origin === "Sales brochures"
+                                  ? "Salgsbrosjyrer"
+                                  : order.origin === "Shipping to mailbox"
+                                  ? "Frakt til postkassen"
+                                  : order.origin
+                                : order.origin}
+                            </td>
+
                             <td>{order.order_details_count}</td>
                             <td>
                               <span className='clg-cum'> kr</span>{" "}

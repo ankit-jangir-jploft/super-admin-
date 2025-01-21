@@ -46,7 +46,19 @@
     "name": "Navn",
     "quantity": "Antall",
     "end_date": "Sluttdato",
-    "not_set": "Ikke satt"
+    "not_set": "Ikke satt",
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Okt",
+    "nov": "Nov",
+    "dec": "Des"
   },
   "statistics": {
     "statistics": "Statistikk",
@@ -73,7 +85,9 @@
     "groups": "Grupper",
     "sales_against_budget": "Salg mot budsjett",
     "sales": "Salg",
-    "name": "Navn"
+    "name": "Navn",
+    "budget_remaining": "Gjenstående budsjett",
+    "sales_achieved": "Salg_oppnådd"
   },
   "external_page": {
     "number_of_active_groups": "Antall aktive grupper",
