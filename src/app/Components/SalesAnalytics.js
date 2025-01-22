@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import { GET } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
+import Cookies from "js-cookie";
 
 // Example datasets for different timeframes
 const dataSets = {
@@ -67,8 +68,10 @@ const SalesAnalyticsChart = () => {
     { key: "yearly", label: t("dashboard.yearly") },
   ];
 
+  const lang = Cookies.get("i18next") || "en";
+
   const handleFilterChange = (key) => {
-    setTimeframe(key); // Update timeframe
+    setTimeframe(key);
     // setChartData(dataSets[key]); // Update chart data based on selected timeframe
   };
 
@@ -78,7 +81,7 @@ const SalesAnalyticsChart = () => {
         filter: timeframe,
       };
       const res = await GET(
-        `${BASE_URL}/api/admin/dashboardLineChart`,
+        `${BASE_URL}/api/admin/dashboardLineChart?lang=${lang}`,
         payload
       );
       if (res?.data?.status) {

@@ -621,7 +621,8 @@
     "cost": "Cost",
     "quantity": "Quantity",
     "total": "Total",
-    "no_order_yet": "No Orders Yet"
+    "no_order_yet": "No Orders Yet",
+    "misssing_group": "Missing group info"
   },
   "paginate": {
     "showing": "Showing",

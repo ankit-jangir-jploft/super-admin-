@@ -283,16 +283,13 @@ const Page = () => {
                       <Link href='#'>{orderDetails?.customer?.phone}</Link>
                     </p>
                     <p>
-                      {t("order_details.seller")}:{" "}
-                      {orderDetails?.customer?.seller_name}
+                      {t("order_details.seller")}: {orderDetails?.seller_name}
                     </p>
                     <p>
-                      {t("order_details.order")}:{" "}
-                      {orderDetails?.customer?.no_orders}
+                      {t("order_details.order")}: {orderDetails?.no_orders}
                     </p>
                     <p>
-                      {t("order_details.total")}: kr{" "}
-                      {orderDetails?.customer?.total_price}
+                      {t("order_details.total")}: kr {orderDetails?.total_price}
                     </p>
                   </div>
                 </Col>

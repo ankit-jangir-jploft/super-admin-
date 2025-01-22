@@ -372,7 +372,9 @@ const page = () => {
                                     }}
                                     onClick={() => {
                                       toast.dismiss();
-                                      toast.error("Missing group info");
+                                      toast.error(
+                                        t("order_more.misssing_group")
+                                      );
                                     }}
                                   >
                                     <img src='/images/disable-print.svg' />

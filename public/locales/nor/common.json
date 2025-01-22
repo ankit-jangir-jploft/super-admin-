@@ -621,7 +621,8 @@
     "cost": "Kostnad",
     "quantity": "Antall",
     "total": "Totalt",
-    "no_order_yet": "Ingen bestillinger ennå"
+    "no_order_yet": "Ingen bestillinger ennå",
+    "misssing_group": "Manglende gruppeinformasjon"
   },
   "paginate": {
     "showing": "Viser",
