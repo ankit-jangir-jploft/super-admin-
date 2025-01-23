@@ -317,7 +317,36 @@ const page = () => {
                                 )}
                               </button>
                             </td>
-                            <td>{order.origin}</td>
+                            <td>
+                              {lang === "nor"
+                                ? order.origin === "Finished dugnad"
+                                  ? "Fullført dugnad"
+                                  : order.origin === "Direct from webstore"
+                                  ? "Direkte fra nettbutikken"
+                                  : order.origin === "Manual order"
+                                  ? "Manuell ordre"
+                                  : order.origin === "Directly to mailbox"
+                                  ? "Direkte til postkassen"
+                                  : order.origin === "Trial package"
+                                  ? "Prøvepakke"
+                                  : order.origin === "Sales brochures"
+                                  ? "Salgsbrosjyrer"
+                                  : order.origin
+                                : order.origin === "Finished dugnad"
+                                ? "Finished dugnad"
+                                : order.origin === "Direct from webstore"
+                                ? "Direct from webstore"
+                                : order.origin === "Manual order"
+                                ? "Manual order"
+                                : order.origin === "Directly to mailbox"
+                                ? "Directly to mailbox"
+                                : order.origin === "Trial package"
+                                ? "Trial package"
+                                : order.origin === "Sales brochures"
+                                ? "Sales brochures"
+                                : order.origin}
+                            </td>
+
                             <td>{order.order_details_count}</td>
                             <td>
                               <span className='clg-cum'> kr</span>{" "}
