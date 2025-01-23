@@ -195,7 +195,8 @@ const Login = () => {
               md={12}
             >
               <p className='copyright'>
-                2024 © Dugnadstid.no - {t("loginpage.all_rights_reserved")}
+                {new Date().getFullYear()} © Dugnadstid.no -{" "}
+                {t("loginpage.all_rights_reserved")}
               </p>
             </Col>
           </Row>

@@ -30,7 +30,7 @@
   "dashboard": {
     "main_dashboard": "Dugnadstid - Mine sider",
     "number_of_groups": "Antall grupper",
-    "active": "Aktive",
+    "active": "Aktiv",
     "number_of_sellers": "Antall selgere",
     "profit": "Fortjeneste",
     "total": "Totalt",
@@ -62,13 +62,13 @@
   },
   "statistics": {
     "statistics": "Statistikk",
-    "active": "Aktive",
+    "active": "Aktiv",
     "from": "Fra",
     "to": "Til",
     "today": "I dag",
     "search": "Søk",
-    "number_of_active_groups": "Antall aktive grupper",
-    "number_of_active_sellers": "Antall aktive selgere",
+    "number_of_active_groups": "Antall aktiv grupper",
+    "number_of_active_sellers": "Antall aktiv selgere",
     "number_of_packages_sold": "Antall pakker solgt",
     "number_of_packages_not_delivered": "Antall pakker ikke levert",
     "new_orders": "Nye ordre",
@@ -90,8 +90,8 @@
     "sales_achieved": "Salg_oppnådd"
   },
   "external_page": {
-    "number_of_active_groups": "Antall aktive grupper",
-    "number_of_active_sellers": "Antall aktive selgere",
+    "number_of_active_groups": "Antall aktiv grupper",
+    "number_of_active_sellers": "Antall aktiv selgere",
     "number_of_packages_sold": "Antall pakker solgt",
     "number_of_packages_not_delivered": "Antall pakker ikke levert",
     "new_orders": "Nye ordre",
@@ -272,7 +272,7 @@
     "end_date": "Slutt dato",
     "dugnadsgroup": "Dugnadsgruppe",
     "sellers": "Selgere",
-    "active": "Aktive",
+    "active": "Aktiv",
     "packs": "Pakker",
     "aps": "APS",
     "turnover": "Omsetning",
@@ -430,6 +430,12 @@
     "my_page_description": "Mine-sider beskrivelse",
     "meta_description": "Meta beskrivelse",
     "categories": "kategorier",
+    "sub_categories": "Underkategorier",
+    "not_available": "Ikke tilgjengelig",
+    "select_vat": "Velg MVA",
+    "taxable": "Avgiftspliktig",
+    "everywhere": "Overalt",
+    "select_vat_class": "Velg MVA-klasse",
     "product_number_required": "Produktnummer er påkrevd.",
     "product_name_required": "Produktnavn er påkrevd.",
     "price_required": "Pris er påkrevd.",
@@ -486,7 +492,7 @@
     "end_date": "Slutt dato",
     "dugnadsgroup": "Dugnadsgruppe",
     "sellers": "Selgere",
-    "active": "Aktive",
+    "active": "Aktiv",
     "inactive": "Deaktivert",
     "packs": "Pakker",
     "aps": "APS",
@@ -696,5 +702,12 @@
     "message": "Er du sikker på at du vil slette dette elementet?",
     "cancel": "Avbryt",
     "confirm": "Bekreft"
+  },
+  "user_type": {
+    "select_user_type": "Velg brukertype",
+    "administrator": "Administrator",
+    "warehouse": "Lager",
+    "guest": "Gjest",
+    "seller": "Selger"
   }
 }

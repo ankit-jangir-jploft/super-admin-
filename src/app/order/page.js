@@ -27,10 +27,12 @@ const page = () => {
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [customId, setCustomId] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
+  const [lang, setLang] = useState("nor");
 
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
+    setLang(Cookies.get("i18next"));
   }, []);
 
   const toggleRow = (id) => {
@@ -44,6 +46,7 @@ const page = () => {
         page: currentPage,
         per_page: 10,
         searchQuery: searchOuery,
+        lang: lang,
       };
       const res = await GET(`${BASE_URL}/api/admin/OrderList`, options);
       if (res?.data?.status) {
@@ -177,8 +180,6 @@ const page = () => {
     7: { name: t("order_status.canceled"), style: "canceled" },
     8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
-
-  const lang = Cookies.get("i18next") || "en";
 
   return (
     <>
@@ -316,26 +317,7 @@ const page = () => {
                                 )}
                               </button>
                             </td>
-                            <td>
-                              {lang === "nor"
-                                ? order.origin === "Finished dugnad"
-                                  ? "Ferdig dugnad"
-                                  : order.origin === "Direct from webstore"
-                                  ? "Direkte fra nettbutikken"
-                                  : order.origin === "Manual order"
-                                  ? "Manuell ordre"
-                                  : order.origin === "Directly to mailbox"
-                                  ? "Direkte til postkassen"
-                                  : order.origin === "Trial package"
-                                  ? "Prøvepakke"
-                                  : order.origin === "Sales brochures"
-                                  ? "Salgsbrosjyrer"
-                                  : order.origin === "Shipping to mailbox"
-                                  ? "Frakt til postkassen"
-                                  : order.origin
-                                : order.origin}
-                            </td>
-
+                            <td>{order.origin}</td>
                             <td>{order.order_details_count}</td>
                             <td>
                               <span className='clg-cum'> kr</span>{" "}
@@ -520,7 +502,7 @@ const page = () => {
                       className='crte-userd Confirm_btn'
                       onClick={handleMassDelete}
                     >
-                      Confirm
+                      {t("confirm_delete.confirm")}
                     </button>
                   )}
                 </div>

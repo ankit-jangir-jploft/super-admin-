@@ -26,10 +26,14 @@ const Page = () => {
   const router = useRouter(); // Initialize useRouter for redirection
 
   useEffect(() => {
+    const lang = Cookies.get("i18next");
     const fetchRoles = async () => {
       try {
         setPending(true);
-        const response = await GET(`${BASE_URL}/api/admin/role`);
+
+        const response = await GET(`${BASE_URL}/api/admin/role`, {
+          lang: lang,
+        });
         if (response?.data?.status === true) {
           setRoles(response?.data?.data || []);
         } else {
@@ -211,7 +215,9 @@ const Page = () => {
                               ),
                             })}
                           >
-                            <option value=''>Select User Type</option>
+                            <option value=''>
+                              {t("user_type.select_user_type")}
+                            </option>
                             {roles?.map((role) => {
                               return (
                                 <option value={role.id}>{role.name}</option>

@@ -500,7 +500,9 @@ const page = ({ params }) => {
                         }}
                         value={chosendCategory}
                       >
-                        <option value=''>Select Category</option>
+                        <option value=''>
+                          {t("create_product.categories")}
+                        </option>
                         {(categories?.length &&
                           categories?.map((cat, i) => {
                             return (
@@ -511,7 +513,9 @@ const page = ({ params }) => {
                                 {cat.name}
                               </option>
                             );
-                          })) || <option>Not Available</option>}
+                          })) || (
+                          <option>{t("create_product.not_available")}</option>
+                        )}
                       </Form.Select>
                     </div>
                     <button
@@ -534,7 +538,9 @@ const page = ({ params }) => {
                         onChange={(e) => setChosendSubCategory(e.target.value)}
                         value={chosendSubCategory}
                       >
-                        <option value=''>Select Sub Category</option>
+                        <option value=''>
+                          {t("create_product.sub_categories")}
+                        </option>
                         {(subCategories?.length &&
                           subCategories?.map((sub, i) => {
                             return (
@@ -545,7 +551,9 @@ const page = ({ params }) => {
                                 {sub.name}
                               </option>
                             );
-                          })) || <option>Not Available</option>}
+                          })) || (
+                          <option>{t("create_product.not_available")}</option>
+                        )}
                       </Form.Select>
                     </div>
                     <button
@@ -791,6 +799,7 @@ const page = ({ params }) => {
                         onChange={(selected) => {
                           setSelected(selected);
                         }}
+                        placeholder=''
                       />
                     </div>
                     <Link
@@ -922,7 +931,9 @@ const page = ({ params }) => {
                         }))
                       }
                     >
-                      <option value={1}>Everywhere</option>
+                      <option value={1}>
+                        {t("create_product.everywhere")}
+                      </option>
                     </Form.Select>
                   </Form.Group>
 
@@ -995,7 +1006,7 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-6'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>VAT</Form.Label>
+                        <Form.Label>{t("create_product.vat")}</Form.Label>
                         <Form.Select
                           value={productForm.vat}
                           onChange={(e) => {
@@ -1005,8 +1016,12 @@ const page = ({ params }) => {
                             }));
                           }}
                         >
-                          <option value=''>Select VAT</option>
-                          <option value='taxable'>Taxable</option>
+                          <option value=''>
+                            {t("create_product.select_vat")}
+                          </option>
+                          <option value='taxable'>
+                            {t("create_product.taxable")}
+                          </option>
                         </Form.Select>
                       </Form.Group>
                     </div>
@@ -1023,6 +1038,9 @@ const page = ({ params }) => {
                             }))
                           }
                         >
+                          <option value=''>
+                            {t("create_product.select_vat_class")}
+                          </option>
                           <option value='0'>0%</option>
                           <option value='12'>12%</option>
                           <option value='15'>15%</option>

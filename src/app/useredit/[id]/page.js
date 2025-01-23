@@ -48,10 +48,10 @@ const Page = ({ param }) => {
     }
   };
 
-  const fetchRoles = async () => {
+  const fetchRoles = async (data) => {
     try {
       setPending(true);
-      const response = await GET(`${BASE_URL}/api/admin/role`);
+      const response = await GET(`${BASE_URL}/api/admin/role`, data);
       if (response?.data?.status === true) {
         setRoles(response?.data?.data || []);
       } else {
@@ -66,9 +66,10 @@ const Page = ({ param }) => {
   };
 
   useEffect(() => {
+    const lang = Cookies.get("i18next");
     if (params?.id) {
       fetchSellerList();
-      fetchRoles();
+      fetchRoles({ lang: lang });
     }
   }, [params]);
 
@@ -226,7 +227,9 @@ const Page = ({ param }) => {
                                 name='userType'
                                 className='form-control'
                               >
-                                <option value=''>Select User Type</option>
+                                <option value=''>
+                                  {t("user_type.select_user_type")}
+                                </option>
                                 {roles?.map((role) => (
                                   <option
                                     key={role.id}
