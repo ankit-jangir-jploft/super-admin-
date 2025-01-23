@@ -471,7 +471,7 @@ const page = () => {
                             </option>
                           ))
                         ) : (
-                          <option>Not Available</option>
+                          <option>{t("create_product.not_available")}</option>
                         )}
                       </Form.Select>
                       <Form.Control.Feedback type='invalid'>
@@ -502,7 +502,7 @@ const page = () => {
                       >
                         {/* <option value='0'>Sub Categories</option> */}
                         <option value='0'>
-                          {t("create_product.sub_category")}
+                          {t("create_product.sub_categories")}
                         </option>
                         {(subCategories.length &&
                           subCategories?.map((sub, i) => {
@@ -514,7 +514,9 @@ const page = () => {
                                 {sub.name}
                               </option>
                             );
-                          })) || <option>Not Available</option>}
+                          })) || (
+                          <option>{t("create_product.not_available")}</option>
+                        )}
                       </Form.Select>
                     </div>
                     <button
@@ -762,6 +764,7 @@ const page = () => {
                         onChange={(selected) => {
                           setSelected(selected);
                         }}
+                        placeholder=''
                       />
                     </div>
                     <Link
@@ -895,7 +898,9 @@ const page = () => {
                         }))
                       }
                     >
-                      <option value={"Everywhere"}>Everywhere</option>
+                      <option value={"Everywhere"}>
+                        {t("create_product.everywhere")}
+                      </option>
                     </Form.Select>
                   </Form.Group>
 
@@ -968,7 +973,7 @@ const page = () => {
                   <div className='row'>
                     <div className='col-md-6'>
                       <Form.Group className='mb-3'>
-                        <Form.Label>VAT</Form.Label>
+                        <Form.Label>{t("create_product.vat")}</Form.Label>
 
                         <Form.Select
                           value={productForm.vat}
@@ -979,12 +984,14 @@ const page = () => {
                             }));
                           }}
                         >
-                          <option value=''>Select VAT</option>
+                          <option value=''>
+                            {t("create_product.select_vat")}
+                          </option>
                           <option
                             value='taxable'
                             selected
                           >
-                            Taxable
+                            {t("create_product.taxable")}
                           </option>
                         </Form.Select>
                       </Form.Group>
@@ -1002,7 +1009,9 @@ const page = () => {
                             }))
                           }
                         >
-                          <option value={""}>Select VAT class</option>
+                          <option value={""}>
+                            {t("create_product.select_vat_class")}
+                          </option>
                           <option value='0'>0%</option>
                           <option value='12'>12%</option>
                           <option value='15'>15%</option>

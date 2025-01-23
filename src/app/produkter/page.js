@@ -324,7 +324,7 @@ const page = () => {
                       className='crte-userd Confirm_btn'
                       onClick={handleMassAction}
                     >
-                      Confirm
+                      {t("confirm_delete.confirm")}
                     </button>
                   )}
                 </div>

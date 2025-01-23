@@ -432,6 +432,12 @@
     "my_page_description": "My pages description",
     "meta_description": "Meta description",
     "categories": "Categories",
+    "sub_categories": "Sub Categories",
+    "not_available": "Not Available",
+    "select_vat": "Select VAT",
+    "taxable": "Taxable",
+    "everywhere": "Everywhere",
+    "select_vat_class": "Select VAT Class",
     "product_number_required": "Product number is required.",
     "product_name_required": "Product name is required.",
     "price_required": "Price is required.",
@@ -696,5 +702,12 @@
     "message": "Are you sure you want to delete this item?",
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "user_type": {
+    "select_user_type": "Select User Type",
+    "administrator": "Administrator",
+    "warehouse": "Warehouse",
+    "guest": "Guest",
+    "seller": "Seller"
   }
 }

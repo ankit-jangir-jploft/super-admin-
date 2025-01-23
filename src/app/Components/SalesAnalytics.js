@@ -60,6 +60,7 @@ const SalesAnalyticsChart = () => {
   const { t } = useTranslation();
   const [timeframe, setTimeframe] = useState("yearly"); // Default timeframe
   const [chartData, setChartData] = useState(dataSets[timeframe]); // Initialize with yearly data
+  const [lang, setLang] = useState("nor");
 
   const filters = [
     { key: "daily", label: t("dashboard.daily") },
@@ -68,8 +69,9 @@ const SalesAnalyticsChart = () => {
     { key: "yearly", label: t("dashboard.yearly") },
   ];
 
-  const lang = Cookies.get("i18next") || "en";
-
+  useEffect(() => {
+    setLang(Cookies.get("i18next"));
+  }, []);
   const handleFilterChange = (key) => {
     setTimeframe(key);
     // setChartData(dataSets[key]); // Update chart data based on selected timeframe
@@ -79,6 +81,7 @@ const SalesAnalyticsChart = () => {
     try {
       const payload = {
         filter: timeframe,
+        lang: lang,
       };
       const res = await GET(
         `${BASE_URL}/api/admin/dashboardLineChart?lang=${lang}`,
