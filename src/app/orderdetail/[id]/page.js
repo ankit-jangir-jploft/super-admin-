@@ -172,6 +172,28 @@ const Page = () => {
     fetchLogs();
   }, []);
 
+
+   const handlePrint = async (data) => {
+      const res = await GET(`${BASE_URL}/api/admin/sellerPdfGenerate`, data);
+      if (res?.data?.status) {
+        downloadFile(res?.data?.data?.file_path);
+      } else {
+        toast.dismiss();
+        toast.error(res?.data?.message);
+      }
+    };
+
+
+    const downloadFile = (filePath) => {
+      const a = document.createElement("a");
+      a.href = filePath;
+      a.download = filePath.split("/").pop();
+      document.body.appendChild(a);
+      a.target = "_blank";
+      a.click();
+      document.body.removeChild(a);
+    };
+
   return (
     <>
       <Sidebar />
@@ -184,9 +206,8 @@ const Page = () => {
         <div className='filter-manage'>
           <div className=''>
             <button
-              className={`status ${
-                orders[+orderDetails?.order_status]?.style
-              } w-auto me-2`}
+              className={`status ${orders[+orderDetails?.order_status]?.style
+                } w-auto me-2`}
               onClick={() => {
                 setShowStatusModal(true);
                 setCurrentStatus(+orderDetails?.order_status);
@@ -204,10 +225,28 @@ const Page = () => {
             >
               <img src='/images/pick-list.svg' /> {t("order_details.pick_list")}
             </button>
-            <button className='bold-btn w-auto me-2'>
-              <img src='/images/sales-ovr.svg' />{" "}
-              {t("order_details.salesoverview")}
-            </button>
+            {orderDetails?.group_id ? (
+              <button className='bold-btn w-auto me-2'  onClick={() => {
+                handlePrint({
+                  order_id: orderDetails?.id,
+                  group_id: orderDetails?.group_id,
+                });
+              }}>
+                <img src='/images/sales-ovr.svg' />{" "}
+                {t("order_details.salesoverview")}
+              </button>
+            ) : (
+              <button className='bold-btn w-auto me-2' onClick={() => {
+                toast.dismiss();
+                toast.error(t("order_more.misssing_group"));
+              }}>
+                <img src='/images/sales-ovr.svg' />{" "}
+                {t("order_details.salesoverview")}
+              </button>
+            )}
+
+
+
             {/* <button
               className='bold-btn w-auto me-2'
               onClick={() => {
@@ -378,15 +417,15 @@ const Page = () => {
                             </tr>
                           );
                         })) || (
-                        <tr>
-                          <td
-                            colSpan={5}
-                            className='text-center'
-                          >
-                            No Products
-                          </td>
-                        </tr>
-                      )}
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className='text-center'
+                            >
+                              No Products
+                            </td>
+                          </tr>
+                        )}
                     </tbody>
                     <tfoot
                       style={{
@@ -463,8 +502,8 @@ const Page = () => {
                           dangerouslySetInnerHTML={{
                             __html: logStatus[log?.type]?.html
                               ? logStatus[log?.type]?.html +
-                                " " +
-                                updatedContent
+                              " " +
+                              updatedContent
                               : updatedContent,
                           }}
                         />
