@@ -16,14 +16,21 @@ const page = () => {
   const [pagination, setPagination] = useState();
   const [groupDataListing, setGroupDataListing] = useState();
   const [userData, setUserData] = useState({});
-
+  const [selectedEndDate, setSelectedEndDate] = useState(""); // State for selected end date
+  const [selectedStatus, setSelectedStatus] = useState(""); // State for selected status
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await GET(`${BASE_URL}/api/admin/groupDataListing`);
-
+      const options = {
+        page: currentPage,
+        end_date: selectedEndDate, // Include selected end date
+        status: selectedStatus, // Include selected status
+      };
+  
+      const response = await GET(`${BASE_URL}/api/admin/groupDataListing`, options);
+  
       console.log(response?.data?.data);
       setPagination(response.data?.pagination);
       setGroupDataListing(response?.data?.data);
@@ -38,7 +45,7 @@ const page = () => {
 
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
-  }, [currentPage]);
+  }, [currentPage, selectedEndDate, selectedStatus]);
 
   const onPageChange = (selected) => {
     setCurrent(selected);
@@ -55,21 +62,29 @@ const page = () => {
             <div className='admin-header'>
               {/* <h2>Dugnader</h2> */}
               <h2>{t("dugnader.dugnader")}</h2>
-              <div className='search-frm'>
+              <div className='filter-container'>
+             
+              <div className='search-frm mx-3'>
+              <select
+                  className="form-select"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                >
+                  <option value="">{t("dugnader.select_status")}</option>
+                  <option value="1">{t("dugnader.active")}</option>
+                  <option value="0">{t("dugnader.inactive")}</option>
+                </select>
+              <input
+                  type='date'
+                  value={selectedEndDate}
+                  onChange={(e) => setSelectedEndDate(e.target.value)}
+                />
+                </div>
+              
+            
+                <div className='search-frm'>
                 <input type='text' />
-                {/* <Link href={""}>
-                  <img src='/images/notifications_none.svg' />
-                </Link>
-                <Link href={`/useredit/${userData?.id}`}>
-                  <img
-                    className='object-fit-cover rounded-circle'
-                    style={{ width: "41px", height: "41px" }}
-                    src={userData?.profile_image}
-                    onError={(e) => {
-                      e.target.src = "/images/avatar-style.png";
-                    }}
-                  />
-                </Link> */}
+              </div>
               </div>
             </div>
             <div className='shdw-crd'>
@@ -128,9 +143,8 @@ const page = () => {
                         <td>kr {item?.profit}</td>
                         <td>
                           <button
-                            className={`status ${
-                              item?.status === 1 ? "green-clr" : "red-clr"
-                            }`}
+                            className={`status ${item?.status === 1 ? "green-clr" : "red-clr"
+                              }`}
                           >
                             {item?.status === 1
                               ? t("dugnader.active")

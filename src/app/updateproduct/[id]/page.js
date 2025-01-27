@@ -16,6 +16,7 @@ import StateManagedSelect from "react-select";
 import CreateCategoryModal from "@/app/modals/createcategory";
 import CreateSubCategoryModal from "@/app/modals/createsubcategory";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const page = ({ params }) => {
   const { t } = useTranslation();
@@ -394,6 +395,8 @@ const page = ({ params }) => {
     }
   };
 
+    const lang = Cookies.get("i18next") || "en";
+
   return (
     <>
       <Sidebar />
@@ -427,13 +430,13 @@ const page = ({ params }) => {
               <h3 className='ad-prdtse mb-4'>
                 #{productID}{" "}
                 <Form.Select
-                  value={productForm.language}
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, language: e.target.value }))
-                  }
+                      value={lang}
+                  // onChange={(e) =>
+                  //   setForm((prev) => ({ ...prev, language: e.target.value }))
+                  // }
                 >
-                  <option value={1}>English</option>
-                  <option value={2}>Norwegian</option>
+                  <option value={"en"}>English</option>
+                  <option value={"nor"}>Norwegian</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -829,7 +832,7 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     <Form.Label className='d-flex justify-content-between'>
                       {/* Product name{" "} */}
-                      {productForm.language == 1
+                      {productForm.language == "en"
                         ? "Product name"
                         : "Produktnavn"}{" "}
                       {/* <Link href={""}>/{productSlug}</Link> */}
@@ -943,7 +946,7 @@ const page = ({ params }) => {
                         {/* <Form.Label>Warehouse location</Form.Label> */}
                         {/* {t("update_product.warehouse_location")} */}
                         <Form.Label>
-                          {productForm.language == 1
+                          {productForm.language == "en"
                             ? "Warehouse location"
                             : "Lager lokasjon"}
                         </Form.Label>
@@ -1054,7 +1057,7 @@ const page = ({ params }) => {
                     {/* <Form.Label>Short description</Form.Label> */}
                     <Form.Label>
                       {/* {t("update_product.short_description")} */}
-                      {productForm.language == 1
+                      {productForm.language == "en"
                         ? "Short description"
                         : "Kort beskrivelse"}
                     </Form.Label>
@@ -1074,7 +1077,7 @@ const page = ({ params }) => {
                   <Form.Group className='mb-3'>
                     {/* <Form.Label>Product description</Form.Label> */}
                     <Form.Label>
-                      {productForm.language == 1
+                      {productForm.language == "en"
                         ? "Product description"
                         : "Produkt beskrivelse"}
                     </Form.Label>
@@ -1094,7 +1097,7 @@ const page = ({ params }) => {
                     {/* <Form.Label>My pages description</Form.Label> */}
                     <Form.Label>
                       {/* {t("update_product.my_page_description")} */}
-                      {productForm.language == 1
+                      {productForm.language == "en"
                         ? "My pages description"
                         : "Mine-sider beskrivelse"}
                     </Form.Label>
@@ -1113,7 +1116,7 @@ const page = ({ params }) => {
                     {/* <Form.Label>Meta description</Form.Label> */}
                     <Form.Label>
                       {/* {t("update_product.meta_description")} */}
-                      {productForm.language == 1
+                      {productForm.language == "en"
                         ? "Meta description"
                         : "Meta beskrivelse"}
                     </Form.Label>

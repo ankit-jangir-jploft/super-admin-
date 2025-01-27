@@ -29,6 +29,12 @@ const page = () => {
   const [currentStatus, setCurrentStatus] = useState("");
   const [lang, setLang] = useState("nor");
 
+  // New state variables for filters
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedOrigin, setSelectedOrigin] = useState("");
+  const [sellers, setSellers] = useState([]);
+  const [selectedSeller, setSelectedSeller] = useState("");
+
   useEffect(() => {
     // Fetch roleType only on the client side
     setRoleType(Cookies.get("roleType"));
@@ -47,6 +53,9 @@ const page = () => {
         per_page: 10,
         searchQuery: searchOuery,
         lang: lang,
+        order_status: selectedStatus, // Include selected status
+        origin: selectedOrigin, // Include selected origin
+        seller_id: selectedSeller,
       };
       const res = await GET(`${BASE_URL}/api/admin/OrderList`, options);
       if (res?.data?.status) {
@@ -79,12 +88,29 @@ const page = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchOuery, currentPage]); // Trigger when searchQuery or currentPage changes
+  }, [searchOuery, currentPage, selectedStatus, selectedOrigin, selectedSeller]); // Trigger when searchQuery or currentPage changes
 
   useEffect(() => {
     const userDetail = JSON.parse(Cookies.get("user"));
     setUserData(userDetail);
   }, []);
+
+  useEffect(() => {
+    const fetchSellers = async () => {
+      try {
+        const res = await GET(`${BASE_URL}/api/admin/orderSellerList`);
+        if (res?.data?.status) {
+          setSellers(res.data.data); // Set the sellers state
+        } else {
+          toast.error(res.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching sellers:", error);
+      }
+    };
+
+    fetchSellers();
+  }, []); // Empty dependency array to run only on mount
 
   const handleSelectOrder = (orderId) => {
     setSelectedOrders((prev) =>
@@ -181,6 +207,46 @@ const page = () => {
     8: { name: t("order_status.on_hold"), style: "on_hold" },
   };
 
+  // Define origins for the dropdown
+  const getTranslatedOrigins = () => {
+    if (lang === "nor") {
+      return [
+        "Fullført dugnad", // Finished dugnad
+        "Direkte fra nettbutikken", // Direct from webstore
+        "Manuell ordre", // Manual order
+        "Direkte til postkassen", // Directly to mailbox
+        "Prøvepakke", // Trial package
+        "Salgsbrosjyrer", // Sales brochures
+      ];
+    }
+    return [
+      "Finished dugnad",
+      "Direct from webstore",
+      "Manual order",
+      "Directly to mailbox",
+      "Trial package",
+      "Sales brochures",
+    ];
+  };
+
+  const getEnglishOrigin = (origin) => {
+    const translations = {
+      "Fullført dugnad": "Finished dugnad",
+      "Direkte fra nettbutikken": "Direct from webstore",
+      "Manuell ordre": "Manual order",
+      "Direkte til postkassen": "Directly to mailbox",
+      "Prøvepakke": "Trial package",
+      "Salgsbrosjyrer": "Sales brochures",
+      "Finished dugnad": "Finished dugnad",
+      "Direct from webstore": "Direct from webstore",
+      "Manual order": "Manual order",
+      "Directly to mailbox": "Directly to mailbox",
+      "Trial package": "Trial package",
+      "Sales brochures": "Sales brochures",
+    };
+    return translations[origin] || origin;
+  };
+
   return (
     <>
       <Sidebar />
@@ -192,20 +258,65 @@ const page = () => {
             <div className='admin-header'>
               {/* <h2>Orders</h2> */}
               <h2>{t("orders.orders")}</h2>
-              <div className='search-frm'>
-                {roleType !== "guest" && (
-                  <Link href={"/createorder"}>
-                    <img src='/images/add-plus.svg' />
-                  </Link>
-                )}
-                <input
-                  type='text'
-                  // placeholder='Search'
-                  value={searchOuery}
-                  onChange={(e) => setQuery(e.target.value)}
+              <div className='filter-container'>
+
+
+                <select
+                  className='form-select'
+                  value={selectedStatus}
+                  onChange={(e) => {
+                    setSelectedStatus(e.target.value);
+                  }}
+                >
+                  <option value=''>{t("orders.select_status")}</option>
+                  {Object.keys(orders).map((key) => (
+                    <option key={key} value={key}>
+                      {orders[key].name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="form-select"
+                  value={selectedOrigin}
+                  onChange={(e) => {
+                    setSelectedOrigin(e.target.value);
+                  }}
+                >
+                  <option value="">{t("orders.select_origin")}</option>
+                  {getTranslatedOrigins().map((origin, index) => (
+                    <option key={index} value={getEnglishOrigin(origin)}>
+                      {lang === "nor" ? origin : getEnglishOrigin(origin)}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="form-select"
+                  value={selectedSeller}
+                  onChange={(e) => {
+                    setSelectedSeller(e.target.value);
+                  }}
+                >
+                  <option value="">{t("orders.select_seller")}</option>
+                  {sellers.map((seller) => (
+                    <option key={seller.seller_id} value={seller.seller_id}>
+                      {seller.name}
+                    </option>
+                  ))}
+                </select>
+                <div className='search-frm'>
+                  {roleType !== "guest" && (
+                    <Link href={"/createorder"}>
+                      <img src='/images/add-plus.svg' />
+                    </Link>
+                  )}
+                  <input
+                    type='text'
+                    // placeholder='Search'
+                    value={searchOuery}
+                    onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
-                />
-                {/* <Link href={""}>
+                  />
+                  {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
                 </Link>
                 <Link href={`/useredit/${userData?.id}`}>
@@ -218,8 +329,12 @@ const page = () => {
                     }}
                   />
                 </Link> */}
+                </div>
               </div>
+
+
             </div>
+
             <div className='shdw-crd'>
               <div className='table-responsive order-table'>
                 <table>
@@ -249,10 +364,10 @@ const page = () => {
                       <th>{t("orders.options")}</th>
                       {/* <th>Contact</th> */}
                       <th>{t("order_more.seller")}</th>
-                      <th>{t("orders.contact")}</th>
+                      <th>{t("orders.edit")}</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody>.
                     {(allOrders.length &&
                       allOrders.map((order, index) => (
                         <React.Fragment key={index}>
@@ -306,9 +421,8 @@ const page = () => {
                                   setCustomId(order?.id);
                                   setCurrentStatus(+order?.order_status);
                                 }}
-                                className={`status ${
-                                  orders[+order.order_status]?.style
-                                }`}
+                                className={`status ${orders[+order.order_status]?.style
+                                  }`}
                               >
                                 {orders[+order.order_status]?.name}
                                 {console.log(
@@ -322,29 +436,29 @@ const page = () => {
                                 ? order.origin === "Finished dugnad"
                                   ? "Fullført dugnad"
                                   : order.origin === "Direct from webstore"
-                                  ? "Direkte fra nettbutikken"
-                                  : order.origin === "Manual order"
-                                  ? "Manuell ordre"
-                                  : order.origin === "Directly to mailbox"
-                                  ? "Direkte til postkassen"
-                                  : order.origin === "Trial package"
-                                  ? "Prøvepakke"
-                                  : order.origin === "Sales brochures"
-                                  ? "Salgsbrosjyrer"
-                                  : order.origin
+                                    ? "Direkte fra nettbutikken"
+                                    : order.origin === "Manual order"
+                                      ? "Manuell ordre"
+                                      : order.origin === "Directly to mailbox"
+                                        ? "Direkte til postkassen"
+                                        : order.origin === "Trial package"
+                                          ? "Prøvepakke"
+                                          : order.origin === "Sales brochures"
+                                            ? "Salgsbrosjyrer"
+                                            : order.origin
                                 : order.origin === "Finished dugnad"
-                                ? "Finished dugnad"
-                                : order.origin === "Direct from webstore"
-                                ? "Direct from webstore"
-                                : order.origin === "Manual order"
-                                ? "Manual order"
-                                : order.origin === "Directly to mailbox"
-                                ? "Directly to mailbox"
-                                : order.origin === "Trial package"
-                                ? "Trial package"
-                                : order.origin === "Sales brochures"
-                                ? "Sales brochures"
-                                : order.origin}
+                                  ? "Finished dugnad"
+                                  : order.origin === "Direct from webstore"
+                                    ? "Direct from webstore"
+                                    : order.origin === "Manual order"
+                                      ? "Manual order"
+                                      : order.origin === "Directly to mailbox"
+                                        ? "Directly to mailbox"
+                                        : order.origin === "Trial package"
+                                          ? "Trial package"
+                                          : order.origin === "Sales brochures"
+                                            ? "Sales brochures"
+                                            : order.origin}
                             </td>
 
                             <td>{order.order_details_count}</td>
@@ -476,8 +590,8 @@ const page = () => {
                                               <img
                                                 src={product?.product_image}
                                                 onError={(e) =>
-                                                  (e.target.src =
-                                                    "/images/product2.png")
+                                                (e.target.src =
+                                                  "/images/product2.png")
                                                 }
                                                 alt='product'
                                               />
@@ -500,15 +614,15 @@ const page = () => {
                           )}
                         </React.Fragment>
                       ))) || (
-                      <tr>
-                        <td
-                          colSpan='12'
-                          style={{ textAlign: "center", padding: "20px" }}
-                        >
-                          {t("order_more.no_order_yet")}
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td
+                            colSpan='12'
+                            style={{ textAlign: "center", padding: "20px" }}
+                          >
+                            {t("order_more.no_order_yet")}
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </table>
               </div>

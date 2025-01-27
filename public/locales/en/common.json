@@ -126,6 +126,8 @@
     "lokasjon": "Location"
   },
   "orders": {
+    "select_status" : "All Status",
+    "select_origin" : "All Origin",
     "orders": "Order",
     "mark": "Mark",
     "ordernumber": "Ordernumber",
@@ -145,7 +147,9 @@
     "elements": "elements",
     "of": "of",
     "confirm": "Confirm",
-    "delete": "Delete"
+    "delete": "Delete",
+    "select_seller" : "Select Seller",
+    "edit" : "Edit"
   },
   "order_details": {
     "orders": "Order",
@@ -361,7 +365,8 @@
     "delete": "Delete",
     "published": "Published",
     "unpublished": "Unpublished",
-    "inventory_not_tracked": "Inventory not tracked"
+    "inventory_not_tracked": "Inventory not tracked",
+    "select_category" : "Select Category"
   },
   "products_detail": {
     "general": "General",
@@ -506,7 +511,8 @@
     "contact": "Contact",
     "showing": "Showing",
     "elements": "elements",
-    "of": "of"
+    "of": "of",
+    "select_status" : "Selelct Status"
   },
   "settings": {
     "settings": "Settings",
@@ -709,5 +715,11 @@
     "warehouse": "Warehouse",
     "guest": "Guest",
     "seller": "Seller"
+  },
+  "kunder": {
+    "select_seller": "Select seller",
+    "select_lead": "Select lead",
+    "contact": "Contact",
+    "edit": "Edit"
   }
 }

@@ -8,6 +8,7 @@ import { BASE_URL } from "../Utils/apiHelper";
 import { useTranslation } from "react-i18next";
 
 const ChangeOrderStatus = ({ isOpen, onClose, id, status }) => {
+  console.log("order id", id)
   const { t } = useTranslation();
   const validationSchema = Yup.object().shape({
     leadType: Yup.string().required("Lead type is required"),

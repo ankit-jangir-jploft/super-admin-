@@ -87,7 +87,12 @@
     "sales": "Salg",
     "name": "Navn",
     "budget_remaining": "Gjenstående budsjett",
-    "sales_achieved": "Salg_oppnådd"
+    "sales_achieved": "Salg_oppnådd",
+    "active_users": "Aktive brukere"
+
+
+
+
   },
   "external_page": {
     "number_of_active_groups": "Antall aktiv grupper",
@@ -126,6 +131,8 @@
     "lokasjon": "Lokasjon"
   },
   "orders": {
+    "select_status" : "Alle status",
+    "select_origin" : "Alle Opprinnelse",
     "orders": "Ordre",
     "mark": "Merknad",
     "ordernumber": "Ordrenummer",
@@ -145,7 +152,9 @@
     "elements": "elementer",
     "of": "av",
     "confirm": "Bekreft",
-    "delete": "Slett"
+    "delete": "Slett",
+    "select_seller" : "All seller" ,
+    "edit":"Redigere"
   },
   "order_details": {
     "orders": "Ordre",
@@ -359,7 +368,9 @@
     "delete": "Slett",
     "published": "Publisert",
     "unpublished": "Ikke publisert",
-    "inventory_not_tracked": "Beholdning ikke sporet"
+    "inventory_not_tracked": "Beholdning ikke sporet",
+    "select_category" : "Velg kategori"
+
   },
   "products_detail": {
     "general": "Generelt",
@@ -504,7 +515,8 @@
     "contact": "Kontakt",
     "showing": "Viser",
     "elements": "elementer",
-    "of": "av"
+    "of": "av",
+    "select_status" : "Velg status"
   },
   "settings": {
     "settings": "Innstillinger",
@@ -538,7 +550,6 @@
       "default_vat_class": "Standard MVA-klasse",
       "english": "Engelsk",
       "terms_of_purchase": "Kjøpsvilkår",
-      "text": "Tekst",
       "title": "Tittel",
       "text": "Tekst",
       "language": "Språk",
@@ -709,5 +720,12 @@
     "warehouse": "Lager",
     "guest": "Gjest",
     "seller": "Selger"
+  },
+  "kunder": {
+    "select_seller": "Velg selger",
+    "select_lead": "Velg bly",
+    "contact": "Kontakt",
+    "edit": "Redigere"
+
   }
 }

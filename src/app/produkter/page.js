@@ -21,7 +21,8 @@ const page = () => {
   const [action, setAction] = useState("");
   const [userData, setUserData] = useState({});
   const [roleType, setRoleType] = useState();
-
+  const [categories, setCategories] = useState([]); // State to store categories
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup the previous timer if searchQuery changes
     };
-  }, [searchQuery, currentPage]); // Trigger when searchQuery or currentPage changes
+  }, [searchQuery, currentPage, selectedCategory]); // Trigger when searchQuery or currentPage changes
 
   const fetchProductList = async () => {
     setLoading(true);
@@ -47,6 +48,7 @@ const page = () => {
         per_page: 10,
         page: currentPage,
         searchQuery: searchQuery,
+        category_id: selectedCategory,
       };
 
       const res = await GET(`${BASE_URL}/api/admin/Productlist`, options);
@@ -111,6 +113,23 @@ const page = () => {
   };
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await GET(`${BASE_URL}/api/admin/categoryList`); // Adjust the endpoint as necessary
+        if (res?.data?.status) {
+          setCategories(res.data.data); // Set the categories state
+        } else {
+          toast.error(res.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []); // Fetch categories on mount
+
+  useEffect(() => {
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
   }, []);
@@ -126,6 +145,24 @@ const page = () => {
             <div className='admin-header'>
               {/* <h2>Products</h2> */}
               <h2>{t("products.product")}</h2>
+              <div className='filter-container'>
+              <div className='search-frm mx-3'>
+              <select
+                className="form-select m-0"
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                }}
+              >
+                <option value="">{t("products.select_category")}</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              </div>
+
               <div className='search-frm'>
                 {roleType !== "guest" && (
                   <Link href={"/createproduct"}>
@@ -152,6 +189,7 @@ const page = () => {
                 }}
               />
             </Link> */}
+              </div>
               </div>
             </div>
             <div className='shdw-crd'>
@@ -182,7 +220,7 @@ const page = () => {
                       <th>{t("products.created")}</th>
                       {/* <th>View</th> */}
                       <th>{t("products.view")}</th>
-                      {roleType !== "guest" && <th>Edit</th>}
+                      {roleType !== "guest" && <th>{t("kunder.edit")}</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -245,7 +283,7 @@ const page = () => {
                             <div>
                               {product.stock_keep === 1
                                 ? `${product.quantity} stk` ||
-                                  t("products.inventory_not_tracked")
+                                t("products.inventory_not_tracked")
                                 : t("products.inventory_not_tracked")}
                             </div>
                           </td>
@@ -260,11 +298,10 @@ const page = () => {
                           </td>
                           <td>
                             <button
-                              className={`status ${
-                                product?.product_status == 1
+                              className={`status ${product?.product_status == 1
                                   ? "green-clr"
                                   : "yellow"
-                              }`}
+                                }`}
                             >
                               {product?.product_status == 1
                                 ? t("products.published")
@@ -291,15 +328,15 @@ const page = () => {
                           )}
                         </tr>
                       ))) || (
-                      <tr>
-                        <td
-                          className='text-center'
-                          colSpan={13}
-                        >
-                          {t("customers.no_record")}
-                        </td>
-                      </tr>
-                    )}
+                        <tr>
+                          <td
+                            className='text-center'
+                            colSpan={13}
+                          >
+                            {t("customers.no_record")}
+                          </td>
+                        </tr>
+                      )}
                   </tbody>
                 </table>
               </div>
@@ -329,17 +366,7 @@ const page = () => {
                   )}
                 </div>
               )}
-              {/* <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            breakLabel={"..."}
-            pageCount={pagination?.totalPages}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={onPageChange}
-            containerClassName={"pagination"}
-            activeClassName={"active"}
-          /> */}
+
               <Paginate
                 currentPage={currentPage}
                 totalPages={pagination?.totalPages}

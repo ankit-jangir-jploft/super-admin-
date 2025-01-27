@@ -151,7 +151,7 @@ const page = () => {
         const { dates, activeUsers } = res.data.data;
         setVerticalBars([
           {
-            name: "Active Users",
+            name:  (t("statistics.active_users")),
             data: activeUsers,
           },
         ]);
@@ -477,9 +477,9 @@ const page = () => {
                 aria-label='Default select example'
                 onChange={(e) => setDays(e.target.value)}
               >
-                <option value='14'>14 Days</option>
-                <option value='7'>7 Days</option>
-                <option value='10'>10 Days</option>
+                <option value='14'>14 {t("statistics.days")}</option>
+                <option value='7'>7 {t("statistics.days")}</option>
+                <option value='10'>10 {t("statistics.days")}</option>
               </Form.Select>
               <ApexCharts
                 options={chartOptions}

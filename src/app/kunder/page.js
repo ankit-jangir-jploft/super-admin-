@@ -30,6 +30,10 @@ const page = () => {
   const [orderId, setOrderId] = useState("");
   const [currentLead, setCurrentLead] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
+  const [selectedSeller, setSelectedSeller] = useState(""); // State for selected seller
+const [selectedLead, setSelectedLead] = useState(""); // State for selected lead
+const [selectedContact, setSelectedContact] = useState(""); // State for selected contact
+const [sellers, setSellers] = useState([]); // State to store sellers
 
   useEffect(() => {
     setRoleType(Cookies.get("roleType"));
@@ -44,7 +48,24 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
     };
-  }, [searchQuery, currentPage]); // Trigger on searchQuery or currentPage change
+  }, [currentPage, searchQuery, selectedSeller, selectedLead, selectedContact]); // Trigger on searchQuery or currentPage change
+
+  useEffect(() => {
+    const fetchSellers = async () => {
+      try {
+        const res = await GET(`${BASE_URL}/api/admin/sellerList`); // Adjust the endpoint as necessary
+        if (res?.data?.status) {
+          setSellers(res.data.data); // Set the sellers state
+        } else {
+          toast.error(res.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching sellers:", error);
+      }
+    };
+  
+    fetchSellers();
+  }, []); // Fetch sellers on mount
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -53,9 +74,12 @@ const page = () => {
         per_page: 10,
         page: currentPage,
         searchQuery: searchQuery,
+        seller_id: selectedSeller, // Include selected seller
+        lead_status: selectedLead, // Include selected lead
+        contact: selectedContact, // Include selected contact
       };
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
-
+  
       if (res?.data?.status) {
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
@@ -169,6 +193,42 @@ const page = () => {
             <div className='admin-header'>
               {/* <h2>Customers</h2> */}
               <h2>{t("customers.customers")}</h2>
+              <div className='search-frm'>
+
+  <select
+    className="form-select"
+    value={selectedSeller}
+    onChange={(e) => {
+      setSelectedSeller(e.target.value);
+    }}
+  >
+    <option value="">{t("kunder.select_seller")}</option>
+    {sellers.map((seller) => (
+      <option key={seller.id} value={seller.id}>
+        {seller.name}
+      </option>
+    ))}
+  </select>
+  <select
+    className="form-select"
+    value={selectedLead}
+    onChange={(e) => {
+      setSelectedLead(e.target.value);
+    }}
+  >
+    <option value="">{t("kunder.select_lead")}</option>
+    <option value="None">{t("lead_option.none")}</option>
+    <option value="Warm">{t("lead_option.warm")}</option>
+    <option value="Cold">{t("lead_option.cold")}</option>
+    <option value="Luke">{t("lead_option.luke")}</option>
+  </select>
+  <input
+    type='text'
+    value={selectedContact}
+    onChange={(e) => setSelectedContact(e.target.value)}
+    placeholder={t("kunder.contact")}
+  />
+</div>
               <div className='search-frm'>
                 {roleType !== "guest" && (
                   <Link href={"/createcustomer"}>
