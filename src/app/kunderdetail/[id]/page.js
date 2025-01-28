@@ -681,7 +681,7 @@ const page = ({ params }) => {
                     );
                   })
                 ) : (
-                  <p>No logs available.</p>
+                  <p>{t("kunder.no_logs_avalilable")}</p>
                 )}
                 {roleType !== "guest" && (
                   <div className='logg-til-desc'>

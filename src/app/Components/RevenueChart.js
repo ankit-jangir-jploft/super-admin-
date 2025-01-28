@@ -26,8 +26,9 @@ const RevenueChart = ({ donutChart }) => {
       // Update value labels
       const valueLeft = document.querySelector(".value-left");
       const valueRight = document.querySelector(".value-right");
-      if (valueLeft) valueLeft.innerText = `${percentage2.toFixed(2)}%`;
-      if (valueRight) valueRight.innerText = `${percentage1.toFixed(2)}%`;
+      if (valueLeft) valueLeft.innerText = `${Math.round(percentage2)}%`;
+      if (valueRight) valueRight.innerText = `${Math.round(percentage1)}%`;
+      
     } else {
       console.warn("donutChart data is insufficient to update the chart.");
     }

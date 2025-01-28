@@ -160,6 +160,8 @@ const Sidebar = () => {
         className='logout-btn btn'
         onClick={() => {
           Cookies.remove("dugnadstisadmin");
+          Cookies.remove("roleType");
+          Cookies.remove("user");
           window.location.href = "/login";
         }}
       >

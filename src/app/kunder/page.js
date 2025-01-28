@@ -31,9 +31,9 @@ const page = () => {
   const [currentLead, setCurrentLead] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [selectedSeller, setSelectedSeller] = useState(""); // State for selected seller
-const [selectedLead, setSelectedLead] = useState(""); // State for selected lead
-const [selectedContact, setSelectedContact] = useState(""); // State for selected contact
-const [sellers, setSellers] = useState([]); // State to store sellers
+  const [selectedLead, setSelectedLead] = useState(""); // State for selected lead
+  const [selectedContact, setSelectedContact] = useState(""); // State for selected contact
+  const [sellers, setSellers] = useState([]); // State to store sellers
 
   useEffect(() => {
     setRoleType(Cookies.get("roleType"));
@@ -53,7 +53,7 @@ const [sellers, setSellers] = useState([]); // State to store sellers
   useEffect(() => {
     const fetchSellers = async () => {
       try {
-        const res = await GET(`${BASE_URL}/api/admin/sellerList`); // Adjust the endpoint as necessary
+        const res = await GET(`${BASE_URL}/api/admin/orderSellerList`); // Adjust the endpoint as necessary
         if (res?.data?.status) {
           setSellers(res.data.data); // Set the sellers state
         } else {
@@ -63,7 +63,7 @@ const [sellers, setSellers] = useState([]); // State to store sellers
         console.error("Error fetching sellers:", error);
       }
     };
-  
+
     fetchSellers();
   }, []); // Fetch sellers on mount
 
@@ -79,7 +79,7 @@ const [sellers, setSellers] = useState([]); // State to store sellers
         contact: selectedContact, // Include selected contact
       };
       const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
-  
+
       if (res?.data?.status) {
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
@@ -195,40 +195,40 @@ const [sellers, setSellers] = useState([]); // State to store sellers
               <h2>{t("customers.customers")}</h2>
               <div className='search-frm'>
 
-  <select
-    className="form-select"
-    value={selectedSeller}
-    onChange={(e) => {
-      setSelectedSeller(e.target.value);
-    }}
-  >
-    <option value="">{t("kunder.select_seller")}</option>
-    {sellers.map((seller) => (
-      <option key={seller.id} value={seller.id}>
-        {seller.name}
-      </option>
-    ))}
-  </select>
-  <select
-    className="form-select"
-    value={selectedLead}
-    onChange={(e) => {
-      setSelectedLead(e.target.value);
-    }}
-  >
-    <option value="">{t("kunder.select_lead")}</option>
-    <option value="None">{t("lead_option.none")}</option>
-    <option value="Warm">{t("lead_option.warm")}</option>
-    <option value="Cold">{t("lead_option.cold")}</option>
-    <option value="Luke">{t("lead_option.luke")}</option>
-  </select>
-  <input
-    type='text'
-    value={selectedContact}
-    onChange={(e) => setSelectedContact(e.target.value)}
-    placeholder={t("kunder.contact")}
-  />
-</div>
+                <select
+                  className="form-select"
+                  value={selectedSeller}
+                  onChange={(e) => {
+                    setSelectedSeller(e.target.value);
+                  }}
+                >
+                  <option value="">{t("kunder.select_seller")}</option>
+                  {sellers.map((seller) => (
+                    <option key={seller.id} value={seller.seller_id}>
+                      {seller.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="form-select"
+                  value={selectedLead}
+                  onChange={(e) => {
+                    setSelectedLead(e.target.value);
+                  }}
+                >
+                  <option value="">{t("kunder.select_lead")}</option>
+                  <option value="None">{t("lead_option.none")}</option>
+                  <option value="Warm">{t("lead_option.warm")}</option>
+                  <option value="Cold">{t("lead_option.cold")}</option>
+                  <option value="Luke">{t("lead_option.luke")}</option>
+                </select>
+                <input
+                  type='text'
+                  value={selectedContact}
+                  onChange={(e) => setSelectedContact(e.target.value)}
+                  placeholder={t("kunder.contact")}
+                />
+              </div>
               <div className='search-frm'>
                 {roleType !== "guest" && (
                   <Link href={"/createcustomer"}>
@@ -369,9 +369,8 @@ const [sellers, setSellers] = useState([]); // State to store sellers
                           </td>
                           <td>
                             <button
-                              className={`status ${
-                                customerStatus[customer?.customer_status]?.style
-                              }`}
+                              className={`status ${customerStatus[customer?.customer_status]?.style
+                                }`}
                               onClick={() => {
                                 setShowStatusChange(true);
                                 setLeadUserId(customer.id);
@@ -411,15 +410,15 @@ const [sellers, setSellers] = useState([]); // State to store sellers
                           </td>
                         </tr>
                       ))) || (
-                      <tr>
-                        <th
-                          className='text-center'
-                          colSpan={15}
-                        >
-                          {t("customers.no_record")}
-                        </th>
-                      </tr>
-                    )}
+                        <tr>
+                          <th
+                            className='text-center'
+                            colSpan={15}
+                          >
+                            {t("customers.no_record")}
+                          </th>
+                        </tr>
+                      )}
                   </tbody>
                 </table>
               </div>

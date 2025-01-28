@@ -57,7 +57,7 @@ const page = ({ searchParams }) => {
   } = useForm({
     defaultValues: {
       status: false,
-      budget: "Jan",
+      budget: "",
       default_vat_class: "25",
       language_id: "1",
       title: "",
@@ -69,24 +69,24 @@ const page = ({ searchParams }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [settingId, setSettingId] = useState("");
   const [langId, setLangId] = useState(1);
+  const [yearBug, setYearBug] = useState("")
 
   const fetchHandler = async () => {
     try {
-      const payload = { language_id: langId, setting_id: settingId };
-      const res = await GET(
-        `${BASE_URL}/api/admin/generalSettingList`,
-        payload
-      );
+      const payload = { language_id: langId, setting_id: settingId, year: yearBug };
+      const res = await GET(`${BASE_URL}/api/admin/generalSettingList`, payload);
+
       if (res?.data?.status && res?.data?.data) {
-        const settings = res?.data?.data[0];
+        const settings = res.data.data[0];
         setIsEditMode(true);
         setSettingId(settings.setting_id);
-        setMonth(res?.data?.data[0].months);
+        setMonth(settings.months);
         reset({
           status: settings.status,
           budget: settings.budget,
           default_vat_class: settings.default_vat_class,
           language_id: settings.language_id,
+          yearBug: settings.budget,
           title: settings.title,
           text: settings.text,
           setting_id: settings.setting_id,
@@ -94,14 +94,18 @@ const page = ({ searchParams }) => {
         });
       } else {
         setIsEditMode(false); // No settings found, enable create mode
+        toast.error("No settings found.");
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
-      // toast.error("Failed to load settings.");
+      toast.error("Failed to load settings.");
     }
   };
 
   const onSubmit = async (data) => {
+
+    console.log("data", data)
+    setYearBug(data.budget)
     try {
       if (isEditMode) {
         // Update existing settings
@@ -134,12 +138,14 @@ const page = ({ searchParams }) => {
   const [frontLang, setFrontLang] = useState(1);
   const [settingID, setSettingID] = useState("");
 
+
+
   useEffect(() => {
     fetchHandler();
-
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
-  }, [langId]);
+  }, [langId, yearBug]);
+
   useEffect(() => {
     fetchHandler();
     fetchFaqList();
@@ -245,9 +251,10 @@ const page = ({ searchParams }) => {
       });
     }
   };
+  const lang = Cookies.get("i18next");
 
   const fetchSellerList = async () => {
-    const response = await GET(`${BASE_URL}/api/admin/sellerList`);
+    const response = await GET(`${BASE_URL}/api/admin/sellerList?lang=${lang}`);
     setFetchSeller(response?.data);
   };
 
@@ -417,6 +424,11 @@ const page = ({ searchParams }) => {
     }
   };
 
+  const handleBudget = (budget) => {
+    console.log(budget)
+    setYearBug(budget)
+  }
+
   return (
     <>
       <Sidebar />
@@ -503,12 +515,15 @@ const page = ({ searchParams }) => {
                         <div className='col-md-12'>
                           {/* <Form.Label>Budget</Form.Label> */}
                           <Form.Group>
-                            <Form.Label>
-                              {t("settings.general.budget")}
-                            </Form.Label>
+                            <Form.Label>{t("settings.general.budget")}</Form.Label>
                             <Form.Select
                               className='budget_drp'
                               {...register("budget")}
+                              onChange={(e) => {
+                                handleBudget(e.target.value);
+                                // Optionally, you can also set the value in the form state
+                                setValue("budget", e.target.value);
+                              }}
                             >
                               <option value=''>Select</option>
                               <option value='2025'>2025</option>

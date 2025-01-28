@@ -88,10 +88,9 @@
     "name": "Navn",
     "budget_remaining": "Gjenstående budsjett",
     "sales_achieved": "Salg_oppnådd",
-    "active_users": "Aktive brukere"
-
-
-
+    "active_users": "Aktive brukere",
+    "not_profit": "Netto overskudd",
+    "revenue": "Inntekt"
 
   },
   "external_page": {
@@ -153,8 +152,8 @@
     "of": "av",
     "confirm": "Bekreft",
     "delete": "Slett",
-    "select_seller" : "All seller" ,
-    "edit":"Redigere"
+    "select_seller" : "Velg selger" ,
+    "edit":"Contact"
   },
   "order_details": {
     "orders": "Ordre",
@@ -369,7 +368,10 @@
     "published": "Publisert",
     "unpublished": "Ikke publisert",
     "inventory_not_tracked": "Beholdning ikke sporet",
-    "select_category" : "Velg kategori"
+    "select_category" : "Velg kategori",
+    "sort_stock_asc": "Sortere aksjer stigende",
+    "sort_stock_dsc": "Sorter aksjer synkende",
+    "sort_stock": "Sortere lager"
 
   },
   "products_detail": {
@@ -725,7 +727,10 @@
     "select_seller": "Velg selger",
     "select_lead": "Velg bly",
     "contact": "Kontakt",
-    "edit": "Redigere"
-
+    "edit": "Redigere",
+    "no_logs_avalilable": "Ingen logger tilgjengelig",
+    "country":"Land",
+    "free_sales_brochure": "gratis-salg-brosjyre"
+     
   }
 }

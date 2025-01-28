@@ -161,7 +161,7 @@ const page = ({ params }) => {
                   <div className='row'>
                     <div className='col-md-6'>
                       <div className='form-group swtch-bt'>
-                        <label htmlFor='Country'>Country</label>
+                        <label htmlFor='Country'>{t("kunder.country")}</label>
                         {/* <label htmlFor='name'>
                           {t("customers_create.address")}
                         </label> */}

@@ -19,6 +19,7 @@ const page = () => {
   const [selectedEndDate, setSelectedEndDate] = useState(""); // State for selected end date
   const [selectedStatus, setSelectedStatus] = useState(""); // State for selected status
   const [loading, setLoading] = useState(false);
+   const [searchQuery, setSearch] = useState("");
 
   const fetchData = async () => {
     setLoading(true);
@@ -27,6 +28,7 @@ const page = () => {
         page: currentPage,
         end_date: selectedEndDate, // Include selected end date
         status: selectedStatus, // Include selected status
+        searchQuery: searchQuery,
       };
   
       const response = await GET(`${BASE_URL}/api/admin/groupDataListing`, options);
@@ -40,12 +42,22 @@ const page = () => {
     setLoading(false);
   };
 
+   useEffect(() => {
+      const timer = setTimeout(() => {
+        fetchData();
+      }, 500); 
+  
+      return () => {
+        clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
+      };
+    }, [searchQuery]);
+
   useEffect(() => {
     fetchData();
 
     const userDetails = JSON.parse(Cookies.get("user"));
     setUserData(userDetails);
-  }, [currentPage, selectedEndDate, selectedStatus]);
+  }, [currentPage, selectedEndDate,  selectedStatus]);
 
   const onPageChange = (selected) => {
     setCurrent(selected);
@@ -71,8 +83,8 @@ const page = () => {
                   onChange={(e) => setSelectedStatus(e.target.value)}
                 >
                   <option value="">{t("dugnader.select_status")}</option>
-                  <option value="1">{t("dugnader.active")}</option>
-                  <option value="0">{t("dugnader.inactive")}</option>
+                  <option value="0">{t("dugnader.active")}</option>
+                  <option value="1">{t("dugnader.inactive")}</option>
                 </select>
               <input
                   type='date'
@@ -83,7 +95,14 @@ const page = () => {
               
             
                 <div className='search-frm'>
-                <input type='text' />
+                <input
+                  type='text'
+                  // placeholder='Search'
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
               </div>
               </div>
             </div>
@@ -117,14 +136,14 @@ const page = () => {
                       {/* <th>Contact person</th> */}
                       <th>{t("dugnader.contact_person")}</th>
                       {/* <th>Seller</th> */}
-                      <th>{t("dugnader.seller")}</th>
+                      {/* <th>{t("dugnader.seller")}</th> */}
                       {/* <th>Contact</th> */}
                       <th>{t("dugnader.contact")}</th>
-                      <th>
+                      {/* <th>
                         <Link href='/'>
                           <img src='/images/fltres.svg' />
                         </Link>
-                      </th>
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -143,19 +162,19 @@ const page = () => {
                         <td>kr {item?.profit}</td>
                         <td>
                           <button
-                            className={`status ${item?.status === 1 ? "green-clr" : "red-clr"
+                            className={`status ${item?.status === 0 ? "green-clr" : "red-clr"
                               }`}
                           >
-                            {item?.status === 1
+                            {item?.status === 0
                               ? t("dugnader.active")
                               : t("dugnader.inactive")}
                           </button>
                         </td>
 
                         <td>{item?.contact_person}</td>
-                        <td>{item?.seller}</td>
+                        {/* <td>{item?.seller}</td> */}
                         <td>{item?.contact}</td>
-                        <td>{item?.contact}</td>
+                        {/* <td>{item?.contact}</td> */}
                       </tr>
                     ))}
                   </tbody>

@@ -512,7 +512,7 @@ const Page = () => {
                         </label> */}
                       </div>
                     );
-                  })) || <div className='logg-dtl'>No logs</div>}
+                  })) || <div className='logg-dtl'>{t("kunder.no_logs_avalilable")}</div>}
 
                 <div className='logg-til-desc'>
                   <div className='form-group'>

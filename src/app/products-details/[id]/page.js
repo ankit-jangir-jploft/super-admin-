@@ -171,7 +171,7 @@ const page = ({ params }) => {
             <span>
               <div className='slg-btm'>
                 {/* {productDetails?.product_number}{" "} */}
-                <span>{productDetails?.product_slug}</span>
+                <span>{productDetails?.product_slug}</span>  
               </div>
             </span>
           </h2>
@@ -429,7 +429,7 @@ const page = ({ params }) => {
                         />
                       </div>
                     );
-                  })) || <div className='no_data_found'>No logs available</div>}
+                  })) || <div className='no_data_found'>{t("kunder.no_logs_avalilable")}</div>}
 
                 {roleType !== "guest" && (
                   <div className='logg-til-desc'>

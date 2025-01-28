@@ -53,11 +53,11 @@ const page = () => {
         // Update series data for the chart
         setSeries3([
           {
-            name: "Sales",
+            name: t("statistics.sales"),
             data: sales,
           },
           {
-            name: "Budget",
+            name: t("statistics.budget"),
             data: budget,
           },
         ]);
@@ -252,11 +252,11 @@ const page = () => {
 
   const Series = [
     {
-      name: "Net Profit",
+      name: (t("statistics.not_profit")),
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
     },
     {
-      name: "Revenue",
+      name: (t("statistics.revenue")),
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
     },
   ];
@@ -288,15 +288,15 @@ const page = () => {
     },
     xaxis: {
       categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
+        t("dashboard.feb"),
+        t("dashboard.mar"),
+        t("dashboard.apr"),
+        t("dashboard.may"),
+        t("dashboard.jun"),
+        t("dashboard.jul"),
+        t("dashboard.aug"),
+        t("dashboard.sep"),
+        t("dashboard.oct"),
       ],
     },
     yaxis: {
@@ -306,7 +306,7 @@ const page = () => {
       // }
     },
     title: {
-      text: "Completed Dugnader",
+      text: t("statistics.completed_dugnader"),
       align: "left",
       style: {
         fontSize: "20px",
@@ -356,11 +356,11 @@ const page = () => {
 
   const Series3 = [
     {
-      name: "Net Profit",
+      name: (t("statistics.not_profit")),
       data: [44, 55, 57, 56, 61, 58],
     },
     {
-      name: "Revenue",
+      name: (t("statistics.revenue")),
       data: [76, 85, 85, 48, 80, 55],
     },
   ];
@@ -505,8 +505,8 @@ const page = () => {
                       <img src='/images/Avatar-sing.svg' />
                     </span>
                     <div className='text_bx'>
-                      <h3>Salesperson</h3>
-                      <p>Number of completed dugnader</p>
+                    <h3>{t("statistics.salesperson")}</h3>
+                    <p>{t("statistics.number_of_completed_dugnader")}</p>
                     </div>
                   </div>
                   <div className='count_num'>15</div>
@@ -517,8 +517,8 @@ const page = () => {
                       <img src='/images/Avatargrup.svg' />
                     </span>
                     <div className='text_bx'>
-                      <h3>Group</h3>
-                      <p>Number of completed dugnader</p>
+                    <h3>{t("statistics.groups")}</h3>
+                      <p>{t("statistics.number_of_completed_dugnader")}</p>
                     </div>
                   </div>
                   <div className='count_num'>89</div>

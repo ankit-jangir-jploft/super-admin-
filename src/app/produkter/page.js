@@ -24,6 +24,7 @@ const page = () => {
   const [categories, setCategories] = useState([]); // State to store categories
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
+  const [stockSortOrder, setStockSortOrder] = useState("");
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -39,7 +40,7 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup the previous timer if searchQuery changes
     };
-  }, [searchQuery, currentPage, selectedCategory]); // Trigger when searchQuery or currentPage changes
+  }, [searchQuery, currentPage, selectedCategory,stockSortOrder]); // Trigger when searchQuery or currentPage changes
 
   const fetchProductList = async () => {
     setLoading(true);
@@ -49,6 +50,7 @@ const page = () => {
         page: currentPage,
         searchQuery: searchQuery,
         category_id: selectedCategory,
+        stockSortOrder: stockSortOrder, // Include the sorting order
       };
 
       const res = await GET(`${BASE_URL}/api/admin/Productlist`, options);
@@ -146,37 +148,51 @@ const page = () => {
               {/* <h2>Products</h2> */}
               <h2>{t("products.product")}</h2>
               <div className='filter-container'>
-              <div className='search-frm mx-3'>
-              <select
-                className="form-select m-0"
-                value={selectedCategory}
-                onChange={(e) => {
-                  setSelectedCategory(e.target.value);
-                }}
-              >
-                <option value="">{t("products.select_category")}</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              </div>
+                <div className='search-frm mx-3'>
 
-              <div className='search-frm'>
-                {roleType !== "guest" && (
-                  <Link href={"/createproduct"}>
-                    <img src='/images/add-plus.svg' />
-                  </Link>
-                )}
-                <input
-                  type='text'
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                  }}
-                />
-                {/* <Link href={""}>
+                  <select
+                    className="form-select m-0"
+                    value={stockSortOrder}
+                    onChange={(e) => {
+                      setStockSortOrder(e.target.value);
+                      fetchProductList(); // Fetch products again when sorting order changes
+                    }}
+                  >
+                    <option value="">{t("products.sort_stock")}</option>
+                    <option value="1">{t("products.sort_stock_asc")}</option>
+                    <option value="0">{t("products.sort_stock_dsc")}</option>
+                  </select>
+
+                  <select
+                    className="form-select m-0"
+                    value={selectedCategory}
+                    onChange={(e) => {
+                      setSelectedCategory(e.target.value);
+                    }}
+                  >
+                    <option value="">{t("products.select_category")}</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className='search-frm'>
+                  {roleType !== "guest" && (
+                    <Link href={"/createproduct"}>
+                      <img src='/images/add-plus.svg' />
+                    </Link>
+                  )}
+                  <input
+                    type='text'
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                    }}
+                  />
+                  {/* <Link href={""}>
               <img src='/images/notifications_none.svg' />
             </Link>
             <Link href={`/useredit/${userData?.id}`}>
@@ -189,7 +205,7 @@ const page = () => {
                 }}
               />
             </Link> */}
-              </div>
+                </div>
               </div>
             </div>
             <div className='shdw-crd'>
@@ -299,8 +315,8 @@ const page = () => {
                           <td>
                             <button
                               className={`status ${product?.product_status == 1
-                                  ? "green-clr"
-                                  : "yellow"
+                                ? "green-clr"
+                                : "yellow"
                                 }`}
                             >
                               {product?.product_status == 1

@@ -87,7 +87,10 @@
     "sales": "Sales",
     "name": "Name",
     "budget_remaining": "Budget remaining",
-    "sales_achieved": "Sales achieved"
+    "sales_achieved": "Sales achieved",
+    "not_profit": "Net profit",
+    "revenue": "Revenue",
+    "active_users": "Active users"
   },
   "external_page": {
     "number_of_active_groups": "Number of active groups",
@@ -149,7 +152,7 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "select_seller" : "Select Seller",
-    "edit" : "Edit"
+    "edit" : "Contact"
   },
   "order_details": {
     "orders": "Order",
@@ -366,7 +369,10 @@
     "published": "Published",
     "unpublished": "Unpublished",
     "inventory_not_tracked": "Inventory not tracked",
-    "select_category" : "Select Category"
+    "select_category" : "Select category",
+    "sort_stock_asc": "Sort stocks ascending",
+    "sort_stock_dsc": "Sort stocks descending",
+    "sort_stock" : "Sort stocks"
   },
   "products_detail": {
     "general": "General",
@@ -716,10 +722,12 @@
     "guest": "Guest",
     "seller": "Seller"
   },
-  "kunder": {
-    "select_seller": "Select seller",
-    "select_lead": "Select lead",
+ "kunder": {
+    "select_seller": "Select Seller",
+    "select_lead": "Select Lead",
     "contact": "Contact",
-    "edit": "Edit"
-  }
+    "edit": "Edit",
+    "no_logs_avalilable": "No Logs Available",
+    "country": "Country"
+}
 }

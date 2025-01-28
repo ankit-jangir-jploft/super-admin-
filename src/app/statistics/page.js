@@ -151,7 +151,7 @@ const page = () => {
         const { dates, activeUsers } = res.data.data;
         setVerticalBars([
           {
-            name: "Active Users",
+            name: (t("statistics.active_users")),
             data: activeUsers,
           },
         ]);
@@ -252,11 +252,11 @@ const page = () => {
 
   const Series = [
     {
-      name: "Net Profit",
+      name: (t("statistics.not_profit")),
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
     },
     {
-      name: "Revenue",
+      name: (t("statistics.revenue")),
       data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
     },
   ];
@@ -357,11 +357,11 @@ const page = () => {
 
   const Series3 = [
     {
-      name: "Net Profit",
+      name: (t("statistics.not_profit")),
       data: [44, 55, 57, 56, 61, 58],
     },
     {
-      name: "Revenue",
+      name: (t("statistics.revenue")),
       data: [76, 85, 85, 48, 80, 55],
     },
   ];
@@ -589,31 +589,40 @@ const page = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {statistics?.topProducts?.length &&
+                    {statistics?.topProducts?.length > 0 &&
                       statistics?.topProducts?.map((product, i) => {
+                        // Use the first product's order_count as the reference point
+                        const referenceOrderCount = statistics.topProducts[0].order_count;
+
+                        // Calculate progress percentage based on the reference order_count
+                        const progressValue = (product.order_count / referenceOrderCount) * 100; // Relative to the first product
+                        const percentageValue = Math.floor(progressValue); // Round down to nearest whole number
+
                         return (
                           <tr key={product.id}>
                             <td>{product.id}</td>
                             <td>{product.name}</td>
                             <td>
-                              <div className='progress progress-ble'>
+                              <div className="progress progress-ble">
                                 <div
-                                  className='progress-bar w-75 bdy-crd'
-                                  role='progressbar'
-                                  aria-valuenow={90 / (i + 1)}
-                                  aria-valuemin='0'
-                                  aria-valuemax='100'
+                                  className="progress-bar"
+                                  role="progressbar"
+                                  style={{ width: `${progressValue}%` }} // Dynamic width for progress bar
+                                  aria-valuenow={progressValue}
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"
                                 ></div>
                               </div>
                             </td>
-                            <td className='text-end'>
-                              <div className='bdy-sale'>
-                                {Math.floor(80 / (i + 1))}%
-                              </div>
+                            <td className="text-end">
+                              <div className="bdy-sale">{percentageValue}%</div> {/* Dynamic percentage */}
                             </td>
                           </tr>
                         );
                       })}
+
+
+
                     {/* <tr>
                       <td>1</td>
                       <td>BIRTHDAY CARDS</td>

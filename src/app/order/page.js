@@ -547,10 +547,12 @@ const page = () => {
                               <u>{order?.seller_name}</u>
                             </td>
                             <td>
-                              <Link href={`/kunderdetail/${order?.user_id}`}>
-                                <img src='/images/prdctes.svg' />
+                              <Link href={roleType === 'warehouse' ? '#' : `/kunderdetail/${order?.user_id}`}>
+                                <img src="/images/prdctes.svg" alt="Product Details" />
                               </Link>
                             </td>
+
+
                           </tr>
                           {openRowId === index && (
                             <tr>
