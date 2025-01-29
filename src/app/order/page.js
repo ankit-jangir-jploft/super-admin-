@@ -261,7 +261,7 @@ const page = () => {
               <div className='filter-container'>
 
 
-                <select
+                {/* <select
                   className='form-select'
                   value={selectedStatus}
                   onChange={(e) => {
@@ -302,7 +302,7 @@ const page = () => {
                       {seller.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
                 <div className='search-frm'>
                   {roleType !== "guest" && (
                     <Link href={"/createorder"}>
@@ -311,7 +311,6 @@ const page = () => {
                   )}
                   <input
                     type='text'
-                    // placeholder='Search'
                     value={searchOuery}
                     onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
@@ -474,7 +473,10 @@ const page = () => {
                                   onClick={() => toggleRow(index)}
                                   alt='Toggle Sub Rows'
                                 />
-                                {order?.group_id ? (
+
+
+                                {order?.group_id && order?.is_complete ? (
+                                  
                                   <button
                                     style={{
                                       border: "none",
@@ -489,22 +491,9 @@ const page = () => {
                                   >
                                     <img src='/images/disable-print.svg' />
                                   </button>
-                                ) : (
-                                  <button
-                                    style={{
-                                      border: "none",
-                                      borderRadius: "50%",
-                                    }}
-                                    onClick={() => {
-                                      toast.dismiss();
-                                      toast.error(
-                                        t("order_more.misssing_group")
-                                      );
-                                    }}
-                                  >
-                                    <img src='/images/disable-print.svg' />
-                                  </button>
-                                )}
+                                ) : ""}
+
+
                                 <button
                                   // href={`/shipping/${order.id}`}
                                   style={{
@@ -517,6 +506,8 @@ const page = () => {
                                 >
                                   <img src='/images/checklist.svg' />
                                 </button>
+
+
                                 {order?.tracking_no ? (
                                   <a
                                     href={order?.package_slip}

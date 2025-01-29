@@ -193,7 +193,7 @@ const page = () => {
             <div className='admin-header'>
               {/* <h2>Customers</h2> */}
               <h2>{t("customers.customers")}</h2>
-              <div className='search-frm'>
+              {/* <div className='search-frm'>
 
                 <select
                   className="form-select"
@@ -228,7 +228,7 @@ const page = () => {
                   onChange={(e) => setSelectedContact(e.target.value)}
                   placeholder={t("kunder.contact")}
                 />
-              </div>
+              </div> */}
               <div className='search-frm'>
                 {roleType !== "guest" && (
                   <Link href={"/createcustomer"}>

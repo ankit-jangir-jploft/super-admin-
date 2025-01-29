@@ -148,7 +148,7 @@ const page = () => {
               {/* <h2>Products</h2> */}
               <h2>{t("products.product")}</h2>
               <div className='filter-container'>
-                <div className='search-frm mx-3'>
+                {/* <div className='search-frm mx-3'>
 
                   <select
                     className="form-select m-0"
@@ -177,7 +177,7 @@ const page = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
 
                 <div className='search-frm'>
                   {roleType !== "guest" && (

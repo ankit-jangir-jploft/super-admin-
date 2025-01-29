@@ -173,26 +173,26 @@ const Page = () => {
   }, []);
 
 
-   const handlePrint = async (data) => {
-      const res = await GET(`${BASE_URL}/api/admin/sellerPdfGenerate`, data);
-      if (res?.data?.status) {
-        downloadFile(res?.data?.data?.file_path);
-      } else {
-        toast.dismiss();
-        toast.error(res?.data?.message);
-      }
-    };
+  const handlePrint = async (data) => {
+    const res = await GET(`${BASE_URL}/api/admin/sellerPdfGenerate`, data);
+    if (res?.data?.status) {
+      downloadFile(res?.data?.data?.file_path);
+    } else {
+      toast.dismiss();
+      toast.error(res?.data?.message);
+    }
+  };
 
 
-    const downloadFile = (filePath) => {
-      const a = document.createElement("a");
-      a.href = filePath;
-      a.download = filePath.split("/").pop();
-      document.body.appendChild(a);
-      a.target = "_blank";
-      a.click();
-      document.body.removeChild(a);
-    };
+  const downloadFile = (filePath) => {
+    const a = document.createElement("a");
+    a.href = filePath;
+    a.download = filePath.split("/").pop();
+    document.body.appendChild(a);
+    a.target = "_blank";
+    a.click();
+    document.body.removeChild(a);
+  };
 
   return (
     <>
@@ -225,25 +225,34 @@ const Page = () => {
             >
               <img src='/images/pick-list.svg' /> {t("order_details.pick_list")}
             </button>
-            {orderDetails?.group_id ? (
-              <button className='bold-btn w-auto me-2'  onClick={() => {
-                handlePrint({
-                  order_id: orderDetails?.id,
-                  group_id: orderDetails?.group_id,
-                });
-              }}>
+
+
+            {orderDetails?.group_id && !orderDetails?.is_complete == 0 ? (
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={() => {
+                  handlePrint({
+                    order_id: orderDetails?.id,
+                    group_id: orderDetails?.group_id,
+                  });
+                }}
+              >
                 <img src='/images/sales-ovr.svg' />{" "}
                 {t("order_details.salesoverview")}
               </button>
-            ) : (
-              <button className='bold-btn w-auto me-2' onClick={() => {
-                toast.dismiss();
-                toast.error(t("order_more.misssing_group"));
-              }}>
+            ) : orderDetails?.group_id ? null : (
+              <button
+                className='bold-btn w-auto me-2'
+                onClick={() => {
+                  toast.dismiss();
+                  toast.error(t("order_more.misssing_group"));
+                }}
+              >
                 <img src='/images/sales-ovr.svg' />{" "}
                 {t("order_details.salesoverview")}
               </button>
             )}
+
 
 
 

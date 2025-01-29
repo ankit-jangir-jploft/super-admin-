@@ -76,7 +76,7 @@ const page = () => {
               <h2>{t("dugnader.dugnader")}</h2>
               <div className='filter-container'>
              
-              <div className='search-frm mx-3'>
+              {/* <div className='search-frm mx-3'>
               <select
                   className="form-select"
                   value={selectedStatus}
@@ -91,7 +91,7 @@ const page = () => {
                   value={selectedEndDate}
                   onChange={(e) => setSelectedEndDate(e.target.value)}
                 />
-                </div>
+                </div> */}
               
             
                 <div className='search-frm'>
