@@ -129,8 +129,8 @@
     "lokasjon": "Location"
   },
   "orders": {
-    "select_status" : "All Status",
-    "select_origin" : "All Origin",
+    "select_status": "All Status",
+    "select_origin": "Origin",
     "orders": "Order",
     "mark": "Mark",
     "ordernumber": "Ordernumber",
@@ -151,8 +151,11 @@
     "of": "of",
     "confirm": "Confirm",
     "delete": "Delete",
-    "select_seller" : "Select Seller",
-    "edit" : "Contact"
+    "edit": "Contact",
+    "select_list_value": "Select List Value",
+    "cancel": "Cancel",
+    "save": "Save",
+    "select_seller": "Select Seller"
   },
   "order_details": {
     "orders": "Order",
@@ -258,7 +261,17 @@
     "of": "of",
     "confirm": "Confirm",
     "delete": "Delete",
-    "no_record": "No records"
+    "no_record": "No records",
+    "select_status" : "Status",
+    "select_statuss": "Any",
+    "select_lead" : "Lead",
+    "select_seller" : "Seller", 
+    "sort_by_last_contact" :"Last Contact",
+    "sort_ascending" : "Sort by accending",
+    "sort_descending" : "Sort bt decending",
+    "sort_by_end_date" : "End Date"
+
+
   },
   "customer_details": {
     "ongoing_pre_sale": "Ongoing pre-sale",
@@ -369,10 +382,12 @@
     "published": "Published",
     "unpublished": "Unpublished",
     "inventory_not_tracked": "Inventory not tracked",
-    "select_category" : "Select category",
+    "select_category": "Select category",
     "sort_stock_asc": "Sort stocks ascending",
     "sort_stock_dsc": "Sort stocks descending",
-    "sort_stock" : "Sort stocks"
+    "sort_stock": "Sort stocks",
+    "select_subcategory" : "SubCategory",
+    "sort_by_stock" : "Stock"
   },
   "products_detail": {
     "general": "General",
@@ -518,7 +533,7 @@
     "showing": "Showing",
     "elements": "elements",
     "of": "of",
-    "select_status" : "Selelct Status"
+    "select_status": "Selelct Status"
   },
   "settings": {
     "settings": "Settings",
@@ -557,7 +572,9 @@
       "language": "Language",
       "update_settings": "Update settings",
       "create_settings": "Create settings",
-      "shipping_rate": "Shipping Rate"
+      "shipping_rate": "Shipping Rate",
+      "toast_msg_faq_remove": "FAQ removed successfully!",
+      "toast_msg_faq_create": "FAQ Created Successfully"
     },
     "dugnadssettings": {
       "search": "Search",
@@ -614,7 +631,9 @@
         "password_required": "Password is required.",
         "password_min_length": "Password must be at least 8 characters long.",
         "profile_image_size_exceeded": "File size is too large. Maximum allowed size is 2MB.",
-        "profile_image_required": "Profile image is required."
+        "profile_image_required": "Profile image is required.",
+        "is_seller": "Seller",
+        "are_you_seller": "Seller"
       }
     },
     "frontpage_settings": {
@@ -654,7 +673,7 @@
     "started_dugnad": "Started dugnad",
     "finished_dugnad": "Finished dugnad",
     "not_started": "Not started",
-    "change_status": "Change Status",
+    "change_status": "Filter",
     "customer_status": "Customer Status",
     "submit": "Submit"
   },
@@ -722,12 +741,12 @@
     "guest": "Guest",
     "seller": "Seller"
   },
- "kunder": {
+  "kunder": {
     "select_seller": "Select Seller",
     "select_lead": "Select Lead",
     "contact": "Contact",
     "edit": "Edit",
     "no_logs_avalilable": "No Logs Available",
     "country": "Country"
-}
+  }
 }

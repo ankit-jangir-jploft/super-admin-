@@ -11,6 +11,7 @@ import Paginate from "../Utils/Paginate";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
 import ChangeOrderStatus from "../modals/changeorderstatus";
+import FilterModal from "../modals/orderFilterModel";
 
 const page = () => {
   const { t } = useTranslation();
@@ -34,6 +35,10 @@ const page = () => {
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [sellers, setSellers] = useState([]);
   const [selectedSeller, setSelectedSeller] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+
+  // filter 
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -48,16 +53,20 @@ const page = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const options = {
+      const payload = {
         page: currentPage,
-        per_page: 10,
+        per_page: pageSize,
         searchQuery: searchOuery,
         lang: lang,
-        order_status: selectedStatus, // Include selected status
-        origin: selectedOrigin, // Include selected origin
-        seller_id: selectedSeller,
+        filters: {
+          order_status: selectedStatus.length > 0 ? selectedStatus : [], // Send as array
+          origin: selectedOrigin.length > 0 ? selectedOrigin : [], // Send as array
+          seller_id: selectedSeller || "", // Send as string
+        },
       };
-      const res = await GET(`${BASE_URL}/api/admin/OrderList`, options);
+      console.log("payload", payload)
+
+      const res = await POST(`${BASE_URL}/api/admin/OrderList`, payload); // Use POST method
       if (res?.data?.status) {
         setOrders(res.data?.data);
         setPagination(res.data?.pagination);
@@ -72,6 +81,8 @@ const page = () => {
     setCurrent(selected);
   };
 
+
+  console.log("selectedOrigin on order", selectedOrigin)
   // useEffect(() => {
   //   fetchOrders();
   //   const userDetail = JSON.parse(Cookies.get("user"));
@@ -88,7 +99,7 @@ const page = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchOuery, currentPage, selectedStatus, selectedOrigin, selectedSeller]); // Trigger when searchQuery or currentPage changes
+  }, [searchOuery, currentPage, selectedStatus, selectedOrigin, selectedSeller, pageSize]); // Trigger when searchQuery or currentPage changes
 
   useEffect(() => {
     const userDetail = JSON.parse(Cookies.get("user"));
@@ -259,8 +270,6 @@ const page = () => {
               {/* <h2>Orders</h2> */}
               <h2>{t("orders.orders")}</h2>
               <div className='filter-container'>
-
-
                 {/* <select
                   className='form-select'
                   value={selectedStatus}
@@ -315,19 +324,13 @@ const page = () => {
                     onChange={(e) => setQuery(e.target.value)}
                   // placeholder='Sok i order'
                   />
-                  {/* <Link href={""}>
-                  <img src='/images/notifications_none.svg' />
-                </Link>
-                <Link href={`/useredit/${userData?.id}`}>
+
                   <img
-                    className='object-fit-cover rounded-circle'
-                    style={{ width: "41px", height: "41px" }}
-                    src={userData?.profile_image}
-                    onError={(e) => {
-                      e.target.src = "/images/avatar-style.png";
-                    }}
+                    src='/images/filter-ion-header.svg' // Add your filter icon here
+                    onClick={() => setShowFilterModal(true)}
+                    alt='Filter'
                   />
-                </Link> */}
+
                 </div>
               </div>
 
@@ -344,9 +347,7 @@ const page = () => {
                       {/* <th>Ordernumber</th> */}
                       <th>{t("orders.ordernumber")}</th>
                       {/* <th>Date</th> */}
-                      <th>
-                        <b>{t("orders.date")}</b>
-                      </th>
+                      <th><b>{t("orders.date")}</b></th>
                       {/* <th>Ordered by</th> */}
                       <th>{t("orders.ordered_by")}</th>
                       {/* <th>Ordered for/from</th> */}
@@ -424,10 +425,10 @@ const page = () => {
                                   }`}
                               >
                                 {orders[+order.order_status]?.name}
-                                {console.log(
+                                {/* {console.log(
                                   "+order.order_status",
                                   orders[+order.order_status]
-                                )}
+                                )} */}
                               </button>
                             </td>
                             <td>
@@ -476,7 +477,7 @@ const page = () => {
 
 
                                 {order?.group_id && order?.is_complete ? (
-                                  
+
                                   <button
                                     style={{
                                       border: "none",
@@ -641,8 +642,29 @@ const page = () => {
                       {t("confirm_delete.confirm")}
                     </button>
                   )}
+
+
+
                 </div>
+
+
+
               )}
+
+              <select
+                className='form-select'
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setCurrent(1);
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
               <Paginate
                 currentPage={currentPage}
                 totalPages={pagination?.totalPages}
@@ -661,6 +683,19 @@ const page = () => {
         status={currentStatus}
         isOpen={showStatusModal}
         id={customId}
+      />
+
+      <FilterModal
+        show={showFilterModal}
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
+        selectedOrigin={selectedOrigin}
+        setSelectedOrigin={setSelectedOrigin}
+        sellers={sellers}
+        selectedSeller={selectedSeller}
+        setSelectedSeller={setSelectedSeller}
       />
     </>
   );

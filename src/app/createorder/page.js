@@ -189,7 +189,7 @@ const page = () => {
         // page: currentPage,
         // searchQuery: searchQuery,
       };
-      const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
+      const res = await POST(`${BASE_URL}/api/admin/customerList`, options);
 
       if (res?.data?.status) {
         setCustomers(res.data?.data);

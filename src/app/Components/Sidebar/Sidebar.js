@@ -117,11 +117,13 @@ const Sidebar = () => {
       </span>
       <div className='side-logo'>
         {!smallsidebar ? (
+            <Link href="/">
           <img
-            src='/images/logo.png'
+            src='/images/logo.svg'
             className='img-fluid h-100'
             alt='Logo'
           />
+         </Link>
         ) : (
           <img
             src='/images/sml-log.svg'

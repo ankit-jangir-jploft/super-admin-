@@ -65,7 +65,7 @@ const page = () => {
             >
               <div className='text-center mt-5 pt-5 mb-4'>
                 <img
-                  src='/images/logo.png'
+                  src='/images/logo.svg'
                   className='img-fluid'
                 />
               </div>

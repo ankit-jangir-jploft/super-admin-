@@ -4,7 +4,7 @@ function Header() {
  
   return (
     <div className="header-main">
-      <img className="img-fluid" src="/images/logo.png"/>
+      <img className="img-fluid" src="/images/logo.svg"/>
     </div>
   );
 }
