@@ -226,7 +226,10 @@ const page = ({ searchParams }) => {
       });
 
       if (response?.data?.status === true) {
-        toast.success("FAQ Created Successfully");
+        fetchFaqList();
+        toast.success(t(
+          "settings.general.toast_msg_faq_create"
+        ));
       }
     } catch (error) {
       console.log(error.message);
@@ -238,6 +241,7 @@ const page = ({ searchParams }) => {
     const allFaqs = response?.data?.data;
     if (allFaqs) {
       const mappedFaqs = allFaqs.map((faq) => ({
+        id: faq?.id,
         question: faq?.question,
         answer: faq?.answer,
       }));
@@ -251,6 +255,26 @@ const page = ({ searchParams }) => {
       });
     }
   };
+
+  const removeFaq = async (faqId) => {
+    try {
+      // Send a DELETE request to the API
+      const payload = {
+        id: faqId
+      }
+      const response = await POST(`${BASE_URL}/api/admin/faqDelete`, payload);
+      if (response?.data?.status) {
+        fetchFaqList();
+        toast.success(t(
+          "settings.general.toast_msg_faq_remove"
+        ));
+      }
+    } catch (error) {
+      console.error("Error removing FAQ:", error);
+      toast.error("An error occurred while removing the FAQ."); // Show error message
+    }
+  };
+
   const lang = Cookies.get("i18next");
 
   const fetchSellerList = async () => {
@@ -733,7 +757,7 @@ const page = ({ searchParams }) => {
                   <Form.Label>
                     {t("settings.dugnadssettings.frequently_asked_questions")}
                   </Form.Label>
-                  <div className='row'>
+                  <div className='row align-items-center'>
                     {faqList.map((faq, index) => (
                       <React.Fragment key={index}>
                         <div className='col-md-6'>
@@ -759,7 +783,7 @@ const page = ({ searchParams }) => {
                             )}
                           </Form.Group>
                         </div>
-                        <div className='col-md-6'>
+                        <div className='col-md-5'>
                           <Form.Group className='mb-3'>
                             {/* <Form.Label>Answer</Form.Label> */}
                             <Form.Label>
@@ -781,6 +805,18 @@ const page = ({ searchParams }) => {
                             )}
                           </Form.Group>
                         </div>
+                        {/* Cross Icon to Remove FAQ */}
+                        {faq.id && (
+                          <div className='col-md-1 text-center'>
+                            <img
+                              src='/images/delete-icon.svg'
+                              onClick={() => removeFaq(faq.id)}
+                              style={{ cursor: "pointer" }}
+                              alt="Delete FAQ"
+                            />
+                          </div>
+                        )}
+
                       </React.Fragment>
                     ))}
                   </div>

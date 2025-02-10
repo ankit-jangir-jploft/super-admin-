@@ -693,11 +693,12 @@ const page = () => {
             <div className='grph-crd'>
               <h3>
                 {t("statistics.sales_against_budget")}{" "}
-                <Link href='/'>
-                  <img
-                    src='/images/question-mark.svg'
-                    alt='Help'
-                  />
+                <Link href='/' className="question-box">
+               
+                               <img
+                                src='/images/question-mark.svg' 
+                              />
+                  
                 </Link>
               </h3>
               <ApexCharts

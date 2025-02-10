@@ -25,7 +25,7 @@ const Page = ({ param }) => {
   const [pending, setPending] = useState(false);
   const [roles, setRoles] = useState([]);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
-
+  const [isSeller, setIsSeller] = useState(0);
   const params = useParams();
 
   const radios = [
@@ -42,6 +42,7 @@ const Page = ({ param }) => {
         const seller = response.data.data[0];
         setFetchSellerById(seller);
         setProfileImage(seller?.profile_image || "");
+        setIsSeller(seller?.isSeller || 0);
       }
     } catch (error) {
       toast.error("Failed to fetch seller details.");
@@ -112,6 +113,7 @@ const Page = ({ param }) => {
     userType: fetchSellerById?.role_id || "",
     status: fetchSellerById?.status === 1 ? "Active" : "Inactive",
     language: fetchSellerById?.language_id,
+    isSeller: fetchSellerById?.isSeller || 0,
   };
 
   const onSubmit = async (values) => {
@@ -123,6 +125,7 @@ const Page = ({ param }) => {
       formData.append("status", values.status === "Active" ? 1 : 0);
       formData.append("language_id", values.language);
       formData.append("appearance", radioValue);
+      formData.append("isSeller", values.isSeller);
       formData.append("lang", Cookies.get("i18next"));
 
       if (selectedImage) {
@@ -174,7 +177,7 @@ const Page = ({ param }) => {
                             style={{ width: "100px", height: "100px" }}
                             src={profileImage}
                             onError={(e) => (e.target.src = "/images/user.png")}
-                            // src='/images/user.png'
+                          // src='/images/user.png'
                           />
                           <div className='UploadPhoto_file'>
                             <input
@@ -185,7 +188,7 @@ const Page = ({ param }) => {
                             />
                           </div>
                         </div>
-                        <div className='row'>
+                        <div className='row align-items-center'>
                           <div className='col-md-6'>
                             <div className='mb-3'>
                               {/* <label>Name</label> */}
@@ -289,8 +292,11 @@ const Page = ({ param }) => {
                               />
                             </div>
                           </div>
-                          <div className='col-md-6'>
-                            {/* <div className='mb-3'>
+
+
+                          {/* 
+                          <div className='col-md-6'>   
+                            <div className='mb-3'>
                               <div className='swtch-bt'>
        
                                 <label>
@@ -319,7 +325,34 @@ const Page = ({ param }) => {
                                   ))}
                                 </ButtonGroup>
                               </div>
-                            </div> */}
+                            </div> 
+                          </div>
+                            */}
+                          <div className='col-md-6'>
+                            <div className='mb-0'>
+                              <div className='form-check seller-check'>
+                                <Field
+                                  type="checkbox"
+                                  name="isSeller"
+                                  render={({ field }) => (
+                                    <input
+                                      type="checkbox"
+                                      {...field}
+                                      checked={field.value === 1} // Check if value is 1
+                                      onChange={() => setFieldValue("isSeller", field.value === 1 ? 0 : 1)} // Toggle between 0 and 1
+                                    />
+                                  )}
+                                />
+                                <label className="form-check-label">
+                                  {t("settings.users.create.are_you_seller")}
+                                </label>
+                              </div>
+                              <ErrorMessage
+                                name="isSeller"
+                                component="p"
+                                className="text-danger"
+                              />
+                            </div>
                           </div>
                         </div>
                         <div className='row mt-3 mb-5'>

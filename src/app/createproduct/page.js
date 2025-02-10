@@ -335,7 +335,7 @@ const page = () => {
           toast.error(res?.data?.message);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const removeFile = (indexToRemove) => {
@@ -347,8 +347,12 @@ const page = () => {
     );
   };
 
-  const lang = Cookies.get("i18next") || "en";
-  
+  // const lang = Cookies.get("i18next") || "en";
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    setForm((prev) => ({ ...prev, language: selectedLanguage }));
+  };
+
 
   return (
     <>
@@ -381,14 +385,12 @@ const page = () => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
-                <Form.Select
-                  value={lang}
-                  // onChange={(e) =>
-                  //   setForm((prev) => ({ ...prev, language: e.target.value }))
-                  // }
+              <Form.Select
+                  value={productForm.language} // Set the value from productForm state
+                  onChange={handleLanguageChange} // Handle change
                 >
-                  <option value={"en"}>English</option>
-                  <option value={"nor"}>Norwegian</option>
+                  <option value="1">English</option>
+                  <option value="2">Norwegian</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -518,8 +520,8 @@ const page = () => {
                               </option>
                             );
                           })) || (
-                          <option>{t("create_product.not_available")}</option>
-                        )}
+                            <option>{t("create_product.not_available")}</option>
+                          )}
                       </Form.Select>
                     </div>
                     <button

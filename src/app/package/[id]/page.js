@@ -39,7 +39,7 @@ const page = ({ params }) => {
         <Container>
           <Row>
             <Col md={6}>
-              <img src="/images/logo.png" />
+              <img src="/images/logo.svg" />
             </Col>
             <Col md={6}>
               <div className='addrs-shping'>

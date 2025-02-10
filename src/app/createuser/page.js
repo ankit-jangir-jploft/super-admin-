@@ -24,6 +24,7 @@ const Page = () => {
   const [roles, setRoles] = useState([]);
   const [eyeToggle, setToggle] = useState(false);
   const router = useRouter(); // Initialize useRouter for redirection
+  const [isSeller, setIsSeller] = useState(0);
 
   useEffect(() => {
     const lang = Cookies.get("i18next");
@@ -72,6 +73,7 @@ const Page = () => {
     formData.append("profile_image", data?.profile_image[0] || "");
     formData.append("password", data?.password);
     formData.append("lang", Cookies.get("i18next"));
+    formData.append("isSeller", isSeller);
 
     try {
       setPending(true);
@@ -268,6 +270,11 @@ const Page = () => {
                           </Form.Select>
                         </Form.Group>
                       </div>
+
+
+
+
+
                       <div className='col-md-6'>
                         <Form.Group className='mb-3 position-relative'>
                           <Form.Label>
@@ -302,6 +309,18 @@ const Page = () => {
                               {errors.password.message}
                             </span>
                           )}
+                        </Form.Group>
+                      </div>
+
+                      <div className='col-md-6'>
+                        <Form.Group className='my-2'>
+                          <Form.Check
+                          className="seller-check"
+                            type="checkbox"
+                            label="Selger"
+                            checked={isSeller}
+                            onChange={(e) => setIsSeller(e.target.checked ? 1 : 0)} 
+                          />
                         </Form.Group>
                       </div>
                     </div>

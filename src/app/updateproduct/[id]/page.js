@@ -72,7 +72,7 @@ const page = ({ params }) => {
           language: res.data?.data[0]?.language_id,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     fetchProductData();
@@ -395,7 +395,12 @@ const page = ({ params }) => {
     }
   };
 
-    const lang = Cookies.get("i18next") || "en";
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    setForm((prev) => ({ ...prev, language: selectedLanguage }));
+  };
+
+  const lang = Cookies.get("i18next") || "en";
 
   return (
     <>
@@ -430,13 +435,11 @@ const page = ({ params }) => {
               <h3 className='ad-prdtse mb-4'>
                 #{productID}{" "}
                 <Form.Select
-                      value={lang}
-                  // onChange={(e) =>
-                  //   setForm((prev) => ({ ...prev, language: e.target.value }))
-                  // }
+                  value={productForm.language} // Set the value from productForm state
+                  onChange={handleLanguageChange} // Handle change
                 >
-                  <option value={"en"}>English</option>
-                  <option value={"nor"}>Norwegian</option>
+                  <option value="1">English</option>
+                  <option value="2">Norwegian</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -517,8 +520,8 @@ const page = ({ params }) => {
                               </option>
                             );
                           })) || (
-                          <option>{t("create_product.not_available")}</option>
-                        )}
+                            <option>{t("create_product.not_available")}</option>
+                          )}
                       </Form.Select>
                     </div>
                     <button
@@ -555,8 +558,8 @@ const page = ({ params }) => {
                               </option>
                             );
                           })) || (
-                          <option>{t("create_product.not_available")}</option>
-                        )}
+                            <option>{t("create_product.not_available")}</option>
+                          )}
                       </Form.Select>
                     </div>
                     <button

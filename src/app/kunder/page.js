@@ -12,6 +12,7 @@ import CreateLeadModal from "../modals/leadChange";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
 import CustomerStatusModal from "../modals/customerstatuschange";
+import KunderFilterModal from "../modals/kunderFilterModel";
 
 const page = () => {
   const { t } = useTranslation();
@@ -31,9 +32,13 @@ const page = () => {
   const [currentLead, setCurrentLead] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [selectedSeller, setSelectedSeller] = useState(""); // State for selected seller
+  const [selectedSort, setSelectedSort] = useState(""); // State for selected seller
   const [selectedLead, setSelectedLead] = useState(""); // State for selected lead
   const [selectedContact, setSelectedContact] = useState(""); // State for selected contact
   const [sellers, setSellers] = useState([]); // State to store sellers
+  const [pageSize, setPageSize] = useState(10);
+   const [showFilterModal, setShowFilterModal] = useState(false);
+   const [selectedStatus, setSelectedStatus] = useState([]);
 
   useEffect(() => {
     setRoleType(Cookies.get("roleType"));
@@ -48,7 +53,7 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
     };
-  }, [currentPage, searchQuery, selectedSeller, selectedLead, selectedContact]); // Trigger on searchQuery or currentPage change
+  }, [currentPage, searchQuery, selectedStatus, selectedSeller, selectedLead, selectedContact, selectedSort, pageSize]); // Trigger on searchQuery or currentPage change
 
   useEffect(() => {
     const fetchSellers = async () => {
@@ -70,16 +75,19 @@ const page = () => {
   const fetchCustomers = async () => {
     setLoading(true);
     try {
-      const options = {
-        per_page: 10,
+      const payload = {
         page: currentPage,
+        per_page: pageSize,
         searchQuery: searchQuery,
-        seller_id: selectedSeller, // Include selected seller
-        lead_status: selectedLead, // Include selected lead
-        contact: selectedContact, // Include selected contact
+        filters: {
+          order_status: selectedStatus,
+          lead_status: selectedLead,
+          seller_id: selectedSeller,
+          sort_status: selectedSort == "asc" ? "0" : "1" 
+        },
       };
-      const res = await GET(`${BASE_URL}/api/admin/customerList`, options);
-
+      console.log("payload", payload)
+      const res = await POST(`${BASE_URL}/api/admin/customerList`, payload);
       if (res?.data?.status) {
         setCustomers(res.data?.data);
         setPagination(res.data?.pagination);
@@ -242,6 +250,12 @@ const page = () => {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
+                />
+
+                <img
+                  src='/images/filter-ion-header.svg' // Add your filter icon here
+                  onClick={() => setShowFilterModal(true)}
+                  alt='Filter'
                 />
                 {/* <Link href={""}>
                   <img src='/images/notifications_none.svg' />
@@ -449,7 +463,25 @@ const page = () => {
                     </button>
                   )}
                 </div>
+
               )}
+
+              <select
+                className='form-select'
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value)); // Update page size
+                  setCurrent(1); // Reset to the first page when page size changes
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+
+
               {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
@@ -479,6 +511,21 @@ const page = () => {
                 fetchCustomers();
               }}
             />
+            
+            <KunderFilterModal
+              show={showFilterModal}
+              isOpen={showFilterModal}
+              onClose={() => setShowFilterModal(false)}
+              selectedStatus={selectedStatus}
+              setSelectedStatus={setSelectedStatus}
+              selectedLead={selectedLead}
+              setSelectedLead={setSelectedLead}
+              selectedSeller={selectedSeller}
+              setSelectedSeller={setSelectedSeller}
+              selectedSort={selectedSort}
+              setSelectedSort={setSelectedSort}
+              sellers={sellers}
+            />
             <CustomerStatusModal
               id={leadUserId}
               orderId={orderId}
@@ -489,6 +536,7 @@ const page = () => {
                 fetchCustomers();
               }}
             />
+          
           </>
         )}
       </div>

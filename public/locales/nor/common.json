@@ -91,7 +91,6 @@
     "active_users": "Aktive brukere",
     "not_profit": "Netto overskudd",
     "revenue": "Inntekt"
-
   },
   "external_page": {
     "number_of_active_groups": "Antall aktiv grupper",
@@ -130,8 +129,8 @@
     "lokasjon": "Lokasjon"
   },
   "orders": {
-    "select_status" : "Alle status",
-    "select_origin" : "Alle Opprinnelse",
+    "select_status": "Alle status",
+    "select_origin": "Opprinnelse",
     "orders": "Ordre",
     "mark": "Merknad",
     "ordernumber": "Ordrenummer",
@@ -152,8 +151,11 @@
     "of": "av",
     "confirm": "Bekreft",
     "delete": "Slett",
-    "select_seller" : "Velg selger" ,
-    "edit":"Contact"
+    "select_seller": "Velg selger",
+    "edit": "Contact",
+    "select_list_value": "Velg Listeverdi",
+    "cancel": "Avbryt",
+    "save": "Lagre"
   },
   "order_details": {
     "orders": "Ordre",
@@ -230,7 +232,9 @@
     "of": "av",
     "cost": "Pris",
     "quantity": "Antall",
-    "total": "Total"
+    "total": "Total",
+    "cancel": "Cancel",
+    "save": "Save"
   },
   "salesoverview": {
     "salesoverview": "Salgsoversikt"
@@ -257,7 +261,15 @@
     "of": "av",
     "confirm": "Bekreft",
     "delete": "Slett",
-    "no_record": "Ingen poster"
+    "no_record": "Ingen poster",
+    "select_status": "Status",
+    "select_statuss": "Enhver",
+    "select_lead": "Lead",
+    "select_seller": "Selger",
+    "sort_by_last_contact": "Siste kontakt",
+    "sort_ascending": "Sorter stigende",
+    "sort_descending": "Sorter synkende",
+     "sort_by_end_date" : "Sluttdato"
   },
   "customer_details": {
     "ongoing_pre_sale": "Pågående forhåndssalg",
@@ -368,11 +380,12 @@
     "published": "Publisert",
     "unpublished": "Ikke publisert",
     "inventory_not_tracked": "Beholdning ikke sporet",
-    "select_category" : "Velg kategori",
+    "select_category": "Velg kategori",
     "sort_stock_asc": "Sortere aksjer stigende",
     "sort_stock_dsc": "Sorter aksjer synkende",
-    "sort_stock": "Sortere lager"
-
+    "sort_stock": "Sortere lager",
+    "select_subcategory" : "SubCategory",
+    "sort_by_stock" : "lager"
   },
   "products_detail": {
     "general": "Generelt",
@@ -518,7 +531,7 @@
     "showing": "Viser",
     "elements": "elementer",
     "of": "av",
-    "select_status" : "Velg status"
+    "select_status": "Velg status"
   },
   "settings": {
     "settings": "Innstillinger",
@@ -558,7 +571,9 @@
       "tersmOfPurchase": "Kjøpsbetingelser",
       "update_settings": "Oppdater innstillinger",
       "create_settings": "Opprett innstillinger",
-      "shipping_rate": "Fraktkostnad"
+      "shipping_rate": "Fraktkostnad",
+      "toast_msg_faq_remove": "Vanlige spørsmål ble fjernet!",
+      "toast_msg_faq_create": "Vanlige spørsmål opprettet"
     },
     "dugnadssettings": {
       "search": "Søk",
@@ -570,7 +585,7 @@
       "english": "Engelsk",
       "default_text": "Standardtekst ved deling i sosiale medier",
       "default_image_when_sharing_in_social_media": "Standardbilde ved deling i sosiale medier",
-      "frequently_asked_questions": "Ofte stilte spørsmål",
+      "frequently_asked_questions": "Ofte stilte spørsmål (for selger)",
       "question": "Spørsmål",
       "add_question_and_answer": "Legg til spørsmål og svar",
       "answer": "Svar",
@@ -615,7 +630,9 @@
         "password_required": "Passord er påkrevd.",
         "password_min_length": "Passordet må være minst 8 tegn langt.",
         "profile_image_size_exceeded": "Filstørrelsen er for stor. Maksimal tillatt størrelse er 2 MB.",
-        "profile_image_required": "Profilbilde er påkrevd."
+        "profile_image_required": "Profilbilde er påkrevd.",
+        "is_seller": "Selger",
+        "are_you_seller": "Selger"
       }
     },
     "frontpage_settings": {
@@ -655,7 +672,7 @@
     "started_dugnad": "Startet dugnad",
     "finished_dugnad": "Fullført dugnad",
     "not_started": "Ikke startet",
-    "change_status": "Endre status",
+    "change_status": "Filtrer",
     "customer_status": "Kundestatus",
     "submit": "Oppdater"
   },
@@ -729,8 +746,7 @@
     "contact": "Kontakt",
     "edit": "Redigere",
     "no_logs_avalilable": "Ingen logger tilgjengelig",
-    "country":"Land",
+    "country": "Land",
     "free_sales_brochure": "gratis-salg-brosjyre"
-     
   }
 }

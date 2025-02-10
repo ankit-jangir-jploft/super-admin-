@@ -252,7 +252,7 @@ p.copyright {
     hue-rotate(291deg) brightness(104%) contrast(102%);
 }
 
-.side-logo {
+.side-logo{
   padding: 40px 20px 0;
   filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%)
     hue-rotate(291deg) brightness(104%) contrast(102%);
@@ -298,7 +298,7 @@ p.copyright {
   align-items: center;
   position: relative;
   background: #fff;
-  padding: 8px;
+  padding: 8px 15px 8px 8px;
   border-radius: 50px;
   box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
 }
@@ -665,7 +665,8 @@ tr:nth-child(odd) {
   padding: 6px 20px;
   color: #585858;
   border-radius: 50px;
-  min-width: 160px;
+  min-width: 180px;
+  width: auto;
 }
 
 .psn-sts {
@@ -1717,6 +1718,10 @@ ul.pgnatne li {
   padding: 0px;
   margin-left: 10px;
 }
+ 
+.side-logo a img {
+  width: 200px;
+}
 @media screen and (max-width: 767px) {
   .order-dtl-box.right-cht-dle {
     padding-bottom: 0px;
@@ -1794,11 +1799,17 @@ ul.pgnatne li {
     display: block;
     height: 30px;
   }
-
   .side-logo {
+    padding: 0px 20px 0;
+    height: 62px; 
+}
+  /* .side-logo a{
     padding: 10px 20px;
     height: 47px;
-  }
+  } */
+  /* .side-logo a img {
+    width: 200px;
+} */
   .menu-list-mange {
     margin-top: 0px;
   }
@@ -3132,4 +3143,49 @@ button.left-arrow:disabled {
   border-radius: 50px;
   padding: 7px 20px;
   padding-right: 30px;
+}
+.seller-check {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+  padding: 0;
+  gap: 10px;
+  align-items: center;
+}
+.seller-check  .form-check-input { 
+  margin-left: 0;
+}
+.question-box {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  line-height: 1;
+}
+.seller-check .form-check-input:checked {
+  background-color: #ea5154;
+  border-color: #ea5154;
+}
+.seller-check input:checked  { 
+  background-color: #ea5154;
+  border-color: #ea5154;
+}
+.seller-check input {
+  border-radius: 4px; 
+}
+.seller-check label {
+  text-transform: capitalize;
+}
+form.createcategory_cumtm select.form-select {
+  width: 100%;
+  padding: 10px 15px;
+  margin-top: 5px;
+  border-radius: 40px;
+  border: 1px solid rgb(206, 212, 218);
+}
+.createcategory_cumtm h5 {
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 7px;
 }

@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Paginate from "../Utils/Paginate";
 import { useTranslation } from "react-i18next";
 import SkeletonLoader from "../Components/SkeletonLoader";
+import ProductFilterModal from "../modals/productFilterModel";
 
 const page = () => {
   const { t } = useTranslation();
@@ -25,6 +26,11 @@ const page = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [stockSortOrder, setStockSortOrder] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -40,20 +46,28 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup the previous timer if searchQuery changes
     };
-  }, [searchQuery, currentPage, selectedCategory,stockSortOrder]); // Trigger when searchQuery or currentPage changes
+  }, [searchQuery,  currentPage, selectedCategories, stockSortOrder, selectedSubcategories,  pageSize]); // Trigger when searchQuery or currentPage changes
+
 
   const fetchProductList = async () => {
     setLoading(true);
     try {
-      const options = {
-        per_page: 10,
+      const payload = {
+        per_page: pageSize,
         page: currentPage,
         searchQuery: searchQuery,
         category_id: selectedCategory,
-        stockSortOrder: stockSortOrder, // Include the sorting order
+        stockSortOrder: stockSortOrder, 
+        filters : {
+          category_ids : selectedCategories,
+          sub_category_ids : selectedSubcategories,
+          sort_status : stockSortOrder === "asc" ? "0" : "1"
+        }
       };
 
-      const res = await GET(`${BASE_URL}/api/admin/Productlist`, options);
+      console.log("pay", payload)
+
+      const res = await POST(`${BASE_URL}/api/admin/ProductlistFilter`, payload);
       if (res?.data?.status === "true") {
         setPagination(res.data?.pagination);
         setProducts(res.data?.data);
@@ -191,6 +205,13 @@ const page = () => {
                     onChange={(e) => {
                       setQuery(e.target.value);
                     }}
+
+                    
+                  />
+                    <img
+                    src='/images/filter-ion-header.svg' // Add your filter icon here
+                    onClick={() => setShowFilterModal(true)}
+                    alt='Filter'
                   />
                   {/* <Link href={""}>
               <img src='/images/notifications_none.svg' />
@@ -383,6 +404,21 @@ const page = () => {
                 </div>
               )}
 
+              <select
+                className='form-select'
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value)); // Update page size
+                  setCurrent(1); // Reset to the first page when page size changes
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+
               <Paginate
                 currentPage={currentPage}
                 totalPages={pagination?.totalPages}
@@ -390,6 +426,18 @@ const page = () => {
                 paginationData={pagination}
               />
             </div>
+            <ProductFilterModal
+    show={showFilterModal}
+    isOpen={showFilterModal}
+    onClose={() => setShowFilterModal(false)}
+    selectedStockOrder={stockSortOrder}
+    setSelectedStockOrder={setStockSortOrder}
+    selectedCategories={selectedCategories}
+    setSelectedCategories={setSelectedCategories}
+    selectedSubcategories={selectedSubcategories}
+    setSelectedSubcategories={setSelectedSubcategories}
+    categories={categories} // Pass categories from the parent
+/>
           </>
         )}
       </div>
