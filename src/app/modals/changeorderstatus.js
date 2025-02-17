@@ -138,6 +138,7 @@ const ChangeOrderStatus = ({ isOpen, onClose, id, status }) => {
                   <option value='6'>{t("order_status.completed")}</option>
                   <option value='7'>{t("order_status.canceled")}</option>
                   <option value='8'>{t("order_status.on_hold")}</option>
+                  <option value='9'>{t("order_status.Finished")}</option>
                 </Field>
                 <ErrorMessage
                   name='leadType'

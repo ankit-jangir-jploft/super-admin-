@@ -25,6 +25,8 @@
     "dugnad_compaigns": "Dugnader",
     "statistics": "Statistikk",
     "settings": "Innstillinger",
+    "donation": "barnekreftforeningen",
+    
     "logout": "Logg ut"
   },
   "dashboard": {
@@ -269,7 +271,7 @@
     "sort_by_last_contact": "Siste kontakt",
     "sort_ascending": "Sorter stigende",
     "sort_descending": "Sorter synkende",
-     "sort_by_end_date" : "Sluttdato"
+    "sort_by_end_date": "Sluttdato"
   },
   "customer_details": {
     "ongoing_pre_sale": "Pågående forhåndssalg",
@@ -384,8 +386,8 @@
     "sort_stock_asc": "Sortere aksjer stigende",
     "sort_stock_dsc": "Sorter aksjer synkende",
     "sort_stock": "Sortere lager",
-    "select_subcategory" : "SubCategory",
-    "sort_by_stock" : "lager"
+    "select_subcategory": "SubCategory",
+    "sort_by_stock": "lager"
   },
   "products_detail": {
     "general": "Generelt",
@@ -424,6 +426,8 @@
     "weight": "Vekt"
   },
   "create_product": {
+    "not_display_in_any_places": "Ikke vist noen steder",
+    "not_display": "ikke_vises",
     "english": "Engelsk",
     "cancel": "Avbryt",
     "create_product": "Opprett produkt",
@@ -699,6 +703,7 @@
     "on_hold": "På vent",
     "select_status": "Velg status",
     "change_status": "Endre status",
+    "Finished":"Ferdig",
     "submit": "Oppdater"
   },
   "forget_password": {

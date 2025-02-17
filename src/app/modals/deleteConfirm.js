@@ -1,32 +1,43 @@
 "use client";
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { POST } from "../Utils/apiFunctions";
 import { BASE_URL } from "../Utils/apiHelper";
 import { useTranslation } from "react-i18next";
+import { useRouter } from 'next/navigation'
+import Loader from "../Components/Loader/Loader";
 
 const DeleteConfirm = ({ isOpen, onClose, id }) => {
+  const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+  const router = useRouter();
   const { t } = useTranslation();
 
-  const handleDelete = async () => {
-    try {
-      const payload = {
-        id: id,
-      };
+  useEffect(() => {
+    if (redirect) {
+      router.push("/settings?type=seller");
+    }
+  }, [redirect, router]);
 
-      const res = await POST(`${BASE_URL}/api/admin/UserDelete`, payload);
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await POST(`${BASE_URL}/api/admin/UserDelete`, { id });
+
       if (res?.data?.status) {
-        toast.dismiss();
         toast.success(res?.data?.message);
-        window.location.href = `/settings?type=seller`;
+        onClose();  // Close modal
+        setRedirect(true);  // Trigger redirect
       } else {
-        toast.dismiss();
         toast.error(res?.data?.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Delete Error:", error);
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,46 +90,50 @@ const DeleteConfirm = ({ isOpen, onClose, id }) => {
   };
 
   return (
-    <div style={styles.overlay}>
-      <div style={styles.container}>
-        {/* <button
+    <>
+      <Loader visible={loading} />
+      <div style={styles.overlay}>
+
+        <div style={styles.container}>
+          {/* <button
           style={styles.closeButton}
           onClick={onClose}
         >
           ×
         </button> */}
-        <h2 className='hedingtext_top custom-pup-mn'>
-          {t("confirm_delete.title")}
-        </h2>
+          <h2 className='hedingtext_top custom-pup-mn'>
+            {t("confirm_delete.title")}
+          </h2>
 
-        <form
-          onSubmit={handleDelete}
-          className='createcategory_cumtm'
-        >
-          <div style={styles.formGroup}>
-            <label className='text-center'>{t("confirm_delete.message")}</label>
-          </div>
-
-          <div
-            className='d-flex justify-content-around'
-            style={styles.actions}
+          <form
+            onSubmit={handleDelete}
+            className='createcategory_cumtm'
           >
-            <button
-              className='can-btn btn createcustomer_btncmf px-5'
-              onClick={() => onClose()}
+            <div style={styles.formGroup}>
+              <label className='text-center'>{t("confirm_delete.message")}</label>
+            </div>
+
+            <div
+              className='d-flex justify-content-around'
+              style={styles.actions}
             >
-              {t("confirm_delete.cancel")}
-            </button>
-            <button
-              className='cr-btn btn createcustomer_btn px-5'
-              type='submit'
-            >
-              {t("confirm_delete.confirm")}
-            </button>
-          </div>
-        </form>
+              <button
+                className='can-btn btn createcustomer_btncmf px-5'
+                onClick={() => onClose()}
+              >
+                {t("confirm_delete.cancel")}
+              </button>
+              <button
+                className='cr-btn btn createcustomer_btn px-5'
+                type='submit'
+              >
+                {t("confirm_delete.confirm")}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

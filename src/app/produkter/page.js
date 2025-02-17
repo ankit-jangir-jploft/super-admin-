@@ -30,7 +30,7 @@ const page = () => {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
-   const [subcategories, setSubcategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
     // Fetch roleType only on the client side
@@ -46,8 +46,12 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup the previous timer if searchQuery changes
     };
-  }, [searchQuery,  currentPage, selectedCategories, stockSortOrder, selectedSubcategories,  pageSize]); // Trigger when searchQuery or currentPage changes
+  }, [searchQuery, currentPage, selectedCategories, stockSortOrder, selectedSubcategories, pageSize]); // Trigger when searchQuery or currentPage changes
 
+
+  useEffect(() => {
+    setCurrent(1); // Reset to first page
+  }, [searchQuery, selectedCategories, selectedCategories, stockSortOrder, selectedSubcategories, pageSize]);
 
   const fetchProductList = async () => {
     setLoading(true);
@@ -57,11 +61,11 @@ const page = () => {
         page: currentPage,
         searchQuery: searchQuery,
         category_id: selectedCategory,
-        stockSortOrder: stockSortOrder, 
-        filters : {
-          category_ids : selectedCategories,
-          sub_category_ids : selectedSubcategories,
-          sort_status : stockSortOrder === "asc" ? "0" : "1"
+        stockSortOrder: stockSortOrder,
+        filters: {
+          category_ids: selectedCategories,
+          sub_category_ids: selectedSubcategories,
+          sort_status: stockSortOrder === "asc" ? "0" : stockSortOrder === "desc" ? "1" : ""
         }
       };
 
@@ -206,9 +210,9 @@ const page = () => {
                       setQuery(e.target.value);
                     }}
 
-                    
+
                   />
-                    <img
+                  <img
                     src='/images/filter-ion-header.svg' // Add your filter icon here
                     onClick={() => setShowFilterModal(true)}
                     alt='Filter'
@@ -427,17 +431,17 @@ const page = () => {
               />
             </div>
             <ProductFilterModal
-    show={showFilterModal}
-    isOpen={showFilterModal}
-    onClose={() => setShowFilterModal(false)}
-    selectedStockOrder={stockSortOrder}
-    setSelectedStockOrder={setStockSortOrder}
-    selectedCategories={selectedCategories}
-    setSelectedCategories={setSelectedCategories}
-    selectedSubcategories={selectedSubcategories}
-    setSelectedSubcategories={setSelectedSubcategories}
-    categories={categories} // Pass categories from the parent
-/>
+              show={showFilterModal}
+              isOpen={showFilterModal}
+              onClose={() => setShowFilterModal(false)}
+              selectedStockOrder={stockSortOrder}
+              setSelectedStockOrder={setStockSortOrder}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              selectedSubcategories={selectedSubcategories}
+              setSelectedSubcategories={setSelectedSubcategories}
+              categories={categories} // Pass categories from the parent
+            />
           </>
         )}
       </div>

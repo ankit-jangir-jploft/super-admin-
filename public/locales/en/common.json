@@ -25,6 +25,7 @@
     "dugnad_compaigns": "Dugnad compaigns",
     "statistics": "Statistics",
     "settings": "Settings",
+    "donation": "children's cancer association",
     "logout": "Log out"
   },
   "dashboard": {
@@ -262,16 +263,14 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "no_record": "No records",
-    "select_status" : "Status",
+    "select_status": "Status",
     "select_statuss": "Any",
-    "select_lead" : "Lead",
-    "select_seller" : "Seller", 
-    "sort_by_last_contact" :"Last Contact",
-    "sort_ascending" : "Sort by accending",
-    "sort_descending" : "Sort bt decending",
-    "sort_by_end_date" : "End Date"
-
-
+    "select_lead": "Lead",
+    "select_seller": "Seller",
+    "sort_by_last_contact": "Last Contact",
+    "sort_ascending": "Sort by accending",
+    "sort_descending": "Sort bt decending",
+    "sort_by_end_date": "End Date"
   },
   "customer_details": {
     "ongoing_pre_sale": "Ongoing pre-sale",
@@ -386,8 +385,8 @@
     "sort_stock_asc": "Sort stocks ascending",
     "sort_stock_dsc": "Sort stocks descending",
     "sort_stock": "Sort stocks",
-    "select_subcategory" : "SubCategory",
-    "sort_by_stock" : "Stock"
+    "select_subcategory": "SubCategory",
+    "sort_by_stock": "Stock"
   },
   "products_detail": {
     "general": "General",
@@ -428,6 +427,8 @@
   "create_product": {
     "english": "English",
     "cancel": "Cancel",
+    "not_display_in_any_places": "Not shown anywhere",
+    "not_display": "Not_shown",
     "create_product": "Create product",
     "productnumber": "Product number",
     "product_name": "Product name",
@@ -700,7 +701,8 @@
     "completed": "Completed",
     "canceled": "Canceled",
     "on_hold": "On hold",
-    "submit": "Submit"
+    "submit": "Submit",
+    "Finished":"Finished"
   },
   "forget_password": {
     "email_invalid": "Please enter a valid email address.",

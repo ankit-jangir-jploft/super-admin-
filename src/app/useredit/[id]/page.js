@@ -76,16 +76,16 @@ const Page = ({ param }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; // 2MB size limit
+    // const maxSize = 2 * 1024 * 1024; // 2MB size limit
 
     if (file) {
-      if (file.size > maxSize) {
-        toast.error(
-          "The file is too large. Please select a file smaller than 2MB."
-        );
-        e.target.value = "";
-        return; // Stop further processing
-      }
+      // if (file.size > maxSize) {
+      //   toast.error(
+      //     "The file is too large. Please select a file smaller than 2MB."
+      //   );
+      //   e.target.value = "";
+      //   return; // Stop further processing
+      // }
 
       setSelectedImage(file); // Set selected file
       setProfileImage(URL.createObjectURL(file)); // Update the preview image

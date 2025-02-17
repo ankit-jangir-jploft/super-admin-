@@ -64,6 +64,7 @@ const page = ({ searchParams }) => {
       text: "",
       setting_id: null,
       shipping_rate: "",
+      onation:""
     },
   });
   const [isEditMode, setIsEditMode] = useState(false);
@@ -91,6 +92,7 @@ const page = ({ searchParams }) => {
           text: settings.text,
           setting_id: settings.setting_id,
           shipping_rate: settings.shipping_rate,
+          donation:settings.donation
         });
       } else {
         setIsEditMode(false); // No settings found, enable create mode
@@ -568,7 +570,7 @@ const page = ({ searchParams }) => {
                       </div>
                       <div className='col-md-15 mt-4'>
                         <div className='row'>
-                          <div className='col-md-5'>
+                          <div className='col-md-4'>
                             <Form.Group className='mb-3'>
                               {/* <Form.Label>Default VAT class</Form.Label> */}
                               <Form.Label>
@@ -582,7 +584,8 @@ const page = ({ searchParams }) => {
                               </Form.Select>
                             </Form.Group>
                           </div>
-                          <div className='col-md-5'>
+
+                          <div className='col-md-4'>
                             <Form.Group className='mb-3'>
                               {/* <Form.Label>Default VAT class</Form.Label> */}
                               <Form.Label>
@@ -592,6 +595,25 @@ const page = ({ searchParams }) => {
                                 type='number'
                                 {...register("shipping_rate")}
                               />
+                            </Form.Group>
+                          </div>
+                          <div className='col-md-4'>
+                            <Form.Group className='mb-3'>
+                              <Form.Label>
+                                {" "}
+                                {t("sidebar.donation")}
+                              </Form.Label>
+                              <Form.Control
+                                // placeholder='donation'
+                                {...register("donation", {
+                                  required: "Donation is required",
+                                })}
+                              />
+                              {errorsGenralSetting.title && (
+                                <p className='text-danger'>
+                                  {errorsGenralSetting.title.message}
+                                </p>
+                              )}
                             </Form.Group>
                           </div>
                         </div>

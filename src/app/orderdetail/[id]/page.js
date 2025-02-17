@@ -70,6 +70,7 @@ const Page = () => {
     6: { name: t("order_status.completed"), style: "completed" },
     7: { name: t("order_status.canceled"), style: "canceled" },
     8: { name: t("order_status.on_hold"), style: "on_hold" },
+    9: { name: t("order_status.Finished"), style: "completed" },
   };
 
   const handleLogSubmit = async () => {

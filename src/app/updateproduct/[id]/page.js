@@ -17,8 +17,51 @@ import CreateCategoryModal from "@/app/modals/createcategory";
 import CreateSubCategoryModal from "@/app/modals/createsubcategory";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
+import Loader from "../../Components/Loader/Loader";
 
 const page = ({ params }) => {
+  const [productID, setID] = useState("");
+  const [productSlug, setSlug] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [chosendCategory, setChosendCategory] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+  const [chosendSubCategory, setChosendSubCategory] = useState("");
+  const [keywords, setKeywords] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [reletedProducts, setReleted] = useState([]);
+  const [selectedReletedProducts, setSelected] = useState([]);
+  const [productForm, setForm] = useState({
+    ProductNumber: "",
+    ProductName: "",
+    ProductNameNo: "",
+    VisibleInStore: false,
+    VisibleInProductGallery: false,
+    Price: "",
+    SalesPrice: "",
+    SpecialPrice: "",
+    Length: "",
+    Width: "",
+    Depth: "",
+    Weight: "",
+    gtin: "",
+    menuOrder: "",
+    Display: "",
+    warehouseAddress: "",
+    quantity: "",
+    keepStock: false,
+    vat: "",
+    vatClass: "",
+    shortDescription: "",
+    shortDescriptionNo: "",
+    ProductDescription: "",
+    ProductDescriptionNo: "",
+    PageDescription: "",
+    PageDescriptionNo: "",
+    MetaDescription: "",
+    MetaDescriptionNo: "",
+    language: "",
+  });
+  const [errors, setErrors] = useState({});
   const { t } = useTranslation();
   const { id } = params;
   const fetchProductData = async () => {
@@ -26,7 +69,12 @@ const page = ({ params }) => {
       const options = { id: id };
       const res = await GET(`${BASE_URL}/api/admin/productDetail`, options);
       if (res?.data?.status == "true") {
-        setFile(res.data?.data[0]?.images);
+
+        const fetchedImages = res.data?.data[0]?.images.map(image => ({
+          id: image?.id,
+          url: image?.image
+        }));
+        setFile(fetchedImages);
         setKeywords(res.data?.data[0]?.keywords);
         setChosendCategory(res.data?.data[0]?.category_id);
         setChosendSubCategory(res.data?.data[0]?.sub_category_id);
@@ -40,8 +88,10 @@ const page = ({ params }) => {
         setSelected(related);
         setID(res.data?.data[0]?.id);
         setForm({
+          language: res.data?.data[0]?.language_id,
           ProductNumber: res.data?.data[0]?.product_number || "",
-          ProductName: res.data?.data[0]?.name || "",
+          ProductName: res.data?.data[0]?.name || "", // English name
+          ProductNameNo: res.data?.data[0]?.name_no || "", // Norwegian name
           VisibleInStore: res.data?.data[0]?.product_status ? true : false,
           VisibleInProductGallery: res.data?.data[0]?.visible_in_productgallery
             ? true
@@ -63,76 +113,45 @@ const page = ({ params }) => {
           vat: res.data?.data[0]?.vat || "",
           vatClass: res.data?.data[0]?.vat_class || "",
           shortDescription: res.data?.data[0]?.short_description || "",
+          shortDescriptionNo: res.data?.data[0]?.short_description_no || "",
           ProductDescription: res.data?.data[0]?.product_description || "",
+          ProductDescriptionNo: res.data?.data[0]?.product_description_no || "",
           PageDescription: res.data?.data[0]?.page_description || "",
+          PageDescriptionNo: res.data?.data[0]?.page_description_no || "",
           MetaDescription: res.data?.data[0]?.meta_description || "",
+          MetaDescriptionNo: res.data?.data[0]?.meta_description_no || "",
           VisibleForDirectSales: res.data?.data[0]?.visible_for_direct_sale
             ? true
             : false,
-          language: res.data?.data[0]?.language_id,
         });
       }
     } catch (error) { }
   };
+
   useEffect(() => {
     fetchProductData();
   }, []);
 
+
+
   const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
   const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [showCreateSubCategory, setShowCreateSubCategory] = useState(false);
+
   function handleChange(e) {
     const theFile = e.target.files[0];
     if (!theFile) return;
 
-    const maxSize = 2 * 1024 * 1024; // 2MB
+    // Create a new object URL for the uploaded image
+    const newImageUrl = URL.createObjectURL(theFile);
 
-    if (theFile.size > maxSize) {
-      toast.error("File size is too large. Maximum allowed size is 2MB.");
-      return;
-    }
-
-    setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
-    setFiles((prev) => [...prev, e.target.files[0]]);
+    // Append the new image URL to the existing array with a temporary ID (or null)
+    setFile((prev) => [...prev, { id: null, url: newImageUrl }]); // Use null for the ID
+    setFiles((prev) => [...prev, theFile]); // Store the actual file for later use
   }
-  const [productID, setID] = useState("");
-  const [productSlug, setSlug] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [chosendCategory, setChosendCategory] = useState("");
-  const [subCategories, setSubCategories] = useState([]);
-  const [chosendSubCategory, setChosendSubCategory] = useState("");
-  const [keywords, setKeywords] = useState([]);
-  const [keyword, setKeyword] = useState("");
-  const [reletedProducts, setReleted] = useState([]);
-  const [selectedReletedProducts, setSelected] = useState([]);
-  const [productForm, setForm] = useState({
-    ProductNumber: "",
-    ProductName: "",
-    VisibleInStore: false,
-    VisibleInProductGallery: false,
-    Price: "",
-    SalesPrice: "",
-    SpecialPrice: "",
-    Length: "",
-    Width: "",
-    Depth: "",
-    Weight: "",
-    gtin: "",
-    menuOrder: "",
-    Display: "",
-    warehouseAddress: "",
-    quantity: "",
-    keepStock: false,
-    vat: "",
-    vatClass: "",
-    shortDescription: "",
-    ProductDescription: "",
-    PageDescription: "",
-    MetaDescription: "",
-    language: 1,
-  });
-  const [errors, setErrors] = useState({});
+
 
   useEffect(() => {
     if (parseInt(productForm.quantity, 10) > 0) {
@@ -157,7 +176,7 @@ const page = ({ params }) => {
 
   const fetchCategory = async () => {
     const res = await GET(`${BASE_URL}/api/admin/categoryList`);
-    console.log(res);
+
     if (res?.data?.status === true) {
       setCategories(res.data?.data);
     }
@@ -214,7 +233,11 @@ const page = ({ params }) => {
     fetchReleted();
   }, [chosendCategory, chosendSubCategory]);
 
+
+
+
   const validateForm = () => {
+
     let isValid = true;
     const tempErrors = {};
 
@@ -248,64 +271,16 @@ const page = ({ params }) => {
       isValid = false;
     }
 
-    // Uncomment these if you need validation for these fields
-    // if (!productForm.SpecialPrice) {
-    //   tempErrors.SpecialPrice = t("create_product.special_price_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.Length) {
-    //   tempErrors.Length = t("create_product.length_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.Width) {
-    //   tempErrors.Width = t("create_product.width_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.Depth) {
-    //   tempErrors.Depth = t("create_product.depth_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.Weight) {
-    //   tempErrors.Weight = t("create_product.weight_required");
-    //   isValid = false;
-    // }
-
-    // if (!files.length) {
-    //   tempErrors.files = t("create_product.product_image_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.gtin) {
-    //   tempErrors.gtin = t("create_product.gtin_required");
-    //   isValid = false;
-    // }
-
-    // if (!productForm.menuOrder) {
-    //   tempErrors.menuOrder = t("create_product.menu_order_required");
-    //   isValid = false;
-    // }
-
-    // Example of more advanced validation
-    // if (!productForm.quantity) {
-    //   tempErrors.quantity = t("create_product.quantity_required");
-    //   isValid = false;
-    // } else if (isNaN(productForm.quantity) || Number(productForm.quantity) < 0) {
-    //   tempErrors.quantity = t("create_product.quantity_non_negative");
-    //   isValid = false;
-    // }
-    console.log("isValid -- ", isValid);
 
     setErrors(tempErrors);
     return isValid;
   };
 
+
   const submitHandler = async () => {
+    setLoading(true)
     try {
-      console.log("errors --", errors);
+
       if (validateForm()) {
         const formData = new FormData();
         formData.append("category_id", chosendCategory ? chosendCategory : "");
@@ -322,7 +297,7 @@ const page = ({ params }) => {
           "related_product_id",
           selectedReletedProducts.map((pr) => pr.id)
         );
-        formData.append("name", productForm.ProductName);
+        formData.append("name", productForm.language == 1 ? productForm.ProductName : productForm.ProductNameNo);
         formData.append("product_number", productForm.ProductNumber);
         formData.append("product_status", productForm.VisibleInStore ? 1 : 0);
         formData.append(
@@ -335,10 +310,10 @@ const page = ({ params }) => {
         formData.append("stock_keep", productForm.keepStock ? 1 : 0);
         formData.append("vat", productForm.vat);
         formData.append("vat_class", productForm.vatClass);
-        formData.append("short_description", productForm.shortDescription);
-        formData.append("description", productForm.ProductDescription);
-        formData.append("my_page_description", productForm.PageDescription);
-        formData.append("meta_description", productForm.MetaDescription);
+        formData.append("short_description", productForm.language == 1 ? productForm.shortDescription : productForm.shortDescriptionNo);
+        formData.append("description", productForm.language == 1 ? productForm.ProductDescription : productForm.ProductDescriptionNo);
+        formData.append("my_page_description", productForm.language == 1 ? productForm.PageDescription : productForm.PageDescriptionNo);
+        formData.append("meta_description", productForm.language == 1 ? productForm.MetaDescription : productForm.MetaDescriptionNo);
         formData.append("sub_category_id", chosendSubCategory || "");
         formData.append("language_id", productForm.language);
         formData.append("menu_order", productForm.menuOrder);
@@ -355,27 +330,32 @@ const page = ({ params }) => {
           `${BASE_URL}/api/admin/productUpdate?id=${id}`,
           formData
         );
-        console.log("res.data", res.data);
+
         if (res?.data?.status) {
+          setLoading(false)
           toast.dismiss();
           toast.success(res.data?.message);
           setSelected([]);
           window.location.href = "/produkter";
         } else {
+          setLoading(false)
           toast.dismiss();
           toast.error(res?.data?.message);
         }
       }
     } catch (error) {
-      console.log("error", error);
+      setLoading(false)
+
+    } finally {
+      setLoading(false)
     }
   };
 
   const removeFile = async (file) => {
-    if (file?.id) {
+    if (file?.id) { // Check if the file has an ID
       try {
         const payload = {
-          id: file?.id,
+          id: file.id, // Use the ID from the object
           product_id: id,
         };
         const res = await POST(
@@ -388,23 +368,39 @@ const page = ({ params }) => {
           fetchProductData();
         }
       } catch (error) {
-        console.log(error);
+
       }
     } else {
+      // Handle the case for uploaded images without an ID
       setFiles((prev) => prev?.filter((f) => f?.name !== file?.name));
+      setFile((prev) => prev.filter((f) => f.url !== file.url)); // Remove from the displayed images
     }
   };
 
+
+
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
-    setForm((prev) => ({ ...prev, language: selectedLanguage }));
+
+    setForm((prev) => ({
+      ...prev,
+      language: selectedLanguage,
+
+    }));
+
+    console.log("Selected Language:", selectedLanguage);
+
   };
+
+
+
 
   const lang = Cookies.get("i18next") || "en";
 
   return (
     <>
       <Sidebar />
+      <Loader visible={loading} />
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
@@ -465,23 +461,17 @@ const page = ({ params }) => {
                   <div className='crpr-im'>
                     {file.map((fl, i) => {
                       return (
-                        <>
-                          {" "}
-                          <div className='imb-bx-upl'>
-                            <img
-                              key={i}
-                              src={fl?.image}
-                            />
-                            <div
-                              className='close_img_top'
-                              onClick={() => {
-                                removeFile(fl);
-                              }}
-                            >
-                              X
-                            </div>
+                        <div className='imb-bx-upl' key={i}>
+                          <img src={fl.url} alt={`Uploaded image ${i}`} /> {/* Use fl.url */}
+                          <div
+                            className='close_img_top'
+                            onClick={() => {
+                              removeFile(fl); // Pass the entire object
+                            }}
+                          >
+                            X
                           </div>
-                        </>
+                        </div>
                       );
                     })}
 
@@ -841,13 +831,20 @@ const page = ({ params }) => {
                       {/* <Link href={""}>/{productSlug}</Link> */}
                     </Form.Label>
                     <Form.Control
-                      value={productForm.ProductName}
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          ProductName: e.target.value,
-                        }))
-                      }
+                      value={productForm?.language == 1 ? productForm.ProductName : productForm.ProductNameNo}
+                      onChange={(e) => {
+                        if (productForm.language == "1") {
+                          setForm((prev) => ({
+                            ...prev,
+                            ProductName: e.target.value,
+                          }));
+                        } else {
+                          setForm((prev) => ({
+                            ...prev,
+                            ProductNameNo: e.target.value,
+                          }));
+                        }
+                      }}
                       isInvalid={!!errors?.ProductName}
                     />
                     <Form.Control.Feedback type='invalid'>
@@ -930,6 +927,7 @@ const page = ({ params }) => {
                     {/* <Form.Label>Display</Form.Label> */}
                     <Form.Label>{t("update_product.display")}</Form.Label>
                     <Form.Select
+                      value={productForm.Display}
                       onChange={(e) =>
                         setForm((prev) => ({
                           ...prev,
@@ -937,8 +935,11 @@ const page = ({ params }) => {
                         }))
                       }
                     >
-                      <option value={1}>
+                      <option value={"Everywhere"}>
                         {t("create_product.everywhere")}
+                      </option>
+                      <option value={"not_display"}>
+                        {t("create_product.not_display_in_any_places")}
                       </option>
                     </Form.Select>
                   </Form.Group>
@@ -1066,14 +1067,21 @@ const page = ({ params }) => {
                     </Form.Label>
                     <Form.Control
                       as='textarea'
-                      value={productForm.shortDescription}
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          shortDescription: e.target.value,
-                        }))
-                      }
                       rows={3}
+                      value={productForm.language == "1" ? productForm.shortDescription : productForm.shortDescriptionNo}
+                      onChange={(e) => {
+                        if (productForm.language == "1") {
+                          setForm((prev) => ({
+                            ...prev,
+                            shortDescription: e.target.value, // Update English shortDescription
+                          }));
+                        } else {
+                          setForm((prev) => ({
+                            ...prev,
+                            shortDescriptionNo: e.target.value, // Update Norwegian shortDescription
+                          }));
+                        }
+                      }}
                     />
                   </Form.Group>
 
@@ -1086,13 +1094,20 @@ const page = ({ params }) => {
                     </Form.Label>
                     <ReactQuill
                       theme='snow'
-                      value={productForm.ProductDescription}
-                      onChange={(val) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          ProductDescription: val,
-                        }))
-                      }
+                      value={productForm.language == 1 ? productForm.ProductDescription : productForm.ProductDescriptionNo}
+                      onChange={(val) => {
+                        if (productForm.language == 1) {
+                          setForm((prev) => ({
+                            ...prev,
+                            ProductDescription: val,
+                          }));
+                        } else {
+                          setForm((prev) => ({
+                            ...prev,
+                            ProductDescriptionNo: val,
+                          }));
+                        }
+                      }}
                     />
                   </Form.Group>
 
@@ -1105,13 +1120,20 @@ const page = ({ params }) => {
                         : "Mine-sider beskrivelse"}
                     </Form.Label>
                     <Form.Control
-                      value={productForm.PageDescription}
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          PageDescription: e.target.value,
-                        }))
-                      }
+                      value={productForm.language == 1 ? productForm.PageDescription : productForm.PageDescriptionNo}
+                      onChange={(e) => {
+                        if (productForm.language == "1") {
+                          setForm((prev) => ({
+                            ...prev,
+                            PageDescription: e.target.value, // Update English PageDescription
+                          }));
+                        } else {
+                          setForm((prev) => ({
+                            ...prev,
+                            PageDescriptionNo: e.target.value, // Update Norwegian PageDescription
+                          }));
+                        }
+                      }}
                     />
                   </Form.Group>
 
@@ -1126,13 +1148,20 @@ const page = ({ params }) => {
                     <Form.Control
                       as='textarea'
                       rows={3}
-                      value={productForm.MetaDescription}
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          MetaDescription: e.target.value,
-                        }))
-                      }
+                      value={productForm.language == 1 ? productForm.MetaDescription : productForm.MetaDescriptionNo}
+                      onChange={(e) => {
+                        if (productForm.language == 1) {
+                          setForm((prev) => ({
+                            ...prev,
+                            MetaDescription: e.target.value, // Update English MetaDescription
+                          }));
+                        } else {
+                          setForm((prev) => ({
+                            ...prev,
+                            MetaDescriptionNo: e.target.value, // Update Norwegian MetaDescription
+                          }));
+                        }
+                      }}
                     />
                   </Form.Group>
                 </div>

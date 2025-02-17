@@ -17,8 +17,26 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Back-office",
-  description: "Back-office",
+  title: "Backoffice",
+  description: "Backoffice Dugnadstid.no",
+  openGraph: {
+    title: "Backoffice",
+    description: "Backoffice Dugnadstid.no",
+    images: [
+      {
+        url: "https://admin.dugnadstid.no/images/DT_LOGO_HJERTE-High-Quality.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Backoffice Preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Backoffice",
+    description: "Backoffice Dugnadstid.no",
+    images: ["https://admin.dugnadstid.no/images/DT_LOGO_HJERTE-High-Quality.jpg"],
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -28,11 +46,26 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
-        <link
-          rel='icon'
-          href='/favicon.ico'
+        <link rel='icon' href='/favicon.ico' />
+        {/* Open Graph Meta Tags */}
+        <meta property='og:title' content='Backoffice' />
+        <meta property='og:description' content='Backoffice Dugnadstid.no' />
+        <meta
+          property='og:image'
+          content='https://admin.dugnadstid.no/images/DT_LOGO_HJERTE-High-Quality.jpg'
         />
-        <title>Back-Office</title>
+        <meta property='og:image:width' content='1200' />
+        <meta property='og:image:height' content='630' />
+        <meta property='og:type' content='website' />
+
+        {/* Twitter Meta Tags */}
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content='Backoffice' />
+        <meta name='twitter:description' content='Backoffice Dugnadstid.no' />
+        <meta
+          name='twitter:image'
+          content='https://admin.dugnadstid.no/images/DT_LOGO_HJERTE-High-Quality.jpg'
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <I18nProvider>

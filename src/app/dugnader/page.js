@@ -21,11 +21,11 @@ const Page = () => {
     const [selectedStatus, setSelectedStatus] = useState([]); // State for selected status
     const [loading, setLoading] = useState(false);
     const [searchQuery, setSearch] = useState("");
-    const [selectedSort, setSelectedSort] = useState(""); 
+    const [selectedSort, setSelectedSort] = useState("");
     const [selectedSeller, setSelectedSeller] = useState("");
-    const [selectedLead, setSelectedLead] = useState(""); 
+    const [selectedLead, setSelectedLead] = useState("");
     const [pageSize, setPageSize] = useState(10);
-    const [sellers, setSellers] = useState([]); 
+    const [sellers, setSellers] = useState([]);
     const [showFilterModal, setShowFilterModal] = useState(false);
 
     const fetchData = async () => {
@@ -39,9 +39,9 @@ const Page = () => {
                 status: selectedStatus, // Include selected status
                 searchQuery: searchQuery,
                 filters: {
-                    order_status: selectedStatus == 'active' ? "1" : selectedStatus == 'inactive' ?  "0" : "",
+                    order_status: selectedStatus == 'active' ? "1" : selectedStatus == 'inactive' ? "0" : "",
                     seller_id: selectedSeller,
-                    sort_status: selectedSort === "asc" ? "0" : "1", 
+                    sort_status: selectedSort === "asc" ? "0" : "1",
                 },
             };
 
@@ -57,32 +57,35 @@ const Page = () => {
         setLoading(false);
     };
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchSellers = async () => {
-          try {
-            const res = await GET(`${BASE_URL}/api/admin/orderSellerList`); 
-            if (res?.data?.status) {
-              setSellers(res.data.data); 
-            } else {
-              toast.error(res.data.message);
+            try {
+                const res = await GET(`${BASE_URL}/api/admin/orderSellerList`);
+                if (res?.data?.status) {
+                    setSellers(res.data.data);
+                } else {
+                    toast.error(res.data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching sellers:", error);
             }
-          } catch (error) {
-            console.error("Error fetching sellers:", error);
-          }
         };
-    
+
         fetchSellers();
-      }, []);
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchData();
-        }, 500); 
+        }, 500);
 
         return () => {
             clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
         };
     }, [searchQuery, selectedSeller, selectedSort, selectedStatus]); // Trigger on searchQuery or selected filters change
+
+
+
 
     useEffect(() => {
         fetchData();
@@ -94,6 +97,11 @@ const Page = () => {
     const onPageChange = (selected) => {
         setCurrent(selected);
     };
+
+
+    useEffect(() => {
+        setCurrent(1); // Reset to first page
+    }, [searchQuery, selectedSeller, selectedEndDate, selectedSort, pageSize, selectedStatus]);
 
     return (
         <>
@@ -192,17 +200,17 @@ const Page = () => {
                         </div>
 
                         <DugnaderFilterModal
-                        show={showFilterModal}
-                        isOpen={showFilterModal}
-                        onClose={() => setShowFilterModal(false)}
-                        selectedStatus={selectedStatus}
-                        setSelectedStatus={setSelectedStatus}
-                        selectedSeller={selectedSeller}
-                        setSelectedSeller={setSelectedSeller}
-                        selectedSort={selectedSort}
-                        setSelectedSort={setSelectedSort}
-                        sellers={sellers}
-                    />
+                            show={showFilterModal}
+                            isOpen={showFilterModal}
+                            onClose={() => setShowFilterModal(false)}
+                            selectedStatus={selectedStatus}
+                            setSelectedStatus={setSelectedStatus}
+                            selectedSeller={selectedSeller}
+                            setSelectedSeller={setSelectedSeller}
+                            selectedSort={selectedSort}
+                            setSelectedSort={setSelectedSort}
+                            sellers={sellers}
+                        />
                     </>
                 )}
             </div>

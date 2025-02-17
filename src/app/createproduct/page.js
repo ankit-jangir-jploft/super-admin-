@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import CreateCategoryModal from "../modals/createcategory";
 import CreateSubCategoryModal from "../modals/createsubcategory";
 import { useTranslation } from "react-i18next";
+import Loader from "../Components/Loader/Loader";
 
 const page = () => {
   const { t } = useTranslation();
@@ -27,17 +28,18 @@ const page = () => {
   const [files, setFiles] = useState([]);
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateSubCategory, setShowCreateSubCategory] = useState(false);
+  const [loading, seLoading] = useState(false)
 
   function handleChange(e) {
     const theFile = e.target.files[0];
     if (!theFile) return;
 
-    const maxSize = 2 * 1024 * 1024; // 2MB
+    // const maxSize = 2 * 1024 * 1024; // 2MB
 
-    if (theFile.size > maxSize) {
-      toast.error("File size is too large. Maximum allowed size is 2MB.");
-      return;
-    }
+    // if (theFile.size > maxSize) {
+    //   toast.error("File size is too large. Maximum allowed size is 2MB.");
+    //   return;
+    // }
 
     setFile((prev) => [...prev, URL.createObjectURL(e.target.files[0])]);
     setFiles((prev) => [...prev, e.target.files[0]]);
@@ -77,7 +79,7 @@ const page = () => {
     PageDescription: "",
     MetaDescription: "",
     VisibleForDirectSales: false,
-    language: 1,
+    language: 2,
   });
   const [errors, setErrors] = useState({});
 
@@ -276,6 +278,7 @@ const page = () => {
   };
 
   const submitHandler = async () => {
+    seLoading(true)
     try {
       if (validateForm()) {
         const formData = new FormData();
@@ -327,6 +330,7 @@ const page = () => {
 
         const res = await POST(`${BASE_URL}/api/admin/productCreate`, formData);
         if (res?.data?.status) {
+          seLoading(false)
           toast.dismiss();
           toast.success(res.data?.message);
           router.push("/produkter");
@@ -335,7 +339,11 @@ const page = () => {
           toast.error(res?.data?.message);
         }
       }
-    } catch (error) { }
+    } catch (error) { 
+      seLoading(false)
+    }finally{
+      seLoading(false)
+    }
   };
 
   const removeFile = (indexToRemove) => {
@@ -357,6 +365,7 @@ const page = () => {
   return (
     <>
       <Sidebar />
+      <Loader visible={loading}/>
       <div className='detail-admin-main'>
         <div className='admin-header'>
           <div className='d-flex justify-content-between w-100 align-items-center'>
@@ -385,12 +394,12 @@ const page = () => {
           <div className='col-md-12'>
             <div className='shdw-crd crte-ordr'>
               <h3 className='ad-prdtse mb-4'>
-              <Form.Select
+                <Form.Select
                   value={productForm.language} // Set the value from productForm state
                   onChange={handleLanguageChange} // Handle change
                 >
-                  <option value="1">English</option>
                   <option value="2">Norwegian</option>
+                  <option value="1">English</option>
                 </Form.Select>
               </h3>
               <div className='row'>
@@ -905,6 +914,9 @@ const page = () => {
                     >
                       <option value={"Everywhere"}>
                         {t("create_product.everywhere")}
+                      </option>
+                      <option value={"not_display"}>
+                        {t("create_product.not_display_in_any_places")}
                       </option>
                     </Form.Select>
                   </Form.Group>

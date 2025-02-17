@@ -134,18 +134,18 @@ const Page = () => {
                           const theFile = e.target.files[0];
 
                           if (theFile) {
-                            const maxSize = 2 * 1024 * 1024;
+                            // const maxSize = 2 * 1024 * 1024;
 
-                            if (theFile.size > maxSize) {
-                              toast.error(
-                                t(
-                                  "settings.users.create.profile_image_size_exceeded"
-                                )
-                              );
-                              setSelectedImage(null);
-                              e.target.value = "";
-                              return;
-                            }
+                            // if (theFile.size > maxSize) {
+                            //   toast.error(
+                            //     t(
+                            //       "settings.users.create.profile_image_size_exceeded"
+                            //     )
+                            //   );
+                            //   setSelectedImage(null);
+                            //   e.target.value = "";
+                            //   return;
+                            // }
 
                             setSelectedImage(URL.createObjectURL(theFile));
                             setProfileImageFileError(null);

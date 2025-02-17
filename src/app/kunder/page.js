@@ -53,7 +53,12 @@ const page = () => {
     return () => {
       clearTimeout(timer); // Cleanup previous timeout if searchQuery changes
     };
-  }, [currentPage, searchQuery, selectedStatus, selectedSeller, selectedLead, selectedContact, selectedSort, pageSize]); // Trigger on searchQuery or currentPage change
+  }, [currentPage, searchQuery, selectedStatus, selectedSeller, selectedLead, selectedContact, selectedSort, pageSize]);
+  
+  
+  useEffect(() => {
+    setCurrent(1); // Reset to first page
+  }, [searchQuery, selectedStatus, selectedSeller, selectedLead, selectedSort, pageSize]);
 
   useEffect(() => {
     const fetchSellers = async () => {
